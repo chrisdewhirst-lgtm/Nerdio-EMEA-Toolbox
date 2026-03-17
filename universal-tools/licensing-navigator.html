@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Microsoft Licensing Navigator · Nerdio</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #042838; font-family: 'Segoe UI', system-ui, sans-serif; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #042838; }
+    ::-webkit-scrollbar-thumb { background: #1E9DB8; border-radius: 3px; }
+    input[type=number]::-webkit-inner-spin-button { opacity: 1; }
+    /* .home-btn removed - using brand bar */
+    
+  </style>
+<style>
+/* === NERDIO BRAND BAR === */
+.nerdio-brand-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+  height: 48px;
+  background: linear-gradient(135deg, #0B1B3D 0%, #142952 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+.nerdio-brand-bar * { box-sizing: border-box; margin: 0; padding: 0; }
+.nerdio-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+.nerdio-brand-logo img {
+  height: 22px;
+  width: auto;
+}
+.nerdio-brand-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255,255,255,0.2);
+}
+.nerdio-brand-tool-name {
+  color: rgba(255,255,255,0.85);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+.nerdio-brand-home {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #00B4D8;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: rgba(0,180,216,0.1);
+  border: 1px solid rgba(0,180,216,0.2);
+  transition: all 0.2s;
+}
+.nerdio-brand-home:hover {
+  background: rgba(0,180,216,0.2);
+  border-color: rgba(0,180,216,0.4);
+  color: #FFFFFF;
+}
+.nerdio-brand-home svg {
+  width: 14px;
+  height: 14px;
+}
+.nerdio-brand-spacer {
+  height: 48px;
+  width: 100%;
+  flex-shrink: 0;
+}
+/* === END NERDIO BRAND BAR === */
+</style>
+</head>
+<body>
+
+<!-- NERDIO BRAND BAR -->
+<div class="nerdio-brand-bar">
+  <div class="nerdio-brand-logo">
+    <img src="data:image/png;base64,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" alt="Nerdio">
+    <div class="nerdio-brand-divider"></div>
+    <span class="nerdio-brand-tool-name">Licensing Navigator</span>
+  </div>
+  <a href="../EMEA-Nerdio-Toolbox.html" class="nerdio-brand-home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+    Toolbox Home
+  </a>
+</div>
+<div class="nerdio-brand-spacer"></div>
+<!-- END NERDIO BRAND BAR -->
+
+<script>
+</script>
+
+  
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useMemo } = React;
+
+    const NERDIO_NAVY  = "#042838";
+    const NERDIO_BLUE  = "#1E9DB8";
+    const NERDIO_GREEN = "#CDFF4E";
+
+    // ── DATA ────────────────────────────────────────────────────────────────
+
+    const BUNDLES = {
+      m365_f1: {
+        id: "m365_f1", name: "Microsoft 365 F1", tier: "F", monthly: 2.25,
+        includes: ["Teams (limited)","Exchange (2GB)","SharePoint","Intune (limited)","Defender for Business"],
+        avd: false, w365: false, copilot_eligible: false,
+        notes: "Frontline workers only. No desktop apps. Limited AVD access via browser only."
+      },
+      m365_f3: {
+        id: "m365_f3", name: "Microsoft 365 F3", tier: "F", monthly: 8.00,
+        includes: ["Teams","Exchange","SharePoint","Office Web Apps","Intune","Defender for Business"],
+        avd: true, w365: false, copilot_eligible: true,
+        notes: "Frontline with full Intune. AVD is permitted. No desktop Office installs."
+      },
+      m365_e3: {
+        id: "m365_e3", name: "Microsoft 365 E3", tier: "E3", monthly: 36.00,
+        includes: ["Office 365 E3","Intune P1","Azure AD P1","Defender for Business","Information Protection P1"],
+        avd: true, w365: true, copilot_eligible: true,
+        notes: "Most common enterprise baseline. Full AVD & W365 rights. Copilot add-on available."
+      },
+      m365_e5: {
+        id: "m365_e5", name: "Microsoft 365 E5", tier: "E5", monthly: 57.00,
+        includes: ["Office 365 E5","Intune P1/P2","Azure AD P2","Defender for Endpoint P2","Purview","Sentinel","Entra ID P2"],
+        avd: true, w365: true, copilot_eligible: true,
+        notes: "Premium security suite. Full virtual desktop rights. Best Copilot integration."
+      },
+      o365_e1: {
+        id: "o365_e1", name: "Office 365 E1", tier: "E1", monthly: 8.00,
+        includes: ["Exchange","SharePoint","Teams","Office Web Apps only"],
+        avd: false, w365: false, copilot_eligible: false,
+        notes: "No desktop Office. NOT eligible for AVD or W365. Needs upgrade for virtual desktops."
+      },
+      o365_e3: {
+        id: "o365_e3", name: "Office 365 E3", tier: "E3", monthly: 23.00,
+        includes: ["Exchange","SharePoint","Teams","Office 365 Apps (desktop)"],
+        avd: true, w365: false, copilot_eligible: false,
+        notes: "Desktop Office apps included. AVD eligible but no Intune — needs add-on for W365."
+      },
+      biz_premium: {
+        id: "biz_premium", name: "Microsoft 365 Business Premium", tier: "BP", monthly: 22.00,
+        includes: ["Office 365 Apps","Exchange","Teams","Intune","Azure AD P1","Defender for Business"],
+        avd: false, w365: true, copilot_eligible: true,
+        notes: "Max 300 users. W365 eligible. NOT eligible for AVD (enterprise-only). Common SMB baseline."
+      },
+    };
+
+    const ADDONS = [
+      { id:"copilot_m365", name:"Microsoft 365 Copilot", monthly:30.00, category:"AI", icon:"✨",
+        requires:["m365_e3","m365_e5","m365_f3","biz_premium"],
+        description:"AI assistant across Word, Excel, Teams, Outlook, PowerPoint. Requires eligible M365 base license.",
+        nerdio_note:"Nerdio NME delivers Copilot to AVD/W365 users with FSLogix profile optimisation, ensuring AI features load correctly in virtual sessions." },
+      { id:"copilot_security", name:"Microsoft Security Copilot", monthly:4.00, category:"AI", icon:"🛡️",
+        requires:[], unit:"per SCU/hr",
+        description:"AI-powered security analysis. Priced by Security Compute Units (SCU). Separate from M365 Copilot.",
+        nerdio_note:"Works alongside Nerdio's security governance features for AVD environments." },
+      { id:"intune_p1", name:"Intune Plan 1", monthly:8.00, category:"Endpoint", icon:"📱",
+        requires:[],
+        description:"Core MDM/MAM. Required for W365 provisioning and AVD device compliance.",
+        nerdio_note:"Nerdio NME provides a unified management view across Intune-enrolled devices and AVD/W365 sessions." },
+      { id:"intune_p2", name:"Intune Plan 2 (add-on)", monthly:4.00, category:"Endpoint", icon:"📱",
+        requires:["intune_p1"],
+        description:"Adds Tunnel for MAM, specialised device management for HoloLens, Teams Rooms, etc.",
+        nerdio_note:"Advanced scenarios — typically needed for complex hybrid or regulated environments." },
+      { id:"intune_suite", name:"Intune Suite", monthly:10.00, category:"Endpoint", icon:"📱",
+        requires:["intune_p1"],
+        description:"Includes P2 + Advanced Analytics, Remote Help, EPM (Endpoint Privilege Management), MAM Tunnel.",
+        nerdio_note:"Nerdio + Intune Suite = full lifecycle management. Nerdio automates provisioning; Intune Suite governs runtime." },
+      { id:"aad_p1", name:"Entra ID (AAD) P1", monthly:6.00, category:"Identity", icon:"🔑",
+        requires:[],
+        description:"Conditional Access, SSPR, Hybrid AAD join. Essential for AVD & W365 authentication.",
+        nerdio_note:"Required for Nerdio's Conditional Access policy automation and Just-in-Time access features." },
+      { id:"aad_p2", name:"Entra ID (AAD) P2", monthly:9.00, category:"Identity", icon:"🔑",
+        requires:[],
+        description:"Adds PIM (Privileged Identity Management), Identity Protection, Access Reviews.",
+        nerdio_note:"Strongly recommended for FSI customers. Pairs with Nerdio's RBAC for granular admin control." },
+      { id:"defender_e5", name:"Defender for Endpoint P2", monthly:5.20, category:"Security", icon:"🔒",
+        requires:[],
+        description:"EDR, threat hunting, attack surface reduction. Included in M365 E5; add-on for E3.",
+        nerdio_note:"Nerdio auto-applies Defender policies to new AVD session hosts at scale." },
+      { id:"purview", name:"Microsoft Purview (Info Protection)", monthly:5.00, category:"Compliance", icon:"📋",
+        requires:[],
+        description:"Data classification, sensitivity labels, DLP. Critical for FSI regulated data.",
+        nerdio_note:"Nerdio can enforce Purview-labelled storage paths in AVD FSLogix profile containers." },
+      { id:"w365_8_32", name:"Windows 365 Enterprise 8vCPU/32GB", monthly:73.10, category:"W365", icon:"☁️",
+        requires:["m365_e3","m365_e5","biz_premium"],
+        description:"Full Cloud PC — 8vCPU, 32GB RAM, 256GB storage. Persistent, personal, Microsoft-managed.",
+        nerdio_note:"Nerdio NME manages W365 Cloud PCs alongside AVD — unified governance, reporting & image management." },
+      { id:"w365_4_16", name:"Windows 365 Enterprise 4vCPU/16GB", monthly:43.60, category:"W365", icon:"☁️",
+        requires:["m365_e3","m365_e5","biz_premium"],
+        description:"Mid-tier Cloud PC — ideal for knowledge workers with standard productivity needs.",
+        nerdio_note:"Nerdio provides size-right recommendations across W365 SKUs using session analytics." },
+      { id:"w365_2_8", name:"Windows 365 Enterprise 2vCPU/8GB", monthly:28.00, category:"W365", icon:"☁️",
+        requires:["m365_e3","m365_e5","biz_premium"],
+        description:"Entry Cloud PC — task workers, light Office use, compliance desktop scenarios.",
+        nerdio_note:"Nerdio auto-scales W365 Shared Use alongside these fixed-size personal Cloud PCs." },
+      { id:"avd_access", name:"AVD User Access Rights", monthly:0, category:"AVD", icon:"🖥️",
+        requires:["m365_e3","m365_e5","m365_f3","o365_e3"],
+        description:"Included in eligible M365/O365 licenses. No additional per-user charge — Azure compute costs apply separately.",
+        nerdio_note:"This is where Nerdio delivers maximum value: patented auto-scaling reduces Azure compute by 40–75%." },
+      { id:"azure_compute", name:"Azure Compute (AVD VMs)", monthly:null, category:"AVD", icon:"⚡",
+        requires:[],
+        description:"Pay-as-you-go Azure VM costs. Variable based on SKU, region, hours, and users. Biggest cost driver for AVD.",
+        nerdio_note:"Nerdio's patented auto-scaling is the #1 lever here. Customers consistently report 40–75% Azure compute savings." },
+    ];
+
+    const SCENARIOS = [
+      { id:"citrix_migration", label:"Citrix → AVD Migration", icon:"🔄",
+        description:"Customer on Citrix DaaS or CVAD, moving to Azure-native virtual desktops",
+        recommended_base:"m365_e3",
+        recommended_addons:["aad_p1","defender_e5","avd_access","azure_compute","copilot_m365"],
+        trigger:"Citrix end-of-life / cost pressure",
+        nerdio_pitch:"Nerdio replaces the Citrix management layer — accelerates migration, auto-scales compute, and typically delivers 40-75% Azure cost savings vs like-for-like Citrix spend." },
+      { id:"vmware_displacement", label:"VMware/Omnissa Displacement", icon:"🔀",
+        description:"Broadcom pricing shock driving cloud migration. Moving Horizon to AVD.",
+        recommended_base:"m365_e3",
+        recommended_addons:["aad_p1","defender_e5","avd_access","azure_compute","intune_p1"],
+        trigger:"VMware/Broadcom contract renewal",
+        nerdio_pitch:"Nerdio provides the enterprise management capability customers had in Horizon — RBAC, image management, auto-scaling — natively on Azure without the Broadcom tax." },
+      { id:"fsi_compliance", label:"FSI / Regulated Desktop", icon:"🏦",
+        description:"Financial services firm needing compliant, auditable virtual desktops (FCA/PRA/DORA)",
+        recommended_base:"m365_e5",
+        recommended_addons:["aad_p2","purview","defender_e5","avd_access","azure_compute","copilot_m365"],
+        trigger:"DORA compliance, FCA audit readiness, sensitive data handling",
+        nerdio_pitch:"Nerdio's RBAC, session recording, and JIT access controls map directly to DORA operational resilience requirements. Paired with M365 E5's security stack, this is the lowest-risk path for FSI." },
+      { id:"hybrid_workforce", label:"Hybrid Workforce / W365 + AVD", icon:"🏠",
+        description:"Mix of office, remote, and frontline workers needing different desktop experiences",
+        recommended_base:"m365_e3",
+        recommended_addons:["w365_4_16","avd_access","azure_compute","intune_p1","copilot_m365"],
+        trigger:"Return-to-office policy, BYOD, flexible work",
+        nerdio_pitch:"Nerdio NME is the only platform that manages both W365 Cloud PCs and AVD from a single pane — unified image management, reporting, and cost governance across your entire virtual desktop estate." },
+      { id:"copilot_readiness", label:"Copilot Readiness / AI Desktop", icon:"✨",
+        description:"Board-level AI initiative — delivering Copilot securely to all knowledge workers",
+        recommended_base:"m365_e3",
+        recommended_addons:["copilot_m365","aad_p1","purview","avd_access","azure_compute"],
+        trigger:"CIO AI strategy, Copilot pilot, productivity uplift programme",
+        nerdio_pitch:"AVD + Nerdio is the optimal Copilot delivery vehicle — centralised, secure, and optimised. Nerdio ensures FSLogix profiles are correctly configured so Copilot features work reliably in every virtual session." },
+    ];
+
+    const CATEGORIES = ["All","AI","Endpoint","Identity","Security","Compliance","W365","AVD"];
+
+    function catColor(cat) {
+      const map = { AI:NERDIO_GREEN, Endpoint:"#F59E0B", Identity:"#A795C7", Security:"#EF4444", Compliance:"#F97316", W365:"#8B5CF6", AVD:NERDIO_BLUE };
+      return map[cat] || "#94A3B8";
+    }
+    function thStyle(align="center") {
+      return { textAlign:align, padding:"10px 12px", fontSize:11, fontWeight:700, color:NERDIO_BLUE, textTransform:"uppercase", letterSpacing:"0.06em", borderBottom:"1px solid #0d3a50" };
+    }
+    function tdStyle(align="center") {
+      return { textAlign:align, padding:"9px 12px", color:"#CBD5E1", borderBottom:"1px solid #0d3a5055", verticalAlign:"top" };
+    }
+
+    // ── SUB-COMPONENTS ──────────────────────────────────────────────────────
+
+    function TierBadge({ t }) {
+      const colors = { F:"#6B7280", E1:"#9CA3AF", E3:"#0078D4", E5:"#1E9DB8", BP:"#008272" };
+      return <span style={{ background:colors[t]||"#6B7280", color:"#fff", fontSize:10, fontWeight:700, padding:"2px 6px", borderRadius:4, letterSpacing:"0.08em", marginLeft:6 }}>{t}</span>;
+    }
+
+    function Badge({ label, color, dark }) {
+      return <span style={{ fontSize:10, padding:"2px 6px", borderRadius:4, background: dark ? color : color+"22", color: dark ? NERDIO_NAVY : color, fontWeight:700, border:`1px solid ${color}44` }}>{label}</span>;
+    }
+
+    function SummaryLine({ label, value, highlight, bold }) {
+      return (
+        <div style={{ display:"flex", justifyContent:"space-between", fontSize:12, padding:"3px 0", borderBottom:"1px solid #0d3a5055" }}>
+          <span style={{ color:"#94A3B8" }}>{label}</span>
+          <span style={{ fontWeight: bold ? 800 : 600, color: highlight ? NERDIO_GREEN : "#E2E8F0" }}>{value}</span>
+        </div>
+      );
+    }
+
+    function Tick({ val }) {
+      return <span style={{ fontSize:14 }}>{val ? "✅" : "❌"}</span>;
+    }
+
+    function SectionHeader({ title, subtitle, right }) {
+      return (
+        <div style={{ marginBottom:12, display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:8, flexWrap:"wrap" }}>
+          <div>
+            <div style={{ fontSize:14, fontWeight:700, color:"#fff" }}>{title}</div>
+            {subtitle && <div style={{ fontSize:11, color:"#64748B", marginTop:2 }}>{subtitle}</div>}
+          </div>
+          {right && <div>{right}</div>}
+        </div>
+      );
+    }
+
+    function BundleCard({ bundle, selected, onSelect }) {
+      return (
+        <div onClick={onSelect} style={{ background: selected ? `linear-gradient(135deg,${NERDIO_BLUE}22,${NERDIO_GREEN}11)` : "#073d56", border:`1px solid ${selected ? NERDIO_GREEN : "#0d3a50"}`, borderRadius:10, padding:"10px 14px", cursor:"pointer", transition:"all 0.15s", display:"flex", gap:12, alignItems:"flex-start" }}>
+          <div style={{ width:20, height:20, borderRadius:"50%", flexShrink:0, marginTop:2, background: selected ? NERDIO_GREEN : "#0d3a50", border:`2px solid ${selected ? NERDIO_GREEN : "#1E9DB855"}`, display:"flex", alignItems:"center", justifyContent:"center" }}>
+            {selected && <span style={{ fontSize:11, color:NERDIO_NAVY }}>✓</span>}
+          </div>
+          <div style={{ flex:1 }}>
+            <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:4 }}>
+              <span style={{ fontSize:13, fontWeight:700, color:"#fff" }}>{bundle.name}</span>
+              <div style={{ display:"flex", alignItems:"center", gap:6 }}>
+                <TierBadge t={bundle.tier} />
+                <span style={{ fontSize:13, fontWeight:700, color:NERDIO_GREEN }}>${bundle.monthly.toFixed(2)}/user</span>
+              </div>
+            </div>
+            <div style={{ display:"flex", gap:6, marginTop:6, flexWrap:"wrap" }}>
+              {bundle.avd && <Badge label="AVD" color={NERDIO_BLUE} />}
+              {bundle.w365 && <Badge label="W365" color="#8B5CF6" />}
+              {bundle.copilot_eligible && <Badge label="Copilot" color={NERDIO_GREEN} dark />}
+            </div>
+            <div style={{ fontSize:11, color:"#64748B", marginTop:5, lineHeight:1.4 }}>{bundle.notes}</div>
+          </div>
+        </div>
+      );
+    }
+
+    function AddonCard({ addon, eligible, checked, onToggle, showNerdio }) {
+      const dimmed = !eligible;
+      return (
+        <div onClick={eligible ? onToggle : undefined} style={{ background: checked ? `linear-gradient(135deg,${NERDIO_BLUE}22,${NERDIO_GREEN}11)` : "#073d56", border:`1px solid ${checked ? NERDIO_GREEN : dimmed ? "#0d3a5044" : "#0d3a50"}`, borderRadius:10, padding:"10px 14px", cursor: eligible ? "pointer" : "not-allowed", opacity: dimmed ? 0.4 : 1, transition:"all 0.15s" }}>
+          <div style={{ display:"flex", gap:10, alignItems:"flex-start" }}>
+            <div style={{ width:18, height:18, borderRadius:4, flexShrink:0, marginTop:1, background: checked ? NERDIO_GREEN : "#0d3a50", border:`2px solid ${checked ? NERDIO_GREEN : "#1E9DB855"}`, display:"flex", alignItems:"center", justifyContent:"center" }}>
+              {checked && <span style={{ fontSize:10, color:NERDIO_NAVY }}>✓</span>}
+            </div>
+            <div style={{ flex:1 }}>
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:8 }}>
+                <span style={{ fontSize:12, fontWeight:600, color: dimmed ? "#64748B" : "#fff" }}>{addon.icon} {addon.name}</span>
+                <div style={{ display:"flex", alignItems:"center", gap:6, flexShrink:0 }}>
+                  <span style={{ fontSize:10, padding:"2px 6px", borderRadius:10, background:catColor(addon.category)+"33", color:catColor(addon.category) }}>{addon.category}</span>
+                  <span style={{ fontSize:12, fontWeight:700, color: addon.monthly === 0 ? NERDIO_GREEN : "#E2E8F0" }}>
+                    {addon.monthly === null ? "PAYG" : addon.monthly === 0 ? "Included" : `$${addon.monthly}`}
+                  </span>
+                </div>
+              </div>
+              <div style={{ fontSize:11, color:"#64748B", marginTop:3, lineHeight:1.4 }}>{addon.description}</div>
+              {showNerdio && addon.nerdio_note && (
+                <div style={{ fontSize:11, color:"#A7D8E8", marginTop:5, lineHeight:1.4 }}>
+                  <span style={{ color:NERDIO_GREEN }}>→ </span>{addon.nerdio_note}
+                </div>
+              )}
+              {!eligible && addon.requires.length > 0 && (
+                <div style={{ fontSize:10, color:"#C0392B", marginTop:3 }}>
+                  ⚠ Requires: {addon.requires.map(r => BUNDLES[r]?.name || r).join(" or ")}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // ── MAIN APP ─────────────────────────────────────────────────────────────
+
+    function App() {
+      const [selectedBase, setSelectedBase]     = useState(null);
+      const [selectedAddons, setSelectedAddons] = useState([]);
+      const [activeScenario, setActiveScenario] = useState(null);
+      const [addonFilter, setAddonFilter]       = useState("All");
+      const [activeTab, setActiveTab]           = useState("builder");
+      const [userCount, setUserCount]           = useState(100);
+      const [showNerdioTips, setShowNerdioTips] = useState(true);
+
+      const baseBundle = selectedBase ? BUNDLES[selectedBase] : null;
+
+      const filteredAddons = useMemo(() =>
+        addonFilter === "All" ? ADDONS : ADDONS.filter(a => a.category === addonFilter),
+        [addonFilter]);
+
+      const perUserCost = useMemo(() => {
+        const base = baseBundle ? baseBundle.monthly : 0;
+        return base + selectedAddons.reduce((sum, id) => {
+          const a = ADDONS.find(x => x.id === id);
+          return sum + (a && a.monthly ? a.monthly : 0);
+        }, 0);
+      }, [baseBundle, selectedAddons]);
+
+      const totalMonthlyCost = useMemo(() => perUserCost * userCount, [perUserCost, userCount]);
+
+      const nerdioRelevantAddons = selectedAddons.filter(id => {
+        const a = ADDONS.find(x => x.id === id);
+        return a && a.nerdio_note;
+      });
+
+      function applyScenario(s) {
+        setActiveScenario(s.id);
+        setSelectedBase(s.recommended_base);
+        setSelectedAddons(s.recommended_addons);
+        setActiveTab("builder");
+      }
+
+      function toggleAddon(id) {
+        setSelectedAddons(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+      }
+
+      return (
+        <div style={{ fontFamily:"'Segoe UI',system-ui,sans-serif", background:NERDIO_NAVY, minHeight:"100vh", color:"#E8F4F8" }}>
+
+          {/* ── HEADER ── */}
+          <div style={{ background:`linear-gradient(135deg,${NERDIO_NAVY} 0%,#073d56 100%)`, borderBottom:`2px solid ${NERDIO_BLUE}`, padding:"20px 28px 16px", display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:12 }}>
+            <div style={{ display:"flex", alignItems:"center", gap:12 }}>
+              <div style={{ width:40, height:40, borderRadius:10, background:`linear-gradient(135deg,${NERDIO_BLUE},${NERDIO_GREEN})`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:20 }}>👓</div>
+              <div>
+                <div style={{ fontSize:18, fontWeight:700, color:"#fff", lineHeight:1.1 }}>Microsoft Licensing Navigator</div>
+                <div style={{ fontSize:12, color:NERDIO_BLUE, marginTop:2 }}>Powered by Nerdio Intelligence · AVD · W365 · Copilot</div>
+              </div>
+            </div>
+            <div style={{ display:"flex", alignItems:"center", gap:16 }}>
+              <div style={{ textAlign:"right" }}>
+                <div style={{ fontSize:11, color:"#94A3B8", marginBottom:2 }}>Users</div>
+                <input type="number" value={userCount} onChange={e => setUserCount(Math.max(1, parseInt(e.target.value)||1))}
+                  style={{ width:80, background:"#073d56", border:`1px solid ${NERDIO_BLUE}`, color:"#fff", padding:"4px 8px", borderRadius:6, fontSize:14, fontWeight:700, textAlign:"center" }} />
+              </div>
+              {perUserCost > 0 && (
+                <div style={{ background:`linear-gradient(135deg,${NERDIO_BLUE}22,${NERDIO_GREEN}22)`, border:`1px solid ${NERDIO_GREEN}`, borderRadius:10, padding:"8px 14px", textAlign:"center" }}>
+                  <div style={{ fontSize:10, color:"#94A3B8" }}>TOTAL / MO</div>
+                  <div style={{ fontSize:20, fontWeight:800, color:NERDIO_GREEN }}>${totalMonthlyCost.toLocaleString("en-GB",{maximumFractionDigits:0})}</div>
+                  <div style={{ fontSize:10, color:"#94A3B8" }}>${perUserCost.toFixed(2)} / user</div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* ── TABS ── */}
+          <div style={{ display:"flex", borderBottom:"1px solid #0d3a50", padding:"0 28px", background:"#042838" }}>
+            {[
+              { id:"builder",   label:"🔧 License Builder" },
+              { id:"scenarios", label:"🎯 Use Case Scenarios" },
+              { id:"matrix",    label:"📊 License Matrix" },
+            ].map(tab => (
+              <button key={tab.id} onClick={() => setActiveTab(tab.id)} style={{ background:"none", border:"none", cursor:"pointer", padding:"12px 18px", fontSize:13, fontWeight: activeTab===tab.id ? 700 : 400, color: activeTab===tab.id ? NERDIO_GREEN : "#94A3B8", borderBottom: activeTab===tab.id ? `2px solid ${NERDIO_GREEN}` : "2px solid transparent", marginBottom:-1, transition:"all 0.15s" }}>{tab.label}</button>
+            ))}
+            <div style={{ flex:1 }} />
+            <button onClick={() => setShowNerdioTips(!showNerdioTips)} style={{ background:"none", border:"none", cursor:"pointer", padding:"12px 14px", fontSize:12, color: showNerdioTips ? NERDIO_BLUE : "#64748B" }}>
+              {showNerdioTips ? "🟢" : "⚫"} Nerdio Tips
+            </button>
+          </div>
+
+          <div style={{ padding:"20px 28px" }}>
+
+            {/* ── BUILDER TAB ── */}
+            {activeTab === "builder" && (
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:20, maxWidth:1200 }}>
+                <div>
+                  <SectionHeader title="1. Choose Base License" subtitle="The M365/O365 subscription the customer has or needs" />
+                  <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+                    {Object.values(BUNDLES).map(b => (
+                      <BundleCard key={b.id} bundle={b} selected={selectedBase===b.id}
+                        onSelect={() => setSelectedBase(selectedBase===b.id ? null : b.id)} />
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <SectionHeader title="2. Select Add-ons & Services" subtitle="Layer on top of the base license"
+                    right={
+                      <div style={{ display:"flex", gap:4, flexWrap:"wrap" }}>
+                        {CATEGORIES.map(c => (
+                          <button key={c} onClick={() => setAddonFilter(c)} style={{ background: addonFilter===c ? NERDIO_BLUE : "#073d56", border:`1px solid ${addonFilter===c ? NERDIO_BLUE : "#0d3a50"}`, color: addonFilter===c ? "#fff" : "#94A3B8", padding:"3px 8px", borderRadius:12, fontSize:11, cursor:"pointer", fontWeight: addonFilter===c ? 700 : 400 }}>{c}</button>
+                        ))}
+                      </div>
+                    }
+                  />
+                  <div style={{ display:"flex", flexDirection:"column", gap:8, maxHeight:480, overflowY:"auto" }}>
+                    {filteredAddons.map(addon => {
+                      const eligible = addon.requires.length===0 || (selectedBase && addon.requires.includes(selectedBase));
+                      return (
+                        <AddonCard key={addon.id} addon={addon} eligible={eligible}
+                          checked={selectedAddons.includes(addon.id)} onToggle={() => toggleAddon(addon.id)}
+                          showNerdio={showNerdioTips} />
+                      );
+                    })}
+                  </div>
+
+                  {(selectedBase || selectedAddons.length > 0) && (
+                    <div style={{ marginTop:16, background:"linear-gradient(135deg,#073d5688,#042838)", border:`1px solid ${NERDIO_BLUE}44`, borderRadius:12, padding:16 }}>
+                      <div style={{ fontSize:13, fontWeight:700, color:NERDIO_BLUE, marginBottom:10 }}>📋 Configuration Summary</div>
+                      {baseBundle && <SummaryLine label={baseBundle.name} value={`$${baseBundle.monthly.toFixed(2)}/user`} highlight />}
+                      {selectedAddons.map(id => {
+                        const a = ADDONS.find(x => x.id===id);
+                        if (!a) return null;
+                        return <SummaryLine key={id} label={`${a.icon} ${a.name}`} value={a.monthly ? `$${a.monthly}/user` : a.unit||"Varies"} />;
+                      })}
+                      <div style={{ borderTop:"1px solid #0d3a50", marginTop:10, paddingTop:10 }}>
+                        <SummaryLine label={`Per user / month (${userCount} users)`} value={`$${perUserCost.toFixed(2)}`} bold />
+                        <SummaryLine label="Total monthly (excl. Azure compute)" value={`$${totalMonthlyCost.toLocaleString("en-GB",{maximumFractionDigits:0})}`} highlight bold />
+                      </div>
+
+                      {showNerdioTips && nerdioRelevantAddons.length > 0 && (
+                        <div style={{ marginTop:12, background:`${NERDIO_GREEN}11`, border:`1px solid ${NERDIO_GREEN}44`, borderRadius:8, padding:10 }}>
+                          <div style={{ fontSize:11, fontWeight:700, color:NERDIO_GREEN, marginBottom:6 }}>💡 NERDIO VALUE IN THIS STACK</div>
+                          {nerdioRelevantAddons.slice(0,3).map(id => {
+                            const a = ADDONS.find(x => x.id===id);
+                            return (
+                              <div key={id} style={{ fontSize:11, color:"#A7D8E8", marginBottom:4, lineHeight:1.4 }}>
+                                <span style={{ color:NERDIO_BLUE }}>→ </span><strong>{a.icon} {a.name}:</strong> {a.nerdio_note}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+
+                      <button onClick={() => { setSelectedBase(null); setSelectedAddons([]); setActiveScenario(null); }}
+                        style={{ marginTop:12, background:"none", border:"1px solid #C0392B55", color:"#E74C3C", borderRadius:6, padding:"4px 12px", fontSize:11, cursor:"pointer" }}>
+                        ✕ Clear All
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* ── SCENARIOS TAB ── */}
+            {activeTab === "scenarios" && (
+              <div style={{ maxWidth:900 }}>
+                <SectionHeader title="Use Case Scenarios" subtitle="Common customer situations — click to auto-populate the License Builder" />
+                <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14 }}>
+                  {SCENARIOS.map(s => (
+                    <div key={s.id} onClick={() => applyScenario(s)} style={{ background: activeScenario===s.id ? `linear-gradient(135deg,${NERDIO_BLUE}22,${NERDIO_GREEN}11)` : "#073d56", border:`1px solid ${activeScenario===s.id ? NERDIO_GREEN : "#0d3a50"}`, borderRadius:12, padding:16, cursor:"pointer", transition:"all 0.2s" }}>
+                      <div style={{ fontSize:22, marginBottom:6 }}>{s.icon}</div>
+                      <div style={{ fontSize:15, fontWeight:700, color:"#fff", marginBottom:4 }}>{s.label}</div>
+                      <div style={{ fontSize:12, color:"#94A3B8", marginBottom:8 }}>{s.description}</div>
+                      <div style={{ fontSize:11, background:"#042838", borderRadius:6, padding:"4px 8px", color:"#64748B", marginBottom:8 }}>
+                        🎯 Trigger: <span style={{ color:"#A3B4C4" }}>{s.trigger}</span>
+                      </div>
+                      <div style={{ fontSize:11, color:"#A7D8E8", lineHeight:1.5, borderTop:`1px solid ${NERDIO_GREEN}33`, paddingTop:8 }}>
+                        <span style={{ color:NERDIO_GREEN, fontWeight:700 }}>Nerdio: </span>{s.nerdio_pitch}
+                      </div>
+                      <div style={{ marginTop:10 }}>
+                        <div style={{ fontSize:10, color:"#64748B", marginBottom:4 }}>Recommended stack:</div>
+                        <div style={{ display:"flex", flexWrap:"wrap", gap:4 }}>
+                          <span style={{ fontSize:10, background:"#0078D422", color:"#60A5FA", padding:"2px 6px", borderRadius:4 }}>{BUNDLES[s.recommended_base]?.name}</span>
+                          {s.recommended_addons.slice(0,4).map(id => {
+                            const a = ADDONS.find(x => x.id===id);
+                            return a ? <span key={id} style={{ fontSize:10, background:"#1E9DB822", color:NERDIO_BLUE, padding:"2px 6px", borderRadius:4 }}>{a.icon} {a.name.split(" ").slice(0,3).join(" ")}</span> : null;
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* ── MATRIX TAB ── */}
+            {activeTab === "matrix" && (
+              <div style={{ maxWidth:1100 }}>
+                <SectionHeader title="License Capability Matrix" subtitle="What each base license includes and enables for AVD, W365, and Copilot" />
+                <div style={{ overflowX:"auto" }}>
+                  <table style={{ width:"100%", borderCollapse:"collapse", fontSize:12 }}>
+                    <thead>
+                      <tr style={{ background:"#073d56" }}>
+                        <th style={thStyle("left")}>License</th>
+                        <th style={thStyle()}>Price/user/mo</th>
+                        <th style={thStyle()}>AVD Rights</th>
+                        <th style={thStyle()}>W365 Rights</th>
+                        <th style={thStyle()}>Copilot Eligible</th>
+                        <th style={thStyle()}>Intune</th>
+                        <th style={thStyle()}>Entra ID</th>
+                        <th style={thStyle()}>Desktop Apps</th>
+                        <th style={thStyle("left")}>Key Notes</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Object.values(BUNDLES).map((b, i) => (
+                        <tr key={b.id} style={{ background: i%2===0 ? "#042838" : "#052f47" }}>
+                          <td style={tdStyle("left")}>
+                            <div style={{ fontWeight:700, color:"#fff" }}>{b.name}</div>
+                            <TierBadge t={b.tier} />
+                          </td>
+                          <td style={tdStyle()}>${b.monthly.toFixed(2)}</td>
+                          <td style={tdStyle()}><Tick val={b.avd} /></td>
+                          <td style={tdStyle()}><Tick val={b.w365} /></td>
+                          <td style={tdStyle()}><Tick val={b.copilot_eligible} /></td>
+                          <td style={tdStyle()}><Tick val={["m365_e5","m365_e3","biz_premium","m365_f3"].includes(b.id)} /></td>
+                          <td style={tdStyle()}>{b.id==="m365_e5" ? "P2" : ["m365_e3","biz_premium"].includes(b.id) ? "P1" : "Basic"}</td>
+                          <td style={tdStyle()}>{["m365_f1","o365_e1"].includes(b.id) ? "❌ Web only" : "✅ Full"}</td>
+                          <td style={{ ...tdStyle("left"), color:"#94A3B8", maxWidth:240, fontSize:11, lineHeight:1.4 }}>{b.notes}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div style={{ marginTop:28 }}>
+                  <SectionHeader title="Add-on Quick Reference" subtitle="Common add-ons, their cost, and Nerdio relevance" />
+                  <div style={{ overflowX:"auto" }}>
+                    <table style={{ width:"100%", borderCollapse:"collapse", fontSize:12 }}>
+                      <thead>
+                        <tr style={{ background:"#073d56" }}>
+                          <th style={thStyle("left")}>Add-on</th>
+                          <th style={thStyle()}>Category</th>
+                          <th style={thStyle()}>Cost/user/mo</th>
+                          <th style={thStyle("left")}>Requires</th>
+                          {showNerdioTips && <th style={thStyle("left")}>Nerdio Relevance</th>}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {ADDONS.map((a, i) => (
+                          <tr key={a.id} style={{ background: i%2===0 ? "#042838" : "#052f47" }}>
+                            <td style={tdStyle("left")}><strong style={{ color:"#fff" }}>{a.icon} {a.name}</strong></td>
+                            <td style={tdStyle()}>
+                              <span style={{ fontSize:10, padding:"2px 6px", borderRadius:10, background:catColor(a.category)+"33", color:catColor(a.category) }}>{a.category}</span>
+                            </td>
+                            <td style={tdStyle()}>
+                              {a.monthly===null ? <span style={{ color:"#94A3B8" }}>Pay-as-you-go</span>
+                               : a.monthly===0 ? <span style={{ color:NERDIO_GREEN }}>Included</span>
+                               : `$${a.monthly}`}
+                            </td>
+                            <td style={{ ...tdStyle("left"), color:"#64748B", fontSize:11 }}>
+                              {a.requires.length ? a.requires.map(r => BUNDLES[r]?.name||r).join(" or ") : "Any"}
+                            </td>
+                            {showNerdioTips && (
+                              <td style={{ ...tdStyle("left"), color:"#A7D8E8", fontSize:11, lineHeight:1.4 }}>{a.nerdio_note||"—"}</td>
+                            )}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* ── FOOTER ── */}
+          <div style={{ borderTop:"1px solid #0d3a50", padding:"12px 28px", fontSize:11, color:"#64748B", display:"flex", justifyContent:"space-between", flexWrap:"wrap", gap:8 }}>
+            <span>Pricing indicative — USD, per user/month, subject to EA/CSP discounts. Azure compute costs are variable and separate.</span>
+            <span style={{ color:NERDIO_BLUE }}>Built for Nerdio FSI &amp; Retail territory · Chris Dewhirst · 2026</span>
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>

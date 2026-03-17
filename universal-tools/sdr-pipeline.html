@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nerdio SDR Pipeline Engine — FSI & Retail UK</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+  :root {
+    --navy: #042838;
+    --teal: #1E9DB8;
+    --white: #FFFFFF;
+    --green: #CDFF4E;
+    --purple: #A795C7;
+    --navy-mid: #0a3d52;
+    --navy-light: #0f4f6a;
+    --teal-light: #e8f7fb;
+    --text-muted: #6b8fa0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #f0f5f8;
+    color: var(--navy);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  .top-nav {
+    background: var(--navy);
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    position: sticky;
+    top: 48px;
+    z-index: 100;
+    border-bottom: 2px solid var(--teal);
+  }
+  .nav-logo {
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 700;
+    padding: 14px 24px 14px 0;
+    border-right: 1px solid rgba(255,255,255,0.15);
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-logo span { color: var(--teal); }
+  .nav-tabs { display: flex; gap: 0; flex: 1; overflow-x: auto; }
+  .nav-tab {
+    color: rgba(255,255,255,0.6);
+    padding: 14px 18px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .nav-tab:hover { color: var(--white); background: rgba(255,255,255,0.05); }
+  .nav-tab.active { color: var(--green); border-bottom-color: var(--green); }
+
+  /* SECTIONS */
+  .section { display: none; padding: 28px 32px; max-width: 1200px; margin: 0 auto; }
+  .section.active { display: block; }
+
+  /* PAGE HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    color: var(--white);
+    padding: 32px 40px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(30,157,184,0.2) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero-eyebrow {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 8px;
+  }
+  .hero-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+  .hero-sub { font-size: 13px; color: rgba(255,255,255,0.7); max-width: 600px; }
+
+  /* CARDS */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; margin-bottom: 20px; }
+  .card {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 20px;
+    border-left: 4px solid var(--teal);
+    box-shadow: 0 2px 8px rgba(4,40,56,0.08);
+  }
+  .card.navy { background: var(--navy); color: var(--white); border-left-color: var(--green); }
+  .card.green-accent { border-left-color: var(--green); }
+  .card.purple-accent { border-left-color: var(--purple); }
+  .card-eyebrow {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 6px;
+  }
+  .card.navy .card-eyebrow { color: var(--green); }
+  .card-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+  .card-body { font-size: 12px; color: #4a6575; line-height: 1.7; }
+  .card.navy .card-body { color: rgba(255,255,255,0.75); }
+
+  /* SECTION HEADING */
+  .section-heading {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    margin: 24px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--teal);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-heading .badge {
+    background: var(--teal);
+    color: var(--white);
+    font-size: 9px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  /* ACCOUNT TABLE */
+  .account-table { width: 100%; border-collapse: collapse; background: var(--white); border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(4,40,56,0.08); margin-bottom: 20px; }
+  .account-table thead { background: var(--navy); color: var(--white); }
+  .account-table thead th { padding: 12px 14px; text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; }
+  .account-table tbody tr { border-bottom: 1px solid #e8f0f4; }
+  .account-table tbody tr:hover { background: var(--teal-light); }
+  .account-table tbody td { padding: 11px 14px; font-size: 11.5px; vertical-align: top; }
+  .account-table tbody td:first-child { font-weight: 700; font-size: 12px; }
+
+  .heat-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+  .h5 { background: #c0392b; }
+  .h4 { background: #e67e22; }
+  .h3 { background: #f1c40f; }
+
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 9px; font-weight: 700; letter-spacing: 0.3px; margin: 1px 2px; }
+  .tag-citrix { background: #fde3e3; color: #c0392b; }
+  .tag-vmware { background: #fdefd3; color: #b7770d; }
+  .tag-avd { background: #d4edf7; color: #1a6f8a; }
+  .tag-fsi { background: #e8e0f5; color: #6b4f9e; }
+  .tag-retail { background: #e0f0e3; color: #2e7d46; }
+  .tag-w365 { background: #dff5e3; color: #1e6b3c; }
+
+  /* EMAIL SEQUENCE */
+  .email-card {
+    background: var(--white);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(4,40,56,0.08);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .email-header {
+    background: var(--navy);
+    color: var(--white);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .email-num {
+    background: var(--teal);
+    color: var(--white);
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; flex-shrink: 0;
+  }
+  .email-meta { flex: 1; }
+  .email-meta-title { font-size: 13px; font-weight: 700; }
+  .email-meta-timing { font-size: 10px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+  .email-body { padding: 20px; }
+  .email-subject {
+    background: #f0f5f8;
+    border-radius: 6px;
+    padding: 8px 14px;
+    margin-bottom: 14px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .email-subject span { color: var(--text-muted); font-weight: 400; }
+  .email-copy {
+    font-size: 12.5px;
+    color: #2a4555;
+    line-height: 1.8;
+    white-space: pre-line;
+  }
+
+  /* HOOK CARDS */
+  .hooks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .hook-card {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 16px 18px;
+    border-top: 3px solid var(--teal);
+    box-shadow: 0 2px 6px rgba(4,40,56,0.07);
+    position: relative;
+  }
+  .hook-card.fsi { border-top-color: #A795C7; }
+  .hook-card.retail { border-top-color: #2ecc71; }
+  .hook-num {
+    position: absolute;
+    top: -1px; right: 12px;
+    background: var(--navy);
+    color: var(--white);
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 0 0 6px 6px;
+  }
+  .hook-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .hook-text { font-size: 12.5px; font-weight: 600; color: var(--navy); margin-bottom: 6px; line-height: 1.5; }
+  .hook-context { font-size: 11px; color: #5a7a8c; line-height: 1.6; }
+
+  /* LINKEDIN CARDS */
+  .li-card {
+    background: var(--white);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(4,40,56,0.08);
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .li-header {
+    background: #0077b5;
+    color: var(--white);
+    padding: 12px 18px;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .li-body {
+    padding: 16px 18px;
+    font-size: 12.5px;
+    color: #2a4555;
+    line-height: 1.8;
+    white-space: pre-line;
+  }
+
+  /* CALL SCRIPT */
+  .script-step {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    border-left: 4px solid var(--teal);
+    box-shadow: 0 1px 6px rgba(4,40,56,0.06);
+  }
+  .script-step.navy-step { border-left-color: var(--navy); background: var(--navy); color: var(--white); }
+  .script-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 6px;
+  }
+  .script-step.navy-step .script-label { color: var(--green); }
+  .script-content { font-size: 12.5px; color: #1e3a4a; line-height: 1.8; }
+  .script-step.navy-step .script-content { color: rgba(255,255,255,0.9); }
+  .script-note { font-size: 11px; color: var(--text-muted); margin-top: 8px; font-style: italic; }
+
+  /* RESEARCH PLAYBOOK */
+  .playbook-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; margin-bottom: 20px; }
+  .playbook-card {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 1px 6px rgba(4,40,56,0.06);
+    border-top: 3px solid var(--teal);
+  }
+  .playbook-icon { font-size: 22px; margin-bottom: 8px; }
+  .playbook-title { font-size: 12px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+  .playbook-list { list-style: none; }
+  .playbook-list li {
+    font-size: 11.5px;
+    color: #3a5a6e;
+    padding: 4px 0;
+    border-bottom: 1px solid #f0f5f8;
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .playbook-list li::before { content: '→'; color: var(--teal); flex-shrink: 0; font-weight: 700; }
+  .playbook-list li:last-child { border-bottom: none; }
+
+  /* TRIGGER PILLS */
+  .trigger-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+  .trigger-pill {
+    background: var(--white);
+    border: 1px solid #d0e4ed;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 11px;
+    color: var(--navy);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .trigger-pill.hot { border-color: #e74c3c; background: #fef0ee; color: #c0392b; }
+  .trigger-pill.warm { border-color: #e67e22; background: #fdf4ea; color: #b7560a; }
+
+  /* MEETING POSITIONING */
+  .meeting-theme {
+    background: var(--navy);
+    color: var(--white);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .meeting-theme::before {
+    content: '';
+    position: absolute;
+    right: -20px; top: -20px;
+    width: 100px; height: 100px;
+    background: radial-gradient(circle, rgba(30,157,184,0.3) 0%, transparent 70%);
+  }
+  .meeting-theme-label { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--teal); margin-bottom: 6px; }
+  .meeting-theme-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .meeting-theme-body { font-size: 12px; color: rgba(255,255,255,0.8); line-height: 1.7; }
+  .meeting-theme-hook { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.15); font-size: 11.5px; color: var(--green); font-weight: 600; }
+
+  /* FILTER CONTROLS */
+  .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .filter-btn {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1.5px solid #d0e4ed;
+    background: var(--white);
+    color: var(--navy);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'Poppins', sans-serif;
+  }
+  .filter-btn:hover, .filter-btn.active { background: var(--teal); color: var(--white); border-color: var(--teal); }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .stat-box {
+    background: var(--navy);
+    color: var(--white);
+    border-radius: 10px;
+    padding: 16px 18px;
+    text-align: center;
+  }
+  .stat-num { font-size: 26px; font-weight: 700; color: var(--green); }
+  .stat-label { font-size: 10px; color: rgba(255,255,255,0.65); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* PROOF POINT STRIP */
+  .proof-strip {
+    background: linear-gradient(90deg, var(--teal) 0%, #0a7a9a 100%);
+    border-radius: 8px;
+    padding: 14px 20px;
+    display: flex;
+    gap: 32px;
+    color: var(--white);
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .proof-item { text-align: center; }
+  .proof-num { font-size: 20px; font-weight: 700; color: var(--green); }
+  .proof-label { font-size: 10px; color: rgba(255,255,255,0.8); }
+
+  /* FOOTER */
+  .doc-footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.5);
+    padding: 12px 32px;
+    font-size: 10px;
+    text-align: center;
+    margin-top: 40px;
+  }
+  .doc-footer strong { color: var(--teal); }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .section { padding: 16px; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    .proof-strip { gap: 16px; }
+    .nav-tab { padding: 12px 12px; font-size: 10px; }
+  }
+/* .home-btn removed - using brand bar */
+
+</style>
+<style>
+/* === NERDIO BRAND BAR === */
+.nerdio-brand-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+  height: 48px;
+  background: linear-gradient(135deg, #0B1B3D 0%, #142952 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+.nerdio-brand-bar * { box-sizing: border-box; margin: 0; padding: 0; }
+.nerdio-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+.nerdio-brand-logo img {
+  height: 22px;
+  width: auto;
+}
+.nerdio-brand-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255,255,255,0.2);
+}
+.nerdio-brand-tool-name {
+  color: rgba(255,255,255,0.85);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+.nerdio-brand-home {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #00B4D8;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: rgba(0,180,216,0.1);
+  border: 1px solid rgba(0,180,216,0.2);
+  transition: all 0.2s;
+}
+.nerdio-brand-home:hover {
+  background: rgba(0,180,216,0.2);
+  border-color: rgba(0,180,216,0.4);
+  color: #FFFFFF;
+}
+.nerdio-brand-home svg {
+  width: 14px;
+  height: 14px;
+}
+.nerdio-brand-spacer {
+  height: 48px;
+  width: 100%;
+  flex-shrink: 0;
+}
+/* === END NERDIO BRAND BAR === */
+</style>
+</head>
+<body>
+
+<!-- NERDIO BRAND BAR -->
+<div class="nerdio-brand-bar">
+  <div class="nerdio-brand-logo">
+    <img src="data:image/png;base64,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" alt="Nerdio">
+    <div class="nerdio-brand-divider"></div>
+    <span class="nerdio-brand-tool-name">SDR Pipeline Engine</span>
+  </div>
+  <a href="../EMEA-Nerdio-Toolbox.html" class="nerdio-brand-home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+    Toolbox Home
+  </a>
+</div>
+<div class="nerdio-brand-spacer"></div>
+<!-- END NERDIO BRAND BAR -->
+
+<script>
+</script>
+
+
+
+<!-- NAV -->
+<nav class="top-nav">
+  <div class="nav-logo">
+    <svg width="28" height="28" viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="22" cy="25" r="12" stroke="#1E9DB8" stroke-width="3.5" fill="none"/>
+      <circle cx="58" cy="25" r="12" stroke="#1E9DB8" stroke-width="3.5" fill="none"/>
+      <path d="M34 25 Q40 18 46 25" fill="none" stroke="#1E9DB8" stroke-width="3" stroke-linecap="round"/>
+      <path d="M10 25 L3 18" fill="none" stroke="#1E9DB8" stroke-width="3" stroke-linecap="round"/>
+      <path d="M70 25 L77 18" fill="none" stroke="#1E9DB8" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="58" cy="22" r="5" stroke="#1E9DB8" stroke-width="2" fill="none"/>
+      <path d="M58 17 L58 22" fill="none" stroke="#1E9DB8" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <span>nerdio</span> SDR ENGINE
+  </div>
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="showSection('accounts', this)">🎯 Target Accounts</div>
+    <div class="nav-tab" onclick="showSection('triggers', this)">⚡ Triggers</div>
+    <div class="nav-tab" onclick="showSection('research', this)">🔍 Research Playbook</div>
+    <div class="nav-tab" onclick="showSection('hooks', this)">🪝 Outreach Hooks</div>
+    <div class="nav-tab" onclick="showSection('emails', this)">✉️ Email Sequence</div>
+    <div class="nav-tab" onclick="showSection('linkedin', this)">💼 LinkedIn</div>
+    <div class="nav-tab" onclick="showSection('calls', this)">📞 Call Script</div>
+    <div class="nav-tab" onclick="showSection('meeting', this)">📅 Meeting Positioning</div>
+  </div>
+</nav>
+
+<!-- ======================== TARGET ACCOUNTS ======================== -->
+<section class="section active" id="accounts">
+  <div class="hero">
+    <div class="hero-eyebrow">Nerdio UK · FSI & Retail & Consumer Goods · FY2026</div>
+    <div class="hero-title">SDR Pipeline Engine — Top 15 Priority Accounts</div>
+    <div class="hero-sub">Scored on: EUC estate size · Citrix/VMware exposure · Azure momentum · Workforce profile · Regulatory pressure. Prioritise accounts with 3+ active trigger signals.</div>
+  </div>
+
+  <div class="proof-strip">
+    <div class="proof-item"><div class="proof-num">55%</div><div class="proof-label">Avg Azure cost saving</div></div>
+    <div class="proof-item"><div class="proof-num">3M+</div><div class="proof-label">Desktops managed</div></div>
+    <div class="proof-item"><div class="proof-num">$20K/mo</div><div class="proof-label">Grant Thornton saving</div></div>
+    <div class="proof-item"><div class="proof-num">75%</div><div class="proof-label">LexisNexis support reduction</div></div>
+    <div class="proof-item"><div class="proof-num">&lt;1hr</div><div class="proof-label">AVD deployment time</div></div>
+  </div>
+
+  <div class="section-heading">
+    Top 15 Priority Accounts <span class="badge">FSI · Retail · Consumer Goods</span>
+  </div>
+
+  <table class="account-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Organisation</th>
+        <th>Industry</th>
+        <th>Scale</th>
+        <th>EUC Platform Signals</th>
+        <th>Priority Triggers</th>
+        <th>Why Now</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="heat-dot h5"></span>1</td>
+        <td>Lloyds Banking Group</td>
+        <td><span class="tag tag-fsi">FSI</span></td>
+        <td>~65,000 employees</td>
+        <td><span class="tag tag-citrix">Citrix</span> <span class="tag tag-avd">AVD Pilots</span></td>
+        <td>Citrix renewal · FCA compliance pressure · Azure-first strategy · Cost optimisation</td>
+        <td>Publicly committed to Azure migration. Citrix costs are significant at this scale. FCA operational resilience rules create audit pressure Nerdio directly addresses.</td>
+      </tr>
+      <tr>
+        <td><span class="heat-dot h5"></span>2</td>
+        <td>Barclays</td>
+        <td><span class="tag tag-fsi">FSI</span></td>
+        <td>~50,000 UK employees</td>
+        <td><span class="tag tag-citrix">Citrix</span> <span class="tag tag-avd">AVD Pilots</span></td>
+        <td>Citrix renewal · Trading floor EUC complexity · Azure investment · Regulatory compliance</td>
+        <td>Trading infrastructure demands high desktop reliability. Citrix renewal conversations are live across major UK banks. Azure adoption confirmed in public reporting.</td>
+      </tr>
+      <tr>
+        <td><span class="heat-dot h5"></span>3</td>
+        <td>HSBC UK</td>
+        <td><span class="tag tag-fsi">FSI</span></td>
+        <td>~40,000 UK employees</td>
+        <td><span class="tag tag-citrix">Citrix</span> <span class="tag tag-vmware">VMware</span></td>
+        <td>Dual VDI vendor cost · Broadcom VMware fallout · Microsoft strategic partnership · Hybrid workforce</td>
+        <td>HSBC runs both Citrix and VMware in certain divisions. Post-Broadcom pricing shock creates urgent platform consolidation conversation.</td>
+      </tr>
+      <tr>
+        <td><span class="heat-dot h5"></span>4</td>
+        <td>Aviva</td>
+        <td><span class="tag tag-fsi">FSI</span></td>
+        <td>~22,000 employees</td>
+        <td><span class="tag tag-citrix">Citrix</span> <span class="tag tag-avd">Azure Adoption</span></td>
+        <td>Citrix renewal · Cloud modernisation · Distributed claims workforce · FCA resilience</td>
+        <td>Active digital transformation programme. Distributed workforce of underwriters, claims handlers, and advisors is a natural fit for AVD at scale with Nerdio management.</td>
+      </tr>
+      <tr>
+        <td><span class="heat-dot h5"></span>5</td>
+        <td>Legal & General</td>
+        <td><span class="tag tag-fsi">FSI</span></td>
+        <td>~12,000 employees</td>
+        <td><span class="tag tag-vmware">VMware</span> <span class="tag tag-avd">Azure Investment</span></td>
+        <td>Broadcom VMware fallout · Windows 365 pilots · Azure investment · Compliance</td>
+        <td>Insurance and investment management operations depend on desktop reliability. VMware post-Broadcom pricing shock is a live trigger for EUC strategy review.</td>
+      </tr>
+      <tr>
+        <td><span class="heat-dot h4"></span>6</td>
+        <td>Marks & Spencer</td>
+        <td><span class="tag tag-retail">Retail</span></td>
+        <td>~65,000 employees</td>
+        <td><span class="tag tag-citrix">Citrix</span> <span class="tag tag-avd">Microsoft 365</span></td>
+        <td>Seasonal workforce scaling · Hybrid store/office EUC · Azure adoption · Cost optimisation</td>
+        <td>Post-cyberattack infrastructure review creates openness to platform change. Seasonal peak workforce (Christmas) is a natural autoscaling conversation. Large Microsoft footprint.</td>
+      </tr>
+      <tr>
+        <td><span class="heat-dot h4"></span>7</td>
+        <td>Tesco</td>
+        <td><span class="tag tag-retail">Retail</span></td>
+        <td>~300,000 employees (UK)</td>
+        <td><span class="tag tag-avd">Azure Adoption</span> <span class="tag tag-w365">W365 Candidate</span></td>
+        <td>Massive seasonal scaling · Store/depot EUC · Azure investment · Contractor workforce</td>
+        <td>Scale of workforce makes Nerdio autoscaling economics extremely compelling. Store technology teams managing desktops at scale face significant operational complexity.</td>
+      </tr>
+      <tr>
+        <td><span class="heat-dot h4"></span>8</td>
+        <td>Kingfisher Group</td>
+        <td><span class="tag tag-retail">Retail</span></td>
+        <td>~80,000 employees</td>
+        <td><span class="tag tag-avd">AVD Pilots</span> <span class="tag tag-avd">Azure Confirmed</span></td>
+        <td>Known AVD interest · Multi-country EUC · Seasonal workforce · Cost pressure</td>
+        <td>Inherited pipeline opportunity. Kingfisher operates B&Q, Screwfix across UK and EMEA — multi-country AVD management is a natural NME use case.</td>
+      </tr>
+      <tr>
+        <td><span class="heat-dot h4"></span>9</td>
+        <td>Next plc</td>
+        <td><span class="tag tag-retail">Retail</span></td>
+        <td>~45,000 employees</td>
+        <td><span class="tag tag-avd">Azure Adoption</span> <span class="tag tag-citrix">Citrix</span></td>
+        <td>Seasonal workforce · Online/logistics EUC · Cost control · Azure momentum</td>
+        <td>Next's digital-first strategy and large seasonal distribution workforce makes Nerdio autoscaling a direct cost conversation. Tech-forward retailer likely to engage on platform modernisation.</td>
+      </tr>
+      <tr>
+        <td><span class="heat-dot h4"></span>10</td>
+        <td>Standard Chartered UK</td>
+        <td><span class="tag tag-fsi">FSI</span></td>
+        <td>~5,000 UK employees</td>
+        <td><span class="tag tag-citrix">Citrix</span> <span class="tag tag-avd">Azure Investment</span></td>
+        <td>Trading infrastructure · Regulatory compliance · Citrix renewal · Global EUC standardisation</td>
+        <td>Global bank with significant UK trading and wealth operations. Citrix dependency in trading environments is under review industry-wide.</td>
+      </tr>
+      <tr>
+        <td><span class="heat-dot h3"></span>11</td>
+        <td>Schroders</td>
+        <td><span class="tag tag-fsi">FSI</span></td>
+        <td>~6,000 employees</td>
+        <td><span class="tag tag-citrix">Citrix</span> <span class="tag tag-avd">AVD Interest</span></td>
+        <td>Citrix renewal · FCA compliance · Wealth management EUC · Azure adoption</td>
+        <td>Active inherited pipeline opportunity. Asset management firms are under FCA pressure on operational resilience — desktop reliability and governance are board-level concerns.</td>
+      </tr>
+      <tr>
+        <td><span class="heat-dot h3"></span>12</td>
+        <td>MUFG Bank UK</td>
+        <td><span class="tag tag-fsi">FSI</span></td>
+        <td>~2,500 UK employees</td>
+        <td><span class="tag tag-avd">AVD Evaluation</span> <span class="tag tag-citrix">Citrix</span></td>
+        <td>AVD evaluation · Japanese bank UK ops · Regulatory compliance · Citrix cost</td>
+        <td>Active inherited pipeline. Japanese banks operating in London face FCA scrutiny and typically run complex VDI environments for regulatory separation of trading desks.</td>
+      </tr>
+      <tr>
+        <td><span class="heat-dot h3"></span>13</td>
+        <td>Unilever UK</td>
+        <td><span class="tag tag-retail">Consumer Goods</span></td>
+        <td>~10,000 UK employees</td>
+        <td><span class="tag tag-vmware">VMware</span> <span class="tag tag-avd">Azure Adoption</span></td>
+        <td>Broadcom VMware fallout · Azure investment · Contractor workforce · Global EUC standardisation</td>
+        <td>Large consumer goods enterprise with global digital transformation underway. Post-Broadcom VMware review creates natural migration conversation.</td>
+      </tr>
+      <tr>
+        <td><span class="heat-dot h3"></span>14</td>
+        <td>Willis Towers Watson UK</td>
+        <td><span class="tag tag-fsi">FSI</span></td>
+        <td>~10,000 UK employees</td>
+        <td><span class="tag tag-avd">Nerdio Customer</span></td>
+        <td>Reference customer · Expansion potential · Consulting workforce EUC · AVD at scale</td>
+        <td>Nerdio named customer — valuable as a reference. Consultant/analyst workforce on cloud desktops is a strong use case to expand within the account or reference outward.</td>
+      </tr>
+      <tr>
+        <td><span class="heat-dot h3"></span>15</td>
+        <td>ASOS</td>
+        <td><span class="tag tag-retail">Retail</span></td>
+        <td>~3,500 employees</td>
+        <td><span class="tag tag-avd">Azure Native</span> <span class="tag tag-w365">W365 Candidate</span></td>
+        <td>Digital-native retailer · Azure investment · Seasonal demand · Engineering team scaling</td>
+        <td>Digital-native, Azure-first business. Engineering and tech workforce that scales rapidly around seasonal peaks. Strong Windows 365 conversation given contractor workforce profile.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="card-grid">
+    <div class="card navy">
+      <div class="card-eyebrow">Competitive Context</div>
+      <div class="card-title">Citrix Exposure Across This List</div>
+      <div class="card-body">9 of the 15 accounts have confirmed or strongly likely Citrix environments. Post-Broadcom Citrix pricing has increased 40–300% for many customers. Every Citrix renewal is a Nerdio AVD migration conversation waiting to happen.</div>
+    </div>
+    <div class="card navy">
+      <div class="card-eyebrow">Market Moment</div>
+      <div class="card-title">VMware / Broadcom Fallout</div>
+      <div class="card-body">4 accounts show VMware Horizon dependency. Post-Broadcom acquisition, perpetual licensing has been discontinued and pricing for subscriptions has risen sharply. This is the single biggest unplanned migration trigger in the UK EUC market right now.</div>
+    </div>
+    <div class="card green-accent">
+      <div class="card-eyebrow">Reference Selling</div>
+      <div class="card-title">Use Willis Towers Watson & Grant Thornton</div>
+      <div class="card-body">WTW is a named Nerdio customer. Grant Thornton saved $20K/month and deployed globally. Both are credible FSI/professional services references for conversations with financial services accounts on this list.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== TRIGGERS ======================== -->
+<section class="section" id="triggers">
+  <div class="hero">
+    <div class="hero-eyebrow">Opportunity Intelligence</div>
+    <div class="hero-title">High-Probability Trigger Signals</div>
+    <div class="hero-sub">Accounts showing 3+ of these signals should be moved to immediate outreach. Hot signals (red) indicate an active, time-sensitive event. Warm signals (orange) indicate strategic drift requiring engagement.</div>
+  </div>
+
+  <div class="section-heading">Hot Triggers — Act Now <span class="badge">Time-Sensitive</span></div>
+  <div class="trigger-grid">
+    <div class="trigger-pill hot">🔴 Citrix renewal within 12 months</div>
+    <div class="trigger-pill hot">🔴 Broadcom / VMware licensing shock</div>
+    <div class="trigger-pill hot">🔴 Active AVD pilot with no management tooling</div>
+    <div class="trigger-pill hot">🔴 FCA operational resilience deadline (March 2025 — compliance review ongoing)</div>
+    <div class="trigger-pill hot">🔴 Cybersecurity incident triggering infrastructure review</div>
+    <div class="trigger-pill hot">🔴 CIO hire in last 6 months — new mandate</div>
+  </div>
+
+  <div class="section-heading">Warm Triggers — Strategic Engagement</div>
+  <div class="trigger-grid">
+    <div class="trigger-pill warm">🟠 Job postings: AVD engineer, EUC architect, cloud desktop</div>
+    <div class="trigger-pill warm">🟠 Windows 365 pilot confirmed</div>
+    <div class="trigger-pill warm">🟠 Azure cost optimisation programme</div>
+    <div class="trigger-pill warm">🟠 Digital workplace transformation programme</div>
+    <div class="trigger-pill warm">🟠 Seasonal workforce scaling challenges</div>
+    <div class="trigger-pill warm">🟠 Large contractor / contingent workforce</div>
+    <div class="trigger-pill warm">🟠 VDI performance complaints surfacing on LinkedIn</div>
+    <div class="trigger-pill warm">🟠 Cloud desktop consolidation initiative</div>
+    <div class="trigger-pill warm">🟠 EUC team under capacity pressure (no headcount growth)</div>
+    <div class="trigger-pill warm">🟠 Azure Marketplace procurement preference confirmed</div>
+    <div class="trigger-pill warm">🟠 Microsoft co-sell or EA renewal activity</div>
+    <div class="trigger-pill warm">🟠 Hybrid workforce expansion / new office openings</div>
+    <div class="trigger-pill warm">🟠 CIO automation in IT operations initiative</div>
+    <div class="trigger-pill warm">🟠 Platform consolidation from 3+ EUC vendors to 1–2</div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-eyebrow">FSI-Specific Triggers</div>
+      <div class="card-title">Financial Services Signals</div>
+      <div class="card-body">Trading floor desktop reliability complaints · FCA PS21/3 operational resilience (annual review) · Wealth management compliance audit prep · SMBC / MUFG regulatory separation of trading systems · Branch rationalisation (fewer physical desks, more cloud desktops) · Acquisition/merger creating two separate VDI estates</div>
+    </div>
+    <div class="card">
+      <div class="card-eyebrow">Retail-Specific Triggers</div>
+      <div class="card-title">Retail & Consumer Goods Signals</div>
+      <div class="card-body">Black Friday / Christmas seasonal scaling pain · New distribution centre opening · Store technology refresh programme · Online/physical integration tech stack review · Warehouse / logistics workforce requiring rapid desktop provisioning · Supply chain disruption driving remote working expansion</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== RESEARCH PLAYBOOK ======================== -->
+<section class="section" id="research">
+  <div class="hero">
+    <div class="hero-eyebrow">SDR Intelligence Framework</div>
+    <div class="hero-title">Account Research Playbook</div>
+    <div class="hero-sub">Before first outreach, spend 20–30 minutes per account building an intelligence profile. The goal is to enter the conversation already knowing something they haven't told you.</div>
+  </div>
+
+  <div class="section-heading">Where to Look & What to Find</div>
+  <div class="playbook-grid">
+    <div class="playbook-card">
+      <div class="playbook-icon">💼</div>
+      <div class="playbook-title">LinkedIn — People Intelligence</div>
+      <ul class="playbook-list">
+        <li>Search "Head of EUC / Digital Workplace / End User Computing" at the target org</li>
+        <li>Check their post history — have they shared anything about AVD, Azure, or cloud desktops?</li>
+        <li>Look at their career history — prior experience at Citrix shops signals existing platform dependency</li>
+        <li>Check mutual connections for warm intro paths</li>
+        <li>Look at recent activity — conference attendance, tech posts, comments on Microsoft announcements</li>
+      </ul>
+    </div>
+    <div class="playbook-card">
+      <div class="playbook-icon">📢</div>
+      <div class="playbook-title">Job Postings — Platform Signals</div>
+      <ul class="playbook-list">
+        <li>Search LinkedIn Jobs / Indeed for: "Azure Virtual Desktop", "AVD", "Windows 365", "Citrix", "VMware Horizon", "EUC", "Digital Workplace"</li>
+        <li>New AVD engineer hire = they have an AVD environment with no management tooling yet</li>
+        <li>Citrix admin role closing + AVD role opening = active migration conversation</li>
+        <li>Cloud Desktop Architect role = platform evaluation underway</li>
+        <li>Volume of EUC roles = team under capacity pressure</li>
+      </ul>
+    </div>
+    <div class="playbook-card">
+      <div class="playbook-icon">📰</div>
+      <div class="playbook-title">News & Press — Event Triggers</div>
+      <ul class="playbook-list">
+        <li>Google "[Company] digital transformation / cloud strategy / EUC"</li>
+        <li>Check annual reports / investor days for technology investment commitments</li>
+        <li>CIO/CTO interviews in Computer Weekly, The Reg, ZDNet UK — look for Azure mentions</li>
+        <li>M&A activity = two EUC estates to consolidate</li>
+        <li>Security incidents = infrastructure review underway</li>
+        <li>New CIO appointment in last 6 months = mandate to modernise</li>
+      </ul>
+    </div>
+    <div class="playbook-card">
+      <div class="playbook-icon">🔧</div>
+      <div class="playbook-title">Tech Stack Intelligence</div>
+      <ul class="playbook-list">
+        <li>Check BuiltWith / Wappalyzer for Microsoft 365 signals</li>
+        <li>G2 / Gartner Peer Insights reviews from the company = platform pain surfacing publicly</li>
+        <li>Azure Marketplace — is NME visible in their procurement channels?</li>
+        <li>Microsoft partner portal signals (if you have access via WOPR data)</li>
+        <li>Check if they attend Microsoft Ignite / NerdioCon partner events</li>
+      </ul>
+    </div>
+    <div class="playbook-card">
+      <div class="playbook-icon">⚡</div>
+      <div class="playbook-title">WOPR / Intent Data</div>
+      <ul class="playbook-list">
+        <li>Run target accounts through WOPR for Azure / EUC intent signals</li>
+        <li>Look for spikes in research around: Azure Virtual Desktop, Citrix alternatives, VMware replacement, Windows 365</li>
+        <li>Cross-reference against your inherited pipeline accounts (Schroders, MUFG, SMBC, Kingfisher)</li>
+        <li>Use intent data to prioritise call order within same account tier</li>
+      </ul>
+    </div>
+    <div class="playbook-card">
+      <div class="playbook-icon">🏦</div>
+      <div class="playbook-title">FSI-Specific Research</div>
+      <ul class="playbook-list">
+        <li>FCA register — check if they've flagged operational resilience gaps in annual submissions</li>
+        <li>Bank of England DORA readiness documents (for systemically important firms)</li>
+        <li>Look for trading floor / front office technology mentions in annual reports</li>
+        <li>Check if firm has received FCA enforcement action on technology resilience</li>
+        <li>PRA publications referencing operational resilience at named firms</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card navy" style="margin-bottom:16px">
+    <div class="card-eyebrow">The Intelligence Brief — Build Before You Call</div>
+    <div class="card-title">The 5 Questions to Answer Before First Outreach</div>
+    <div class="card-body">
+      1. What EUC platform(s) are they running today and when might renewal/review be due?<br>
+      2. Are they actively hiring for AVD/cloud desktop skills? (Yes = live initiative)<br>
+      3. Has there been a leadership change in IT/EUC in the last 12 months?<br>
+      4. What's their Azure investment story — strategic commitment or still evaluating?<br>
+      5. What's the single operational pain most likely to resonate with this specific team?
+    </div>
+  </div>
+</section>
+
+<!-- ======================== OUTREACH HOOKS ======================== -->
+<section class="section" id="hooks">
+  <div class="hero">
+    <div class="hero-eyebrow">Conversation Starters</div>
+    <div class="hero-title">15 Intelligent Outreach Hooks</div>
+    <div class="hero-sub">Each hook opens with an observation, not a pitch. The goal is to make the contact feel seen — not sold to. Personalise with account-specific intelligence before sending.</div>
+  </div>
+
+  <div class="section-heading">FSI Hooks <span class="badge">Financial Services</span></div>
+  <div class="hooks-grid">
+    <div class="hook-card fsi">
+      <div class="hook-num">01</div>
+      <div class="hook-label">FSI · Citrix Renewal</div>
+      <div class="hook-text">Most of the banks I speak to are mid-conversation about what Citrix looks like in two years. Curious where [Company] has landed on that.</div>
+      <div class="hook-context">Works for any FSI account with a known Citrix environment. Let the contact correct you if they're already committed — either answer is useful intelligence.</div>
+    </div>
+    <div class="hook-card fsi">
+      <div class="hook-num">02</div>
+      <div class="hook-label">FSI · VMware / Broadcom</div>
+      <div class="hook-text">Post-Broadcom, we're seeing a lot of financial services firms rethinking Horizon. Some are accelerating AVD timelines they thought were 3 years out. Is that conversation live at [Company]?</div>
+      <div class="hook-context">Especially effective for HSBC, Legal & General, and any account with known VMware exposure. References a real market event without claiming to know their specific situation.</div>
+    </div>
+    <div class="hook-card fsi">
+      <div class="hook-num">03</div>
+      <div class="hook-label">FSI · FCA Operational Resilience</div>
+      <div class="hook-text">With operational resilience now a standing agenda item for FCA-regulated firms, I've been speaking to a few EUC teams about how they're demonstrating desktop platform governance. Sounds like it's shaping how some firms think about cloud desktop tooling.</div>
+      <div class="hook-context">Opens a compliance-angle conversation without being alarmist. FCA PS21/3 and DORA are live obligations for UK financial services — this is genuinely on their radar.</div>
+    </div>
+    <div class="hook-card fsi">
+      <div class="hook-num">04</div>
+      <div class="hook-label">FSI · Trading Infrastructure</div>
+      <div class="hook-text">Trading floor desktop reliability is one of those problems that only gets visible when something breaks — and then the whole firm knows about it. We work with a few UK banks on the AVD side of that. Is that part of the EUC estate you're actively managing?</div>
+      <div class="hook-context">Tailored for Barclays, Standard Chartered, MUFG, SMBC. Opens a conversation about a high-stakes, high-visibility EUC environment.</div>
+    </div>
+    <div class="hook-card fsi">
+      <div class="hook-num">05</div>
+      <div class="hook-label">FSI · Azure Cost Governance</div>
+      <div class="hook-text">One pattern we're seeing consistently across financial services AVD deployments — teams discover their Azure compute spend is significantly higher than it needs to be once they start looking at overnight and weekend VM usage. Has that come up at [Company]?</div>
+      <div class="hook-context">The 55% average compute saving is a real, defensible number. This hook doesn't pitch Nerdio — it surfaces a pain the contact will recognise from their own environment.</div>
+    </div>
+  </div>
+
+  <div class="section-heading">Retail & Consumer Goods Hooks <span class="badge">Retail · CG</span></div>
+  <div class="hooks-grid">
+    <div class="hook-card retail">
+      <div class="hook-num">06</div>
+      <div class="hook-label">Retail · Seasonal Scaling</div>
+      <div class="hook-text">Seasonal desktop provisioning is one of those problems retailers have just accepted as painful — spinning up capacity for Christmas and then tearing it down. We've been working with a few UK retailers on making that automatic. Is that something your EUC team has to manage manually today?</div>
+      <div class="hook-context">Directly relevant to Tesco, M&S, Next, ASOS. Nerdio's autoscaling is the core value proposition — this hook frames it in language retail EUC teams already use.</div>
+    </div>
+    <div class="hook-card retail">
+      <div class="hook-num">07</div>
+      <div class="hook-label">Retail · Store Technology</div>
+      <div class="hook-text">Managing cloud desktops across a large retail estate — stores, logistics, head office — creates a level of operational complexity that centralised tooling wasn't really designed for. Curious how your team handles that at [Company].</div>
+      <div class="hook-context">Opens a conversation about scale without making assumptions. Good for Kingfisher (B&Q/Screwfix), Tesco, M&S where store + HQ EUC is genuinely complex.</div>
+    </div>
+    <div class="hook-card retail">
+      <div class="hook-num">08</div>
+      <div class="hook-label">Retail · Contractor / Temp Workforce</div>
+      <div class="hook-text">One thing I hear consistently from retail EUC teams — provisioning desktops for temporary and seasonal workers is disproportionately labour-intensive. Windows 365 is solving part of that problem but the management layer adds another layer of overhead. Recognise that at [Company]?</div>
+      <div class="hook-context">Sets up a Windows 365 + Nerdio management conversation. Relevant for any retailer with significant seasonal or contractor workforce.</div>
+    </div>
+    <div class="hook-card retail">
+      <div class="hook-num">09</div>
+      <div class="hook-label">Consumer Goods · VMware Migration</div>
+      <div class="hook-text">Post-Broadcom, a lot of the large consumer goods firms I speak to are running unplanned VDI strategy reviews. Some are accelerating AVD moves they expected to be two or three years away. Is that conversation on the table at [Company]?</div>
+      <div class="hook-context">Relevant for Unilever, Reckitt, any CG firm with known VMware Horizon deployment.</div>
+    </div>
+    <div class="hook-card retail">
+      <div class="hook-num">10</div>
+      <div class="hook-label">Retail · Azure Cost</div>
+      <div class="hook-text">Azure AVD is a strong platform but the economics only really work once you have proper autoscaling in place. A lot of retailers are running Azure at higher cost than they need to because idle VMs run overnight. Has your team quantified what that looks like across your estate?</div>
+      <div class="hook-context">Works for any account running AVD without Nerdio's autoscaling. The insight is genuine and actionable — not a product pitch.</div>
+    </div>
+  </div>
+
+  <div class="section-heading">Cross-Vertical Hooks <span class="badge">All Verticals</span></div>
+  <div class="hooks-grid">
+    <div class="hook-card">
+      <div class="hook-num">11</div>
+      <div class="hook-label">Universal · AVD Complexity</div>
+      <div class="hook-text">Azure Virtual Desktop is genuinely capable, but it asks a lot from the EUC team managing it. Most of the organisations I speak to have more operational overhead than they expected when they made the AVD decision. How has that played out at [Company]?</div>
+      <div class="hook-context">Validates the prospect's lived experience without criticising their technology choice. Opens a conversation about operational burden.</div>
+    </div>
+    <div class="hook-card">
+      <div class="hook-num">12</div>
+      <div class="hook-label">Universal · Image Management</div>
+      <div class="hook-text">Golden image management is one of those EUC problems that looks straightforward until you're managing it across multiple host pools and geographies. We've seen it become a significant overhead at scale. Is that something your team invests significant time in?</div>
+      <div class="hook-context">Opens a technical conversation with EUC architects and engineers. Image lifecycle is a core Nerdio capability — this hook creates a natural product reveal moment.</div>
+    </div>
+    <div class="hook-card">
+      <div class="hook-num">13</div>
+      <div class="hook-label">Universal · New AVD Deployment</div>
+      <div class="hook-text">I noticed [Company] is hiring for AVD engineers — looks like a live platform initiative. When teams are scaling up an AVD environment, the first six months are often when the management overhead becomes visible. Happy to share what early-stage deployments typically look like in practice.</div>
+      <div class="hook-context">Triggered by LinkedIn job posting intelligence. Human, genuinely helpful framing — not a pitch, an offer to share experience.</div>
+    </div>
+    <div class="hook-card">
+      <div class="hook-num">14</div>
+      <div class="hook-label">Universal · Microsoft Momentum</div>
+      <div class="hook-text">Microsoft's investment in AVD and Windows 365 is significant — the platform keeps getting better. What we're finding is that the rate-limiting factor for most enterprises isn't the Microsoft technology, it's the operational model for managing it at scale. Does that resonate?</div>
+      <div class="hook-context">Positions Nerdio as a complement to Microsoft investment, not a competitor. Good for Microsoft-committed accounts who may not have considered the management layer.</div>
+    </div>
+    <div class="hook-card">
+      <div class="hook-num">15</div>
+      <div class="hook-label">Universal · Automation Agenda</div>
+      <div class="hook-text">Most CIOs I speak to have automation in IT operations as a 2025/2026 initiative. For EUC teams, that usually means desktop deployment, scaling, and image management. Curious how far along [Company] is with that agenda on the cloud desktop side.</div>
+      <div class="hook-context">Anchors Nerdio in a board-level initiative rather than a niche product conversation. Works for any account where CIO automation mandate is confirmed or assumed.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== EMAIL SEQUENCE ======================== -->
+<section class="section" id="emails">
+  <div class="hero">
+    <div class="hero-eyebrow">4-Touch Outbound Sequence</div>
+    <div class="hero-title">Cold Email Sequence — FSI & Retail</div>
+    <div class="hero-sub">Each email stands alone. Short. Insight-led. No product pitch. The goal is one reply. Personalise [Company], [Name], and the bracketed hook line before sending.</div>
+  </div>
+
+  <div class="email-card">
+    <div class="email-header">
+      <div class="email-num">1</div>
+      <div class="email-meta">
+        <div class="email-meta-title">Day 1 — The Observation</div>
+        <div class="email-meta-timing">Send Tuesday or Wednesday morning · Under 80 words · No attachment</div>
+      </div>
+    </div>
+    <div class="email-body">
+      <div class="email-subject"><span>Subject: </span>Azure Virtual Desktop at [Company]</div>
+      <div class="email-copy">Hi [Name],
+
+[Personalised hook — e.g. "Noticed you're hiring for AVD engineers" / "Following [Company]'s Azure announcement" / "Given the Broadcom situation with VMware..."]
+
+I speak to a lot of EUC and digital workplace teams managing cloud desktop environments at scale. The consistent theme — more operational overhead than expected once the AVD environment grows past a certain size.
+
+Worth a 20-minute conversation to share what we're seeing?
+
+[Your name]</div>
+    </div>
+  </div>
+
+  <div class="email-card">
+    <div class="email-header">
+      <div class="email-num">2</div>
+      <div class="email-meta">
+        <div class="email-meta-title">Day 5 — The Relevant Insight</div>
+        <div class="email-meta-timing">Send 4 days after Email 1 · New angle · Reference a real stat</div>
+      </div>
+    </div>
+    <div class="email-body">
+      <div class="email-subject"><span>Subject: </span>AVD cost patterns — [Industry] context</div>
+      <div class="email-copy">Hi [Name],
+
+One thing that comes up consistently in conversations with [FSI/retail] EUC teams running AVD environments — Azure compute spend is often 40–55% higher than it needs to be because of idle VMs running overnight and at weekends.
+
+The fix isn't complicated, but it requires tooling that Azure doesn't provide out of the box.
+
+Happy to share how a couple of similar organisations have approached it. 20 minutes?
+
+[Your name]</div>
+    </div>
+  </div>
+
+  <div class="email-card">
+    <div class="email-header">
+      <div class="email-num">3</div>
+      <div class="email-meta">
+        <div class="email-meta-title">Day 12 — The Proof Point</div>
+        <div class="email-meta-timing">Send 7 days after Email 2 · Reference a named customer · Keep it brief</div>
+      </div>
+    </div>
+    <div class="email-body">
+      <div class="email-subject"><span>Subject: </span>How Grant Thornton cut $20K/month from their AVD costs</div>
+      <div class="email-copy">Hi [Name],
+
+Grant Thornton moved off Citrix to Azure Virtual Desktop and cut $20,000 a month from their cloud desktop costs — with the environment deployed in days rather than weeks.
+
+The operational management piece (the bit Microsoft doesn't automate) was the difference between a good outcome and a great one.
+
+If [Company] is in any kind of VDI strategy conversation, that's probably a relevant data point.
+
+Worth 20 minutes?
+
+[Your name]</div>
+    </div>
+  </div>
+
+  <div class="email-card">
+    <div class="email-header">
+      <div class="email-num">4</div>
+      <div class="email-meta">
+        <div class="email-meta-title">Day 21 — The Graceful Exit</div>
+        <div class="email-meta-timing">Final touch · Light tone · Leaves the door open · Never burn the contact</div>
+      </div>
+    </div>
+    <div class="email-body">
+      <div class="email-subject"><span>Subject: </span>Leaving this with you</div>
+      <div class="email-copy">Hi [Name],
+
+I'll stop filling your inbox — but wanted to leave one thought.
+
+If cloud desktop operational complexity, AVD cost, or a Citrix/VMware strategy conversation becomes live at [Company] in the next 6–12 months, I'd be a useful person to speak to.
+
+No pressure on timing. Happy to reconnect whenever it's relevant.
+
+[Your name] | [Title] | Nerdio</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== LINKEDIN ======================== -->
+<section class="section" id="linkedin">
+  <div class="hero">
+    <div class="hero-eyebrow">LinkedIn Outreach</div>
+    <div class="hero-title">Connection & Follow-Up Messages</div>
+    <div class="hero-sub">LinkedIn is a relationship channel, not a broadcast channel. Short, human, no pitch in the connection request. Always personalise with something specific about their profile or company.</div>
+  </div>
+
+  <div class="section-heading">Connection Request</div>
+  <div class="li-card">
+    <div class="li-header">💼 Connection Request — Under 300 characters</div>
+    <div class="li-body">Hi [Name] — I work with a number of [FSI/retail] EUC teams managing cloud desktop environments in the UK. Your work at [Company] caught my attention — particularly [personalised observation]. Would be good to connect.</div>
+  </div>
+
+  <div class="section-heading">Follow-Up 1 — After Connection Accepted (Day 3–5)</div>
+  <div class="li-card">
+    <div class="li-header">💬 First Message — The Relevant Observation</div>
+    <div class="li-body">Thanks for connecting, [Name].
+
+I've been speaking to quite a few EUC and digital workplace teams managing AVD environments this year. The consistent theme — the Microsoft platform is strong, but the operational management layer creates more overhead than most teams anticipated.
+
+Given [Company]'s [Azure momentum / Citrix environment / scale of workforce], curious whether that resonates with what you're seeing.
+
+No pitch here — genuinely happy to share what's working for similar teams if useful.</div>
+  </div>
+
+  <div class="section-heading">Follow-Up 2 — 7 Days Later (If No Reply)</div>
+  <div class="li-card">
+    <div class="li-header">💬 Second Message — Light Touch Proof Point</div>
+    <div class="li-body">One more thought, [Name] — then I'll leave you to it.
+
+A [bank / insurer / retailer] of similar scale to [Company] recently cut their Azure desktop compute costs by over 50% by addressing how their VM estate was managed overnight and at weekends. Took less time than they expected.
+
+If cloud desktop cost or operational management ever becomes a live conversation at [Company], I'd be worth a call.
+
+Happy to connect properly whenever the timing's right.</div>
+  </div>
+</section>
+
+<!-- ======================== CALL SCRIPT ======================== -->
+<section class="section" id="calls">
+  <div class="hero">
+    <div class="hero-eyebrow">SDR Call Framework</div>
+    <div class="hero-title">Cold Call Script — Cloud Desktop Platform</div>
+    <div class="hero-sub">This isn't a word-for-word script. It's a framework. The goal of the call is one of three outcomes: discovery conversation, meeting booked, or intelligence gathered. All three are wins.</div>
+  </div>
+
+  <div class="script-step navy-step">
+    <div class="script-label">Opening — First 10 Seconds</div>
+    <div class="script-content">"Hi [Name], it's [Your Name] from Nerdio. I'll be brief — I work with EUC and digital workplace teams managing cloud desktop environments at [FSI/retail] organisations in the UK. I wanted to reach out because [personalised hook — job posting / Azure news / Citrix context]. Is now a bad time for 2 minutes?"</div>
+    <div class="script-note">Key: lead with relevance, not your company. "Is now a bad time" outperforms "Do you have a minute" — it's respectful and gets a genuine response.</div>
+  </div>
+
+  <div class="script-step">
+    <div class="script-label">Bridge — If They Stay On</div>
+    <div class="script-content">"Thanks — I'll be quick. I've been speaking to a number of [banks / insurers / retailers] this year about how they're managing Azure Virtual Desktop environments at scale. The consistent theme is that the operational overhead — image management, autoscaling, governance — creates more work than most teams anticipated. Does that resonate with what you're seeing at [Company]?"</div>
+    <div class="script-note">Pause after this. Let them answer. The answer — however short — is intelligence you can use.</div>
+  </div>
+
+  <div class="script-step">
+    <div class="script-label">Discovery Question 1 — Platform Reality</div>
+    <div class="script-content">"Can I ask — what does your current cloud desktop estate look like? Are you predominantly AVD, Citrix, VMware, or a mix? And is that under active review?"</div>
+    <div class="script-note">Don't rush past their answer. If they say "we're mid-Citrix review" — that's the whole conversation now.</div>
+  </div>
+
+  <div class="script-step">
+    <div class="script-label">Discovery Question 2 — Operational Pain</div>
+    <div class="script-content">"And for the team managing that environment — what's taking the most time? I'm curious whether it's the day-to-day management overhead, the cost of running the Azure infrastructure, or something else entirely."</div>
+    <div class="script-note">This question surfaces the specific pain point that determines which Nerdio capability to lead with in the meeting.</div>
+  </div>
+
+  <div class="script-step navy-step">
+    <div class="script-label">Meeting Invitation</div>
+    <div class="script-content">"Based on what you've shared — it sounds like [reflect back their specific pain]. We've helped a number of [similar organisations] address exactly that. I'd like to set up 30 minutes with you and [AE name] to walk through how — and be honest if it's not a fit. Are you free [offer two specific days and times]?"</div>
+    <div class="script-note">Reflect their language back to them. "We've helped organisations like [Company]" is more persuasive than "let me tell you about our product."</div>
+  </div>
+
+  <div class="card-grid" style="margin-top:16px">
+    <div class="card green-accent">
+      <div class="card-eyebrow">Objection: "We're happy with how we manage it"</div>
+      <div class="card-title">Response</div>
+      <div class="card-body">"That's great to hear — and I'm not going to tell you there's a problem where there isn't one. A lot of the teams I speak to said the same thing before they actually quantified what AVD management was costing them in engineering time and compute spend. The 30 minutes is just to validate that — if the numbers don't stack up, I'll tell you."</div>
+    </div>
+    <div class="card green-accent">
+      <div class="card-eyebrow">Objection: "We're locked into Citrix / contract"</div>
+      <div class="card-title">Response</div>
+      <div class="card-body">"That's a very common position right now. Most of the conversations we're having aren't about moving this week — they're about understanding what the landscape looks like so when the contract comes up, you're not making a reactive decision. That's honestly the most valuable 30 minutes I can offer you."</div>
+    </div>
+    <div class="card green-accent">
+      <div class="card-eyebrow">Objection: "Send me some information"</div>
+      <div class="card-title">Response</div>
+      <div class="card-body">"I can do that — but I'd rather send you something specific to your situation rather than a brochure. Can I ask two quick questions so I can make sure what I send is actually relevant? [Go to Discovery Question 1]"</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== MEETING POSITIONING ======================== -->
+<section class="section" id="meeting">
+  <div class="hero">
+    <div class="hero-eyebrow">Meeting Design</div>
+    <div class="hero-title">How to Position the First Meeting</div>
+    <div class="hero-sub">Never position the first meeting as "a demo of Nerdio." Frame it as a conversation about their world — with Nerdio as the context. The meeting should feel like a briefing, not a sales call.</div>
+  </div>
+
+  <div class="section-heading">Meeting Themes — Choose the Most Relevant</div>
+
+  <div class="meeting-theme">
+    <div class="meeting-theme-label">Theme 1 — Operational Complexity</div>
+    <div class="meeting-theme-title">"How UK Enterprises Are Operating Azure Virtual Desktop at Scale"</div>
+    <div class="meeting-theme-body">Framed as a peer briefing — what we're seeing across the UK EUC market, how organisations at similar scale are managing AVD environments, and where the operational gaps most commonly appear. We'll show you how leading teams have addressed them — and let you tell us if any of it maps to [Company]'s situation.</div>
+    <div class="meeting-theme-hook">Best for: Any account running AVD or actively evaluating it. EUC architects and Heads of EUC.</div>
+  </div>
+
+  <div class="meeting-theme">
+    <div class="meeting-theme-label">Theme 2 — Migration Momentum</div>
+    <div class="meeting-theme-title">"Citrix to AVD in Financial Services — Lessons from Early Movers"</div>
+    <div class="meeting-theme-body">Specifically designed for FSI accounts in a Citrix strategy conversation. We'll walk through how similar firms have approached the transition — what the decision looked like, how the operational model changed, and what the cost picture actually looked like 12 months in. No commitment required to attend.</div>
+    <div class="meeting-theme-hook">Best for: FSI accounts with Citrix · Barclays, Lloyds, Aviva, Standard Chartered personas. Reference: Grant Thornton $20K/month saving.</div>
+  </div>
+
+  <div class="meeting-theme">
+    <div class="meeting-theme-label">Theme 3 — Cost Governance</div>
+    <div class="meeting-theme-title">"Why Azure Cloud Desktop Costs Are Higher Than They Need to Be"</div>
+    <div class="meeting-theme-body">A data-led session on where Azure compute spend leaks in AVD environments — idle VMs, over-provisioned host pools, manual scaling decisions made at 9am that don't account for the 11pm usage pattern. We'll run the numbers against what your estate might look like and show you what the savings opportunity is before asking for anything.</div>
+    <div class="meeting-theme-hook">Best for: Any account with Azure investment and a cost optimisation agenda. CFO-adjacent personas. Finance and insurance sector.</div>
+  </div>
+
+  <div class="meeting-theme">
+    <div class="meeting-theme-label">Theme 4 — Windows 365 Adoption</div>
+    <div class="meeting-theme-title">"Windows 365 at Scale — What the Management Layer Looks Like"</div>
+    <div class="meeting-theme-body">Windows 365 is increasingly the right answer for a significant portion of workforce personas — especially contractors, seasonal workers, and branch staff. This session covers how organisations are structuring their W365 deployment alongside AVD, and what the management model looks like when you're managing both at scale.</div>
+    <div class="meeting-theme-hook">Best for: Retail accounts (M&S, Tesco, ASOS) · Accounts with W365 pilot activity · Contractor-heavy workforce personas.</div>
+  </div>
+
+  <div class="section-heading">Meeting Prep — What the SDR Hands Over to the AE</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-eyebrow">Before the Handoff Brief</div>
+      <div class="card-title">What the AE Needs from You</div>
+      <div class="card-body">
+        ✓ Platform: Current EUC platform (Citrix / VMware / AVD / mix)<br>
+        ✓ Trigger: What signal drove outreach (job posting / renewal / Broadcom)<br>
+        ✓ Pain: What the contact said was taking the most time or costing most<br>
+        ✓ Persona: Role, seniority, technical or business-focused<br>
+        ✓ Context: Any news, leadership changes, or company events in last 90 days<br>
+        ✓ Theme: Which meeting theme was used to book the call
+      </div>
+    </div>
+    <div class="card navy">
+      <div class="card-eyebrow">Proof Points to Have Ready</div>
+      <div class="card-title">Reference by Industry in the Meeting</div>
+      <div class="card-body">
+        FSI: Willis Towers Watson · Grant Thornton ($20K/month saving) · LexisNexis (50% cost reduction, 75% support reduction)<br><br>
+        Retail / Enterprise: ASDA · Kraft Heinz · Carnival Cruise Line<br><br>
+        Platform credibility: Scott Manchester (ex-Microsoft VP, now Nerdio CPTO) · 3M+ desktops managed · $1B+ valuation · Microsoft Partner of the Year finalist 2025
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="doc-footer">
+  <strong>Nerdio SDR Pipeline Engine</strong> · FSI & Retail UK · Built for Chris Dewhirst, Enterprise AE · FY2026 · Internal Use Only · getnerdio.com
+</div>
+
+<script>
+function showSection(id, tab) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  tab.classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+
+</body>
+</html>

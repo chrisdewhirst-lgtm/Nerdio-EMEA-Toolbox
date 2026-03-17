@@ -1,0 +1,2149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The History of EUC — The Complete Story</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #042838;
+    --teal: #1E9DB8;
+    --white: #FFFFFF;
+    --green: #CDFF4E;
+    --purple: #A795C7;
+    --navy-light: #0a3f56;
+    --navy-mid: #063348;
+    --teal-dim: rgba(30,157,184,0.12);
+    --green-dim: rgba(205,255,78,0.08);
+    --purple-dim: rgba(167,149,199,0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    overflow-x: hidden;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 24px 60px;
+    position: relative;
+    background: radial-gradient(ellipse 90% 70% at 50% -10%, #0b5a7a 0%, var(--navy) 65%);
+    overflow: hidden;
+  }
+
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(30,157,184,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(30,157,184,0.035) 1px, transparent 1px);
+    background-size: 64px 64px;
+    pointer-events: none;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(30,157,184,0.12) 0%, transparent 70%);
+    top: -100px; left: 50%; transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .hero h1 {
+    font-size: clamp(40px, 7vw, 90px);
+    font-weight: 800;
+    line-height: 1.0;
+    position: relative;
+    margin-bottom: 10px;
+  }
+
+  .hero h1 .accent {
+    display: block;
+    background: linear-gradient(90deg, var(--teal) 0%, var(--green) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: clamp(15px, 2vw, 20px);
+    font-weight: 300;
+    color: rgba(255,255,255,0.6);
+    margin: 28px 0 16px;
+    max-width: 680px;
+    line-height: 1.75;
+    position: relative;
+  }
+
+  .hero-sub strong { color: rgba(255,255,255,0.9); font-weight: 500; }
+
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin: 24px 0 48px;
+    position: relative;
+    max-width: 700px;
+  }
+
+  .hero-tag {
+    background: rgba(30,157,184,0.1);
+    border: 1px solid rgba(30,157,184,0.25);
+    border-radius: 100px;
+    padding: 5px 14px;
+    font-size: 12px;
+    color: var(--teal);
+    font-weight: 500;
+  }
+
+  .scroll-hint {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,0.3);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    animation: bob 2.5s ease-in-out infinite;
+  }
+
+  .scroll-hint svg { width: 20px; height: 20px; }
+
+  @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(7px)} }
+
+  /* ── STICKY NAV ── */
+  .era-nav {
+    position: sticky; top: 0; z-index: 200;
+    background: rgba(4,40,56,0.96);
+    backdrop-filter: blur(24px);
+    border-bottom: 1px solid rgba(30,157,184,0.18);
+    overflow-x: auto; white-space: nowrap;
+    scrollbar-width: none;
+  }
+  .era-nav::-webkit-scrollbar { display: none; }
+
+  .era-nav-inner {
+    display: inline-flex;
+    padding: 0 20px;
+    min-width: 100%;
+    justify-content: flex-start;
+  }
+
+  .era-nav a {
+    display: inline-block;
+    padding: 14px 16px;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: rgba(255,255,255,0.38);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .era-nav a:hover { color: rgba(255,255,255,0.8); }
+  .era-nav a.active { color: var(--teal); border-bottom-color: var(--teal); }
+
+  /* ── SECTION WRAPPERS ── */
+  .era-section { position: relative; }
+  .era-section:nth-child(even) { background: rgba(255,255,255,0.013); }
+
+  .section {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 80px 28px;
+  }
+
+  /* ── ERA HEADER ── */
+  .era-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 28px;
+    align-items: flex-start;
+    margin-bottom: 52px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(30,157,184,0.12);
+  }
+
+  @media(max-width:640px){ .era-header{grid-template-columns:1fr;} }
+
+  .era-icon {
+    width: 72px; height: 72px;
+    border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 30px;
+    background: rgba(30,157,184,0.09);
+    border: 1px solid rgba(30,157,184,0.2);
+    flex-shrink: 0;
+  }
+
+  .era-label {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 10px;
+  }
+
+  .era-title {
+    font-size: clamp(26px, 3.8vw, 44px);
+    font-weight: 700; line-height: 1.15;
+    margin-bottom: 14px;
+  }
+
+  .era-title em {
+    display: block;
+    font-weight: 300; font-style: italic;
+    font-size: 0.62em;
+    color: rgba(255,255,255,0.42);
+    margin-top: 4px;
+  }
+
+  .era-intro {
+    font-size: 15px; line-height: 1.8;
+    color: rgba(255,255,255,0.58);
+    max-width: 700px;
+  }
+
+  /* ── GRID SYSTEM ── */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+  .grid4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+
+  @media(max-width:900px){ .grid3{grid-template-columns:1fr 1fr;} .grid4{grid-template-columns:1fr 1fr;} }
+  @media(max-width:640px){ .grid2,.grid3,.grid4{grid-template-columns:1fr;} }
+
+  /* ── CARDS ── */
+  .card {
+    background: rgba(255,255,255,0.033);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    padding: 26px;
+    transition: transform 0.25s, border-color 0.25s, background 0.25s;
+    position: relative; overflow: hidden;
+  }
+
+  .card::after {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--teal), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+
+  .card:hover { transform: translateY(-3px); border-color: rgba(30,157,184,0.28); background: rgba(255,255,255,0.052); }
+  .card:hover::after { opacity: 1; }
+
+  .card.teal { background: rgba(30,157,184,0.09); border-color: rgba(30,157,184,0.28); }
+  .card.green { background: rgba(205,255,78,0.055); border-color: rgba(205,255,78,0.22); }
+  .card.purple { background: rgba(167,149,199,0.09); border-color: rgba(167,149,199,0.25); }
+  .card.dark { background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.05); }
+  .card.nerdio { background: linear-gradient(135deg, rgba(30,157,184,0.12), rgba(205,255,78,0.05)); border-color: rgba(30,157,184,0.35); }
+
+  .span2 { grid-column: span 2; }
+  .span3 { grid-column: span 3; }
+  @media(max-width:640px){ .span2,.span3{grid-column:span 1;} }
+
+  .card-icon { font-size: 26px; margin-bottom: 14px; }
+  .card-label {
+    font-size: 10.5px; font-weight: 600;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 9px;
+  }
+  .card-label.green { color: var(--green); }
+  .card-label.purple { color: var(--purple); }
+
+  .card h3 { font-size: 17px; font-weight: 600; line-height: 1.3; margin-bottom: 11px; }
+  .card p { font-size: 13.5px; line-height: 1.78; color: rgba(255,255,255,0.57); }
+  .card p + p { margin-top: 10px; }
+
+  .card ul { list-style: none; padding: 0; }
+  .card ul li {
+    font-size: 13.5px; line-height: 1.7;
+    color: rgba(255,255,255,0.57);
+    padding-left: 18px;
+    position: relative; margin-bottom: 5px;
+  }
+  .card ul li::before { content: '→'; position: absolute; left: 0; color: var(--teal); font-size: 12px; }
+  .card ul.green li::before { color: var(--green); }
+
+  /* ── TIMELINE ── */
+  .timeline { position: relative; padding-left: 48px; margin: 40px 0; }
+  .timeline::before {
+    content: '';
+    position: absolute; left: 16px; top: 20px; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--teal) 0%, rgba(30,157,184,0.1) 100%);
+  }
+
+  .tl-item { position: relative; margin-bottom: 40px; }
+  .tl-item:last-child { margin-bottom: 0; }
+
+  .tl-dot {
+    position: absolute; left: -44px; top: 8px;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--navy);
+    border: 2px solid var(--teal);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; z-index: 1;
+  }
+
+  .tl-dot.green { border-color: var(--green); }
+  .tl-dot.purple { border-color: var(--purple); }
+
+  .tl-year {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.15em; color: var(--teal);
+    text-transform: uppercase; margin-bottom: 5px;
+  }
+
+  .tl-title { font-size: 16px; font-weight: 600; margin-bottom: 7px; }
+  .tl-body { font-size: 13.5px; color: rgba(255,255,255,0.55); line-height: 1.78; }
+
+  /* ── PERSON CARDS ── */
+  .person-card {
+    display: flex; gap: 18px; align-items: flex-start;
+    background: rgba(255,255,255,0.033);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px; padding: 22px;
+    transition: all 0.25s;
+  }
+
+  .person-card:hover { border-color: rgba(30,157,184,0.3); background: rgba(30,157,184,0.06); }
+
+  .person-avatar {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--teal), var(--purple));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+    font-weight: 700; color: var(--navy);
+  }
+
+  .person-info h4 { font-size: 15px; font-weight: 600; margin-bottom: 3px; }
+  .person-info .role { font-size: 11.5px; color: var(--teal); font-weight: 500; margin-bottom: 7px; }
+  .person-info p { font-size: 13px; color: rgba(255,255,255,0.52); line-height: 1.7; }
+
+  /* ── CONCEPT EXPLAINER ── */
+  .concept-box {
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-left: 3px solid var(--teal);
+    border-radius: 0 14px 14px 0;
+    padding: 24px 28px;
+    margin: 28px 0;
+  }
+
+  .concept-box.green { border-left-color: var(--green); }
+  .concept-box.purple { border-left-color: var(--purple); }
+
+  .concept-box h4 {
+    font-size: 14px; font-weight: 600;
+    color: var(--teal); margin-bottom: 8px;
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+
+  .concept-box.green h4 { color: var(--green); }
+  .concept-box.purple h4 { color: var(--purple); }
+  .concept-box p { font-size: 14px; color: rgba(255,255,255,0.62); line-height: 1.8; }
+  .concept-box p + p { margin-top: 8px; }
+
+  /* ── QUOTE ── */
+  .quote {
+    border-left: 3px solid var(--teal);
+    padding: 18px 26px;
+    background: rgba(30,157,184,0.05);
+    border-radius: 0 12px 12px 0;
+    margin: 28px 0;
+    font-size: 15px; font-style: italic;
+    color: rgba(255,255,255,0.7); line-height: 1.8;
+  }
+  .quote cite { display: block; margin-top: 8px; font-size: 12px; font-style: normal; color: rgba(255,255,255,0.35); }
+
+  /* ── VENDOR PILLS ── */
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: rgba(255,255,255,0.055);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 100px; padding: 5px 13px;
+    font-size: 12.5px; font-weight: 500;
+    color: rgba(255,255,255,0.72);
+  }
+  .pill.teal { border-color: rgba(30,157,184,0.4); color: var(--teal); background: rgba(30,157,184,0.08); }
+  .pill.green { border-color: rgba(205,255,78,0.4); color: var(--green); background: rgba(205,255,78,0.06); }
+  .pill.purple { border-color: rgba(167,149,199,0.4); color: var(--purple); background: rgba(167,149,199,0.07); }
+  .pill.dead { opacity: 0.35; text-decoration: line-through; }
+  .pill.warn { border-color: rgba(255,165,0,0.4); color: #ffaa44; background: rgba(255,165,0,0.06); }
+
+  /* ── STAT GRID ── */
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap: 14px; margin: 28px 0; }
+  .stat-box { background: rgba(255,255,255,0.033); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 20px 16px; text-align: center; }
+  .stat-val { font-size: 30px; font-weight: 700; color: var(--green); line-height: 1; margin-bottom: 6px; }
+  .stat-lbl { font-size: 12px; color: rgba(255,255,255,0.42); }
+
+  /* ── SECTION DIVIDER ── */
+  .divider { border: none; height: 1px; background: linear-gradient(90deg, transparent, rgba(30,157,184,0.25), transparent); margin: 0; }
+
+  /* ── FAQ ── */
+  details {
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  details summary {
+    cursor: pointer; list-style: none;
+    font-weight: 600; font-size: 14.5px;
+    padding: 16px 0;
+    display: flex; justify-content: space-between; align-items: center;
+    color: rgba(255,255,255,0.78);
+    transition: color 0.2s;
+    user-select: none;
+  }
+  details summary::-webkit-details-marker { display: none; }
+  details summary::after { content: '+'; color: var(--teal); font-size: 22px; font-weight: 300; flex-shrink: 0; margin-left: 16px; }
+  details[open] summary::after { content: '−'; }
+  details summary:hover { color: var(--white); }
+  .detail-body { padding: 4px 0 20px; font-size: 13.5px; color: rgba(255,255,255,0.57); line-height: 1.85; }
+  .detail-body p + p { margin-top: 10px; }
+
+  /* ── NERDIO STORY SECTION ── */
+  .nerdio-section {
+    background: linear-gradient(135deg, rgba(30,157,184,0.07) 0%, rgba(205,255,78,0.03) 100%);
+    border: 1px solid rgba(30,157,184,0.2);
+    border-radius: 24px;
+    padding: 52px;
+    margin-bottom: 0;
+  }
+
+  @media(max-width:640px){ .nerdio-section{padding:32px 24px;} }
+
+  .nerdio-logo-mark {
+    font-size: 40px; margin-bottom: 12px;
+  }
+
+  /* ── FUTURE SECTION ── */
+  .future-hero {
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(205,255,78,0.07) 0%, transparent 70%);
+    border-top: 1px solid rgba(205,255,78,0.12);
+    padding-top: 80px;
+  }
+
+  /* ── FADE IN ── */
+  .fi { opacity: 0; transform: translateY(18px); transition: opacity 0.55s ease, transform 0.55s ease; }
+  .fi.vis { opacity: 1; transform: translateY(0); }
+  .fi.d1 { transition-delay: 0.05s; }
+  .fi.d2 { transition-delay: 0.12s; }
+  .fi.d3 { transition-delay: 0.19s; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 52px 24px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.25);
+    font-size: 12.5px;
+  }
+
+  footer .nerdio-footer {
+    color: var(--teal); font-weight: 600; font-size: 13px;
+    display: block; margin-bottom: 8px;
+  }
+
+  /* responsive */
+  @media(max-width:480px){
+    .section{padding:56px 18px;}
+    .era-title{font-size:26px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+
+  <p class="eyebrow">End User Computing — The Definitive History</p>
+  <h1>
+    From Dumb Terminals<br>
+    <span class="accent">to the Intelligent Workspace</span>
+  </h1>
+  <p class="hero-sub">
+    Six decades. One continuous story. Every technology decision, platform battle, and paradigm shift that explains<br>
+    <strong>why we work the way we work today</strong> — and where it goes next.
+  </p>
+  <div class="hero-tags">
+    <span class="hero-tag">Mainframe → PC → VDI</span>
+    <span class="hero-tag">DEX &amp; Digital Experience</span>
+    <span class="hero-tag">SD-WAN &amp; SASE</span>
+    <span class="hero-tag">Zero Trust</span>
+    <span class="hero-tag">Infrastructure as Code</span>
+    <span class="hero-tag">SaaS &amp; DevOps</span>
+    <span class="hero-tag">AI &amp; Copilot</span>
+    <span class="hero-tag">The Nerdio Story</span>
+  </div>
+  <div class="scroll-hint">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Scroll to explore
+  </div>
+</section>
+
+<!-- ══ STICKY NAV ══ -->
+<nav class="era-nav" id="era-nav">
+  <div class="era-nav-inner">
+    <a href="#era1">1960s–70s</a>
+    <a href="#era2">1980s</a>
+    <a href="#era3">1990s</a>
+    <a href="#era4">2000s</a>
+    <a href="#era5">2010s</a>
+    <a href="#era6">2020–Now</a>
+    <a href="#nerdio">Nerdio Story</a>
+    <a href="#csg-citrix">Citrix &amp; CSG</a>
+    <a href="#device-mgmt">Device Management</a>
+    <a href="#hyperscalers">Hyperscalers &amp; Hardware</a>
+    <a href="#verticals">Verticals</a>
+    <a href="#people">Key People</a>
+    <a href="#concepts">Concepts</a>
+    <a href="#future">What's Next</a>
+  </div>
+</nav>
+
+<!-- ══ ERA 1: MAINFRAME ══ -->
+<div class="era-section" id="era1">
+<div class="section">
+
+  <div class="era-header fi">
+    <div class="era-icon">🖥️</div>
+    <div>
+      <div class="era-label">Era 1 · 1960s to 1979</div>
+      <h2 class="era-title">The Mainframe Age<em>One computer. Many people. Zero choice.</em></h2>
+      <p class="era-intro">Computing existed — but ordinary people had no direct access to it. Everything ran on massive, room-sized machines. Your "terminal" was just a keyboard and a screen. The brain lived somewhere else entirely. IT was a priesthood. Users were supplicants.</p>
+    </div>
+  </div>
+
+  <div class="grid2 fi d1">
+    <div class="card">
+      <div class="card-label">The Model</div>
+      <h3>Centralised everything</h3>
+      <p>Compute, storage, and logic all lived in one place — the mainframe. "Dumb terminals" connected users to that central brain. No local processing. No local storage. You submitted a job; you waited; you collected your printout.</p>
+      <p>IBM's System/360 (1964) became the defining platform — the same operating system across different hardware sizes. This was the AWS of its day: scalable, shared, and controlled.</p>
+    </div>
+    <div class="card teal">
+      <div class="card-label">Why This Matters Today</div>
+      <h3>The model never died — it just moved</h3>
+      <p>Azure Virtual Desktop, Windows 365, Citrix DaaS — all are philosophically identical to the mainframe model. Powerful compute in a datacentre. A thin device at the edge. Session-based access to a shared environment.</p>
+      <p>Every time someone says "cloud desktops are the future," they're rediscovering 1965. The genius was always the architecture — we just needed the internet to make it work globally.</p>
+    </div>
+  </div>
+
+  <div class="grid3 fi d2">
+    <div class="card dark">
+      <div class="card-label">Key Players</div>
+      <h3>The hardware oligarchs</h3>
+      <div class="pills">
+        <span class="pill teal">IBM</span>
+        <span class="pill">DEC</span>
+        <span class="pill">Honeywell</span>
+        <span class="pill">Burroughs</span>
+        <span class="pill">UNIVAC</span>
+        <span class="pill">NCR</span>
+      </div>
+    </div>
+    <div class="card dark">
+      <div class="card-label">Who Had Access</div>
+      <h3>Governments, banks, universities</h3>
+      <p>You needed millions of dollars and a dedicated machine room. NASA used IBM mainframes for Apollo. Banks ran overnight batch processing. Access was a privilege.</p>
+    </div>
+    <div class="card dark">
+      <div class="card-label">The Management Reality</div>
+      <h3>Centralised = controllable</h3>
+      <p>Ironically, this era had the best security posture of any period in EUC history. Everything was in one place, owned by IT, with zero end-user autonomy. The problems came later — when we gave people power.</p>
+    </div>
+  </div>
+
+</div>
+</div>
+<hr class="divider">
+
+<!-- ══ ERA 2: PC REVOLUTION ══ -->
+<div class="era-section" id="era2">
+<div class="section">
+
+  <div class="era-header fi">
+    <div class="era-icon">💾</div>
+    <div>
+      <div class="era-label">Era 2 · 1980 to 1989</div>
+      <h2 class="era-title">The PC Revolution<em>Power to the people. Chaos to IT.</em></h2>
+      <p class="era-intro">The personal computer put computing directly in people's hands for the first time. It was a decade of extraordinary creativity, explosive growth, and the birth of nearly every problem IT still deals with today. The pendulum swung completely from central control to individual freedom.</p>
+    </div>
+  </div>
+
+  <div class="grid3 fi d1">
+    <div class="card">
+      <div class="card-label">The Catalyst</div>
+      <h3>IBM PC lands on the desk — 1981</h3>
+      <p>IBM launched the IBM Personal Computer in August 1981. Critically, they used an open architecture and outsourced the OS to a small company called Microsoft. This decision — made for cost reasons — accidentally created the entire PC industry as we know it.</p>
+    </div>
+    <div class="card">
+      <div class="card-label">The Operating System War</div>
+      <h3>Microsoft wins everything</h3>
+      <p>MS-DOS shipped on every IBM PC clone. By the mid-80s, there were hundreds of PC manufacturers, all running Microsoft's OS. Apple chose the opposite path — beautiful, closed, premium. Microsoft chose open, ubiquitous, and dominant. That choice shaped EUC for 40 years.</p>
+    </div>
+    <div class="card">
+      <div class="card-label">The IT Crisis</div>
+      <h3>Shadow IT is born</h3>
+      <p>With no central management, people installed anything. Floppy disks spread viruses. Data lived on local drives and vanished when they died. Nobody had backups. Nobody had a software inventory. IT went from running one computer to trying to manage thousands — with no tools to do it.</p>
+    </div>
+  </div>
+
+  <div class="concept-box fi d1">
+    <h4>🧬 The DNA Moment — The Freedom vs Control Tension</h4>
+    <p>The PC revolution created the central paradox that defines all of EUC history: <strong style="color:rgba(255,255,255,0.85);">the more freedom users have, the harder IT's job becomes.</strong> Every subsequent era is an attempt to rebalance this equation — giving users enough productivity and autonomy while keeping IT able to secure, manage, and support what they've deployed. This tension never fully resolves. It just shifts.</p>
+  </div>
+
+  <div class="grid2 fi d2">
+    <div class="card teal">
+      <div class="card-label">Key People — 1980s</div>
+      <h3>The founders of the modern OS era</h3>
+      <div class="pills" style="margin-bottom:14px;">
+        <span class="pill teal">Bill Gates · Microsoft</span>
+        <span class="pill teal">Steve Jobs · Apple</span>
+        <span class="pill">Steve Wozniak · Apple</span>
+        <span class="pill">Gary Kildall · CP/M</span>
+        <span class="pill">Ray Noorda · Novell</span>
+      </div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.5);">Gary Kildall's CP/M was arguably the better OS — but IBM called him first and he was unavailable. Gates acquired QDOS for $50,000 and the rest is history.</p>
+    </div>
+    <div class="card">
+      <div class="card-label">Key Vendors — 1980s</div>
+      <h3>Who mattered?</h3>
+      <div class="pills">
+        <span class="pill teal">🪟 Microsoft</span>
+        <span class="pill teal">🍎 Apple</span>
+        <span class="pill">Novell (NetWare)</span>
+        <span class="pill">Lotus (1-2-3)</span>
+        <span class="pill">WordPerfect</span>
+        <span class="pill">Intel</span>
+        <span class="pill dead">Atari</span>
+        <span class="pill dead">Commodore</span>
+        <span class="pill dead">Tandy</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+<hr class="divider">
+
+<!-- ══ ERA 3: NETWORKS & CITRIX ══ -->
+<div class="era-section" id="era3">
+<div class="section">
+
+  <div class="era-header fi">
+    <div class="era-icon">🌐</div>
+    <div>
+      <div class="era-label">Era 3 · 1990 to 1999</div>
+      <h2 class="era-title">Networks, Citrix &amp; the Internet<em>Connecting the PCs. Centralising the apps. The web changes everything.</em></h2>
+      <p class="era-intro">The 1990s wired the world together. Local networks connected desks. Servers returned to the picture. Citrix invented a way to deliver Windows over any connection. And then the internet arrived and rewrote every assumption about where software could live and how it would be delivered.</p>
+    </div>
+  </div>
+
+  <div class="timeline fi">
+    <div class="tl-item">
+      <div class="tl-dot">🏢</div>
+      <div class="tl-year">1990–1994 · The LAN Era</div>
+      <div class="tl-title">Connecting the desks</div>
+      <div class="tl-body">Local Area Networks (LANs) connected PCs within buildings. Novell NetWare dominated file and print sharing. The "client-server" model emerged: your PC ran applications, a central server handled data and shared services. IT regained some control — but still had to physically visit every machine to make any change.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">🔶</div>
+      <div class="tl-year">1989 · The Citrix Founding Moment</div>
+      <div class="tl-title">Ed Iacobucci founds Citrix Systems</div>
+      <div class="tl-body">Citrix was founded in Richardson, Texas in April 1989 by Ed Iacobucci, a former IBM engineer who had led the OS/2 operating system project. With $3M in venture funding, his vision was multi-user Windows computing delivered from a central server. The first product shipped in 1991. By 1993, Citrix acquired a Novell remote-access product and evolved it into WinView — the first commercially successful thin-client Windows delivery. WinFrame followed in 1995. The core insight: why deploy and manage software on 1,000 PCs when you can run it once on a server and let 1,000 people connect? Citrix would dominate enterprise app delivery for the next 25+ years.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">🌍</div>
+      <div class="tl-year">1993–1995 · The Internet Arrives</div>
+      <div class="tl-title">The World Wide Web changes everything</div>
+      <div class="tl-body">Mosaic (1993) and Netscape (1994) turned the internet into something civilians could use. Email became mainstream. The browser became a new kind of thin client — a universal application runner that required no local installation. The seeds of SaaS were planted. The question of "where does software live?" became genuinely complicated.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">🪟</div>
+      <div class="tl-year">1997–1999 · Microsoft Terminal Services</div>
+      <div class="tl-title">Microsoft builds Citrix into Windows</div>
+      <div class="tl-body">Microsoft licensed Citrix technology and built multi-user session capabilities into Windows NT 4.0 Terminal Server Edition. Citrix responded brilliantly: rather than fighting, they became the value-add layer on top of Microsoft, adding ICA protocol (far superior to RDP), load balancing, application publishing, and enterprise management. This partnership-competition model defined the next 20 years.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">🔧</div>
+      <div class="tl-year">Late 1990s · Endpoint Management Emerges</div>
+      <div class="tl-title">The first attempts to manage PCs at scale</div>
+      <div class="tl-body">As organisations grew to thousands of PCs, IT faced the impossible task of keeping them all patched and configured. Microsoft SMS (Systems Management Server), LANDesk, and IBM Tivoli emerged — the ancestors of modern Microsoft Intune and endpoint management platforms. Scripting and automation began to replace physical visits, but tools were primitive.</div>
+    </div>
+  </div>
+
+  <div class="grid2 fi d1">
+    <div class="card teal">
+      <div class="card-label">Key People — 1990s</div>
+      <h3>Who shaped the decade</h3>
+      <div class="pills" style="margin-bottom:12px;">
+        <span class="pill teal">Ed Iacobucci · Citrix founder</span>
+        <span class="pill teal">Marc Andreessen · Netscape</span>
+        <span class="pill">Ray Ozzie · Lotus Notes</span>
+        <span class="pill">Bob Muglia · Microsoft (Windows Server)</span>
+        <span class="pill">Larry Ellison · Oracle (databases)</span>
+      </div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.5);">Ed Iacobucci's founding vision at Citrix — that server-based computing was the answer to PC management chaos — proved so durable it underpins modern cloud desktops 30 years later.</p>
+    </div>
+    <div class="card">
+      <div class="card-label">Vendors — 1990s</div>
+      <h3>The ecosystem takes shape</h3>
+      <div class="pills">
+        <span class="pill teal">🔶 Citrix</span>
+        <span class="pill teal">🪟 Microsoft</span>
+        <span class="pill">Novell NetWare</span>
+        <span class="pill">Cisco (networking)</span>
+        <span class="pill">Sun Microsystems</span>
+        <span class="pill">3Com</span>
+        <span class="pill dead">Netscape</span>
+        <span class="pill dead">WordPerfect</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+<hr class="divider">
+
+<!-- ══ ERA 4: VDI ══ -->
+<div class="era-section" id="era4">
+<div class="section">
+
+  <div class="era-header fi">
+    <div class="era-icon">🏗️</div>
+    <div>
+      <div class="era-label">Era 4 · 2000 to 2012</div>
+      <h2 class="era-title">The VDI &amp; Virtualisation Era<em>The golden age of the datacentre. The curse of complexity.</em></h2>
+      <p class="era-intro">VMware transformed how servers worked. Citrix matured into an enterprise empire. VDI arrived — the dream of giving every user their own virtual PC in a datacentre. And alongside it, the first serious attempts at endpoint management at scale. The vision was elegant. The reality was brutal.</p>
+    </div>
+  </div>
+
+  <div class="grid2 fi d1">
+    <div class="card">
+      <div class="card-label">The VMware Revolution</div>
+      <h3>One server. Many virtual machines.</h3>
+      <p>VMware (founded 1998, mainstream by 2003–2005) made server virtualisation accessible. One physical server could run dozens of virtual machines simultaneously. This changed datacentre economics forever and proved that abstraction — the OS doesn't need to know what hardware it runs on — was a viable architecture.</p>
+      <p>VMware's ESX/ESXi hypervisor became the datacentre standard. Organisations virtualised their servers first — then asked: why not do the same with desktops?</p>
+    </div>
+    <div class="card">
+      <div class="card-label">The VDI Promise</div>
+      <h3>One image. Infinite desktops.</h3>
+      <p>Virtual Desktop Infrastructure promised to centralise the PC itself. Manage one golden image, deliver it to any device on earth. Security becomes centralised. Disaster recovery becomes trivial. Any device, anywhere, gets the same consistent Windows experience.</p>
+      <p>VMware View (later Horizon) and Citrix XenDesktop went head-to-head. Both required enormous on-premises investment in compute, storage, networking, and specialist skills.</p>
+    </div>
+  </div>
+
+  <div class="quote fi d1">
+    "VDI is the future of desktop computing — and it always will be."
+    <cite>— A joke that circulated for a decade, reflecting how often VDI projects missed their goals</cite>
+  </div>
+
+  <div class="grid3 fi d2">
+    <div class="card dark">
+      <div class="card-label">Why VDI Was So Hard</div>
+      <h3>The seven deadly sins</h3>
+      <ul>
+        <li>Massive upfront infrastructure cost ($500K–$5M+)</li>
+        <li>Complex capacity planning — boot storms, login storms</li>
+        <li>Storage I/O bottlenecks during peak demand</li>
+        <li>Application compatibility and sequencing nightmares</li>
+        <li>Profiles: where does the user's data and settings live?</li>
+        <li>6–8 specialist skill sets required to deploy and run</li>
+        <li>User perception: "It feels slower than my laptop"</li>
+      </ul>
+    </div>
+    <div class="card teal">
+      <div class="card-label">Key Vendors</div>
+      <h3>Who owned on-prem VDI</h3>
+      <div class="pills">
+        <span class="pill teal">🔶 Citrix XenDesktop</span>
+        <span class="pill teal">🟢 VMware View</span>
+        <span class="pill">Microsoft RDS</span>
+        <span class="pill">Wyse (thin clients)</span>
+        <span class="pill">Quest Software</span>
+        <span class="pill">AppSense</span>
+        <span class="pill">RES Software</span>
+        <span class="pill">Liquidware</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label">The Optimisation Ecosystem</div>
+      <h3>A cottage industry of fixes</h3>
+      <p>VDI complexity created an entire ecosystem of companies solving problems the platforms couldn't: profile management (FSLogix, Liquidware), performance monitoring (ControlUp, Lakeside), application delivery (App-V, ThinApp), OS optimisation tools. Each added cost and complexity. The stack grew.</p>
+    </div>
+  </div>
+
+  <div class="concept-box fi d2">
+    <h4>📦 New Concept: Application Virtualisation &amp; Layering</h4>
+    <p>One of VDI's biggest headaches was application management. Installing software into a golden image meant rebuilding and redeploying it constantly. <strong style="color:rgba(255,255,255,0.85);">Application virtualisation</strong> (Microsoft App-V, Citrix Streaming, VMware ThinApp) let you package apps into containers that could be "streamed" to virtual desktops without traditional installation — separating the app from the OS image.</p>
+    <p><strong style="color:rgba(255,255,255,0.85);">Application layering</strong> (Citrix App Layering, Liquidware FlexApp, VMware App Volumes) took this further — letting admins compose a desktop from modular layers: a base OS layer, an application layer, and a user personalisation layer. This reduced image management from dozens of images to a handful of composable layers. The concept lives on in modern AVD image management today.</p>
+  </div>
+
+  <div class="grid2 fi d2">
+    <div class="card">
+      <div class="card-label">Key People — 2000s VDI Era</div>
+      <h3>Who shaped virtualisation</h3>
+      <div class="pills" style="margin-bottom:12px;">
+        <span class="pill teal">Diane Greene · VMware CEO (founder)</span>
+        <span class="pill teal">Mark Templeton · Citrix President/CEO 1998–2015</span>
+        <span class="pill">Simon Crosby · Xen (open source hypervisor)</span>
+        <span class="pill">Nick Citro · Liquidware</span>
+        <span class="pill">Brian Madden · EUC analyst/educator</span>
+      </div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.5);">Brian Madden (BrianMadden.com) became the go-to independent voice for VDI practitioners — educating the industry through blog posts, books, and conferences. A generation of EUC professionals learned the craft through his work.</p>
+    </div>
+    <div class="card purple">
+      <div class="card-label">The Profile Problem — A Persistent Pain</div>
+      <h3>FSLogix: the saviour of VDI profiles</h3>
+      <p>User profiles in VDI were notoriously problematic. They were large, slow to load, and would corrupt. FSLogix (founded 2012, acquired by Microsoft November 2018) solved this with profile containers — VHD-mounted profile disks that loaded instantly and didn't corrupt. Microsoft made it free with every Microsoft 365 subscription. It now ships with every M365 licence and is a core component of every AVD deployment.</p>
+    </div>
+  </div>
+
+  <div class="stat-grid fi d2">
+    <div class="stat-box"><div class="stat-val">$1M+</div><div class="stat-lbl">Typical enterprise VDI deployment</div></div>
+    <div class="stat-box"><div class="stat-val">18mo</div><div class="stat-lbl">Average project timeline</div></div>
+    <div class="stat-box"><div class="stat-val">6–8</div><div class="stat-lbl">Specialist skill sets required</div></div>
+    <div class="stat-box"><div class="stat-val">~40%</div><div class="stat-lbl">Projects that failed or were abandoned</div></div>
+    <div class="stat-box"><div class="stat-val">3</div><div class="stat-lbl">Years avg before major rearchitect</div></div>
+  </div>
+
+</div>
+</div>
+<hr class="divider">
+
+<!-- ══ ERA 5: CLOUD TRANSITION ══ -->
+<div class="era-section" id="era5">
+<div class="section">
+
+  <div class="era-header fi">
+    <div class="era-icon">☁️</div>
+    <div>
+      <div class="era-label">Era 5 · 2013 to 2019</div>
+      <h2 class="era-title">The Cloud Transition &amp; Convergence Era<em>SaaS, mobile, SD-WAN, Zero Trust — the stack gets rebuilt from scratch.</em></h2>
+      <p class="era-intro">This was the decade that broke nearly every assumption EUC had operated on. Cloud computing matured. Applications moved to SaaS. Smartphones challenged the PC. The perimeter network — the thing that made traditional EUC security possible — dissolved. And Microsoft reinvented itself under Satya Nadella in the most consequential pivot in tech history.</p>
+    </div>
+  </div>
+
+  <div class="grid2 fi d1">
+    <div class="card">
+      <div class="card-label">Microsoft's Critical Pivot — 2014</div>
+      <h3>Satya Nadella changes everything</h3>
+      <p>When Nadella became CEO in February 2014, he declared Microsoft a "mobile-first, cloud-first" company. This wasn't marketing — it was structural. Office moved from perpetual licence to Office 365 subscription SaaS. Azure became the company's centre of gravity. Active Directory began its migration to the cloud as Azure Active Directory (Entra ID).</p>
+      <p>Most critically for EUC: Microsoft began investing in delivering Windows itself from Azure — setting the stage for everything that comes next.</p>
+    </div>
+    <div class="card teal">
+      <div class="card-label">SaaS Displaces Everything</div>
+      <h3>If apps are in the cloud, why isn't the desktop?</h3>
+      <p>Salesforce, Workday, ServiceNow, Slack, Zoom — application after application moved from on-premises software to browser-based SaaS. This fundamentally changed the VDI conversation. The primary justification for VDI had been centralising application management — but if applications were already in the cloud, what was VDI actually doing?</p>
+      <p>The rationale for cloud desktops strengthened: if compute, storage, and applications are all in Azure, why is your Windows desktop still running on a server in your building?</p>
+    </div>
+  </div>
+
+  <!-- SD-WAN and Network section -->
+  <div class="concept-box fi d1">
+    <h4>🌐 New Concept: SD-WAN — Why Networking Became an EUC Problem</h4>
+    <p>Traditional enterprise networking assumed users were in offices, connected to corporate datacentres via MPLS leased lines. Traffic flow: endpoint → office LAN → MPLS → datacentre → internet (via a central security stack). This worked in a world of on-premises VDI and on-premises applications.</p>
+    <p>Then SaaS arrived. Suddenly, the most-used applications (Office 365, Salesforce, Zoom) lived on the internet — not in the datacentre. Backhauling all that traffic through a datacentre firewall was expensive and created terrible user experience. <strong style="color:rgba(255,255,255,0.85);">SD-WAN (Software-Defined Wide Area Network)</strong> decoupled the network from physical hardware, allowed intelligent traffic routing (send Office 365 direct to the internet, send sensitive traffic through the secure hub), and created the concept of "local internet breakout." EUC professionals had to understand networking because networking now directly determined whether their cloud desktops performed well.</p>
+  </div>
+
+  <div class="grid3 fi d2">
+    <div class="card">
+      <div class="card-label">SD-WAN Vendors</div>
+      <h3>Who built the new network</h3>
+      <div class="pills">
+        <span class="pill teal">Cisco Meraki</span>
+        <span class="pill teal">VMware (VeloCloud)</span>
+        <span class="pill">Fortinet</span>
+        <span class="pill">Palo Alto Prisma</span>
+        <span class="pill">Aryaka</span>
+        <span class="pill">Silver Peak</span>
+        <span class="pill">Cato Networks</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label">Mobile &amp; BYOD</div>
+      <h3>The device you don't own</h3>
+      <p>iPhones and iPads entered the enterprise. Organisations had to manage devices they hadn't bought and couldn't control at an OS level. Mobile Device Management (MDM) became a new category. Good Technology, AirWatch, and MobileIron competed — before Microsoft Intune eventually absorbed most of the market.</p>
+    </div>
+    <div class="card">
+      <div class="card-label">DEX Emerges</div>
+      <h3>The first wave of Digital Employee Experience</h3>
+      <p>As the workspace became more complex (VDI + SaaS + mobile + physical PCs), organisations lost visibility into whether employees could actually do their jobs. Lakeside Software (SysTrack) pioneered Digital Employee Experience (DEX) monitoring — measuring what users actually experienced, not just what IT thought was happening. This was DEX's quiet genesis.</p>
+    </div>
+  </div>
+
+  <!-- Zero Trust -->
+  <div class="concept-box fi d1" style="border-left-color: var(--green);">
+    <h4 style="color:var(--green);">🔒 New Concept: Zero Trust — The Death of the Perimeter</h4>
+    <p>Traditional security was built on a perimeter model: everything inside the corporate network is trusted; everything outside is untrusted. VPNs extended that trusted perimeter to remote workers. Firewalls kept the bad actors out.</p>
+    <p>This model collapsed in the 2010s. Users worked everywhere. Applications lived on the internet. The perimeter was dissolving. John Kindervag at Forrester articulated the response in 2010: <strong style="color:rgba(255,255,255,0.85);">Zero Trust — "Never trust, always verify."</strong> Instead of trusting a network location, you trust an identity. Every access request — regardless of where it comes from — must be verified through identity, device health, context, and risk signals. For EUC, this meant every time a user tried to access an application, the system checked: who is this user? What device are they on? Is it compliant? Where are they connecting from? What are they trying to access?</p>
+    <p>Zero Trust isn't a product — it's a philosophy. But Microsoft's implementation of it — through Entra ID (Azure AD), Conditional Access, Microsoft Defender for Endpoint, and Intune compliance policies — became the practical EUC expression of Zero Trust at scale.</p>
+  </div>
+
+  <div class="grid2 fi d2">
+    <div class="card green">
+      <div class="card-label green">Conditional Access — EUC's Zero Trust Engine</div>
+      <h3>The policy layer that connects everything</h3>
+      <p>Conditional Access (built into Microsoft Entra ID) is the practical implementation of Zero Trust in most enterprise environments. It evaluates: user identity + device compliance state + location + application being accessed + risk score — and then decides: allow, block, or require additional verification (MFA, device enrolment).</p>
+      <p>For EUC professionals, understanding Conditional Access is now non-negotiable. It determines what users can access, from where, on which devices. AVD and Windows 365 environments are typically enforced via Conditional Access policies — making it a core part of every cloud desktop deployment.</p>
+    </div>
+    <div class="card">
+      <div class="card-label">Key People — 2010s</div>
+      <h3>Who shaped the cloud transition</h3>
+      <div class="pills" style="margin-bottom:12px;">
+        <span class="pill teal">Satya Nadella · Microsoft CEO (2014)</span>
+        <span class="pill teal">John Kindervag · Zero Trust creator</span>
+        <span class="pill">Scott Guthrie · Microsoft Cloud + AI</span>
+        <span class="pill">Brad Anderson · Microsoft EMS/Intune</span>
+        <span class="pill">Dion Hinchcliffe · digital workplace analyst</span>
+        <span class="pill">Jim Madden · ControlUp (DEX)</span>
+      </div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.5);">Brad Anderson, Microsoft's CVP for Enterprise Client and Mobility, evangelised the "modern management" shift from on-prem Configuration Manager to cloud-native Intune — a pivot that directly enabled everything cloud EUC runs on today.</p>
+    </div>
+  </div>
+
+  <!-- SASE -->
+  <div class="concept-box fi d2" style="border-left-color:var(--purple);">
+    <h4 style="color:var(--purple);">🏗️ New Concept: SASE — Security &amp; Network Converge</h4>
+    <p>By the late 2010s, organisations had assembled a patchwork of network and security tools: SD-WAN for traffic routing, CASB (Cloud Access Security Broker) for SaaS visibility, Secure Web Gateway for web filtering, ZTNA (Zero Trust Network Access) for application access. Gartner's Neil MacDonald and Joe Skorupa coined <strong style="color:rgba(255,255,255,0.85);">SASE (Secure Access Service Edge)</strong> in 2019 — a framework for converging these capabilities into a single cloud-delivered service.</p>
+    <p>For EUC, SASE matters because it defines how users securely access applications — whether those applications are in Azure (where AVD runs), in SaaS (Office 365, Salesforce), or in on-premises datacentres. SASE vendors (Zscaler, Palo Alto Prisma Access, Cloudflare) often sit between the user's AVD session and the applications they're trying to reach, doing security inspection without hairpinning through a datacentre.</p>
+  </div>
+
+  <div class="grid3 fi d2">
+    <div class="card dark">
+      <div class="card-label">SASE / Security Vendors</div>
+      <h3>The new security stack</h3>
+      <div class="pills">
+        <span class="pill teal">Zscaler</span>
+        <span class="pill teal">Palo Alto Prisma</span>
+        <span class="pill">Cloudflare</span>
+        <span class="pill">Netskope</span>
+        <span class="pill">Cisco Umbrella</span>
+        <span class="pill">Forcepoint</span>
+      </div>
+    </div>
+    <div class="card dark">
+      <div class="card-label">Endpoint Management Matures</div>
+      <h3>Config Manager → Intune</h3>
+      <p>Microsoft System Center Configuration Manager (SCCM) had managed Windows PCs for 20 years. But it was on-premises, complex, and couldn't manage cloud-native devices. Microsoft Intune (MDM/MAM) became the cloud-native answer — managing any device, anywhere, without on-prem infrastructure.</p>
+    </div>
+    <div class="card dark">
+      <div class="card-label">Identity Becomes the Perimeter</div>
+      <h3>Azure AD / Entra ID rises</h3>
+      <p>As the network perimeter dissolved, identity became the new security boundary. Azure Active Directory (now Microsoft Entra ID) became the cloud identity platform — managing authentication, authorisation, and access for 500M+ users. Every AVD session, every SaaS app, every device check flows through Entra ID.</p>
+    </div>
+  </div>
+
+</div>
+</div>
+<hr class="divider">
+
+<!-- ══ ERA 6: CLOUD-NATIVE ══ -->
+<div class="era-section" id="era6">
+<div class="section">
+
+  <div class="era-header fi">
+    <div class="era-icon">🏠</div>
+    <div>
+      <div class="era-label">Era 6 · 2020 to Today</div>
+      <h2 class="era-title">The Cloud-Native Desktop Era<em>A pandemic. A platform. A paradigm shift.</em></h2>
+      <p class="era-intro">COVID-19 did in 12 weeks what the industry couldn't do in 12 years. Remote work went from exception to mandate overnight. Microsoft was ready — Azure Virtual Desktop had launched in 2019. Broadcom destroyed VMware's goodwill in 2023. Infrastructure as Code replaced clicking through consoles. DEX matured into a boardroom conversation. And AI entered the workspace.</p>
+    </div>
+  </div>
+
+  <div class="timeline fi">
+    <div class="tl-item">
+      <div class="tl-dot">🦠</div>
+      <div class="tl-year">March 2020 · The Great Forcing Function</div>
+      <div class="tl-title">COVID-19 forces mass remote work adoption</div>
+      <div class="tl-body">Millions of workers went home in 72 hours. Organisations scrambled to deliver Windows remotely. Those with Citrix/VMware extended capacity frantically. Those with nothing built fast. Azure Virtual Desktop — which had quietly launched in September 2019 — suddenly had massive enterprise urgency. Microsoft provisioned enormous Azure capacity to support the surge. Cloud desktop adoption compressed 5 years of momentum into 3 months.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot tl-dot green">🪟</div>
+      <div class="tl-year">August 2021 · Windows 365 Launches</div>
+      <div class="tl-title">Microsoft democratises the cloud desktop</div>
+      <div class="tl-body">Windows 365 launched as a per-user, per-month subscription for a full Cloud PC. Fixed pricing. No infrastructure expertise required. You pick a size (CPU/RAM/storage), assign it to a user via Microsoft 365 admin centre, and they log in from any browser. Aimed at IT teams who found AVD too complex. This was Microsoft saying: cloud desktops should be as simple as buying a Microsoft 365 licence.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">💥</div>
+      <div class="tl-year">2022–2024 · The Broadcom Catastrophe</div>
+      <div class="tl-title">VMware's acquisition triggers the largest migration wave in EUC history</div>
+      <div class="tl-body">Broadcom acquired VMware in October 2023. Within months: perpetual licences eliminated, customers forced into bundles, prices increased dramatically (some by 10x), and smaller customers effectively abandoned. Omnissa was spun off from Broadcom to carry VMware Horizon. The result: the largest voluntary platform migration the EUC industry had ever seen. Organisations that had been considering a cloud desktop move for years suddenly had a financial imperative to act immediately. Microsoft and its ecosystem — particularly Nerdio — were the primary beneficiaries.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot tl-dot green">🤖</div>
+      <div class="tl-year">2024–2025 · AI Enters the Workspace</div>
+      <div class="tl-title">Microsoft Copilot and the AI-enabled workforce</div>
+      <div class="tl-body">Microsoft Copilot began embedding AI across M365, Teams, and Windows. Suddenly, managing the cloud desktop environment wasn't just about availability and cost — it was about enabling AI tools safely, at scale, on compliant infrastructure that met data residency and governance requirements. The EUC platform became the secure delivery vehicle for the AI-enabled workforce.</div>
+    </div>
+  </div>
+
+  <!-- DEX Maturity -->
+  <div class="concept-box fi d1">
+    <h4>📊 DEX Comes of Age — Digital Employee Experience Becomes Strategic</h4>
+    <p><strong style="color:rgba(255,255,255,0.85);">Digital Employee Experience (DEX)</strong> measures how well technology actually serves employees — not just whether systems are "up," but whether users can do their work productively, with acceptable performance, minimal friction, and a good experience. It's the difference between "the server is running" and "the user can open an application in under 3 seconds."</p>
+    <p>DEX platforms (Lakeside SysTrack, ControlUp, Nexthink, Aternity) instrument endpoints and virtual desktops to capture thousands of performance signals per session — login duration, app launch times, session reliability, network quality, resource consumption. This data feeds both reactive IT support (why is this user having a bad day?) and proactive optimisation (what patterns predict problems before users complain?).</p>
+    <p>Post-COVID, DEX became a C-suite conversation: with remote and hybrid work, executives realised they could no longer walk the floor to assess productivity. DEX data became the evidence base for IT investment decisions. Gartner and IDC both created formal DEX market categories. Vendors like Nexthink raised hundreds of millions. And Microsoft's own tooling (Endpoint Analytics, now part of Intune) embedded basic DEX capabilities natively.</p>
+  </div>
+
+  <div class="grid3 fi d2">
+    <div class="card">
+      <div class="card-label">DEX Vendors</div>
+      <h3>Who measures the experience</h3>
+      <div class="pills">
+        <span class="pill teal">Lakeside (SysTrack)</span>
+        <span class="pill teal">ControlUp</span>
+        <span class="pill teal">Nexthink</span>
+        <span class="pill">Aternity (Riverbed)</span>
+        <span class="pill">Rimo3</span>
+        <span class="pill">1E (Tachyon)</span>
+        <span class="pill">Liquidware</span>
+        <span class="pill">Microsoft Endpoint Analytics</span>
+      </div>
+    </div>
+    <div class="card teal">
+      <div class="card-label">Infrastructure as Code</div>
+      <h3>Clicking through consoles is dead</h3>
+      <p>Modern cloud infrastructure — including AVD environments — is increasingly defined in code rather than configured through GUIs. Tools like Terraform, Bicep (Microsoft's native IaC language for Azure), ARM templates, and Ansible allow entire AVD environments to be defined as code, version-controlled, peer-reviewed, and deployed repeatably. This is <strong>Infrastructure as Code (IaC)</strong> — and it borrows heavily from DevOps culture.</p>
+      <p>For EUC teams, IaC means environments can be rebuilt identically in minutes, configuration drift is detectable, and "works on my machine" becomes "works in code." Nerdio's automation engine is built on top of Azure ARM and PowerShell at its core — IaC in practice.</p>
+    </div>
+    <div class="card">
+      <div class="card-label">DevOps Meets EUC</div>
+      <h3>The cultural shift, not just the tooling</h3>
+      <p>DevOps — the practice of breaking down walls between development and operations teams, automating everything, and shipping continuously — has fundamentally changed how modern EUC environments are managed. Image pipelines now use CI/CD principles: code a change → automated build → automated test → staged deployment. Golden image management in AVD increasingly mirrors how software developers ship code.</p>
+      <p>Tools: Azure DevOps, GitHub Actions, Packer (automated image builds), Bicep/Terraform, PowerShell DSC. The EUC professional of the future is increasingly a DevOps practitioner who happens to work on desktops.</p>
+    </div>
+  </div>
+
+  <div class="grid2 fi d2">
+    <div class="card">
+      <div class="card-label">Key People — 2020s</div>
+      <h3>Who's shaping the current era</h3>
+      <div class="pills" style="margin-bottom:12px;">
+        <span class="pill teal">Scott Manchester · Nerdio CPTO (Jan 2026)</span>
+        <span class="pill teal">Gavriella Schuster · Nerdio board (2022)</span>
+        <span class="pill teal">Joseph Landes · Nerdio co-founder</span>
+        <span class="pill">Hock Tan · Broadcom CEO (disruption catalyst)</span>
+        <span class="pill">Jared Spataro · Microsoft Copilot VP</span>
+        <span class="pill">Andrew Conway · Microsoft Entra</span>
+      </div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.5);">Scott Manchester spent 25 years at Microsoft leading Windows 365, Azure Virtual Desktop, and Remote Desktop Services before joining Nerdio as CPTO — bringing the deepest possible platform knowledge to the ecosystem.</p>
+    </div>
+    <div class="card dark">
+      <div class="card-label">The Platform That Won</div>
+      <h3>Microsoft's cloud desktop stack</h3>
+      <div class="pills">
+        <span class="pill teal">Azure Virtual Desktop</span>
+        <span class="pill teal">Windows 365</span>
+        <span class="pill teal">Microsoft Intune</span>
+        <span class="pill teal">Microsoft Entra ID</span>
+        <span class="pill teal">M365 Copilot</span>
+        <span class="pill green">Microsoft Defender XDR</span>
+        <span class="pill">FSLogix</span>
+        <span class="pill">Azure Monitor</span>
+        <span class="pill">Conditional Access</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+<hr class="divider">
+
+<!-- ══ NERDIO STORY ══ -->
+<div class="era-section" id="nerdio" style="background: rgba(30,157,184,0.04);">
+<div class="section">
+
+  <div class="era-header fi" style="border-bottom-color:rgba(30,157,184,0.25);">
+    <div class="era-icon" style="background:rgba(30,157,184,0.15);border-color:rgba(30,157,184,0.4);">🤓</div>
+    <div>
+      <div class="era-label" style="color:var(--green);">The Nerdio Story · 2005 to Today</div>
+      <h2 class="era-title">From MSP Tool to<br>Industry-Defining Platform<em>How a company born to simplify Microsoft complexity became the management layer for the cloud desktop era.</em></h2>
+      <p class="era-intro">Nerdio didn't start with a grand vision to define a category. It started with a practical problem: Microsoft's cloud desktop and management tools are incredibly powerful — and incredibly hard to operate at scale. Everything Nerdio built was an answer to that friction.</p>
+    </div>
+  </div>
+
+  <div class="nerdio-section fi">
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot green">🌱</div>
+        <div class="tl-year">2005 · The Adar Origin</div>
+        <div class="tl-title">The company that became Nerdio is born</div>
+        <div class="tl-body">Vadim Vladimirskiy co-founded Adar, Inc. in Chicago in 2005 — initially as an online backup provider for SMBs, then evolving into one of the first cloud-focused MSPs in the US. By 2007, Adar was delivering complete virtual desktop-centric IT from a private cloud. Over the following decade it became a large, profitable MSP — and the laboratory for the technology that would become Nerdio.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot green">🔧</div>
+        <div class="tl-year">2016 · The Nerdio Brand Launches</div>
+        <div class="tl-title">Nerdio born as a technology division within Adar</div>
+        <div class="tl-body">In 2016, Vladimirskiy launched Nerdio as an internal technology division of Adar — a software automation platform to help other MSPs build cloud practices in Microsoft Azure, based on what Adar had built for itself. Joseph Landes, a 23-year Microsoft executive, joined as co-founder in 2018 to accelerate the commercial journey. Nerdio for Azure launched in June 2017, debuting at Microsoft Inspire.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot green">☁️</div>
+        <div class="tl-year">January 2020 · Nerdio Spins Off &amp; Series A</div>
+        <div class="tl-title">Independent company — and Azure Virtual Desktop arrives</div>
+        <div class="tl-body">In January 2020, Nerdio was spun off from Adar as an independent company, with Adar sold to private equity. The same month, Nerdio closed an $8M Series A led by MK Capital and co-founders Vladimirskiy and Landes. Microsoft had launched Azure Virtual Desktop in September 2019 — powerful cloud desktop infrastructure but complex to operate. Nerdio launched Nerdio Manager for Enterprise (NME) as the management layer for AVD. COVID arrived just weeks later, making everything urgent. Nerdio Manager for MSP (NMM) followed in 2021.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot green">💰</div>
+        <div class="tl-year">April 2022 · Gavriella Schuster joins board · December 2022 · Series B — $117M</div>
+        <div class="tl-title">Board credibility then a landmark funding round</div>
+        <div class="tl-body">In April 2022, Gavriella Schuster — Microsoft's former Corporate VP and Global Channel Chief who spent 25 years at Microsoft — joined Nerdio's board, alongside fellow Microsoft veteran Andy Lees who had joined in 2020. In December 2022, Nerdio closed a $117M Series B led by Updata Partners, bringing total funding to $125M. The company planned to more than double headcount and expand internationally across UK, EMEA, Australia, New Zealand, India, and Brazil.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot green">🏆</div>
+        <div class="tl-year">January 2026 · The Scott Manchester Hire</div>
+        <div class="tl-title">Microsoft's own AVD architect joins Nerdio as CPTO</div>
+        <div class="tl-body">Scott Manchester — a 25-year Microsoft veteran who led Windows 365, Azure Virtual Desktop, and Remote Desktop Services — joined Nerdio as Chief Product and Technology Officer, announced January 7, 2026. He had worked closely with the Nerdio team throughout his Microsoft tenure as a partner and sponsor. This was a statement hire: the person who spent decades building the platform Nerdio manages chose to come build the management layer. He unified Product Management, Engineering, Architecture, Technology Operations, and Product Support under a single team.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot green">🚀</div>
+        <div class="tl-year">March 18, 2025 · Series C — $500M at $1B+ Valuation</div>
+        <div class="tl-title">General Atlantic leads the defining investment round</div>
+        <div class="tl-body">General Atlantic led a $500M Series C (with Lead Edge Capital and StepStone also participating), valuing Nerdio at over $1 billion — unicorn status achieved. Total funding reached $627M. The round accelerated international expansion (new operations in Benelux, Southern Europe, UAE, Mexico, and Japan), product development across NME and NMM, and positioned Nerdio to capture the massive migration wave from Citrix and VMware. The company grew headcount by 82% in 2025.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot green">🤖</div>
+        <div class="tl-year">January 2026 · Scott Manchester joins · Ongoing: AI &amp; Automation</div>
+        <div class="tl-title">New CPTO, new executive team, NME 7.0+ and NMM 6.0+</div>
+        <div class="tl-body">January 7, 2026: Scott Manchester announced as CPTO, unifying Product, Engineering, Architecture, and Technology Operations. Three further C-suite hires followed on January 21, 2026 — CMO (Bryan Law, ex-SentinelOne/ZoomInfo), CRO (Larry Sweeney), and CPO (Matt Tavlin). NME 7.0 had introduced advanced Windows 365 management with AI-driven automation in 2025. NMM 6.0 added Azure Government support, unified AVD/Windows 365/Intune management, and AI-driven contextual assistance from the Nerdio Knowledge Base.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid4 fi d1" style="margin-top:40px;">
+    <div class="stat-box"><div class="stat-val">15K+</div><div class="stat-lbl">Customers in 50+ countries</div></div>
+    <div class="stat-box"><div class="stat-val">3M+</div><div class="stat-lbl">Virtual desktops under management</div></div>
+    <div class="stat-box"><div class="stat-val">$627M</div><div class="stat-lbl">Total funding raised</div></div>
+    <div class="stat-box"><div class="stat-val">$1B+</div><div class="stat-lbl">Valuation (Series C, 2025)</div></div>
+  </div>
+
+  <div class="grid3 fi d2" style="margin-top:24px;">
+    <div class="card nerdio">
+      <div class="card-label green">Nerdio Manager for Enterprise (NME)</div>
+      <h3>For internal IT teams</h3>
+      <ul>
+        <li>Patented auto-scaling → 55% average Azure cost saving</li>
+        <li>Full AVD environment deployed in under an hour</li>
+        <li>Golden image lifecycle management</li>
+        <li>Windows 365 Cloud PC management</li>
+        <li>Intune endpoint management unified view</li>
+        <li>Migration tools for Citrix and VMware/Omnissa</li>
+        <li>Multi-Entra ID tenant support</li>
+        <li>Azure Government and Azure Local support</li>
+      </ul>
+    </div>
+    <div class="card nerdio">
+      <div class="card-label green">Nerdio Manager for MSP (NMM)</div>
+      <h3>For managed service providers</h3>
+      <ul>
+        <li>Multi-tenant management — all clients, one portal</li>
+        <li>Microsoft 365 management (Exchange, SharePoint, Teams)</li>
+        <li>Cost Estimator for quoting Azure profitably</li>
+        <li>Intune policies — prebuilt, enterprise-grade</li>
+        <li>AI-driven knowledge base assistance</li>
+        <li>Remote support built in</li>
+        <li>Government Cloud (Azure Gov, GCC High)</li>
+        <li>From $3/user/month via Azure Marketplace</li>
+      </ul>
+    </div>
+    <div class="card nerdio">
+      <div class="card-label green">Why Nerdio Exists</div>
+      <h3>The missing middle</h3>
+      <p>Microsoft builds an extraordinary platform. What Microsoft doesn't do is solve the operational complexity of running that platform at scale, cost-efficiently, across diverse customer environments. Nerdio adds 100+ features Microsoft doesn't provide natively:</p>
+      <ul>
+        <li>Auto-scaling (patented — Microsoft has nothing comparable)</li>
+        <li>Auto-heal for broken session hosts</li>
+        <li>Guided deployment wizards</li>
+        <li>Unified cross-tenant visibility</li>
+        <li>CIS Benchmark Intune baselines</li>
+        <li>Approval workflows and RBAC governance</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid2 fi d2" style="margin-top:24px;">
+    <div class="card">
+      <div class="card-label">Customer Proof</div>
+      <h3>What the outcomes look like</h3>
+      <ul>
+        <li><strong style="color:var(--white);">LexisNexis</strong> — 50% year-over-year cost saving; satisfaction 35→90+/100; 75% fewer support tickets</li>
+        <li><strong style="color:var(--white);">Sage</strong> — $1M+ annual savings; 200→1,000 customers with zero extra headcount; 62% VM cost reduction</li>
+        <li><strong style="color:var(--white);">Grant Thornton</strong> — $20,000/month saving; AVD live in days; now in 3 countries</li>
+        <li><strong style="color:var(--white);">Quub.it (MSP)</strong> — tripled revenue in 3 years; 3→20 employees; deploys 2–3× faster than competitors</li>
+        <li><strong style="color:var(--white);">Ceeva</strong> — tasks that took weeks of billable hours now done rapidly</li>
+      </ul>
+    </div>
+    <div class="card teal">
+      <div class="card-label">The Microsoft Relationship</div>
+      <h3>Why "Microsoft-first" is a differentiator</h3>
+      <p>Nerdio's relationship with Microsoft is unusually deep — and it's a selling point, not just a footnote:</p>
+      <ul>
+        <li>Scott Manchester (25 years building AVD/W365 at MSFT) — Nerdio CPTO from Jan 2026</li>
+        <li>Gavriella Schuster (Microsoft global channel CVP) — Nerdio board from April 2022</li>
+        <li>Andy Lees (23-year Microsoft veteran) — Nerdio board from July 2020</li>
+        <li>Microsoft Partner of the Year finalist (2025)</li>
+        <li>Available on Azure Marketplace — billed through Azure</li>
+        <li>NerdioCon features Microsoft executives as keynote speakers</li>
+        <li>Co-sell alignment with Microsoft field teams</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</div>
+<hr class="divider">
+
+<hr class="divider">
+
+<!-- ══ CLOUD SOFTWARE GROUP / CITRIX ══ -->
+<div class="era-section" id="csg-citrix">
+<div class="section">
+
+  <div class="era-header fi">
+    <div class="era-icon">⚡</div>
+    <div>
+      <div class="era-label">Cloud Software Group · The Citrix Reckoning · 2022–Present</div>
+      <h2 class="era-title">The Playbook Hock Tan Wrote — and Tom Krause Is Running<em>How a PE-backed acquisition, a familiar pricing strategy, and a leadership hire from Broadcom created the largest EUC migration wave in history.</em></h2>
+      <p class="era-intro">To understand what is happening to Citrix today, you need to understand what happened to VMware yesterday. The same private equity logic. The same software monetisation playbook. The same customer reaction — and the same window of opportunity it opens for Nerdio and Microsoft AVD. This is the most important commercial chapter in EUC history right now.</p>
+    </div>
+  </div>
+
+  <!-- The backstory -->
+  <div class="timeline fi">
+
+    <div class="tl-item">
+      <div class="tl-dot">🔁</div>
+      <div class="tl-year">The Broadcom Software Playbook — Understanding Hock Tan's Model</div>
+      <div class="tl-title">Acquire dominant software. Cut costs. Raise prices. Extract value.</div>
+      <div class="tl-body">To understand Cloud Software Group, you must first understand Broadcom CEO Hock Tan's acquisition philosophy. Broadcom — a semiconductor company — began acquiring enterprise software businesses not to build products, but to monetise installed bases. The logic is precise: identify software with high switching costs embedded in large enterprises, acquire it, dramatically cut R&amp;D and headcount, end perpetual licensing, move customers to subscription, and raise prices to extract maximum value from a captive installed base. Tan applied this formula to Symantec (cybersecurity, 2019), CA Technologies (enterprise IT, 2018), and most famously VMware ($69B, 2023). In each case, the pattern was the same: partner programme disruption, headcount cuts (15–25%), perpetual licence elimination, subscription-only transition, and price increases that shocked the market. The VMware playbook — once executed — became the lens through which every Citrix customer would watch their own renewal cycle.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot">💰</div>
+      <div class="tl-year">January 2022 — Vista Equity Partners Acquires Citrix for $16.5B</div>
+      <div class="tl-title">Citrix goes private — and the monetisation clock starts</div>
+      <div class="tl-body">Vista Equity Partners and Elliott Investment Management acquired Citrix Systems for approximately $16.5 billion in January 2022, taking it private. This was one of the largest software leveraged buyouts in history. Vista simultaneously owned TIBCO Software (a data integration and analytics platform) and immediately announced the intent to merge it with Citrix into a new parent entity: Cloud Software Group (CSG). Private equity ownership fundamentally changes the strategic calculus: the goal shifts from long-term product investment to value extraction within a 5–7 year holding period. Customers who understood PE dynamics saw the writing on the wall immediately. Those who didn't were about to find out.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot green">👤</div>
+      <div class="tl-year">July–September 2022 — Tom Krause Takes the Helm</div>
+      <div class="tl-title">The Broadcom alumnus who knows exactly how this plays out</div>
+      <div class="tl-body">Vista and Elliott's choice of CEO was the most significant signal of intent. <strong style="color:rgba(255,255,255,0.85);">Tom Krause</strong> was recruited directly from Broadcom, where he had served as CFO and then President of the Broadcom Software Group — the division that had executed the Symantec and CA acquisitions. Crucially, Krause was a key architect of the Broadcom strategy to acquire VMware. He did not just observe the PE software monetisation playbook from a distance — he helped write it. When Citrix customers heard that the new CEO of their vendor had spent six years at Broadcom building the exact model being applied to VMware, the alarm bells were clear. Krause took the CEO role in September 2022. Within months, Cloud Software Group laid off approximately 15% of the combined workforce. A year later, another 12% followed. The message to the market was unmistakable.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot warn">📈</div>
+      <div class="tl-year">2023 — The Pricing Changes Begin</div>
+      <div class="tl-title">8% across the board, end of perpetual, and mandatory subscription</div>
+      <div class="tl-body">The pricing actions came in waves. In March 2023, CSG announced that perpetual licence renewals for Citrix Virtual Apps and Desktops would be retired — organisations above 250 seats would need to move to subscription. In April 2023, an 8% price increase was applied across all Citrix products in all geographies, attributed to inflation and rising costs. NetScaler perpetual licensing ended. Customers were steered toward a minimum three-year upfront subscription commitment. The consolidation of product SKUs into bundled "Citrix Platform Licenses" (Universal and Platform tiers) — ostensibly to reduce complexity — in practice forced customers who needed specific components to buy everything in a bundle, paying for capabilities they didn't need. Rivals noted that the switch from perpetual to subscription had, in some cases, caused "staggering" price increases for customers.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot warn">📈</div>
+      <div class="tl-year">March–September 2024 — The Price Increases Escalate</div>
+      <div class="tl-title">Monthly subscriptions double. Channel partners face reduced rebates.</div>
+      <div class="tl-body">From September 1st, 2024, Citrix doubled the price of monthly subscription licences. Channel partner rebates were simultaneously reduced, leaving partners dependent on margin from services rather than software. When the changes were communicated to a gathering of Citrix partners, the reaction was described as "stunned silence followed by anger and disbelief." The parallel to the Broadcom-VMware transition was now explicit in the market. Partners and customers began evaluating alternatives in earnest. CSG's public response was to launch migration incentive programmes — discounts for customers moving from VMware or F5 onto the Citrix Platform — but these did little to address the core concern: that the pricing direction of travel had been set and would not reverse under PE ownership.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot">🚪</div>
+      <div class="tl-year">January 2025 — Tom Krause Departs for DOGE / US Treasury</div>
+      <div class="tl-title">A notable exit — and what it signals</div>
+      <div class="tl-body">In January 2025, Krause became involved with the US Treasury Department as part of the Department of Government Efficiency (DOGE), assigned as a special government employee. In February 2025 he was appointed as the Fiscal Assistant Secretary of the Treasury. His departure from day-to-day CSG leadership created leadership uncertainty at an already turbulent time for the business. Sridhar Mullapudi — a 25-year Citrix veteran — continues as Co-President and GM of the Citrix business unit. The departure did not change the underlying PE ownership dynamic or the pricing trajectory already in motion; the strategic direction was set. But it added another layer of uncertainty to a platform that customers were already questioning.</div>
+    </div>
+
+  </div>
+
+  <!-- The stay-vs-leave analysis — the key commercial section -->
+  <div style="text-align:center;margin:40px 0 32px;" class="fi d1">
+    <div class="eyebrow">The Burning Question</div>
+    <h3 style="font-size:clamp(20px,2.8vw,34px);font-weight:700;margin-top:8px;">Stay or Go? How Citrix Customers Are Really Thinking</h3>
+    <p style="color:rgba(255,255,255,0.4);font-size:14px;margin-top:8px;max-width:560px;margin-left:auto;margin-right:auto;">The answer is not as simple as the migration vendors want it to be. Real organisations face real constraints. Understanding the full spectrum of customer decision-making is essential for any credible EUC conversation.</p>
+  </div>
+
+  <div class="grid2 fi d1">
+
+    <div class="card" style="border-left:3px solid rgba(205,255,78,0.5);">
+      <div class="card-label" style="color:var(--green);">🚀 The Case for Migrating Away from Citrix</div>
+      <h3>Why many customers are leaving — or planning to</h3>
+      <ul style="color:rgba(255,255,255,0.6);font-size:13.5px;line-height:1.75;padding-left:18px;margin-top:10px;">
+        <li><strong style="color:rgba(255,255,255,0.85);">Cost trajectory:</strong> Subscription prices are rising; the direction of travel under PE ownership is clear. A 3-year locked subscription at today's rates may look worse than today's rate at renewal time 3 years from now.</li>
+        <li><strong style="color:rgba(255,255,255,0.85);">Bundle forcing:</strong> The "Universal" platform licence includes NetScaler, DaaS, and other components. Customers who only needed CVAD are now paying for capabilities they don't use.</li>
+        <li><strong style="color:rgba(255,255,255,0.85);">The VMware warning:</strong> Organisations that watched what happened to VMware customers post-Broadcom are making strategic decisions not to be in the same position with Citrix in 3–5 years.</li>
+        <li><strong style="color:rgba(255,255,255,0.85);">Microsoft's improving platform:</strong> AVD has matured significantly since 2019. The protocol (RDP Shortpath), graphics quality, Teams optimisation, and management tooling have all improved. The gap between Citrix HDX and AVD/RDP in most real-world use cases has narrowed substantially.</li>
+        <li><strong style="color:rgba(255,255,255,0.85);">Nerdio as the enabler:</strong> The operational complexity argument — "AVD is too hard to manage without Citrix" — collapses when Nerdio is in the picture. Organisations moving to AVD no longer need to accept raw Azure complexity in place of Citrix complexity.</li>
+        <li><strong style="color:rgba(255,255,255,0.85);">Licensing simplification:</strong> Microsoft 365 E3/E5 includes the entitlement to run AVD, FSLogix, and Windows 10/11 multi-session. For organisations already paying for M365, the marginal cost of AVD infrastructure is just Azure compute — which auto-scales with Nerdio.</li>
+      </ul>
+    </div>
+
+    <div class="card" style="border-left:3px solid rgba(255,165,0,0.5);">
+      <div class="card-label" style="color:#ffaa44;">⚠️ The Case for Staying on Citrix — For Now</div>
+      <h3>Why migration is not simple — and many will wait</h3>
+      <ul style="color:rgba(255,255,255,0.6);font-size:13.5px;line-height:1.75;padding-left:18px;margin-top:10px;">
+        <li><strong style="color:rgba(255,255,255,0.85);">Migration complexity is real:</strong> Citrix environments built over 15–20 years are not switched off overnight. Application compatibility testing, profile migration (often thousands of users), network reconfiguration, ADC/load balancer replacement (NetScaler), and end-user retraining represent 12–24 month programmes, not projects.</li>
+        <li><strong style="color:rgba(255,255,255,0.85);">Risk appetite:</strong> In regulated industries (FSI, healthcare, government), the risk of a failed desktop migration is not acceptable. Finance directors and CISOs who lived through a VDI failure in the 2000s are not eager to repeat the experience. "If it's working, the pain of change needs to exceed the pain of staying."</li>
+        <li><strong style="color:rgba(255,255,255,0.85);">NetScaler dependency:</strong> Many large Citrix customers also run NetScaler (Citrix ADC) for application delivery and load balancing — a separate product from the virtual desktop stack. Replacing NetScaler is an independent project with its own complexity. This creates a "hostage" dynamic: even customers who want to migrate VDI are reluctant to trigger two simultaneous migrations.</li>
+        <li><strong style="color:rgba(255,255,255,0.85);">ICA/HDX protocol advantages:</strong> For specific use cases — graphics-intensive workloads, very high-latency WAN connections, multimedia-rich environments — Citrix's HDX protocol still outperforms AVD's RDP Shortpath in measured performance. These edge cases matter to specific customer segments.</li>
+        <li><strong style="color:rgba(255,255,255,0.85);">Renewal leverage:</strong> Customers in active renewal negotiations have found that CSG will discount — sometimes significantly — to retain large accounts. The published price list is not always the final price. Organisations with leverage (large seat counts, strategic relationships) can negotiate.</li>
+        <li><strong style="color:rgba(255,255,ffffff,0.85);">Skill and resource constraints:</strong> Many IT teams are running hot. A major platform migration requires dedicated resource, budget approval, and executive sponsorship. Even motivated teams may have a 12–18 month runway before migration can realistically begin.</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- The nuanced middle ground -->
+  <div class="concept-box fi d2">
+    <h4>🎯 The Reality: Three Distinct Customer Groups — and How to Position Nerdio to Each</h4>
+    <p><strong style="color:var(--green);">Group 1 — Active Migrators (~30%): </strong>Organisations who have made the strategic decision to move away from Citrix and are in active evaluation or early migration. Their pain is real, their budget is approved, and their timeline is 12–24 months. For these customers, Nerdio's Citrix migration tooling, AVD deployment accelerators, and auto-scaling cost savings are the primary message. The migration tools within NME (site migration, workload assessment, host pool configuration from Citrix templates) reduce the migration timeline and risk. This is where Nerdio wins competitive displacement deals.</p>
+    <p><strong style="color:#ffaa44;">Group 2 — Evaluators (~40%): </strong>Organisations watching, running TCO analyses, and waiting for their next Citrix renewal to trigger a decision. They are not yet committed to migrating, but they are building internal business cases. For these customers, a Nerdio-led AVD proof of concept — deployed alongside the existing Citrix environment without disruption, demonstrating cost parity or savings — is the most powerful tool. The renewal date is the commercial forcing function; engage 9–12 months ahead of it.</p>
+    <p><strong style="color:rgba(255,255,255,0.45);">Group 3 — Staying Put (~30%): </strong>Organisations who have committed to Citrix for the next contract cycle — either because of genuine technical dependency (NetScaler, specific HDX use cases), risk aversion, or because they negotiated a tolerable renewal. These customers are not lost forever — their next renewal cycle is still a conversation opportunity — but they should not be forced. The credible Nerdio position here is: "We'll be ready when you are. And we'll prove the economics now so the next renewal is an easy decision."</p>
+  </div>
+
+  <!-- Parallel with VMware -->
+  <div class="grid2 fi d2">
+    <div class="card dark">
+      <div class="card-label">⚡ The VMware Parallel — The Canary in the Coalmine</div>
+      <h3>What happened to VMware customers tells Citrix customers everything</h3>
+      <p>Broadcom's VMware acquisition playbook: immediate partner programme termination for thousands of partners (2023), elimination of perpetual licences, consolidation into four bundled SKUs (VCF, VVF, etc.), price increases of 300–500% for some customers, cancellation of free ESXi tiers, and forced migration to subscription. The market reaction: mass evaluation of alternatives (Nutanix, OpenStack, Azure, Proxmox), a wave of regulatory complaints in the EU and UK, and the largest cloud migration wave the industry had seen. Broadcom's answer: it was willing to lose customers who weren't strategic to the model. Tom Krause watched this happen from the inside. Vista and Elliott brought him to CSG to apply a version of the same discipline. The question for Citrix customers is not whether CSG will follow the same path — the direction is already evident — but how fast, and how severe.</p>
+    </div>
+    <div class="card teal">
+      <div class="card-label" style="color:var(--teal);">🟢 The Nerdio Opportunity — Timing Is Everything</div>
+      <h3>The largest tailwind in EUC's commercial history</h3>
+      <p>The Broadcom VMware implosion and the Citrix pricing trajectory together represent the single largest commercial migration opportunity EUC has ever seen. Gartner estimates that tens of thousands of organisations run Citrix globally. Even if only 20–30% actively migrate in the next 3–5 years, that is an enormous pipeline of organisations seeking a managed AVD alternative. Nerdio is uniquely positioned: it is the only platform that makes AVD operationally comparable to Citrix in terms of management simplicity, adds auto-scaling cost savings that Citrix cannot match, and includes migration tooling that reduces the risk of the transition itself. For every Citrix renewal conversation in the UKI enterprise market — Schroders, Kingfisher, MUFG, SMBC, Direct Line, Aviva — Nerdio has a credible, commercially compelling answer. The window is open. The question is how fast Nerdio can move through it.</p>
+    </div>
+  </div>
+
+  <!-- Key people in this story -->
+  <div class="stat-grid fi d2">
+    <div class="stat-box"><div class="stat-val">$16.5B</div><div class="stat-lbl">Vista/Elliott acquisition of Citrix, 2022</div></div>
+    <div class="stat-box"><div class="stat-val">27%</div><div class="stat-lbl">CSG workforce cut in Krause's first two years</div></div>
+    <div class="stat-box"><div class="stat-val">8%</div><div class="stat-lbl">First price hike, April 2023</div></div>
+    <div class="stat-box"><div class="stat-val">2×</div><div class="stat-lbl">Monthly subscription price increase, Sept 2024</div></div>
+    <div class="stat-box"><div class="stat-val">30yr</div><div class="stat-lbl">Citrix installed base — the switching cost that keeps customers in place</div></div>
+    <div class="stat-box"><div class="stat-val">~70%</div><div class="stat-lbl">Citrix enterprise customers evaluating or planning migration (industry estimates)</div></div>
+  </div>
+
+</div>
+</div>
+<hr class="divider">
+
+
+<!-- ══ DEVICE MANAGEMENT EVOLUTION ══ -->
+<div class="era-section" id="device-mgmt">
+<div class="section">
+
+  <div class="era-header fi">
+    <div class="era-icon">📱</div>
+    <div>
+      <div class="era-label">Device Management · 1990s to Today</div>
+      <h2 class="era-title">From Server Rooms to Every Pocket<em>How managing endpoints went from physical visits to AI-driven zero-touch — and why it's now the core of EUC.</em></h2>
+      <p class="era-intro">Endpoint management is arguably the most consequential thread running through all of EUC history. Every era introduced new device types that IT had to manage without breaking what came before. The story runs from manual server configuration through SMS, SCCM, BlackBerry, AirWatch, Good, and eventually converges on the Microsoft Intune + Entra ID platform that underpins every modern EUC deployment — including Nerdio's.</p>
+    </div>
+  </div>
+
+  <!-- Timeline of device management -->
+  <div class="timeline fi">
+    <div class="tl-item">
+      <div class="tl-dot">🖥️</div>
+      <div class="tl-year">Early 1990s · The Manual Era</div>
+      <div class="tl-title">Sneakernet and physical visits</div>
+      <div class="tl-body">Managing PCs meant walking to each desk with a floppy disk. Software distribution was physical. Patching was irregular. Inventory was a spreadsheet someone maintained manually and forgot to update. There were no remote management tools. If a PC had a virus, you went to it. IT headcount was directly proportional to device count — one admin per ~50 machines was considered efficient.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot">⚙️</div>
+      <div class="tl-year">1994 · Microsoft SMS — Systems Management Server</div>
+      <div class="tl-title">The first attempt at managing PCs at scale</div>
+      <div class="tl-body">Microsoft's Systems Management Server (SMS) was the first major enterprise platform for remote software distribution, inventory collection, and patch deployment across Windows PCs. It was complex, needed significant infrastructure of its own, required a dedicated SQL Server database, and was notoriously difficult to get right. But it established the concept: a central server should know about every endpoint and be able to push changes to them. SMS 1.0 required agents on every machine and communicated over the corporate LAN — you had to be on the network.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot">🔧</div>
+      <div class="tl-year">1996–2007 · Microsoft Operations Manager → SCOM</div>
+      <div class="tl-title">Monitoring the infrastructure, not just the endpoints</div>
+      <div class="tl-body">Microsoft Operations Manager (MOM), later renamed System Center Operations Manager (SCOM), addressed a parallel problem: how do you know if your servers, applications, and infrastructure are healthy? SCOM deployed agents across servers and used management packs (rules for specific applications like Exchange, SQL, IIS) to monitor performance, raise alerts, and track health state. In virtualised VDI environments, SCOM became essential for monitoring the hypervisor layer, session hosts, and connection brokers. IT operations teams lived in SCOM dashboards. It remains in use in many large enterprises today — though it's increasingly being displaced by Azure Monitor, Microsoft Sentinel, and cloud-native observability tools.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot">🏗️</div>
+      <div class="tl-year">2003 · SCCM — System Center Configuration Manager</div>
+      <div class="tl-title">SMS evolves into the dominant Windows management platform</div>
+      <div class="tl-body">SMS 2003 became SCCM (System Center Configuration Manager) — the enterprise Windows management standard for the next 15 years. SCCM handled software deployment, OS imaging and deployment (via PXE boot and task sequences), hardware and software inventory, patch management (via WSUS integration), compliance reporting, and remote control. At peak, SCCM managed tens of millions of Windows endpoints worldwide. It required on-premises infrastructure: a site server, SQL database, distribution points, and management points. Every large enterprise had a dedicated SCCM team. The product became so deeply embedded that organisations still run it today — often in "co-management" alongside Intune.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot">📟</div>
+      <div class="tl-year">1999–2013 · BlackBerry — The First Enterprise Mobile Management</div>
+      <div class="tl-title">The device that invented mobile security for business</div>
+      <div class="tl-body">BlackBerry (Research In Motion) didn't just make phones — it invented the concept of secure enterprise mobile communication. The BlackBerry Enterprise Server (BES) sat inside the corporate firewall, encrypted email end-to-end, and gave IT complete control over devices: remote wipe, PIN policies, application whitelisting, data separation. Banks, law firms, government departments, and regulated industries mandated BlackBerry. At peak (2009–2010), RIM had 85M subscribers and 50%+ of US smartphone market share. The problem: the iPhone arrived in 2007. BlackBerry dismissed it. By 2013, BlackBerry's enterprise dominance was essentially over — but the concepts it pioneered (remote wipe, device policy, enterprise email separation, containerisation) became the DNA of every MDM/EMM platform that followed.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot">📱</div>
+      <div class="tl-year">2007–2010 · iPhone, BYOD &amp; the MDM Crisis</div>
+      <div class="tl-title">IT loses control of the device fleet overnight</div>
+      <div class="tl-body">The iPhone (June 2007) and Android (2008) detonated the enterprise device management model. Employees demanded to use their personal smartphones for work email. IT, used to owning every device, suddenly faced millions of unmanaged, heterogeneous, personally-owned devices touching corporate data. BYOD (Bring Your Own Device) policies emerged — a grudging acknowledgement that IT couldn't control what hardware people used. A new category was born: Mobile Device Management (MDM). Apple released its MDM protocol in iOS 4 (2010), enabling third parties to manage iPhones and iPads. The race was on.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot green">📲</div>
+      <div class="tl-year">2007–2015 · AirWatch, MobileIron, Good Technology</div>
+      <div class="tl-title">The MDM wars — a fragmented market of specialist vendors</div>
+      <div class="tl-body">A wave of MDM/EMM (Enterprise Mobility Management) vendors emerged to manage the mobile chaos: <strong>AirWatch</strong> (founded 2003, MDM pivot 2007) became the market leader — comprehensive, policy-rich, enterprise-grade. <strong>MobileIron</strong> (2007) focused on security-first mobile management. <strong>Good Technology</strong> (originally Motorola Good, then Good Technology) pioneered containerisation — separating corporate apps and data from personal apps in a secure "Good container" on the same device. This was a critical innovation: it meant IT could wipe corporate data without wiping the employee's personal photos. <strong>Citrix XenMobile</strong> entered the space with deep app virtualisation integration. <strong>JAMF</strong> owned Apple device management in education and creative industries. Each vendor had proprietary consoles, proprietary agent technologies, and incompatible policy models. Managing a mixed iOS/Android/Windows fleet meant three different consoles.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot">🔀</div>
+      <div class="tl-year">2014–2018 · Consolidation — Microsoft Acquires, Microsoft Wins</div>
+      <div class="tl-title">The market collapses into the Microsoft ecosystem</div>
+      <div class="tl-body">VMware acquired AirWatch for $1.54B in February 2014 — the largest enterprise mobility acquisition at the time. IBM acquired MobileIron in 2020. Good Technology was acquired by BlackBerry in 2015. Microsoft, meanwhile, had been building Intune — initially a modest cloud MDM service — and began investing heavily. The key strategic decision: bundle Intune into Microsoft Enterprise Mobility + Security (EMS), then into Microsoft 365. Suddenly, every organisation with Microsoft 365 E3 or E5 had an MDM platform included. The specialist MDM vendors couldn't compete with "it's already in your M365 licence." AirWatch (now VMware Workspace ONE) survived as a credible enterprise alternative, but Intune became the default for Microsoft-centric organisations — which is most of the world.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot tl-dot green">☁️</div>
+      <div class="tl-year">2016–Present · Microsoft Intune &amp; Modern Management</div>
+      <div class="tl-title">Cloud-native, policy-driven, agent-light endpoint management</div>
+      <div class="tl-body">Microsoft Intune (now part of Microsoft Endpoint Manager/Intune Suite) became the cloud-native answer to SCCM's on-premises complexity. Intune manages Windows, macOS, iOS, Android, and Linux from a single cloud portal — no on-premises infrastructure required. "Modern management" replaces image-based deployment with Autopilot (zero-touch provisioning: device arrives at employee's desk, they sign in with Entra ID, and it self-configures) and policy-driven configuration (no more group policy objects replicated from domain controllers). Co-management lets organisations run SCCM and Intune simultaneously during transition. The EUC world converged: Intune manages physical endpoints; AVD/Windows 365 manages virtual ones; both are enforced by Entra ID Conditional Access and the same security baselines. Nerdio's "Intune Insights" feature extends unified visibility across both virtual and physical devices — the management pane that sits above both.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot tl-dot green">🤖</div>
+      <div class="tl-year">2023–Present · AI-Driven Endpoint Management</div>
+      <div class="tl-title">From policy enforcement to predictive, autonomous management</div>
+      <div class="tl-body">The latest evolution moves from reactive management (detect problem → remediate) to predictive management (identify risk patterns → auto-remediate before impact). Microsoft Copilot in Intune can generate policy configurations from natural language. Endpoint Analytics predicts devices likely to have performance problems. Auto-remediation scripts fix common issues without tickets. Windows Autopatch automates patch deployment and rollback. The management platform is becoming a self-managing system — with the human in the loop for exception handling, not routine operations. For AVD environments managed by Nerdio, this extends to session host health: auto-heal restarts broken VMs, auto-scaling adjusts capacity based on usage signals, and image pipelines deploy updates on schedules without manual intervention.</div>
+    </div>
+  </div>
+
+  <!-- Vendor landscape grid -->
+  <div class="grid3 fi d1">
+    <div class="card dark">
+      <div class="card-label">Legacy Management Stack</div>
+      <h3>What large enterprises still run</h3>
+      <div class="pills">
+        <span class="pill warn">SCCM / ConfigMgr</span>
+        <span class="pill warn">WSUS</span>
+        <span class="pill warn">SCOM</span>
+        <span class="pill warn">Group Policy (GPO)</span>
+        <span class="pill dead">BlackBerry BES</span>
+        <span class="pill dead">Good Technology</span>
+        <span class="pill dead">MobileIron</span>
+      </div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.45);margin-top:14px;">Many large enterprises run SCCM and Intune in co-management simultaneously during multi-year cloud transitions. "Legacy" doesn't mean gone — it means expensive to maintain and increasingly hard to recruit for.</p>
+    </div>
+    <div class="card teal">
+      <div class="card-label">Modern Management Stack</div>
+      <h3>Where the market has landed</h3>
+      <div class="pills">
+        <span class="pill teal">Microsoft Intune</span>
+        <span class="pill teal">Windows Autopilot</span>
+        <span class="pill teal">Entra ID (Azure AD)</span>
+        <span class="pill teal">Windows Autopatch</span>
+        <span class="pill teal">JAMF (Apple)</span>
+        <span class="pill">VMware Workspace ONE</span>
+        <span class="pill">Hexnode</span>
+        <span class="pill">Kandji</span>
+      </div>
+    </div>
+    <div class="card green">
+      <div class="card-label">Where Nerdio Fits</div>
+      <h3>The unified view above it all</h3>
+      <p>Nerdio's "Intune Insights" layer gives IT teams unified visibility across AVD session hosts, Windows 365 Cloud PCs, and physical Intune-managed devices — device compliance status, patching status, app usage, warranty expiration — from a single interface. Instead of context-switching between the Intune portal, Azure portal, and AVD portal, Nerdio surfaces the signals that matter in one place. CIS Benchmark-aligned Intune baselines can be deployed at the click of a button rather than requiring weeks of policy authoring.</p>
+    </div>
+  </div>
+
+  <div class="concept-box fi d1">
+    <h4>📊 The Management Maturity Model — Where Is Your Organisation?</h4>
+    <p><strong style="color:rgba(255,255,255,0.85);">Level 1 — Ad hoc:</strong> No centralised management. PCs configured manually. Updates applied when users remember or IT physically visits. Inventory is a spreadsheet. Most SMBs pre-2015.</p>
+    <p><strong style="color:rgba(255,255,255,0.85);">Level 2 — On-premises managed:</strong> SCCM/Group Policy managing Windows PCs in the office. MDM for mobile devices. Requires VPN for remote management. Most mid-market enterprises 2010–2020.</p>
+    <p><strong style="color:rgba(255,255,255,0.85);">Level 3 — Cloud co-managed:</strong> SCCM and Intune running side-by-side. Some policies migrated to cloud. Autopilot for new devices. Conditional Access enforced. Most enterprises in transition today.</p>
+    <p><strong style="color:rgba(255,255,255,0.85);">Level 4 — Modern managed:</strong> Intune-only. No SCCM. Autopilot zero-touch provisioning. All policy in cloud. Entra ID joined. Conditional Access across all apps. AVD or Windows 365 for virtual workloads. Defender for Endpoint integrated. This is the target state — and where Nerdio accelerates the journey for AVD/W365 workloads.</p>
+    <p><strong style="color:rgba(255,255,255,0.85);">Level 5 — Autonomous:</strong> AI-driven predictive management. Self-healing. Natural language policy authoring. Zero-touch everything. Where the industry is heading 2025–2030.</p>
+  </div>
+
+</div>
+</div>
+<hr class="divider">
+
+<!-- ══ HYPERSCALERS & HARDWARE ══ -->
+<div class="era-section" id="hyperscalers">
+<div class="section">
+
+  <div class="era-header fi">
+    <div class="era-icon">🌍</div>
+    <div>
+      <div class="era-label">Hyperscalers &amp; Hardware · The Platform Wars</div>
+      <h2 class="era-title">Who Built the Infrastructure EUC Runs On<em>Cloud giants, hardware makers, and thin clients — and why Microsoft won the EUC cloud war.</em></h2>
+      <p class="era-intro">EUC doesn't exist in isolation. It runs on infrastructure — cloud platforms, physical hardware, networking equipment, and endpoint devices. The hyperscaler race between Microsoft, AWS, and Google fundamentally shaped which cloud desktop platform won. And the hardware ecosystem — Dell, HP, Lenovo, Apple, IGEL, Google — continues to evolve around the shift from thick clients to thin clients to cloud-managed devices.</p>
+    </div>
+  </div>
+
+  <!-- Hyperscaler race -->
+  <div style="text-align:center;margin-bottom:32px;" class="fi">
+    <div class="eyebrow">The Hyperscaler Race</div>
+    <h3 style="font-size:clamp(20px,2.8vw,32px);font-weight:700;margin-top:8px;">Cloud Giants &amp; the EUC Platform War</h3>
+  </div>
+
+  <div class="grid2 fi">
+    <div class="card" style="border-left:3px solid var(--teal);">
+      <div class="card-label" style="color:var(--teal);">🪟 Microsoft Azure — The Winner</div>
+      <h3>Why Microsoft won EUC's cloud war</h3>
+      <p>Microsoft's path to EUC dominance was neither obvious nor inevitable. Azure launched in 2010 — years behind AWS. But Microsoft had an asymmetric advantage: it owned Windows, Office, and Active Directory — the three things enterprises couldn't easily move away from. When Nadella pivoted in 2014 to "cloud-first," the strategic logic was simple: move the stuff organisations already depend on (Office → Office 365, AD → Entra ID, Windows → AVD/W365) to Azure, and they'll follow.</p>
+      <p>Azure Virtual Desktop, launching September 2019, was the culmination: a cloud-native virtual desktop infrastructure that only Microsoft could offer — Windows 10/11 multi-session licensing (a SKU available nowhere else), native Entra ID integration, FSLogix included free, and deep parity with every Microsoft 365 service. No other hyperscaler could replicate this. AWS and Google sell IaaS; Microsoft sells a complete, integrated EUC stack. That's why it won.</p>
+    </div>
+    <div class="card" style="border-left:3px solid rgba(255,153,0,0.6);">
+      <div class="card-label" style="color:#ff9900;">📦 AWS — The IaaS Giant That Missed EUC</div>
+      <h3>The infrastructure giant without a Windows advantage</h3>
+      <p>Amazon Web Services launched in 2006 and dominated cloud infrastructure for a decade. AWS had WorkSpaces (cloud desktop service, launched 2013) — a direct AVD competitor. But WorkSpaces never achieved meaningful market share in Windows desktop delivery. Why? AWS doesn't own Windows, Office, or Active Directory. Every WorkSpaces deployment required Windows Server licensing from Microsoft. Microsoft's multi-session Windows 10/11 — available only in Azure — made AVD dramatically cheaper for organisations running shared desktops. AWS CompSpaces are most common in Linux developer environments and niche use cases, not mainstream enterprise EUC.</p>
+      <p>AWS's EUC contribution: AppStream 2.0 (application streaming, not full desktop) found traction in education and kiosk scenarios. But AWS's strength is its breadth — 200+ cloud services — not specifically EUC. Most enterprises use AWS alongside Azure for workloads, with Azure holding the EUC desktop.</p>
+    </div>
+  </div>
+
+  <div class="grid2 fi d1">
+    <div class="card" style="border-left:3px solid rgba(66,133,244,0.6);">
+      <div class="card-label" style="color:#4285f4;">🔵 Google Cloud — The Chromebook Play</div>
+      <h3>Owning the endpoint, not the desktop</h3>
+      <p>Google's EUC strategy differed fundamentally from both Microsoft and AWS. Rather than competing on virtual Windows desktop delivery, Google attacked the endpoint — Chrome OS and Chromebook devices. In education, Google won decisively: affordable, easy to manage, zero local software, everything browser-based. In K-12 education globally, Chromebooks now hold over 60% market share.</p>
+      <p>Google Workspace (formerly G Suite) and Chrome Enterprise are Google's EUC play: managed ChromeOS devices, browser-based productivity apps, and Google Cloud as the backend. For Windows-centric organisations, Google Cloud Desktop-as-a-Service delivers Windows through a browser — but with the same fundamental limitation as AWS: no access to Microsoft's multi-session Windows licensing. Google's strongest EUC position is as an endpoint (Chromebooks as AVD thin clients) rather than a desktop platform — a use case that pairs well with Nerdio-managed AVD environments.</p>
+    </div>
+    <div class="card" style="border-left:3px solid rgba(167,149,199,0.7);">
+      <div class="card-label" style="color:var(--purple);">🟢 VMware — The On-Premises EUC Platform That Lost the Cloud War</div>
+      <h3>Dominant on-prem, outmanoeuvred in cloud</h3>
+      <p>VMware was the dominant EUC infrastructure platform for over a decade. VMware vSphere powered the hypervisor. VMware Horizon delivered VDI. VMware NSX handled the network. VMware Workspace ONE managed devices. It was a complete, if complex, on-premises EUC stack. The problem: when the cloud transition accelerated, VMware had no Azure equivalent. Horizon could run on Azure — but customers were just running VMware's software on Microsoft's infrastructure. Broadcom's acquisition in 2023 then destroyed the goodwill, pricing trust, and partner relationships VMware had spent 25 years building.</p>
+      <p>Omnissa, the spun-off Horizon/Workspace ONE entity, continues — but carries the brand damage and pricing uncertainty that Broadcom created. The Broadcom-VMware implosion accelerated Microsoft's AVD dominance more than any product launch could have.</p>
+    </div>
+  </div>
+
+  <!-- Horizontal rule within section -->
+  <div style="border-top:1px solid rgba(30,157,184,0.15);margin:48px 0 40px;"></div>
+
+  <!-- Hardware makers -->
+  <div style="text-align:center;margin-bottom:32px;" class="fi">
+    <div class="eyebrow">The Hardware Ecosystem</div>
+    <h3 style="font-size:clamp(20px,2.8vw,32px);font-weight:700;margin-top:8px;">Devices, Thin Clients &amp; the Endpoint Wars</h3>
+  </div>
+
+  <div class="grid3 fi">
+    <div class="card">
+      <div class="card-icon">💻</div>
+      <div class="card-label">Dell Technologies</div>
+      <h3>The enterprise PC incumbent</h3>
+      <p>Dell is the largest enterprise PC vendor globally and a dominant player in both traditional PC and thin client markets. Dell's Wyse thin client line (acquired 2012) became a staple of Citrix and VDI deployments — lightweight devices designed to connect to centralised session hosts. As AVD adoption grew, Dell positioned Wyse devices and standard Windows PCs as AVD endpoints. Dell's partnership with Microsoft (co-marketing, Azure Stack HCI integration) and its breadth of commercial portfolio make it a natural hardware complement to any AVD/Nerdio deployment. Dell also sells Azure Stack HCI appliances — converged infrastructure for organisations running AVD on-premises in Azure Local.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">💼</div>
+      <div class="card-label">HP Inc &amp; HP Enterprise</div>
+      <h3>PCs, thin clients, and printing — everywhere</h3>
+      <p>HP split into HP Inc (consumer/commercial PCs and printers) and Hewlett Packard Enterprise (servers, networking, services) in 2015. HP Inc's thin client line — the HP t-series — competes directly with Dell Wyse in enterprise VDI and cloud desktop environments. HP's Anyware (formerly Teradici) is a high-performance remote display protocol used in GPU-intensive workloads (engineering, media, design) where standard RDP and HDX don't deliver sufficient performance. Teradici's PCoIP protocol is used by AWS WorkSpaces and some Azure deployments for graphics-heavy use cases. HP also makes Elite-series commercial laptops widely deployed as managed Windows endpoints in Intune/Autopilot environments.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔴</div>
+      <div class="card-label">Lenovo</div>
+      <h3>From IBM ThinkPad to global PC leader</h3>
+      <p>Lenovo acquired IBM's PC division in 2005 (ThinkPad brand) and has grown to become the world's largest PC vendor by unit volume. ThinkPads remain the gold standard in enterprise durability and keyboard quality — the default choice for corporate IT departments in many verticals. Lenovo's thin client line (ThinClient series) serves VDI deployments. Lenovo's partnership with Microsoft on Autopilot — pre-enrolling commercial devices in the customer's Intune tenant before shipping — is a key enabler of zero-touch provisioning, where a new device arrives at an employee's desk and self-configures on first boot without IT touching it.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🍎</div>
+      <div class="card-label">Apple</div>
+      <h3>The premium endpoint that IT finally had to support</h3>
+      <p>Apple's entry into enterprise EUC was employee-driven rather than IT-driven. Creative professionals, executives, and software developers demanded Macs. IT departments had no tools to manage them — until JAMF emerged as the Apple Enterprise Management platform of choice. Today, Apple has a dedicated enterprise programme, Device Enrolment Program (DEP/Apple Business Manager), and works with Microsoft so that Macs can be enrolled in Intune alongside Windows devices. iPhones and iPads are managed via Intune MDM profiles. In EUC, Apple devices typically access Windows applications via AVD in a browser or the Windows App (formerly Remote Desktop app) — making them valid AVD thin clients. Increasingly, organisations run a mixed estate: Macs for power users, Windows 365 Cloud PCs for their Windows application access.</p>
+    </div>
+    <div class="card teal">
+      <div class="card-icon">🖥️</div>
+      <div class="card-label">IGEL Technology</div>
+      <h3>The thin client software play that reimagined the endpoint</h3>
+      <p>IGEL took a different approach to thin clients: instead of selling hardware, sell a Linux-based OS that converts any x86 device into a managed thin client. IGEL OS transforms a retired Windows PC, a Dell Wyse, or any compatible hardware into a lightweight, centrally-managed endpoint that connects to cloud desktops (AVD, Citrix, VMware, AWS WorkSpaces) via secure remote protocols. The IGEL Universal Management Suite (UMS) provides centralised policy management for every IGEL endpoint. In regulated industries where endpoint security is paramount — finance, healthcare, government — IGEL's read-only OS (nothing writes to local storage, all data lives in the cloud desktop) is a compelling security posture. IGEL integrates directly with Nerdio-managed AVD environments and is a frequent joint solution in enterprise deployments.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔵</div>
+      <div class="card-label">Google ChromeOS / Chromebook</div>
+      <h3>The thin client that won education and is entering enterprise</h3>
+      <p>Google's ChromeOS has succeeded as an enterprise thin client where dedicated thin client hardware struggled. Chromebooks are inexpensive, zero-maintenance (updates are automatic, OS is read-only, devices reset in 8 seconds), and centrally managed via Google Admin Console. In education, they dominate. In healthcare, ChromeOS-based thin clients connect to clinical applications via Citrix or AVD. In retail, Chrome Flex (ChromeOS on any x86 device) converts existing PCs into managed thin clients. Critically, Chromebooks work as AVD clients — accessing Microsoft AVD sessions through the Windows App browser experience — making them viable endpoints in Nerdio-managed environments. The endpoint cost drops dramatically; the management moves to the cloud desktop.</p>
+    </div>
+  </div>
+
+  <div class="concept-box fi d2">
+    <h4>🔗 The Hardware–Nerdio Connection</h4>
+    <p>The thin client and endpoint evolution directly strengthens the cloud desktop value proposition. When an endpoint is a Chromebook, an IGEL device, or a Windows 365-managed PC, it doesn't matter what it is — the Windows environment, applications, and data all live in Azure, managed by Nerdio. The endpoint is just a screen and an input device. Hardware refresh cycles become irrelevant: replace the device, sign in, and within minutes the user is back in their cloud desktop exactly where they left off. This "endpoint irrelevance" model — where IT manages the cloud environment, not the physical box — is the architectural direction the entire industry is moving toward, and it makes the Nerdio management layer more valuable with every device generation that passes.</p>
+  </div>
+
+  <div class="stat-grid fi d2">
+    <div class="stat-box"><div class="stat-val">92%</div><div class="stat-lbl">Fortune 500 companies use Microsoft Azure</div></div>
+    <div class="stat-box"><div class="stat-val">62%</div><div class="stat-lbl">Enterprises have AVD deployed (Gartner)</div></div>
+    <div class="stat-box"><div class="stat-val">60%+</div><div class="stat-lbl">K-12 US market share: Chromebooks</div></div>
+    <div class="stat-box"><div class="stat-val">$69B</div><div class="stat-lbl">Broadcom's VMware acquisition (2023)</div></div>
+    <div class="stat-box"><div class="stat-val">3</div><div class="stat-lbl">Hyperscalers with cloud desktop offerings</div></div>
+    <div class="stat-box"><div class="stat-val">1</div><div class="stat-lbl">With Windows multi-session licensing: Azure</div></div>
+  </div>
+
+</div>
+</div>
+<hr class="divider">
+
+<!-- ══ VERTICAL MARKETS ══ -->
+<div class="era-section" id="verticals">
+<div class="section">
+
+  <div class="era-header fi">
+    <div class="era-icon">🏢</div>
+    <div>
+      <div class="era-label">Vertical Markets · The Industry Lens</div>
+      <h2 class="era-title">Every Industry Has Its Own EUC Story<em>Why regulated, distributed, and data-intensive sectors drove EUC adoption — and where they're headed.</em></h2>
+      <p class="era-intro">EUC didn't evolve uniformly across industries. Regulated sectors adopted thin-client and VDI earliest because data residency and security drove the architecture. Education discovered cloud desktops through budget constraints. Retail needed distributed management at massive scale. Manufacturing grappled with OT/IT convergence. Each vertical shaped EUC's history — and each has a distinct path to modern cloud desktop architecture.</p>
+    </div>
+  </div>
+
+  <!-- Financial Services -->
+  <div class="card fi" style="margin-bottom:20px;">
+    <div style="display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:flex-start;">
+      <div class="era-icon" style="width:56px;height:56px;font-size:24px;">🏦</div>
+      <div>
+        <div class="card-label">Financial Services — Banking, Investment, Wealth Management</div>
+        <h3 style="font-size:19px;margin-bottom:10px;">From trading floor mainframes to cloud desktops under FCA scrutiny</h3>
+      </div>
+    </div>
+    <div class="grid3" style="margin-top:20px;margin-bottom:0;">
+      <div>
+        <div class="card-label" style="margin-bottom:8px;">Then</div>
+        <p>Financial services were among the earliest enterprise VDI adopters — driven by regulatory requirements (FCA, PRA, MiFID II, Basel III) that mandated data residency, audit trails, and the ability to prove what a trader had access to and when. Trading floors ran Bloomberg terminals, Reuters feeds, and proprietary execution systems on dedicated hardware. The idea of data leaving the building was anathema. Citrix was ubiquitous — centralising sensitive financial data in the datacentre while delivering it to trading desks, branch offices, and remote workers was exactly what Citrix was built for.</p>
+      </div>
+      <div>
+        <div class="card-label" style="margin-bottom:8px;">Now</div>
+        <p>COVID forced rapid remote-working adoption in a sector that had resisted it. Banks and asset managers deployed AVD at pace. DORA (Digital Operational Resilience Act) and FCA operational resilience requirements now mandate business continuity that cloud desktops inherently provide — if the office floods, employees access the same AVD session from home. The challenge: sovereignty and data residency. EU financial institutions must prove data stays in specific geographic regions. Azure's EU Data Boundary and sovereign cloud capabilities address this. Zero Trust architecture (Conditional Access, MFA, device compliance) is now a regulatory expectation, not a nice-to-have.</p>
+      </div>
+      <div>
+        <div class="card-label" style="margin-bottom:8px;">Tomorrow + Nerdio</div>
+        <p>AI Copilot in financial workflows creates new EUC governance requirements: which users can access Copilot, what data can it see, how is it audited? The secure, governed AVD environment — managed by Nerdio with role-based access controls, approval workflows, and audit logging — becomes the secure container for AI tool deployment. FSI firms like Schroders, MUFG, and SMBC are evaluating AVD/Nerdio precisely because of this governance story alongside cost optimisation versus legacy Citrix estates.</p>
+        <div class="pills" style="margin-top:12px;">
+          <span class="pill teal">DORA</span><span class="pill teal">FCA</span><span class="pill teal">PRA</span><span class="pill">MiFID II</span><span class="pill">Basel III</span><span class="pill">EU Data Boundary</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Insurance -->
+  <div class="card fi" style="margin-bottom:20px;">
+    <div style="display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:flex-start;">
+      <div class="era-icon" style="width:56px;height:56px;font-size:24px;">🛡️</div>
+      <div>
+        <div class="card-label">Insurance — Life, General, Lloyd's, Reinsurance</div>
+        <h3 style="font-size:19px;margin-bottom:10px;">Distributed workforces, legacy actuarial systems, and Solvency II</h3>
+      </div>
+    </div>
+    <div class="grid3" style="margin-top:20px;margin-bottom:0;">
+      <div>
+        <div class="card-label" style="margin-bottom:8px;">Then</div>
+        <p>Insurance companies ran notoriously complex IT estates — proprietary policy administration systems built in the 1980s and 90s, running on AS/400 or mainframe systems, wrapped in Citrix or Terminal Services to give claims handlers and underwriters access. The Lloyd's market in London was particularly complex: syndicates and managing agents sharing Lloyd's infrastructure but each maintaining separate IT environments. Branch office networks were expensive MPLS circuits. Remote access for field agents was a constant challenge.</p>
+      </div>
+      <div>
+        <div class="card-label" style="margin-bottom:8px;">Now</div>
+        <p>Solvency II (EU) and equivalent capital adequacy frameworks require insurers to prove operational resilience and data governance. The hybrid workforce model — underwriters in London, claims handlers distributed, actuaries anywhere — has driven AVD adoption as the consistent delivery mechanism for both modern SaaS tools and legacy insurance platforms. Direct Line, Aviva, AXA, and major Lloyd's syndicates are all evaluating or deploying cloud desktops as part of Citrix migration programmes accelerated by Cloud Software Group pricing changes.</p>
+      </div>
+      <div>
+        <div class="card-label" style="margin-bottom:8px;">Tomorrow + Nerdio</div>
+        <p>AI-driven underwriting and claims processing creates massive compute burst requirements — GPU-enabled AVD session hosts for AI workloads, scaled up on demand and auto-scaled down when not needed. Nerdio's auto-scaling patented technology handles exactly this: provision GPU-enabled VMs for the actuarial team's model runs, then scale to zero overnight. The cost saving versus keeping GPU infrastructure running 24/7 is dramatic.</p>
+        <div class="pills" style="margin-top:12px;">
+          <span class="pill teal">Solvency II</span><span class="pill teal">Lloyd's</span><span class="pill">FCA</span><span class="pill">PRA</span><span class="pill">IDD</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Healthcare -->
+  <div class="card fi" style="margin-bottom:20px;">
+    <div style="display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:flex-start;">
+      <div class="era-icon" style="width:56px;height:56px;font-size:24px;">🏥</div>
+      <div>
+        <div class="card-label">Healthcare — NHS, Hospital Groups, Life Sciences, Pharma</div>
+        <h3 style="font-size:19px;margin-bottom:10px;">Roaming clinicians, patient data, GDPR and the WannaCry wake-up call</h3>
+      </div>
+    </div>
+    <div class="grid3" style="margin-top:20px;margin-bottom:0;">
+      <div>
+        <div class="card-label" style="margin-bottom:8px;">Then</div>
+        <p>Healthcare was a late and reluctant VDI adopter. Clinical applications (EPR systems like Epic, Cerner, System C) were complex, performance-sensitive, and often required local graphics acceleration. The "roaming clinician" problem — a nurse or doctor who moves between wards, departments, and sites and needs their session to follow them instantly — was a key VDI use case. Citrix delivered this. The WannaCry ransomware attack of May 2017, which devastated NHS England (47 trusts affected, 19,000 cancelled appointments), was the most consequential cybersecurity event in healthcare IT history — and a brutal demonstration of what happens when endpoints aren't patched and managed.</p>
+      </div>
+      <div>
+        <div class="card-label" style="margin-bottom:8px;">Now</div>
+        <p>Post-WannaCry, NHS and private healthcare accelerated endpoint modernisation. GDPR (2018) and the Data Security and Protection Toolkit (DSPT) in the UK mandate demonstrable data governance for all NHS suppliers and trusts. Cloud desktops — where clinical data never touches the endpoint — are an architecturally strong GDPR and DSPT response. Windows 365 Cloud PCs are increasingly deployed for admin and back-office NHS staff. Epic and Cerner have both validated AVD as a supported delivery mechanism. IGEL thin clients are common in hospital wards — low-cost, zero-local-data, easy to wipe and reuse.</p>
+      </div>
+      <div>
+        <div class="card-label" style="margin-bottom:8px;">Tomorrow + Nerdio</div>
+        <p>AI diagnostics and clinical decision support tools require compliant, auditable, low-latency compute. The AVD session becomes the secure clinical workspace: patient data stays in Azure, AI tools operate within the governed environment, every interaction is auditable. Nerdio's security posture — deployed within the customer's own Azure subscription, CIS Benchmark Intune baselines, Conditional Access integration — directly maps to NHS DSPT requirements and ICO guidance.</p>
+        <div class="pills" style="margin-top:12px;">
+          <span class="pill teal">NHS DSPT</span><span class="pill teal">GDPR</span><span class="pill">ICO</span><span class="pill">HIPAA (US)</span><span class="pill">CQC</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Education -->
+  <div class="card fi" style="margin-bottom:20px;">
+    <div style="display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:flex-start;">
+      <div class="era-icon" style="width:56px;height:56px;font-size:24px;">🎓</div>
+      <div>
+        <div class="card-label">Education — K-12, Higher Education, Universities</div>
+        <h3 style="font-size:19px;margin-bottom:10px;">From computer labs to cloud classrooms — and every student's own device</h3>
+      </div>
+    </div>
+    <div class="grid3" style="margin-top:20px;margin-bottom:0;">
+      <div>
+        <div class="card-label" style="margin-bottom:8px;">Then</div>
+        <p>Education was defined by the computer lab — a room of shared PCs managed by an overworked IT technician. Universities ran shared VDI pools for specialist software (AutoCAD, MATLAB, SPSS, Adobe Creative Suite) because students couldn't afford the software or the hardware to run it. The lab booking system was the bottleneck. Microsoft's Imagine (formerly DreamSpark) and educational volume licensing made Windows and Office affordable, but software specialisation requirements remained complex.</p>
+      </div>
+      <div>
+        <div class="card-label" style="margin-bottom:8px;">Now</div>
+        <p>Google won K-12 with Chromebooks — cheap, manageable, browser-centric. Microsoft is winning it back through Windows 365 Education and Azure Lab Services. Universities are deploying AVD to replace physical computer labs: instead of buying 200 CAD workstations, deploy 200 GPU-enabled AVD sessions accessible from any device. Students access specialist software from their laptop, tablet, or home PC. COVID forced this: when universities closed in March 2020, institutions with cloud-based labs maintained continuity; those with physical labs cancelled practicals for a year.</p>
+      </div>
+      <div>
+        <div class="card-label" style="margin-bottom:8px;">Tomorrow + Nerdio</div>
+        <p>The "bring any device, access everything" university model is the natural endpoint for cloud desktop EUC in education. A student enrols, gets a Microsoft 365 Education licence, and Nerdio provisions a Windows 365 Cloud PC with their course software pre-installed. No lab queuing. No hardware refresh budget. No IT staff physically imaging machines. Sustainable and scalable — and Nerdio's auto-scaling ensures GPU compute is only running during class hours.</p>
+        <div class="pills" style="margin-top:12px;">
+          <span class="pill teal">Azure Lab Services</span><span class="pill teal">Windows 365 Education</span><span class="pill">FERPA (US)</span><span class="pill">GDPR (EU)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Retail -->
+  <div class="card fi" style="margin-bottom:20px;">
+    <div style="display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:flex-start;">
+      <div class="era-icon" style="width:56px;height:56px;font-size:24px;">🛒</div>
+      <div>
+        <div class="card-label">Retail &amp; Consumer Goods — High Street, e-Commerce, Supply Chain</div>
+        <h3 style="font-size:19px;margin-bottom:10px;">Thousands of stores, seasonal surges, and the store associate device problem</h3>
+      </div>
+    </div>
+    <div class="grid3" style="margin-top:20px;margin-bottom:0;">
+      <div>
+        <div class="card-label" style="margin-bottom:8px;">Then</div>
+        <p>Retail IT faced a unique challenge: managing thousands of endpoints across hundreds or thousands of store locations, with no dedicated IT staff in each location. Head office systems (ERP, merchandising, planning, HR) were delivered via Citrix to store managers on shared PCs or thin clients. Point-of-sale terminals ran locked-down Windows images. Seasonal peaks (Christmas, Black Friday) created massive compute demand spikes that on-premises infrastructure either over-provisioned for or failed to meet. Deploying a software update across 500 stores overnight was a complex, failure-prone operation.</p>
+      </div>
+      <div>
+        <div class="card-label" style="margin-bottom:8px;">Now</div>
+        <p>Retailers like Kingfisher (B&Q, Screwfix, Castorama) are deploying AVD to replace Citrix-delivered head office applications. Cloud desktops solve the store IT problem: the endpoint in the store is simple (thin client or browser-based), the complex application logic lives in Azure, and updates deploy centrally. Store associates increasingly use mobile devices (tablets, handheld scanners) managed via Intune. PCI-DSS compliance — mandatory for any card payment processing — requires demonstrable endpoint security controls that Intune + Conditional Access + Defender for Endpoint address.</p>
+      </div>
+      <div>
+        <div class="card-label" style="margin-bottom:8px;">Tomorrow + Nerdio</div>
+        <p>Nerdio's auto-scaling is purpose-built for retail seasonality. Scale AVD capacity up for the Christmas trading peak, Black Friday, or a major product launch; auto-scale down in January. Pay only for what you use. For a retailer with 50,000 staff who may need simultaneous system access during peak periods, the cost efficiency versus maintaining peak-provisioned on-premises Citrix infrastructure is transformative. Kingfisher is an active Nerdio pipeline account for exactly this reason.</p>
+        <div class="pills" style="margin-top:12px;">
+          <span class="pill teal">PCI-DSS</span><span class="pill">GDPR</span><span class="pill">Azure Autoscale</span><span class="pill">Seasonal burst</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Manufacturing -->
+  <div class="card fi" style="margin-bottom:20px;">
+    <div style="display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:flex-start;">
+      <div class="era-icon" style="width:56px;height:56px;font-size:24px;">🏭</div>
+      <div>
+        <div class="card-label">Manufacturing &amp; Industrial — Automotive, Aerospace, Heavy Industry</div>
+        <h3 style="font-size:19px;margin-bottom:10px;">OT meets IT — the factory floor finally joins the managed estate</h3>
+      </div>
+    </div>
+    <div class="grid3" style="margin-top:20px;margin-bottom:0;">
+      <div>
+        <div class="card-label" style="margin-bottom:8px;">Then</div>
+        <p>Manufacturing had two completely separate IT worlds: the corporate IT network (PCs, email, ERP) and the operational technology (OT) network (industrial control systems, PLCs, SCADA, CNC machines). These were air-gapped by design — the OT network never touched the internet. Designers ran CAD workstations (often expensive dedicated graphics hardware) in engineering. Factory floor workers had minimal PC access. Managing hundreds of geographically distributed plants with different regional IT teams was a patchwork of inconsistent configurations and unpatched systems.</p>
+      </div>
+      <div>
+        <div class="card-label" style="margin-bottom:8px;">Now</div>
+        <p>Industry 4.0 — the convergence of physical and digital manufacturing — is breaking down the OT/IT divide. IoT sensors on machines send data to Azure. Digital twins model factory processes. Remote monitoring by central engineering teams requires engineers to access plant systems and design tools from any location. GPU-enabled AVD sessions deliver CAD applications (Siemens NX, PTC Creo, Autodesk) to engineers without dedicated workstations. The OT security posture becomes critical: Microsoft Defender for IoT and Azure Purview extend Zero Trust principles to the factory floor.</p>
+      </div>
+      <div>
+        <div class="card-label" style="margin-bottom:8px;">Tomorrow + Nerdio</div>
+        <p>As manufacturing IT consolidates onto Azure, managing the EUC layer across global plants — each with its own Azure region, Entra ID tenant structure, and compliance requirements — requires the kind of multi-tenant, cross-tenant management that Nerdio provides. A global automotive manufacturer with plants in 15 countries, each with Azure connectivity, needs one management plane that understands the full estate. That's exactly what NME's multi-Entra ID tenant support enables.</p>
+        <div class="pills" style="margin-top:12px;">
+          <span class="pill teal">Industry 4.0</span><span class="pill">IEC 62443</span><span class="pill">NIST</span><span class="pill">OT/IT convergence</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Public Sector quick card -->
+  <div class="grid2 fi d1">
+    <div class="card purple">
+      <div class="card-icon">🏛️</div>
+      <div class="card-label purple">Public Sector &amp; Government</div>
+      <h3>Sovereignty, security clearance, and digital transformation</h3>
+      <p>Government EUC is defined by security classification levels and sovereignty requirements. SECRET and above requires on-premises or sovereign cloud solutions (Microsoft Azure Government, UK Government Cloud). Below classification, Microsoft 365 GCC (Government Community Cloud) and AVD in sovereign regions address data residency. Governments are large, legacy Citrix deployments undergoing forced migration as Citrix Cloud Software Group pricing becomes untenable for public sector budgets. Crown Commercial Service (UK) frameworks increasingly include AVD and Windows 365 as standard procurement routes. Nerdio supports Azure Government and GCC High for exactly this market.</p>
+    </div>
+    <div class="card purple">
+      <div class="card-icon">⚖️</div>
+      <div class="card-label purple">Legal &amp; Professional Services</div>
+      <h3>The billable hour, client confidentiality, and matter isolation</h3>
+      <p>Law firms were early Citrix adopters for the same reasons as banking: client confidentiality, matter isolation (no cross-contamination of client data), and the ability to demonstrate to regulators what a fee earner had access to and when. Magic Circle and Silver Circle law firms run highly managed, locked-down desktop environments. The shift to remote working post-COVID accelerated AVD adoption: lawyers billing from home need the same controlled, auditable environment they had in the office. Per-matter AVD session isolation — different host pools for different client matters — is an emerging use pattern. Professional services firms (Big Four, consulting) follow a similar pattern at larger scale.</p>
+    </div>
+  </div>
+
+  <div class="concept-box fi d2" style="border-left-color:var(--green);">
+    <h4 style="color:var(--green);">🎯 The Vertical Common Thread — Why Every Industry Needs What Nerdio Does</h4>
+    <p>Across every vertical, the same pattern emerges: <strong style="color:rgba(255,255,255,0.85);">regulatory pressure</strong> drove the need for controlled, auditable desktop environments → <strong style="color:rgba(255,255,255,0.85);">complexity and cost</strong> of on-premises Citrix/VDI made it unsustainable → <strong style="color:rgba(255,255,255,0.85);">Microsoft's cloud platform</strong> (AVD, Windows 365, Intune, Entra ID) provided the cloud-native alternative → but <strong style="color:rgba(255,255,255,0.85);">operational complexity</strong> of native Azure tools without a management layer creates the same IT burden in a different place. That gap — between Microsoft's raw platform capability and the operational simplicity organisations need — is precisely where Nerdio lives. Every regulated vertical is a Nerdio opportunity.</p>
+  </div>
+
+</div>
+</div>
+
+
+<!-- ══ KEY PEOPLE ══ -->
+<div class="era-section" id="people">
+<div class="section">
+
+  <div style="text-align:center;margin-bottom:48px;" class="fi">
+    <div class="eyebrow">People Worth Knowing</div>
+    <h2 style="font-size:clamp(26px,3.5vw,42px);font-weight:700;margin-top:10px;">The Figures Who Shaped EUC</h2>
+    <p style="color:rgba(255,255,255,0.45);font-size:14px;margin-top:10px;max-width:500px;margin-left:auto;margin-right:auto;">From the architects of virtualisation to the people building the next chapter — these are the names to know.</p>
+  </div>
+
+  <div class="grid3 fi">
+    <div class="person-card">
+      <div class="person-avatar">EI</div>
+      <div class="person-info">
+        <h4>Ed Iacobucci <span style="font-size:11px;color:rgba(255,255,255,0.35);font-weight:400;">(1953–2013)</span></h4>
+        <div class="role">Founder, Citrix Systems (1989)</div>
+        <p>Left IBM in 1989 to found Citrix with $3M and a vision for server-based multi-user Windows computing. His ICA protocol and WinFrame product defined enterprise app delivery for a generation. Stepped down as Citrix chairman in 2000; passed away June 2013. His founding vision underpins every cloud desktop sold today.</p>
+      </div>
+    </div>
+    <div class="person-card">
+      <div class="person-avatar">DG</div>
+      <div class="person-info">
+        <h4>Diane Greene</h4>
+        <div class="role">Co-founder &amp; CEO, VMware</div>
+        <p>Led VMware from founding through its acquisition by EMC and its ascent to datacentre dominance. Mainstreamed server virtualisation — without which VDI (and cloud computing as we know it) couldn't exist.</p>
+      </div>
+    </div>
+    <div class="person-card">
+      <div class="person-avatar">SN</div>
+      <div class="person-info">
+        <h4>Satya Nadella</h4>
+        <div class="role">CEO, Microsoft (2014–present)</div>
+        <p>Transformed Microsoft from a declining PC-era company into the dominant cloud platform. His "mobile-first, cloud-first" pivot created the conditions for Azure Virtual Desktop, Intune, Entra ID, and Copilot to exist.</p>
+      </div>
+    </div>
+    <div class="person-card">
+      <div class="person-avatar">JK</div>
+      <div class="person-info">
+        <h4>John Kindervag</h4>
+        <div class="role">Creator, Zero Trust (Forrester, 2010)</div>
+        <p>Coined "Zero Trust" — "never trust, always verify" — while at Forrester Research. The framework he articulated became the foundational security philosophy for modern EUC, implemented through Conditional Access, Entra ID, and Microsoft Defender.</p>
+      </div>
+    </div>
+    <div class="person-card">
+      <div class="person-avatar">SM</div>
+      <div class="person-info">
+        <h4>Scott Manchester</h4>
+        <div class="role">CPTO, Nerdio (Jan 2026) · ex-Microsoft (25 years)</div>
+        <p>Led Windows 365, Azure Virtual Desktop, and Remote Desktop Services at Microsoft for 25 years. Joined Nerdio as CPTO on January 7, 2026 — having worked closely with the Nerdio team throughout his Microsoft tenure. The single individual who best bridges Microsoft's platform and the management layer built on top of it.</p>
+      </div>
+    </div>
+    <div class="person-card">
+      <div class="person-avatar">VV</div>
+      <div class="person-info">
+        <h4>Vadim Vladimirskiy</h4>
+        <div class="role">CEO &amp; Co-Founder, Nerdio</div>
+        <p>Built Nerdio from an MSP tooling project into a $1B+ platform company. Made the right bets at the right time: Microsoft-first, Azure-native, management-layer strategy. Led the company through Series B and the $500M Series C.</p>
+      </div>
+    </div>
+    <div class="person-card">
+      <div class="person-avatar">GS</div>
+      <div class="person-info">
+        <h4>Gavriella Schuster</h4>
+        <div class="role">Nerdio Board (April 2022) · ex-Microsoft CVP Global Channel</div>
+        <p>Spent 25 years at Microsoft, growing the partner ecosystem to 90,000+ cloud services partners with $1T in partner-driven sales value. Left Microsoft August 2021; joined Nerdio's board April 2022. Brings the Microsoft partner ecosystem perspective and relationships that strengthen Nerdio's co-sell positioning globally.</p>
+      </div>
+    </div>
+    <div class="person-card">
+      <div class="person-avatar">BM</div>
+      <div class="person-info">
+        <h4>Brian Madden</h4>
+        <div class="role">EUC Educator, Analyst &amp; Author</div>
+        <p>Founded BrianMadden.com — the go-to independent resource for EUC practitioners for two decades. His books, conference talks, and blog posts educated a generation of VDI engineers. Now continues at brianmadden.ai.</p>
+      </div>
+    </div>
+    <div class="person-card">
+      <div class="person-avatar">MT</div>
+      <div class="person-info">
+        <h4>Mark Templeton</h4>
+        <div class="role">President 1998, CEO 2001–2015, Citrix Systems</div>
+        <p>Joined Citrix in 1995 as VP Marketing before the IPO. Became President in 1998 and CEO in 2001, leading Citrix for over 20 years. Grew it from a $15M single-product company to a $3B+ global platform with 100M+ users — the dominant EUC vendor of the 2000s.</p>
+      </div>
+    </div>
+    <div class="person-card">
+      <div class="person-avatar">JL</div>
+      <div class="person-info">
+        <h4>Joseph Landes</h4>
+        <div class="role">Co-Founder &amp; CRO, Nerdio · ex-Microsoft (23 years)</div>
+        <p>Spent 23 years as a Microsoft executive before joining Vladimirskiy as Nerdio's co-founder in 2018 and investing in the $8M Series A. Built the go-to-market motion, Partnerd partner programme, and sales organisation that scaled Nerdio to unicorn status. Driving the EMEA and global expansion strategy.</p>
+      </div>
+    </div>
+    <div class="person-card">
+      <div class="person-avatar">HT</div>
+      <div class="person-info">
+        <h4>Hock Tan</h4>
+        <div class="role">CEO, Broadcom</div>
+        <p>Unintentionally the most important catalyst for EUC migration in a decade. His post-VMware acquisition decisions — eliminating perpetual licences, forcing bundles, abandoning SMB customers — triggered the largest voluntary platform exodus the industry had ever seen.</p>
+      </div>
+    </div>
+    <div class="person-card">
+      <div class="person-avatar">BA</div>
+      <div class="person-info">
+        <h4>Brad Anderson</h4>
+        <div class="role">Microsoft CVP, Enterprise Client &amp; Mobility</div>
+        <p>The internal Microsoft champion for modern endpoint management. Evangelised the shift from on-premises SCCM to cloud-native Intune, co-management, and the "modern management" architecture that underpins every cloud desktop environment today.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+<hr class="divider">
+
+<!-- ══ CONCEPTS REFERENCE ══ -->
+<div class="era-section" id="concepts">
+<div class="section">
+
+  <div style="text-align:center;margin-bottom:48px;" class="fi">
+    <div class="eyebrow">Concepts &amp; Terminology</div>
+    <h2 style="font-size:clamp(26px,3.5vw,42px);font-weight:700;margin-top:10px;">The Terms Everyone Uses But Not Everyone Explains</h2>
+  </div>
+
+  <div class="grid2 fi">
+    <div class="card">
+      <details>
+        <summary>VDI — Virtual Desktop Infrastructure</summary>
+        <div class="detail-body">
+          <p>Running a user's Windows desktop as a virtual machine on a server in a datacentre, rather than on the user's physical PC. The user connects via a remote display protocol (RDP, ICA, Blast). Compute, storage, and OS all live centrally. The endpoint just renders the screen and sends input.</p>
+          <p>Traditional VDI = your infrastructure, your datacentre. Cloud VDI (AVD) = Microsoft's infrastructure, your configuration. Same concept, radically different operational model.</p>
+        </div>
+      </details>
+      <details>
+        <summary>AVD — Azure Virtual Desktop</summary>
+        <div class="detail-body">
+          <p>Microsoft's cloud-native virtual desktop platform, running entirely on Azure. Microsoft manages the infrastructure (host pools, session brokering, authentication gateway). You manage the virtual machines (session hosts), images, and configuration. Launched 2019. Includes Windows 10/11 multi-session — a unique licence available only in Azure that lets multiple users share one Windows client OS VM, dramatically reducing cost.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Windows 365 — Cloud PC</summary>
+        <div class="detail-body">
+          <p>A simpler, fixed-price alternative to AVD. You pick a size (e.g. 2 vCPU / 8GB RAM / 128GB storage), assign it to a user, and they get a persistent Cloud PC — always theirs, always the same, accessible from any browser. Fixed monthly pricing per user. No Azure infrastructure expertise required. Less flexible than AVD but far simpler to operate. Best for organisations that want cloud desktops without complexity.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Zero Trust — Never Trust, Always Verify</summary>
+        <div class="detail-body">
+          <p>A security philosophy (coined by John Kindervag, 2010) that rejects the perimeter security model. Instead of assuming everything inside the network is safe, Zero Trust requires every access request to be verified regardless of origin — checking: who is the user (identity), what device are they on (compliance), where are they (location/risk), and what are they trying to access (application sensitivity).</p>
+          <p>In EUC practice, Zero Trust is implemented through Microsoft Entra ID (identity), Intune (device compliance), Conditional Access (policy engine), and Microsoft Defender (threat signals). Every AVD login, every SaaS app access, every API call is evaluated against these signals before access is granted.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Conditional Access</summary>
+        <div class="detail-body">
+          <p>Microsoft Entra ID's policy engine for implementing Zero Trust. Evaluates signals (identity + device compliance + location + app sensitivity + risk score) and makes an access decision: allow, block, or require additional verification (MFA, device enrolment, Terms of Use acceptance). Conditional Access policies control what users can access AVD and Windows 365 environments, from which devices, and under what conditions. Understanding CA is essential for any EUC architect deploying on Microsoft's cloud platform.</p>
+        </div>
+      </details>
+      <details>
+        <summary>DEX — Digital Employee Experience</summary>
+        <div class="detail-body">
+          <p>The measurement and optimisation of how effectively technology serves employees. Goes beyond infrastructure health ("the server is up") to measure what users actually experience: how fast do apps launch, how reliable is the network, how long does login take, how often do applications crash. DEX platforms (Lakeside, ControlUp, Nexthink) instrument thousands of data points per session to drive both reactive support (diagnose why user X is having a bad day) and proactive optimisation (spot patterns before users complain). Post-COVID, DEX became a boardroom metric — the equivalent of a customer satisfaction score, but for internal technology.</p>
+        </div>
+      </details>
+    </div>
+    <div class="card">
+      <details>
+        <summary>SD-WAN — Software-Defined Wide Area Networking</summary>
+        <div class="detail-body">
+          <p>A networking architecture that separates the network control plane from the physical hardware, enabling intelligent traffic routing across multiple connection types (MPLS, broadband, LTE, 5G). SD-WAN can direct Office 365 traffic directly to the internet (local breakout) while sending sensitive corporate traffic through a central security hub — optimising both performance and cost. Critical for EUC because cloud desktop performance depends heavily on network quality and routing decisions. A poorly routed AVD session will feel terrible even if the Azure infrastructure is perfect.</p>
+        </div>
+      </details>
+      <details>
+        <summary>SASE — Secure Access Service Edge</summary>
+        <div class="detail-body">
+          <p>A framework (Gartner, 2019) that converges network and security services into a single cloud-delivered platform. Combines SD-WAN, ZTNA (Zero Trust Network Access), CASB (Cloud Access Security Broker), Secure Web Gateway, and Firewall-as-a-Service. Instead of managing separate products for each capability, SASE vendors (Zscaler, Palo Alto Prisma Access, Cloudflare) deliver a unified service that inspects and routes traffic securely regardless of user location. For EUC, SASE defines how users (in an office, at home, in an AVD session) securely reach applications wherever they live.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Infrastructure as Code (IaC)</summary>
+        <div class="detail-body">
+          <p>Managing and provisioning infrastructure through machine-readable definition files (code) rather than manual processes or GUI clicks. Tools: Terraform (multi-cloud, declarative), Bicep (Microsoft's native Azure IaC language), ARM Templates, Ansible (configuration management). In EUC, IaC means entire AVD environments — host pools, session hosts, networking, policies, image pipelines — can be defined in code, version-controlled in Git, reviewed, tested, and deployed repeatably. Reduces configuration drift (when the live environment no longer matches the intended configuration) and enables disaster recovery at speed.</p>
+        </div>
+      </details>
+      <details>
+        <summary>FSLogix — Profile Containers</summary>
+        <div class="detail-body">
+          <p>A profile management technology that mounts user profiles as VHD(X) disk containers rather than copying files across the network at login. This makes profile loading near-instant, eliminates corruption, and works correctly with OneDrive, Teams, Outlook search indexing, and other Microsoft applications that break in traditional roaming profile scenarios. Microsoft acquired FSLogix in 2018 and made it free — it now ships with every Microsoft 365 subscription. FSLogix Profile Container is a mandatory component of virtually every AVD deployment.</p>
+        </div>
+      </details>
+      <details>
+        <summary>SaaS — Software as a Service</summary>
+        <div class="detail-body">
+          <p>Software delivered via the internet on a subscription basis, hosted and operated by the vendor. The user accesses it through a browser — no local installation, no local updates, no local server required. Examples: Microsoft 365 (email, Office apps, Teams), Salesforce, Workday, ServiceNow, Slack, Zoom. SaaS adoption accelerated the rationale for cloud desktops: if your applications are already in the cloud, the argument for running Windows in the cloud (rather than managing physical PCs) becomes much stronger. SaaS also changed the network model — traffic goes to the internet, not to the datacentre, which is why SD-WAN and SASE matter.</p>
+        </div>
+      </details>
+      <details>
+        <summary>DevOps in EUC Context</summary>
+        <div class="detail-body">
+          <p>DevOps is a culture and set of practices that combines software development (Dev) and IT operations (Ops) with the goal of shortening development cycles and delivering changes continuously. In EUC, DevOps principles now apply to: golden image pipelines (automated builds with Packer, tested with automated tooling, deployed through staged rings), policy management (Intune configurations in Git, reviewed and deployed via CI/CD), and environment provisioning (Terraform/Bicep scripts version-controlled and deployed automatically). The EUC professional who understands Git, pipelines, and IaC is increasingly more valuable than one who only knows how to click through GUIs.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+
+</div>
+</div>
+<hr class="divider">
+
+<!-- ══ FUTURE ══ -->
+<div class="era-section future-hero" id="future">
+<div class="section">
+
+  <div class="era-header fi" style="border-bottom-color:rgba(205,255,78,0.18);">
+    <div class="era-icon" style="background:rgba(205,255,78,0.08);border-color:rgba(205,255,78,0.3);">🔭</div>
+    <div>
+      <div class="era-label" style="color:var(--green);">What Comes Next · 2026 and Beyond</div>
+      <h2 class="era-title">The Autonomous Workspace Era<em>AI, agentic computing, and the platform that manages itself.</em></h2>
+      <p class="era-intro">The next chapter is being written now. The shift from manual administration to AI-driven autonomous management is underway. The workspace is becoming intelligent — capable of predicting, healing, and optimising itself without human intervention. And the platform layer that sits between Microsoft's raw power and real-world organisations becomes more valuable, not less.</p>
+    </div>
+  </div>
+
+  <div class="grid3 fi d1">
+    <div class="card green">
+      <div class="card-icon">🤖</div>
+      <div class="card-label green">AI-Native Platform Management</div>
+      <h3>The self-managing environment</h3>
+      <p>Auto-scaling already exists. What comes next is AI that predicts demand before it happens — adjusting capacity for a Monday morning login surge, a quarter-end finance crunch, or a product launch — without human input. Self-healing goes from "restart the VM" to "diagnose the root cause and remediate before the ticket is raised." Nerdio's platform is positioned to embed AI across every operational decision.</p>
+    </div>
+    <div class="card green">
+      <div class="card-icon">🧠</div>
+      <div class="card-label green">Copilot + Agentic AI in the Workspace</div>
+      <h3>AI as a workspace citizen, not a feature</h3>
+      <p>Microsoft Copilot is already in M365, Teams, and Windows. What comes next is AI agents — autonomous software that can perform multi-step tasks, access enterprise data, and interact with other systems. For EUC, this means the managed desktop becomes the secure container in which AI agents operate. Governance, data residency, and access controls for AI become EUC problems — requiring the same Conditional Access, Intune compliance, and Zero Trust architecture already in place.</p>
+    </div>
+    <div class="card green">
+      <div class="card-icon">📱</div>
+      <div class="card-label green">The Endpoint Becomes Irrelevant</div>
+      <h3>Identity replaces the device as the security boundary</h3>
+      <p>As more compute moves server-side and more apps are SaaS, the physical device matters less than the verified identity and compliant posture it presents. A thin Chrome OS device, a personal Mac, a smartphone — increasingly interchangeable access points to the same cloud-resident workspace. Device management shifts from controlling the hardware to verifying the health signal the hardware can provide.</p>
+    </div>
+  </div>
+
+  <div class="grid2 fi d2">
+    <div class="card">
+      <div class="card-icon">🌍</div>
+      <div class="card-label">Global Workforce, No Infrastructure</div>
+      <h3>Hire anywhere. Provision in hours.</h3>
+      <p>Organisations increasingly hire globally — and need to provision a secure, compliant Windows environment to someone in a country where they have no physical infrastructure, no legal entity, and no IT presence. Cloud desktops via AVD are the answer: spin up a Cloud PC in the nearest Azure region, assign it via Intune, enforce Conditional Access, and the employee is productive within hours. This use case alone will drive EUC's cloud-native shift for the next decade.</p>
+    </div>
+    <div class="card teal">
+      <div class="card-icon">🏗️</div>
+      <div class="card-label">The Management Layer Becomes Permanent</div>
+      <h3>Why Nerdio's position only strengthens</h3>
+      <p>Microsoft will dominate the EUC platform layer — AVD, Windows 365, Intune, Entra ID. That's increasingly certain. What Microsoft won't do is solve operational complexity, cost governance at scale, or multi-tenant MSP management. The management platform layer — the Nerdio layer — becomes more valuable as the underlying Microsoft platform becomes more capable and more widely adopted. More customers on AVD means more customers who need what Nerdio does. The market expands, not contracts.</p>
+      <p style="margin-top:10px;">Just as Salesforce's growth created an ecosystem of CRM management tools, Microsoft's cloud desktop platform is creating its own. That ecosystem is in its first chapter.</p>
+    </div>
+  </div>
+
+  <!-- Summary Arc -->
+  <div style="margin-top:60px;text-align:center;" class="fi">
+    <div class="eyebrow">The Complete Arc</div>
+    <h3 style="font-size:clamp(22px,3vw,36px);font-weight:700;margin:12px 0 36px;">60+ Years of EUC in One View</h3>
+  </div>
+
+  <div class="grid3 fi d1" style="margin-bottom:0;">
+    <div class="card dark" style="border-top:2px solid rgba(30,157,184,0.3);">
+      <div class="card-label">1960s–70s · Era 1</div>
+      <h3>🖥️ Mainframe</h3>
+      <p>Central compute. Dumb terminals. IT owns everything. Ironically the most secure model ever used.</p>
+    </div>
+    <div class="card dark" style="border-top:2px solid rgba(30,157,184,0.3);">
+      <div class="card-label">1980s · Era 2</div>
+      <h3>💾 Personal Computer</h3>
+      <p>Power to individuals. Chaos for IT. Microsoft wins the OS war. Shadow IT is born.</p>
+    </div>
+    <div class="card dark" style="border-top:2px solid rgba(30,157,184,0.3);">
+      <div class="card-label">1990s · Era 3</div>
+      <h3>🌐 Networks + Citrix</h3>
+      <p>PCs connect. Servers return. Citrix invents Windows app delivery. The internet rewrites the rules.</p>
+    </div>
+    <div class="card dark" style="border-top:2px solid rgba(167,149,199,0.4);">
+      <div class="card-label">2000s · Era 4</div>
+      <h3>🏗️ VDI Era</h3>
+      <p>VMware virtualises. Citrix matures. VDI promises elegance, delivers complexity. The management problem deepens.</p>
+    </div>
+    <div class="card dark" style="border-top:2px solid rgba(167,149,199,0.4);">
+      <div class="card-label">2010s · Era 5</div>
+      <h3>☁️ Cloud Transition</h3>
+      <p>SaaS, mobile, SD-WAN, Zero Trust. Nadella pivots Microsoft. The perimeter dissolves. DEX is born.</p>
+    </div>
+    <div class="card dark" style="border-top:2px solid rgba(205,255,78,0.4);">
+      <div class="card-label">2020s–Now · Era 6</div>
+      <h3>🏠 Cloud-Native Desktop</h3>
+      <p>COVID forces the shift. AVD + W365 dominate. Broadcom destroys VMware. AI enters. Nerdio reaches $1B+.</p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<footer>
+  <span class="nerdio-footer">getnerdio.com</span>
+  <p>The History of End User Computing — built for Nerdio people, partners, and customers who want to understand the full story.</p>
+  <p style="margin-top:8px;font-size:11px;">From dumb terminals to intelligent workspaces · 1960–2026</p>
+</footer>
+
+<script>
+// ── Fade-in observer ──
+const fi = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('vis'); fi.unobserve(e.target); } });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.fi').forEach(el => fi.observe(el));
+
+// ── Active nav ──
+const sections = document.querySelectorAll('[id]');
+const links = document.querySelectorAll('.era-nav a');
+const navObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      links.forEach(l => l.classList.remove('active'));
+      const a = document.querySelector(`.era-nav a[href="#${e.target.id}"]`);
+      if(a) { a.classList.add('active'); a.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'}); }
+    }
+  });
+}, { threshold: 0.25 });
+sections.forEach(s => navObs.observe(s));
+</script>
+</body>
+</html>

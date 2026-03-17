@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nerdio Outreach Sequences</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* HEADER */
+        header {
+            position: sticky;
+            top: 48px;
+            background-color: #042838;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .glasses-svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+        }
+
+        .logo-text .nerdio {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+        }
+
+        .logo-text .tagline {
+            font-weight: 500;
+            font-size: 0.75rem;
+            color: #CDFF4E;
+            letter-spacing: 0.5px;
+        }
+
+        .header-title {
+            font-weight: 600;
+            font-size: 1.3rem;
+            color: white;
+            margin-left: 1rem;
+            border-left: 2px solid #1E9DB8;
+            padding-left: 1rem;
+        }
+
+        /* MAIN CONTAINER */
+        .container {
+            display: flex;
+            max-width: 1600px;
+            margin: 0 auto;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* SIDEBAR CONFIGURATION */
+        .config-panel {
+            width: 280px;
+            background-color: white;
+            padding: 2rem 1.5rem;
+            border-right: 1px solid #e0e0e0;
+            overflow-y: auto;
+            box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .config-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .config-label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #042838;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .selector-tabs {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .selector-tab {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e0e0e0;
+            background-color: white;
+            color: #042838;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.85rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .selector-tab:hover {
+            border-color: #1E9DB8;
+            background-color: #f0f8fb;
+        }
+
+        .selector-tab.active {
+            background-color: #1E9DB8;
+            color: white;
+            border-color: #1E9DB8;
+        }
+
+        .persona-chips {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .persona-chip {
+            padding: 0.6rem 1rem;
+            border: 2px solid #e0e0e0;
+            background-color: white;
+            color: #042838;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.8rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .persona-chip:hover {
+            border-color: #A795C7;
+            background-color: #f9f8fc;
+        }
+
+        .persona-chip.active {
+            background-color: #A795C7;
+            color: white;
+            border-color: #A795C7;
+        }
+
+        /* MAIN CONTENT */
+        .content-panel {
+            flex: 1;
+            padding: 2rem 2.5rem;
+            overflow-y: auto;
+            background-color: #fafafa;
+        }
+
+        .content-header {
+            margin-bottom: 2rem;
+        }
+
+        .content-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #042838;
+            margin-bottom: 0.5rem;
+        }
+
+        .content-subtitle {
+            font-size: 0.95rem;
+            color: #666;
+            font-weight: 400;
+        }
+
+        /* SEQUENCE TIMELINE */
+        .sequence-timeline {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: 10px;
+            border-left: 4px solid #1E9DB8;
+        }
+
+        .timeline-item {
+            text-align: center;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .timeline-day {
+            font-weight: 700;
+            color: #1E9DB8;
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .timeline-label {
+            font-size: 0.75rem;
+            color: #666;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        /* SEQUENCE EMAILS */
+        .emails-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .email-card {
+            background-color: white;
+            border-radius: 10px;
+            border-left: 4px solid #1E9DB8;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .email-card:hover {
+            box-shadow: 0 4px 12px rgba(30, 157, 184, 0.15);
+        }
+
+        .email-step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .step-badge {
+            background-color: #1E9DB8;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .step-info h3 {
+            font-size: 1rem;
+            color: #042838;
+            margin-bottom: 0.2rem;
+        }
+
+        .step-timing {
+            font-size: 0.8rem;
+            color: #999;
+            font-weight: 500;
+        }
+
+        .email-subject {
+            background-color: #f9f9f9;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1.2rem;
+            border-left: 3px solid #CDFF4E;
+        }
+
+        .subject-label {
+            font-size: 0.75rem;
+            color: #999;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            display: block;
+        }
+
+        .subject-text {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: #042838;
+            word-break: break-word;
+        }
+
+        .email-body {
+            background-color: #fafafa;
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #333;
+            border: 1px solid #e0e0e0;
+        }
+
+        .email-body p {
+            margin-bottom: 1rem;
+        }
+
+        .email-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        .cta-highlight {
+            background-color: #CDFF4E;
+            padding: 0.8rem 1.2rem;
+            border-radius: 6px;
+            font-weight: 600;
+            color: #042838;
+            display: inline-block;
+            margin: 1rem 0;
+        }
+
+        .email-notes {
+            background-color: #f0f8fb;
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 3px solid #A795C7;
+            margin-bottom: 1.2rem;
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        .email-notes strong {
+            color: #042838;
+        }
+
+        .email-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.7rem 1.4rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-copy {
+            background-color: #1E9DB8;
+            color: white;
+        }
+
+        .btn-copy:hover {
+            background-color: #156b82;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30, 157, 184, 0.3);
+        }
+
+        .btn-copy:active {
+            transform: translateY(0);
+        }
+
+        .btn-copy.copied {
+            background-color: #CDFF4E;
+            color: #042838;
+        }
+
+        .btn-edit {
+            background-color: #A795C7;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background-color: #8e79ad;
+            transform: translateY(-2px);
+        }
+
+        .btn-copy-sequence {
+            background-color: #042838;
+            color: white;
+        }
+
+        .btn-copy-sequence:hover {
+            background-color: #031e27;
+            transform: translateY(-2px);
+        }
+
+        /* SEQUENCE ACTIONS */
+        .sequence-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: 10px;
+            border-top: 3px solid #CDFF4E;
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #999;
+        }
+
+        .empty-state h2 {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .config-panel {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e0e0e0;
+                padding: 1.5rem;
+            }
+
+            .selector-tabs,
+            .persona-chips {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 0.5rem;
+            }
+
+            .content-panel {
+                padding: 1.5rem;
+            }
+
+            .sequence-timeline {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            }
+        }
+
+        @media (max-width: 640px) {
+            header {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+
+            .header-title {
+                margin-left: 0;
+                border-left: none;
+                border-top: 2px solid #1E9DB8;
+                padding-left: 0;
+                padding-top: 0.5rem;
+                font-size: 1rem;
+            }
+
+            .content-panel {
+                padding: 1rem;
+            }
+
+            .email-card {
+                padding: 1.5rem;
+            }
+
+            .email-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .sequence-timeline {
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+                gap: 0.5rem;
+                padding: 1rem;
+            }
+        }
+
+        /* PRINT STYLES */
+        @media print {
+            header,
+            .config-panel,
+            .sequence-actions {
+                display: none;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            .content-panel {
+                padding: 0;
+                background: white;
+            }
+
+            .email-card {
+                page-break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ddd;
+                margin-bottom: 1rem;
+            }
+        }
+
+        /* CONTENTEDITABLE STYLES */
+        .editable {
+            cursor: text;
+            position: relative;
+        }
+
+        .editable:focus {
+            outline: 2px solid #1E9DB8;
+            outline-offset: 2px;
+        }
+
+        .edit-hint {
+            display: none;
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: #A795C7;
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 3px;
+            z-index: 100;
+        }
+
+        .email-body.editable:hover .edit-hint,
+        .subject-text.editable:hover .edit-hint {
+            display: block;
+        }
+
+        /* ANIMATION */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .email-card {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: #CDFF4E;
+            color: #042838;
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            z-index: 2000;
+            animation: slideIn 0.3s ease-out;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .notification.hide {
+            animation: fadeOut 0.3s ease-out forwards;
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+        }
+    /* .home-btn removed - using brand bar */
+    
+    </style>
+<style>
+/* === NERDIO BRAND BAR === */
+.nerdio-brand-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+  height: 48px;
+  background: linear-gradient(135deg, #0B1B3D 0%, #142952 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+.nerdio-brand-bar * { box-sizing: border-box; margin: 0; padding: 0; }
+.nerdio-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+.nerdio-brand-logo img {
+  height: 22px;
+  width: auto;
+}
+.nerdio-brand-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255,255,255,0.2);
+}
+.nerdio-brand-tool-name {
+  color: rgba(255,255,255,0.85);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+.nerdio-brand-home {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #00B4D8;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: rgba(0,180,216,0.1);
+  border: 1px solid rgba(0,180,216,0.2);
+  transition: all 0.2s;
+}
+.nerdio-brand-home:hover {
+  background: rgba(0,180,216,0.2);
+  border-color: rgba(0,180,216,0.4);
+  color: #FFFFFF;
+}
+.nerdio-brand-home svg {
+  width: 14px;
+  height: 14px;
+}
+.nerdio-brand-spacer {
+  height: 48px;
+  width: 100%;
+  flex-shrink: 0;
+}
+/* === END NERDIO BRAND BAR === */
+</style>
+</head>
+<body>
+
+<!-- NERDIO BRAND BAR -->
+<div class="nerdio-brand-bar">
+  <div class="nerdio-brand-logo">
+    <img src="data:image/png;base64,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" alt="Nerdio">
+    <div class="nerdio-brand-divider"></div>
+    <span class="nerdio-brand-tool-name">Outreach Sequences</span>
+  </div>
+  <a href="../EMEA-Nerdio-Toolbox.html" class="nerdio-brand-home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+    Toolbox Home
+  </a>
+</div>
+<div class="nerdio-brand-spacer"></div>
+<!-- END NERDIO BRAND BAR -->
+
+<script>
+</script>
+
+    
+    <!-- HEADER -->
+    <header>
+        <div class="logo-container">
+            <svg class="glasses-svg" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
+                <!-- Left lens -->
+                <circle cx="18" cy="20" r="12" fill="none" stroke="#1E9DB8" stroke-width="2"/>
+                <!-- Right lens -->
+                <circle cx="42" cy="20" r="12" fill="none" stroke="#1E9DB8" stroke-width="2"/>
+                <!-- Bridge -->
+                <line x1="30" y1="20" x2="30" y2="20" stroke="#1E9DB8" stroke-width="2"/>
+                <line x1="28" y1="18" x2="32" y2="22" stroke="#1E9DB8" stroke-width="2"/>
+                <!-- Left arm -->
+                <path d="M 6 18 Q 4 20 6 22" fill="none" stroke="#1E9DB8" stroke-width="2"/>
+                <!-- Right arm -->
+                <path d="M 54 18 Q 56 20 54 22" fill="none" stroke="#1E9DB8" stroke-width="2"/>
+                <!-- Power button in right lens -->
+                <rect x="38" y="14" width="4" height="4" fill="none" stroke="#1E9DB8" stroke-width="1.5" rx="1"/>
+            </svg>
+            <div class="logo-text">
+                <div class="nerdio">nerdio</div>
+                <div class="tagline">Outreach Sequences</div>
+            </div>
+        </div>
+        <div class="header-title">Sales Sequence Library</div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <div class="container">
+        <!-- CONFIGURATION PANEL -->
+        <div class="config-panel">
+            <!-- Use Case Selector -->
+            <div class="config-section">
+                <label class="config-label">Use Case</label>
+                <div class="selector-tabs" id="useCaseTabs">
+                    <button class="selector-tab active" data-usecase="citrix">Citrix Displacement</button>
+                    <button class="selector-tab" data-usecase="vmware">VMware / Broadcom Migration</button>
+                    <button class="selector-tab" data-usecase="azure-cost">Azure Cost Optimization</button>
+                    <button class="selector-tab" data-usecase="avd-deploy">New AVD Deployment</button>
+                    <button class="selector-tab" data-usecase="win10-eol">Windows 10 EOL / Desktop Modernization</button>
+                    <button class="selector-tab" data-usecase="msp-recruit">MSP Partner Recruitment</button>
+                    <button class="selector-tab" data-usecase="post-event">Post-Event Follow-Up</button>
+                    <button class="selector-tab" data-usecase="customer-expansion">Existing Customer Expansion</button>
+                </div>
+            </div>
+
+            <!-- Persona Selector -->
+            <div class="config-section">
+                <label class="config-label">Target Persona</label>
+                <div class="persona-chips" id="personaChips">
+                    <button class="persona-chip active" data-persona="cio">CIO/CTO</button>
+                    <button class="persona-chip" data-persona="director">IT Director</button>
+                    <button class="persona-chip" data-persona="admin">IT Admin</button>
+                    <button class="persona-chip" data-persona="msp">MSP Owner</button>
+                    <button class="persona-chip" data-persona="partner">Partner</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTENT PANEL -->
+        <div class="content-panel" id="contentPanel">
+            <div class="empty-state">
+                <h2>Loading sequences...</h2>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // SEQUENCE DATA
+        const sequences = {
+            citrix: {
+                title: 'Citrix Displacement',
+                description: 'Move customers from Citrix to Nerdio AVD',
+                personas: {
+                    director: {
+                        title: 'Citrix Displacement — IT Director',
+                        timeline: [
+                            { day: 0, label: 'Day 0' },
+                            { day: 3, label: 'Day 3' },
+                            { day: 7, label: 'Day 7' },
+                            { day: 14, label: 'Day 14' },
+                            { day: 21, label: 'Day 21' }
+                        ],
+                        emails: [
+                            {
+                                step: 1,
+                                day: 0,
+                                subject: 'Your Citrix renewal is an opportunity, [First Name]',
+                                body: 'Hi [First Name],\n\nI noticed your Citrix renewal is coming up in [Citrix Renewal Date]. Before you renew, I wanted to share something that 62% of organizations in your industry are exploring right now.\n\nNerdio AVD is delivering significant improvements in cost, user experience, and management simplicity. We help teams like yours migrate from Citrix to Azure Virtual Desktop in 8-12 weeks with zero downtime.\n\nWould you have 15 minutes next week to see how a parallel-running approach works? No commitment—just a conversation.\n\n[First Name], let\'s explore this before your renewal.\n\nBest,\n[Your Name]',
+                                notes: 'Send this 2-3 weeks before their renewal date. Reference the actual renewal date to establish urgency without being pushy.'
+                            },
+                            {
+                                step: 2,
+                                day: 3,
+                                subject: 'Citrix customers save $20K/month on AVD (Grant Thornton report)',
+                                body: 'Hi [First Name],\n\nQuick follow-up on my last message. I wanted to share a data point that surprises most Citrix admins:\n\nA Grant Thornton study found that organizations migrating from Citrix to AVD see average savings of $20,000+ per month on licensing and infrastructure alone. That\'s $240K+ annually.\n\nFor [Company], with your current Citrix footprint, the ROI opportunity is real. The cost comparison includes:\n\n• Citrix licensing vs. Azure compute + Nerdio management\n• Eliminate Citrix-specific infrastructure costs\n• Reduce operational overhead (we handle updates and optimization)\n\nWould you like me to run a quick cost model for [Company]? Takes 10 minutes and gives you real numbers.\n\nTalk soon,\n[Your Name]',
+                                notes: 'This positions the value quantitatively. Reference Grant Thornton if relevant; otherwise use "industry benchmark" language.'
+                            },
+                            {
+                                step: 3,
+                                day: 7,
+                                subject: '[Company] to AVD: How a similar healthcare IT director did it',
+                                body: 'Hi [First Name],\n\nI wanted to share a quick case study from a peer—another mid-sized healthcare organization with a similar Citrix footprint to yours.\n\nHey, [similar company name] migrated 500 users from Citrix to Nerdio AVD in 12 weeks. Here\'s what they found:\n\n• User experience improved (faster logons, fewer disconnects)\n• IT workload dropped 40% (no more Citrix broker management)\n• Cost savings hit month 3\n• Zero downtime during migration\n\nThe key was running Citrix and AVD in parallel for 4 weeks, then cutting over. Their IT team now manages everything—AVD, Windows 365, Intune—from one dashboard.\n\nI have a 15-minute case study walkthrough available if you\'d like to see how they structured it.\n\nCheers,\n[Your Name]',
+                                notes: 'Best send time: Tuesday-Thursday, 10am. Personalize with an actual customer name if possible.'
+                            },
+                            {
+                                step: 4,
+                                day: 14,
+                                subject: 'Let\'s test-drive this in your Azure subscription',
+                                body: 'Hi [First Name],\n\nI haven\'t heard back, and I want to respect your inbox—but before you finalize your Citrix renewal, I\'d love to put a working AVD environment in your Azure subscription for 30 days.\n\nNo strings, no license keys, no calls with sales. Just:\n\n1. We spin up 10-20 test VMs in your existing Azure subscription\n2. Your team tests user logon, application delivery, performance\n3. We show you the cost comparison side-by-side\n4. Day 30, you either keep it or we clean it up\n\nThis removes the "what if" from the decision. You see firsthand how it performs in your environment.\n\nInterested? Reply with your Azure subscription ID and preferred test timeframe, and I\'ll get it set up this week.\n\nLet\'s make an informed decision together.\n\n[Your Name]',
+                                notes: 'This is your direct ask. It\'s low-friction and puts the burden on them to say yes to a trial, not a salesperson.'
+                            },
+                            {
+                                step: 5,
+                                day: 21,
+                                subject: 'One last thing—door stays open',
+                                body: 'Hi [First Name],\n\nI know I\'ve sent you a few messages, and you may be heads-down with your Citrix renewal process. I\'ll step back and let you work.\n\nBut before I do: if the Citrix renewal happens and then six months in you\'re thinking "there has to be a better way," we\'ll be here. Teams often come back after their renewal realizing the cost and complexity of Citrix aren\'t worth it.\n\nNo hard feelings, no judgment. Just know that AVD + Nerdio is a genuinely simpler path, and we\'ve helped dozens of teams make the switch mid-contract.\n\nIf anything changes, you know where to find me.\n\nBest,\n[Your Name]',
+                                notes: 'Breakup email. This keeps the door open for future conversations without chasing.'
+                            }
+                        ]
+                    },
+                    cio: {
+                        title: 'Citrix Displacement — CIO/CTO',
+                        timeline: [
+                            { day: 0, label: 'Day 0' },
+                            { day: 3, label: 'Day 3' },
+                            { day: 7, label: 'Day 7' },
+                            { day: 14, label: 'Day 14' },
+                            { day: 21, label: 'Day 21' }
+                        ],
+                        emails: [
+                            {
+                                step: 1,
+                                day: 0,
+                                subject: '[Company] Citrix renewal—strategic inflection point',
+                                body: 'Hi [First Name],\n\nYour Citrix renewal is due [Citrix Renewal Date]. I won\'t pitch you—but I wanted to highlight a decision inflection point.\n\n62% of your peers are evaluating cloud-native alternatives to Citrix. Why? Three reasons:\n\n1. Cost: Citrix licensing + on-premise infrastructure is expensive\n2. Modernization: Azure-native tools (Intune, Windows 365, AVD) integrate better\n3. Simplicity: Managing multiple point solutions vs. one unified platform\n\nWe help enterprises move from Citrix to a cloud-native stack without business disruption. The result: lower cost, better user experience, less operational complexity.\n\nI\'m not suggesting you abandon your Citrix investment overnight—parallel running is smarter. But this renewal window is the ideal time to evaluate alternatives.\n\nWould you have 20 minutes for a strategic conversation about what\'s next?\n\nBest,\n[Your Name]',
+                                notes: 'CIO/CTO pitch focuses on strategy, modernization, and ecosystem integration—not features.'
+                            },
+                            {
+                                step: 2,
+                                day: 3,
+                                subject: 'Citrix TCO: What you\'re really paying',
+                                body: 'Hi [First Name],\n\nFastforward. You renew Citrix. In Year 2, someone on your team says: "We\'re managing Citrix, Windows 365, Intune, and AVD—all separate. This is a mess."\n\nThat\'s the hidden cost of Citrix: not just licensing, but the operational overhead of maintaining a point solution in a cloud-native world.\n\nHere\'s what we see:\n\nTraditional Citrix stack:\n• Citrix licensing\n• On-premise Citrix infrastructure (brokers, connectors, databases)\n• Separate endpoint management (Intune)\n• Monitoring and troubleshooting (multiple tools)\n\nCloud-native alternative:\n• Azure compute (often cheaper than Citrix licensing)\n• Unified management (Intune + AVD from one console)\n• Built-in monitoring and auto-scaling\n• Fewer specialists needed (one team, not two)\n\nThe ROI isn\'t in Year 1. It\'s in Years 2-5, when you\'ve eliminated operational complexity.\n\nShould we model what this looks like for [Company]?\n\nBest,\n[Your Name]',
+                                notes: 'Appeal to the CIO\'s desire to simplify the technology estate and reduce operational silos.'
+                            },
+                            {
+                                step: 3,
+                                day: 7,
+                                subject: 'Fortune 500 is moving away from Citrix. Here\'s why.',
+                                body: 'Hi [First Name],\n\nI wanted to share a pattern we\'re seeing at enterprise level:\n\nOrganizations like [Similar Fortune 500 company] are deprecating Citrix in favor of an Azure-native approach. Why the shift?\n\n1. Citrix supports a 2010-era architecture (on-premise data centers). AWS and Azure don\'t need it anymore.\n2. Intune + AVD + Windows 365 is cloud-native, cloud-cost-optimized, and cloud-managed.\n3. The expertise gap: Finding skilled Citrix admins is harder than finding Azure engineers.\n\nThis doesn\'t mean you need to rip-and-replace. It means you have a window (your renewal) to re-architect intentionally instead of defaulting to inertia.\n\nThe teams that move first gain:\n• Architectural simplicity\n• Lower cost in Year 2+\n• Ability to hire Azure talent instead of Citrix specialists\n\nCare to explore this with your architecture team? We can walk through a migration roadmap that minimizes risk.\n\nLet\'s talk,\n[Your Name]',
+                                notes: 'Mention specific enterprise examples (or generalize to "Fortune 500 peers"). Focus on strategic modernization.'
+                            },
+                            {
+                                step: 4,
+                                day: 14,
+                                subject: 'Pilot: Parallel Citrix → AVD in your Azure tenant',
+                                body: 'Hi [First Name],\n\nYour renewal decision is coming up. I don\'t want to be that vendor in your inbox, but I do want to make sure you\'ve evaluated the option.\n\nHere\'s what I\'m proposing: A 30-day pilot in your Azure environment where we:\n\n1. Deploy Nerdio + AVD alongside your existing Citrix environment\n2. Migrate 50-100 test users to AVD (parallel running)\n3. Measure: Cost, user experience, IT effort\n4. At Day 30, you decide\n\nNo license commitment. No sales calls. Just engineering + data.\n\nIf Citrix is the right answer for [Company], great—we\'ll clean up and you know it was the right call. If AVD is compelling, we have a head start on migration.\n\nInterested? Send me your Azure subscription ID and we\'ll kick off this week.\n\nBest,\n[Your Name]',
+                                notes: 'CIO-level pilots focus on engineering validation and data-driven decisions.'
+                            },
+                            {
+                                step: 5,
+                                day: 21,
+                                subject: 'We\'ll be here when you\'re ready',
+                                body: 'Hi [First Name],\n\nI know you\'re deep in Citrix renewal planning, and I don\'t want to distract from that process.\n\nOne thing I will say: The teams that move fastest on cloud modernization aren\'t the ones with the most urgent problems—they\'re the ones that make the decision proactively, during a renewal window, instead of reactively when a crisis forces their hand.\n\nYou\'re in the proactive window right now. If you want to explore it further, I\'m available. If you\'re moving forward with Citrix, we\'ll respectfully see you in 12-24 months when the tech landscape shifts further.\n\nEither way, thanks for considering the alternative.\n\nBest,\n[Your Name]',
+                                notes: 'Respectful breakup. Positions early movers as strategic leaders.'
+                            }
+                        ]
+                    }
+                }
+            },
+            vmware: {
+                title: 'VMware / Broadcom Migration',
+                description: 'Transition customers away from VMware post-Broadcom acquisition',
+                personas: {
+                    cio: {
+                        title: 'VMware / Broadcom Migration — CIO/CTO',
+                        timeline: [
+                            { day: 0, label: 'Day 0' },
+                            { day: 4, label: 'Day 4' },
+                            { day: 8, label: 'Day 8' },
+                            { day: 14, label: 'Day 14' }
+                        ],
+                        emails: [
+                            {
+                                step: 1,
+                                day: 0,
+                                subject: '[First Name]—VMware licensing just got complicated',
+                                body: 'Hi [First Name],\n\nBroadcom\'s licensing changes for VMware are creating uncertainty across your industry. We\'re seeing three camps emerge:\n\n1. Teams renewing VMware at higher cost (hoping for stability)\n2. Teams exploring alternatives (unsure where to start)\n3. Teams already migrating to cloud-native (getting a head start)\n\nIf you\'re in camp 2 or 3, this matters. AVD + Nerdio is how enterprises are replacing VMware—not with another on-premise hypervisor, but with cloud-native infrastructure that\'s simpler and cheaper to run.\n\nI\'m reaching out because many CIOs at [Company]\'s scale are re-evaluating now. Worth a conversation?\n\n[First Name], let\'s talk about your options before you decide what\'s next.\n\nBest,\n[Your Name]',
+                                notes: 'Position Broadcom licensing changes as a strategic inflection point, not a complaint.'
+                            },
+                            {
+                                step: 2,
+                                day: 4,
+                                subject: 'Broadcom VMware costs + cloud migration path forward',
+                                body: 'Hi [First Name],\n\nI wanted to dive deeper on the "path forward" I mentioned.\n\nBroadcom\'s licensing model shifted VMware toward a "per-socket" pricing that makes on-premise virtualization more expensive. Simultaneously, cloud has matured. The strategic question: Why maintain on-premise hypervisors at all?\n\nHere\'s how forward-thinking enterprises are thinking about it:\n\nOLD PLAYBOOK: Renew VMware, manage on-premise, slowly migrate to cloud over 3-5 years.\n\nNEW PLAYBOOK: Evaluate cloud-native alternatives now (Azure + Nerdio), migrate workloads, sunset on-premise infrastructure.\n\nFor desktop/apps, this means AVD instead of VMware View. For servers, it means Azure VMs with Nerdio governance instead of vSphere.\n\nThe win: Lower cost, faster time-to-cloud, fewer on-premise specialists needed.\n\nShould we model a migration path for [Company]\'s environment?\n\nBest,\n[Your Name]',
+                                notes: 'Address the licensing pain directly. Offer a clear alternative narrative.'
+                            },
+                            {
+                                step: 3,
+                                day: 8,
+                                subject: 'Case study: Enterprise VMware → Azure (zero downtime)',
+                                body: 'Hi [First Name],\n\nI wanted to share a relevant example. A [Similar Enterprise] CIO faced the same decision six months ago.\n\nTheir situation:\n• Heavy VMware investment (thousands of VMs, significant licensing spend)\n• Broadcom licensing announced, forcing a decision\n• Concern: "Can we migrate without disrupting the business?"\n\nTheir approach:\n• Parallel VMware/Azure environment for 8 weeks\n• Migrate workloads in batches (no big-bang cutover)\n• First 30% migrated = immediate savings = proof point\n• Remaining 70% migrated over 6 months\n\nResult:\n• 35% infrastructure cost reduction\n• Faster time-to-provision (AWS/Azure automation vs. VMware provisioning)\n• Smaller ops team needed (cloud-managed vs. on-premise managed)\n\nTheir migration was a case of intentional re-architecture during a licensing decision—exactly like where you are now.\n\nCare to walk through how this would work for [Company]? No obligation, just exploration.\n\nBest,\n[Your Name]',
+                                notes: 'Share a real or realistic case study. Focus on the migration process being low-risk.'
+                            },
+                            {
+                                step: 4,
+                                day: 14,
+                                subject: 'VMware pilot: Azure + Nerdio in your environment',
+                                body: 'Hi [First Name],\n\nLast message, then I\'ll let you breathe. But before you make a final decision on Broadcom/VMware, I want to make sure you\'ve seen the alternative in action.\n\nHere\'s what I\'m offering:\n\nA 30-day pilot where we migrate 20-30 of your VMware VMs to Azure + Nerdio, running side-by-side. You see:\n• Cost comparison (VMware licensing + infrastructure vs. Azure compute + management)\n• Performance metrics (latency, throughput, user experience)\n• Operational effort (how much easier/harder to manage)\n\nDay 30: You either keep them on Azure, or we migrate them back to VMware. Your choice.\n\nThis removes the "what if" from the decision. You\'re evaluating based on real data in your environment, not projections.\n\nInterested? Let me know and we\'ll get this started before month-end.\n\nBest,\n[Your Name]',
+                                notes: 'Pilot for server infrastructure. Focus on cost, performance, and operational simplicity.'
+                            }
+                        ]
+                    },
+                    director: {
+                        title: 'VMware / Broadcom Migration — IT Director',
+                        timeline: [
+                            { day: 0, label: 'Day 0' },
+                            { day: 4, label: 'Day 4' },
+                            { day: 8, label: 'Day 8' },
+                            { day: 14, label: 'Day 14' }
+                        ],
+                        emails: [
+                            {
+                                step: 1,
+                                day: 0,
+                                subject: '[First Name]—Broadcom VMware: What IT Directors are doing now',
+                                body: 'Hi [First Name],\n\nI know Broadcom\'s licensing changes for VMware are on your CIO\'s radar. They\'re also on yours, because you\'ll be running whatever strategy gets decided.\n\nI\'m reaching out to IT Directors at mid-to-large enterprises because we\'re seeing a clear trend: Teams are exploring cloud-native alternatives instead of renewing.\n\nWhy? Because managing AVD + Nerdio is simpler than managing VMware:\n• No hypervisor updates to schedule\n• No capacity planning (cloud auto-scales)\n• No licensing complexity\n• Your team uses the same tools (Azure, Intune, PowerShell) you\'re already learning\n\nWe help teams like yours migrate from VMware to Azure + Nerdio in 8-12 weeks with minimal operational disruption.\n\nWould you have 20 minutes to explore what the migration process looks like?\n\n[First Name], let\'s talk through the IT implications.\n\nBest,\n[Your Name]',
+                                notes: 'Appeal to the IT Director\'s desire for simpler operations and fewer heroics.'
+                            },
+                            {
+                                step: 2,
+                                day: 4,
+                                subject: 'VMware migration: What your ops team will actually do',
+                                body: 'Hi [First Name],\n\nMy last message was probably pretty abstract. Let me get specific.\n\nRight now, your team is:\n• Patching VMware infrastructure (vCenter, ESXi hosts)\n• Managing capacity (will we run out of RAM/CPU?)\n• Troubleshooting performance issues\n• Planning hardware refreshes\n\nWith AVD + Nerdio on Azure, your team is:\n• Using Azure\'s patching (Microsoft handles it)\n• Not managing capacity (cloud auto-scales)\n• Troubleshooting is simpler (Azure diagnostics are better)\n• No hardware refresh cycles (you\'re renting compute)\n\nThe shift: From infrastructure management to user experience management.\n\nFor your team, this is actually easier. Fewer late nights dealing with hypervisor crashes.\n\nShould we walk through a week-by-week migration plan so your team knows what\'s involved?\n\nBest,\n[Your Name]',
+                                notes: 'Focus on operational simplicity and how it improves the IT team\'s day-to-day work.'
+                            },
+                            {
+                                step: 3,
+                                day: 8,
+                                subject: '[Company] VMware → Azure: Migration checklist',
+                                body: 'Hi [First Name],\n\nI put together a quick migration planning guide for IT Directors navigating this. It covers:\n\n• Pre-migration assessment (what stays, what migrates, what gets decommissioned)\n• Parallel running strategy (how long to run both before cutting over)\n• Team training (what your team needs to learn)\n• Cutover plan (how to migrate without downtime)\n• Post-migration optimization (cost, performance, security)\n\nI\'m attaching it so you can share with your team and get a sense of the scope. Migration isn\'t rocket science, but it does need to be planned.\n\nOnce you\'ve looked at it, let\'s jump on a call. I can answer questions from both you and your team.\n\nBest,\n[Your Name]',
+                                notes: 'Provide tactical tools (checklists, guides) that help the IT Director lead the conversation upward.'
+                            },
+                            {
+                                step: 4,
+                                day: 14,
+                                subject: 'Let\'s test your first 10 VMs on Azure',
+                                body: 'Hi [First Name],\n\nI\'ve gone through the planning guide with a few teams already, and here\'s what I\'m hearing: "It sounds good, but I want to see it working before we commit."\n\nFair point.\n\nLet\'s do this: I\'ll help you migrate your first 10 critical VMs to Azure + Nerdio at no cost. Two weeks of production testing. Your team manages them like normal VMs. At Day 14, we measure:\n\n• Performance (CPU, memory, network latency)\n• Cost (what did it actually cost vs. your VMware estimate?)\n• Operational effort (did your team find it easy to manage?)\n\nDay 15: You either keep them on Azure, or we migrate them back to VMware.\n\nThis gives your team hands-on experience and proof that it works. Then you can confidently pitch the larger migration to your CIO.\n\nInterested? Give me the list of 10 VMs and let\'s start this week.\n\nBest,\n[Your Name]',
+                                notes: 'Offer a small, low-risk pilot that gives the IT Director proof and ammunition for larger decisions.'
+                            }
+                        ]
+                    }
+                }
+            },
+            'azure-cost': {
+                title: 'Azure Cost Optimization',
+                description: 'Help customers reduce Azure spending through Nerdio optimization',
+                personas: {
+                    admin: {
+                        title: 'Azure Cost Optimization — IT Admin',
+                        timeline: [
+                            { day: 0, label: 'Day 0' },
+                            { day: 3, label: 'Day 3' },
+                            { day: 7, label: 'Day 7' },
+                            { day: 14, label: 'Day 14' }
+                        ],
+                        emails: [
+                            {
+                                step: 1,
+                                day: 0,
+                                subject: '[First Name]—What are your VMs doing at 2 AM?',
+                                body: 'Hi [First Name],\n\nQuick question: Do you know what percentage of your Azure VMs are running at 2 AM on a Sunday?\n\nMost IT admins don\'t. And that\'s where a lot of Azure waste happens—development, test, and low-priority production VMs running 24/7 when they\'re only needed during business hours.\n\nWe help teams like yours use intelligent scheduling + auto-scaling to cut Azure spend by 25-55% without impacting uptime. No code changes. No infrastructure redesign. Just smarter resource allocation.\n\nI\'m reaching out because I think [Company] has real savings opportunity here.\n\nWould you have 15 minutes to see how much you could save?\n\nBest,\n[Your Name]',
+                                notes: 'Open with a provocative question that IT Admins immediately recognize as "yeah, we probably have that problem."'
+                            },
+                            {
+                                step: 2,
+                                day: 3,
+                                subject: '55% Azure savings is real—here\'s how',
+                                body: 'Hi [First Name],\n\nI said 25-55% savings in my last message. Let me show you where that comes from.\n\nTypical Azure waste:\n\n1. Non-prod VMs running 24/7 (dev, test, staging): 15-25% of spend\n   → Solution: Intelligent scheduling (shut down when not in use)\n\n2. Oversized VMs (picking a size and never resizing): 10-20% of spend\n   → Solution: Auto-scaling and right-sizing recommendations\n\n3. Unused resources (old VMs, old databases, unused IPs): 5-10% of spend\n   → Solution: Automated cleanup and policy enforcement\n\n4. Azure Hybrid Benefit not maximized: 5-15% of spend\n   → Solution: Automatic license optimization\n\nCombine these, and 55% savings becomes realistic—especially for enterprises running hybrid environments.\n\nFor [Company], based on typical [Company Size] Azure footprint, we\'re talking about [Estimated Savings] per month.\n\nWant me to run a quick scan of your Azure environment to get actual numbers?\n\nBest,\n[Your Name]',
+                                notes: 'Break down the savings drivers to make them tangible and believable.'
+                            },
+                            {
+                                step: 3,
+                                day: 7,
+                                subject: 'LexisNexis saved $X/year on Azure with one tool',
+                                body: 'Hi [First Name],\n\nCase study quick: LexisNexis Legal is managing thousands of AVD sessions + thousands of infrastructure VMs on Azure. Their challenge was similar to yours—Azure spend was growing, but they didn\'t have visibility into what was driving costs.\n\nThey deployed Nerdio for Azure optimization.\n\nResult after 90 days:\n• 50% reduction in Azure infrastructure costs YoY\n• Automated scheduling for non-prod environments\n• Intelligent auto-scaling eliminated rightsizing manual work\n• Automated dormant resource cleanup\n\nTheir infrastructure team went from reacting to Azure bills to proactively managing spend—and freed up cycles for strategic work instead of cost-chasing.\n\nTheir ROI was massive because they had visibility.\n\nWe can do the same for [Company]. The first step is a free Azure environment scan—30 minutes of work, gives you concrete savings recommendations.\n\nInterested?\n\nBest,\n[Your Name]',
+                                notes: 'Use a real or realistic case study with a named company and specific savings percentage.'
+                            },
+                            {
+                                step: 4,
+                                day: 14,
+                                subject: 'See your actual savings in 30 days (free trial)',
+                                body: 'Hi [First Name],\n\nI\'ve been talking about savings potential, but you should see it in your own environment before committing to anything.\n\nHere\'s what I\'m offering: 30 days of Nerdio, free, with one job: Reduce your Azure spend.\n\nWe\'ll:\n1. Deploy Nerdio in your Azure subscription\n2. Configure intelligent scheduling for your non-prod VMs\n3. Enable auto-scaling recommendations\n4. Run dormant resource analysis\n5. Generate a savings report at Day 30\n\nDay 30: You see real savings in your own Azure billing. No commitment beyond the trial.\n\nMost IT admins tell us they see 15-25% savings by Day 30, even with conservative settings. Aggressive optimization = 40%+ by month 2.\n\nReady to find out what your number is? Reply with your Azure subscription ID and we\'ll kick off this week.\n\nBest,\n[Your Name]',
+                                notes: 'Trial offer. Keep it simple: deploy, optimize, measure. No sales calls during the trial.'
+                            }
+                        ]
+                    },
+                    director: {
+                        title: 'Azure Cost Optimization — IT Director',
+                        timeline: [
+                            { day: 0, label: 'Day 0' },
+                            { day: 3, label: 'Day 3' },
+                            { day: 7, label: 'Day 7' },
+                            { day: 14, label: 'Day 14' }
+                        ],
+                        emails: [
+                            {
+                                step: 1,
+                                day: 0,
+                                subject: '[First Name]—Azure spend is out of control (and fixable)',
+                                body: 'Hi [First Name],\n\nI know your Azure bill is higher than budgeted. Every IT Director I talk to has the same challenge.\n\nThe good news: It\'s almost never an architecture problem. It\'s a resource-management problem.\n\nMost teams are:\n• Running non-prod VMs 24/7 (only needed during business hours)\n• Oversizing VMs because they\'re not sure what they need\n• Leaving orphaned resources on (old test environments, unused databases)\n\nWe help teams reduce Azure spend by 25-55% with intelligent resource management—no architecture changes, no downtime, no disruption to your teams.\n\nI\'m reaching out because [Company]\'s size and cloud footprint means you have real savings opportunity.\n\nWould you have 20 minutes to explore this?\n\nBest,\n[Your Name]',
+                                notes: 'Director pitch: Acknowledge the budget problem, position it as solvable and non-disruptive.'
+                            },
+                            {
+                                step: 2,
+                                day: 3,
+                                subject: 'Your Azure cost problem—and how to solve it',
+                                body: 'Hi [First Name],\n\nI\'m guessing your Azure spend problem looks like this:\n\n1. Budget was set based on Year 1 usage projections\n2. Year 2 spend came in 30-50% higher than budget\n3. Your team scrambled to find "savings" (slow cloud transitions, licensing audits, etc.)\n4. The real driver remains: Inefficient resource utilization\n\nHere\'s what I\'ve seen work:\n\nMonthly Azure spend breakdown:\n• 40-50%: Production workloads (necessary, hard to cut)\n• 25-35%: Non-prod environments (easily optimizable)\n• 10-15%: Orphaned resources (should be deleted)\n• 5-10%: Compute inefficiency (oversizing, wrong instance types)\n\nTarget the 40-60% that\'s not essential production, and you hit significant savings.\n\nFor [Company], if your current monthly Azure bill is $[Estimated Bill], you\'re likely sitting on $[Estimated Savings] per month in optimization opportunity.\n\nWant to explore what that actually looks like for your environment?\n\nBest,\n[Your Name]',
+                                notes: 'Director-level pitch: Break down the problem and the solution strategy at a business level.'
+                            },
+                            {
+                                step: 3,
+                                day: 7,
+                                subject: 'Fortune 500 Azure optimization: Case study',
+                                body: 'Hi [First Name],\n\nI wanted to share what a peer CIO/CFO did with Azure optimization.\n\n[Large Enterprise] was facing similar pressure: Azure spend growing faster than the business. They deployed automated resource optimization focused on:\n\n• Intelligent scheduling for dev/test environments (save 60% on those VMs)\n• Auto-scaling for production (eliminate over-provisioning)\n• Automated dormant resource detection and cleanup\n• Right-sizing recommendations for long-running VMs\n\nResult: $12M+ annual savings while maintaining full application performance and team productivity.\n\nKey insight from their CFO: "We weren\'t overspending because of bad architecture. We were overspending because we didn\'t have visibility and automation."\n\nThat\'s where most teams are. And it\'s totally fixable.\n\nShould we have a similar conversation about [Company]\'s Azure optimization strategy?\n\nBest,\n[Your Name]',
+                                notes: 'Use specific savings numbers. Reference a peer organization when possible.'
+                            },
+                            {
+                                step: 4,
+                                day: 14,
+                                subject: 'Let\'s model your actual Azure optimization ROI',
+                                body: 'Hi [First Name],\n\nI want to move beyond theory and into your specific situation.\n\nHere\'s what I\'m proposing: A 15-minute call where I review your Azure bill (high-level) and show you:\n\n1. Where your biggest optimization opportunities are (real data from your environment)\n2. How much you could save (specific dollar amount)\n3. What the implementation timeline looks like\n4. ROI of the optimization tool vs. your current manual approach\n\nNo pitching. Just analysis + numbers.\n\nAfter the call, if it makes sense, we can run a free 30-day trial in your Azure subscription to validate the savings. If it doesn\'t, no hard feelings.\n\nBut I think you\'ll find the numbers compelling.\n\nInterested? Let me know your availability for a call this week, and send me a recent Azure bill (you can redact sensitive data).\n\nBest,\n[Your Name]',
+                                notes: 'Director wants to see ROI and a clear implementation path. Offer specific analysis as the next step.'
+                            }
+                        ]
+                    }
+                }
+            },
+            'avd-deploy': {
+                title: 'New AVD Deployment',
+                description: 'Help customers deploy AVD quickly and manage it optimally',
+                personas: {
+                    director: {
+                        title: 'New AVD Deployment — IT Director',
+                        timeline: [
+                            { day: 0, label: 'Day 0' },
+                            { day: 3, label: 'Day 3' },
+                            { day: 7, label: 'Day 7' },
+                            { day: 14, label: 'Day 14' }
+                        ],
+                        emails: [
+                            {
+                                step: 1,
+                                day: 0,
+                                subject: '[First Name]—Deploy AVD in under an hour (not weeks)',
+                                body: 'Hi [First Name],\n\nTraditional AVD deployment takes weeks. Golden image creation, host pool configuration, load balancing, monitoring setup—it adds up.\n\nNerdio AVD+ does it in under an hour.\n\nWhy? We automated everything your team manually does:\n• Golden image creation (security patches pre-applied)\n• Host pool provisioning (one click, multi-region ready)\n• Load balancing configuration (optimal session distribution)\n• Monitoring and alerting (AVD + user experience metrics)\n\nMost IT Directors tell us they deploy their first Nerdio AVD environment in 90 minutes, then optimize based on what they learn.\n\nI\'m reaching out because you\'re likely planning an AVD deployment soon, and I want to make sure you know how fast this can be.\n\nWould you have 15 minutes to see the deployment flow?\n\nBest,\n[Your Name]',
+                                notes: 'Lead with time savings. IT Directors are time-constrained and skeptical of speed claims, so this positions Nerdio as a force multiplier.'
+                            },
+                            {
+                                step: 2,
+                                day: 3,
+                                subject: 'AVD golden images: Governance without the toil',
+                                body: 'Hi [First Name],\n\nOne reason AVD deployments take so long is golden image management. Your team has to:\n\n1. Provision a VM\n2. Install OS patches, security updates\n3. Deploy applications and drivers\n4. Configure compliance policies\n5. Snapshot as "golden image"\n6. Deploy 100+ session host VMs from that image\n7. Patch them again next month (repeat)\n\nWith Nerdio, we:\n\n1. Provide a pre-hardened golden image (patches already applied)\n2. Auto-heal drifting session hosts (they auto-revert to the golden image)\n3. Push patches programmatically (no manual cycles)\n4. Maintain compliance automatically (no drift)\n\nResult: Your team spends 2 hours on image management per month instead of 40 hours.\n\nFor an IT Director, this is huge—you get governance without the operational burden.\n\nWant to see how this works in practice?\n\nBest,\n[Your Name]',
+                                notes: 'Appeal to the IT Director\'s pain of patch management cycles. Position auto-healing as automation that frees up the team.'
+                            },
+                            {
+                                step: 3,
+                                day: 7,
+                                subject: '[Company] AVD + W365 + Intune—one dashboard',
+                                body: 'Hi [First Name],\n\nOnce you deploy AVD, you\'ll have multiple systems to manage:\n• AVD session hosts (Azure VMs)\n• Windows 365 Cloud PCs (Microsoft-managed instances)\n• Intune device compliance (policies, updates, security)\n• User identity and access (Entra ID)\n\nManaging these from four different interfaces is a nightmare.\n\nNerdio unifies them: AVD, W365, and Intune all visible from one dashboard. You see:\n\n• Which users are connected to which environment\n• Session health and performance metrics\n• Compliance state across all device types\n• Cost per user (AVD vs. W365)\n\nFor your team, this means:\n• Faster troubleshooting (one place to look, not four)\n• Better visibility (you know what\'s breaking before users call)\n• Simpler operations (one console, not multiple products)\n\nThis is where Nerdio really shines once AVD is deployed.\n\nLet\'s schedule a demo?\n\nBest,\n[Your Name]',
+                                notes: 'Position unified management as the real operational win, not just deployment speed.'
+                            },
+                            {
+                                step: 4,
+                                day: 14,
+                                subject: 'Free AVD deployment + 30 days of engineering support',
+                                body: 'Hi [First Name],\n\nI\'ve been talking about speed and simplicity. Let me put it where my mouth is.\n\nIf you\'re planning an AVD deployment in the next 60 days, I\'ll:\n\n1. Deploy your full AVD environment with Nerdio (no cost)\n2. Provide 30 days of engineering support (no cost)\n3. Walk your team through management and optimization\n4. Help you train on the unified dashboard\n\nWe don\'t charge you unless you decide to keep it after Day 30.\n\nThis removes the "new technology risk" from your deployment. You get professional support without the expense, and you validate the solution before committing.\n\nMost IT Directors tell us this accelerates their deployment by 3-4 weeks and eliminates the learning curve stress.\n\nInterested? Let me know your deployment timeline and current environment details (# of users, applications, etc.), and we\'ll get started.\n\nBest,\n[Your Name]',
+                                notes: 'Free deployment + support removes perceived risk for new technology adoption.'
+                            }
+                        ]
+                    },
+                    admin: {
+                        title: 'New AVD Deployment — IT Admin',
+                        timeline: [
+                            { day: 0, label: 'Day 0' },
+                            { day: 3, label: 'Day 3' },
+                            { day: 7, label: 'Day 7' },
+                            { day: 14, label: 'Day 14' }
+                        ],
+                        emails: [
+                            {
+                                step: 1,
+                                day: 0,
+                                subject: '[First Name]—AVD doesn\'t have to take 8 weeks to deploy',
+                                body: 'Hi [First Name],\n\nHow long is your AVD deployment scheduled to take? Most IT Admins I talk to are looking at 6-10 weeks.\n\nNerdio does it in under 90 minutes.\n\nNot because we\'re magic. Because we automated all the tedious stuff:\n• Golden image creation (we provide a hardened base image)\n• Host pool setup (templates, not manual clicks)\n• Session host provisioning (automated scaling)\n• Monitoring and logging (pre-configured dashboards)\n\nMost of your 6-10 weeks is spent on the repetitive work that Nerdio automates.\n\nI\'m reaching out because I want to make sure your team knows there\'s a faster way. Your Director will love that you can deploy AVD in 2-3 weeks instead of 8.\n\nWould you have 20 minutes to see how this actually works?\n\nBest,\n[Your Name]',
+                                notes: 'Appeal to the IT Admin\'s desire to show efficiency and impress their Director.'
+                            },
+                            {
+                                step: 2,
+                                day: 3,
+                                subject: 'AVD deployment checklist: What actually takes the time',
+                                body: 'Hi [First Name],\n\nLet me break down where that 6-10 week deployment timeline comes from:\n\n1. Planning & design (1-2 weeks): Figuring out host pool strategy, naming conventions, monitoring approach\n2. Golden image creation (2-3 weeks): Building the image, testing applications, patching, security hardening\n3. Host pool provisioning (1 week): Setting up load balancers, host pools, connectivity\n4. User onboarding (1-2 weeks): FSLOGIX, user assignments, group policies\n5. Testing & optimization (1-2 weeks): Load testing, performance tuning, troubleshooting\n6. Rollout (1-2 weeks): Phased deployment to actual users\n\nNerdio shortens steps 1-4 significantly:\n• We provide the pre-hardened golden image (skip 2-3 weeks)\n• We template the host pool configuration (skip 1 week)\n• We automate FSLOGIX setup (skip 1 week)\n• You still test, but you\'re testing a complete, working environment\n\nYour new timeline: 3-4 weeks instead of 8-10.\n\nThat\'s the kind of thing that makes you look really good to your Director.\n\nShould we map out your specific deployment timeline?\n\nBest,\n[Your Name]',
+                                notes: 'Give IT Admin a detailed breakdown so they can understand what they\'re optimizing and pitch it to their Director.'
+                            },
+                            {
+                                step: 3,
+                                day: 7,
+                                subject: 'Golden image management: Before vs. after Nerdio',
+                                body: 'Hi [First Name],\n\nOne piece I want to drill down on: golden image management.\n\nRight now (likely):\n• You patch the golden image monthly\n• You snapshot it as a "new" image\n• You deploy 100+ session host VMs from the old image\n• Those VMs get patched after (drift from golden image)\n• Next month, repeat\n\nWith Nerdio:\n• You have one golden image (Nerdio-provided, always patched)\n• Session host VMs auto-heal to that image if they drift\n• Patches are applied programmatically (no manual cycles)\n• Compliance is maintained automatically\n\nYour monthly image management effort drops from 20-30 hours to 1-2 hours.\n\nLater, when you\'re running AVD for real, this becomes your favorite feature—not because it\'s flashy, but because it eliminates the tedious work.\n\nCare to see this in a lab environment? We can spin up a test session and show you the auto-heal in action.\n\nBest,\n[Your Name]',
+                                notes: 'IT Admin cares about operational simplicity in the long run. Show how Nerdio eliminates toil.'
+                            },
+                            {
+                                step: 4,
+                                day: 14,
+                                subject: 'Deploy AVD yourself—with our team on speed dial',
+                                body: 'Hi [First Name],\n\nI\'ve been talking about how fast this can be. But I also know you want to own the deployment and understand every piece.\n\nHere\'s what I propose: You deploy AVD using Nerdio automation, and we\'ll be available on Slack/Teams for real-time support.\n\nWe provide:\n• Pre-built deployment templates (you customize for [Company])\n• Step-by-step deployment guide\n• Real-time support (we\'re here if you hit a snag)\n• Post-deployment optimization review\n\nYou get to:\n• Learn the deployment process thoroughly\n• Feel ownership of the environment\n• Deploy 3-4x faster than traditional manual methods\n• Have expert support to lean on\n\nMost IT Admins find this approach gives them the best of both worlds: speed + confidence.\n\nInterested? Let me know, and we\'ll get you set up with a deployment plan.\n\nBest,\n[Your Name]',
+                                notes: 'IT Admin wants autonomy with safety net. Offer support without removing ownership.'
+                            }
+                        ]
+                    }
+                }
+            },
+            'win10-eol': {
+                title: 'Windows 10 EOL / Desktop Modernization',
+                description: 'Transition customers from Windows 10 EOL to cloud solutions',
+                personas: {
+                    cio: {
+                        title: 'Windows 10 EOL / Desktop Modernization — CIO/CTO',
+                        timeline: [
+                            { day: 0, label: 'Day 0' },
+                            { day: 5, label: 'Day 5' },
+                            { day: 10, label: 'Day 10' },
+                            { day: 15, label: 'Day 15' }
+                        ],
+                        emails: [
+                            {
+                                step: 1,
+                                day: 0,
+                                subject: 'Windows 10 EOL: Strategic window is closing',
+                                body: 'Hi [First Name],\n\nWindows 10 reaches end-of-support on October 14, 2025. That\'s [Days Until EOL] days away.\n\nFor your organization, this creates a strategic inflection point: Refresh on-premise hardware to Windows 11, or modernize desktops to cloud (Windows 365, AVD, or both).\n\nMost CIOs are realizing cloud-native is the smarter long-term play. Why? Three reasons:\n\n1. Hardware refresh cycles disappear (rent compute instead of buying devices)\n2. Security posture improves (cloud patching, threat detection, baseline compliance)\n3. Flexibility increases (users can work from anywhere, on any device)\n\nWe help enterprises modernize desktops without business disruption. Cloud PC + AVD hybrid approach manages both traditional workers and specialized use cases.\n\nWould you have 20 minutes to explore a modernization strategy for [Company]?\n\nBest,\n[Your Name]',
+                                notes: 'Lead with EOL date and urgency. Position cloud modernization as a strategic choice, not a reactive fix.'
+                            },
+                            {
+                                step: 2,
+                                day: 5,
+                                subject: 'Windows 10 → Windows 11: The hidden costs',
+                                body: 'Hi [First Name],\n\nI know many CIOs default to "just upgrade to Windows 11 on new hardware." Before you go down that path, consider the full cost:\n\nTraditional refresh:\n• New device cost: $1,200-1,500 per user × headcount\n• Setup/imaging: 4-8 hours per device × IT cost\n• User disruption: Transition time to new device\n• 3-year ownership cost: Including repairs, replacements, end-of-life\n\nCloud modernization:\n• Cloud PC or AVD cost: $20-50/user/month (no hardware costs)\n• Setup/provisioning: 15 minutes per user (automated)\n• Zero user disruption: Instant access, same experience\n• Long-term flexibility: Scale up/down with business, no hardware lock-in\n\nOver 5 years, cloud saves money AND gives you more flexibility.\n\nMost CIOs we work with realize the Windows 11 refresh is actually a good trigger for a strategic desktop modernization.\n\nShould we model the cost comparison for [Company]?\n\nBest,\n[Your Name]',
+                                notes: 'Appeal to CFO/financial thinking. Position cloud as the lower TCO option.'
+                            },
+                            {
+                                step: 3,
+                                day: 10,
+                                subject: 'Windows 365 + AVD: The hybrid approach most enterprises use',
+                                body: 'Hi [First Name],\n\nHere\'s what we\'re seeing at enterprise: Most organizations don\'t go "all cloud PC" or "all AVD." They use a hybrid:\n\nWindows 365 Cloud PC for:\n• Standard office workers (email, Teams, Office)\n• Contractors (instant onboarding, instant offboarding)\n• Remote-first roles (no VPN, better performance)\n\nAVD for:\n• High-performance users (engineers, data analysts, designers)\n• Legacy applications (those that need a "full Windows" feel)\n• Specialized workloads (GPU-heavy, CAD, video editing)\n\nManaging both from one console is key. That\'s where Nerdio comes in—unified dashboard for Windows 365, AVD, and Intune.\n\nFor [Company], a hybrid approach probably makes sense:\n• [X]% of users on Cloud PC (lower cost, simpler)\n• [Y]% on AVD (performance, legacy app support)\n• One team managing both (Nerdio unified interface)\n\nLet\'s explore what the split would look like for your user population.\n\nBest,\n[Your Name]',
+                                notes: 'Position hybrid as the "smart middle ground" that most enterprises choose. Emphasize unified management.'
+                            },
+                            {
+                                step: 4,
+                                day: 15,
+                                subject: 'Assessment: Find your Windows 10 EOL strategy in one week',
+                                body: 'Hi [First Name],\n\nYou\'re close to a decision deadline. Let me help you move forward.\n\nI\'m offering a quick Windows 10 EOL modernization assessment:\n\n1. We analyze your user population (roles, applications, performance needs)\n2. We identify who fits Cloud PC vs. AVD\n3. We model costs (hardware refresh vs. cloud hybrid)\n4. We provide a migration roadmap and timeline\n\nFull assessment: 1 week, no cost.\n\nOutput: Clear strategy that you can take to your board and your budget planning.\n\nInterested? Send me details on your Windows 10 footprint (# of users, primary applications, role breakdown), and we\'ll get started this week.\n\nWindows 10 EOL is a deadline—but it\'s also an opportunity to modernize. Let\'s make sure you capitalize on it.\n\nBest,\n[Your Name]',
+                                notes: 'Create urgency around the EOL date. Offer specific deliverable (assessment + roadmap) to move the conversation forward.'
+                            }
+                        ]
+                    },
+                    director: {
+                        title: 'Windows 10 EOL / Desktop Modernization — IT Director',
+                        timeline: [
+                            { day: 0, label: 'Day 0' },
+                            { day: 5, label: 'Day 5' },
+                            { day: 10, label: 'Day 10' },
+                            { day: 15, label: 'Day 15' }
+                        ],
+                        emails: [
+                            {
+                                step: 1,
+                                day: 0,
+                                subject: '[First Name]—Windows 10 EOL is your desktop modernization trigger',
+                                body: 'Hi [First Name],\n\nWindows 10 end-of-support is October 14, 2025. That means:\n\n1. No more security patches (devices become vulnerable)\n2. Your CIO will ask "what\'s our plan?"\n3. You\'ll own implementation\n\nHere\'s the thing: This is actually an opportunity. Instead of just refreshing hardware, you can modernize desktops to cloud.\n\nCloud PC or AVD means:\n• No hardware refresh costs (rent compute instead)\n• Users get instant access (no wait for new device)\n• IT workload drops 30-40% (cloud-managed, not on-premise managed)\n• Security improves (cloud patching, endpoint protection)\n\nI\'m reaching out because IT Directors who move proactively on this look really good to their CIO and their business.\n\nWould you have 20 minutes to explore a modernization approach that works for [Company]?\n\nBest,\n[Your Name]',
+                                notes: 'Appeal to IT Director as the "owner" of the EOL transition. Position cloud modernization as the modern, successful path.'
+                            },
+                            {
+                                step: 2,
+                                day: 5,
+                                subject: 'Your team\'s workload in Windows 10 vs. Cloud PC',
+                                body: 'Hi [First Name],\n\nLet me be specific about the operational impact.\n\nWith Windows 10 on-premise hardware:\n• Device setup: 4-8 hours per device\n• Ongoing patching: Monthly windows, deployment challenges\n• Hardware failures: On-site repairs, user downtime\n• End-of-life management: Recycling, data wiping\n\nWith Cloud PC:\n• Device setup: 15 minutes (automated provisioning)\n• Patching: Automatic, happens overnight\n• Failures: Instant re-provisioning (user works while IT fixes it)\n• EOL: Delete the Cloud PC, instant\n\nFor your team, this means fewer late nights, fewer hardware emergencies, and more time on strategic projects.\n\nMost IT Directors who move to Cloud PC find it frees up 20-30% of their team\'s time.\n\nThat\'s worth exploring, right?\n\nBest,\n[Your Name]',
+                                notes: 'Focus on IT workload and operational simplicity. Show how cloud improves daily IT life.'
+                            },
+                            {
+                                step: 3,
+                                day: 10,
+                                subject: 'Migration plan: From Windows 10 to Cloud PC in 90 days',
+                                body: 'Hi [First Name],\n\nIf your CIO approves cloud modernization, here\'s what the implementation looks like:\n\nMonth 1: Plan & prep\n• User assessment (identify Cloud PC vs. AVD split)\n• Application testing (make sure everything works in cloud)\n• Pilot setup (50-100 users, early feedback)\n\nMonth 2: Scale & train\n• Provision next 500 users\n• IT team training (managing Cloud PC, troubleshooting)\n• User training (how to access, basic support)\n\nMonth 3: Full rollout\n• Remaining users migrated\n• Hardware decommission/recycle\n• Legacy support (any holdouts still on Windows 10)\n\nTimeline: EOL deadline met, team trained, fully operational.\n\nThe key is starting now. Three months seems like a long runway, but it fills up fast with testing, training, and iterations.\n\nShould we map out what Month 1 looks like for [Company]?\n\nBest,\n[Your Name]',
+                                notes: 'Provide a realistic, phased timeline that shows the IT Director how to manage the transition.'
+                            },
+                            {
+                                step: 4,
+                                day: 15,
+                                subject: 'Let\'s plan your Windows 10 EOL strategy this week',
+                                body: 'Hi [First Name],\n\nYou\'re 9 months from Windows 10 EOL. That sounds like time, but planning, testing, and rollout take longer than you\'d think.\n\nHere\'s what I want to do:\n\n1. Quick 30-minute call with you and your team\n2. Walk through Cloud PC + AVD options\n3. Identify your implementation approach\n4. Create a 90-day roadmap\n\nAfter the call, you\'ll have clear direction to take back to your CIO.\n\nThis is exactly the kind of strategic initiative that makes IT look good: Proactive, planned, de-risked.\n\nInterested in a call this week? Let me know your availability.\n\nBest,\n[Your Name]',
+                                notes: 'IT Director wants a clear plan and a way to look good to leadership. Offer a collaborative planning session.'
+                            }
+                        ]
+                    }
+                }
+            },
+            'msp-recruit': {
+                title: 'MSP Partner Recruitment',
+                description: 'Recruit MSP partners to the Nerdio Partnerd program',
+                personas: {
+                    msp: {
+                        title: 'MSP Partner Recruitment — MSP Owner',
+                        timeline: [
+                            { day: 0, label: 'Day 0' },
+                            { day: 4, label: 'Day 4' },
+                            { day: 8, label: 'Day 8' },
+                            { day: 14, label: 'Day 14' }
+                        ],
+                        emails: [
+                            {
+                                step: 1,
+                                day: 0,
+                                subject: '[First Name]—Are your Azure margins where they should be?',
+                                body: 'Hi [First Name],\n\nQuick question: What\'s your gross margin on Azure infrastructure services?\n\nMost MSPs we talk to are 15-25%. You should be 40-50%.\n\nThe gap is because your customers\' Azure costs are inefficient. VMs running 24/7 when they\'re not needed. Oversized instances. Orphaned resources. Meanwhile, you\'re absorbing complaints about their Azure bill with no visibility or control.\n\nNerdio gives you both: Visibility into their Azure spend + tools to optimize it. And the margin? You can charge for optimization as a service and keep 30-40% gross margin.\n\nI\'m reaching out because you have a real opportunity to improve margins on your Azure business.\n\nWould you have 15 minutes to explore this?\n\nBest,\n[Your Name]',
+                                notes: 'Lead with the margin question. MSP Owners are financially motivated, and this positions Nerdio as a margin improvement tool.'
+                            },
+                            {
+                                step: 2,
+                                day: 4,
+                                subject: 'MSP: Partnerd program overview + margin opportunity',
+                                body: 'Hi [First Name],\n\nI mentioned margin improvement. Let me show you the specific opportunity.\n\nTraditional MSP Azure service:\n• You manage customer Azure environment\n• You charge a percentage of their Azure bill (typically 15-20%)\n• You absorb support costs\n• Margin: 15-25%\n\nWith Nerdio Partnerd program:\n• You manage + optimize their Azure (Nerdio enables optimization)\n• You charge for infrastructure management (base fee) + Azure optimization (additional revenue)\n• Support is lighter (Nerdio + Microsoft ecosystem make it simpler)\n• Margin: 40-50%\n\nExample: Customer with $10K/month Azure bill\n• Traditional: You earn $1.5K/month (15%), customers complain about bill\n• Partnerd: You earn $3K/month ($2K management + $1K optimization), customers see savings\n\nFor a 100-customer book, that\'s $180K+ additional annual revenue.\n\nThat\'s why MSPs join Partnerd.\n\nInterested in details?\n\nBest,\n[Your Name]',
+                                notes: 'Show concrete margin math. MSP Owners think in terms of revenue per customer and total book value.'
+                            },
+                            {
+                                step: 3,
+                                day: 8,
+                                subject: 'MSP case study: How Partnerd tripled revenue (without headcount)',
+                                body: 'Hi [First Name],\n\nI want to share a specific example of what Partnerd looks like in practice.\n\nQuub.it (large MSP, $[Revenue Range]) joined Partnerd 18 months ago. Here\'s what they did:\n\n• Deployed Nerdio to 200 of their existing customers\n• Packaged Nerdio + AVD + optimization as an "Workplace as a Service" offering\n• Increased their average revenue per customer from $[ARR] to $[Higher ARR]\n\nResult: 3x revenue growth on their Azure business, same headcount.\n\nHow? By moving from "managing a cost center" (Azure infrastructure) to "delivering a service" (workplace optimization + cost control).\n\nSage (another Partnerd MSP) scaled from 200 to 1,000 customers in 2 years without adding headcount, because Nerdio automation scaled with them.\n\nThese aren\'t anomalies—they\'re typical Partnerd success stories.\n\nYour [Customer Count] customers represent a similar opportunity.\n\nReady to explore what Partnerd could look like for your business?\n\nBest,\n[Your Name]',
+                                notes: 'Use real MSP examples (Quub.it, Sage, or similar). Show revenue scale-up without proportional headcount growth.'
+                            },
+                            {
+                                step: 4,
+                                day: 14,
+                                subject: 'Let\'s map your first 10 Partnerd deals',
+                                body: 'Hi [First Name],\n\nI\'ve talked margin and growth. Now let\'s get tactical.\n\nHere\'s what I propose:\n\n1. You pick 10 customers (good Azure candidates for optimization)\n2. We help you pitch "Azure Optimization Service" to them\n3. We deploy Nerdio + support for your team\n4. First 90 days: You get first-hand proof of margin and customer value\n\nFirst 10 deals give you:\n• Real experience with the Partnerd program\n• Proof of concept for your sales team\n• Revenue in months 2-3\n• Credibility to scale to your full book\n\nNo upfront cost. No long-term commitment. Just 90 days of "let\'s see if this works."\n\nMost MSP owners find the margin and customer satisfaction compelling enough to scale across their entire business.\n\nInterested? Send me your 10 candidate customers, and we\'ll get this rolling.\n\nBest,\n[Your Name]',
+                                notes: 'MSP Owner wants proof before committing. Offer a small pilot that generates real revenue and proof.'
+                            }
+                        ]
+                    },
+                    partner: {
+                        title: 'MSP Partner Recruitment — Partner Manager',
+                        timeline: [
+                            { day: 0, label: 'Day 0' },
+                            { day: 4, label: 'Day 4' },
+                            { day: 8, label: 'Day 8' },
+                            { day: 14, label: 'Day 14' }
+                        ],
+                        emails: [
+                            {
+                                step: 1,
+                                day: 0,
+                                subject: '[First Name]—New revenue stream for your MSP partners',
+                                body: 'Hi [First Name],\n\nI know you\'re always looking for ways to help your MSP partners grow revenue and improve margins.\n\nWe have a solution: Nerdio Partnerd program. It gives your MSPs a new service category (Azure Optimization + AVD/W365 management) that increases their average revenue per customer by 30-40%.\n\nFor you as a partner manager: Your MSPs grow bigger, happier, higher-revenue partnerships = they buy more from you overall.\n\nI\'m reaching out because introducing Partnerd to your MSP base is a quick win for everyone.\n\nWould you have 15 minutes to explore how this works?\n\nBest,\n[Your Name]',
+                                notes: 'Appeal to partner manager\'s interest in MSP growth and partner retention. Position Nerdio as a growth tool for their partners.'
+                            },
+                            {
+                                step: 2,
+                                day: 4,
+                                subject: 'Partnerd program structure + partner economics',
+                                body: 'Hi [First Name],\n\nLet me give you the specifics of how Partnerd works:\n\nFor your MSPs:\n• License Nerdio at partner pricing (20-30% discount)\n• Re-sell to customers at your own margin\n• Nerdio provides sales + technical enablement\n• Your MSPs own the customer relationship\n\nEconomics:\n• MSP buys Nerdio at $100/month (example)\n• MSP charges customer $200/month (or more, depending on service packaging)\n• MSP keeps 50%+ margin\n• MSP sales team scales from "managing a cost" to "selling an optimization service"\n\nFor you:\n• Your MSPs grow revenue (they buy more from you overall)\n• Your MSPs are happier (better margins, easier sells)\n• You have a new offering to talk about\n• Partnership deepens (MSPs see you as growth partner, not just vendor)\n\nThis is a win-win-win.\n\nWant to explore bringing Partnerd to your MSP community?\n\nBest,\n[Your Name]',
+                                notes: 'Partner Manager cares about MSP growth and partnership deepening. Show economic value clearly.'
+                            },
+                            {
+                                step: 3,
+                                day: 8,
+                                subject: 'MSP success stories: Revenue growth, customer satisfaction',
+                                body: 'Hi [First Name],\n\nI wanted to share what\'s happening with Partnerd MSPs you might know:\n\nQuub.it joined Partnerd 18 months ago. They scaled their Azure optimization business 3x, now hitting [Revenue Range] from that practice alone.\n\nSage grew from 200 to 1,000 customers without adding headcount, using Nerdio to automate optimization.\n\nMicrosoft partner channel data shows Nerdio Partnerd MSPs grow 2-3x faster than non-Nerdio MSPs on Azure services.\n\nWhy? Two reasons:\n\n1. Partnerd gives MSPs a differentiated service (most competitors offer basic infrastructure management, not optimization)\n2. Nerdio automates the repetitive work (scaling is operational, not people-dependent)\n\nYour MSP base has the same opportunity. They just need the tool.\n\nShould we host a Partnerd webinar for your partner community?\n\nBest,\n[Your Name]',
+                                notes: 'Use specific MSP examples and growth metrics. Position Partnerd as the competitive differentiation.'
+                            },
+                            {
+                                step: 4,
+                                day: 14,
+                                subject: 'Partnerd rollout strategy for your MSP base',
+                                body: 'Hi [First Name],\n\nI want to move from "interesting concept" to "let\'s actually do this."\n\nHere\'s what I propose:\n\n1. Host a Partnerd webinar for your top 20 MSPs (45 minutes, education + opportunity)\n2. One-on-one conversations with interested MSPs (I handle these)\n3. Pilot program (5-10 MSPs get special pricing, direct support)\n4. Community program (all your MSPs can join at standard pricing)\n\nTimeline: Webinar next month, first pilots running 30 days after.\n\nYour role: Introduce the concept, position Nerdio as a growth tool, let me handle the technical details.\n\nResult: Happier MSP base, deeper partnerships, incremental revenue for your company.\n\nInterested? Let me know and we\'ll set the webinar date.\n\nBest,\n[Your Name]',
+                                notes: 'Partner Manager wants a clear program rollout and clear actions. Offer a webinar + pilot structure.'
+                            }
+                        ]
+                    }
+                }
+            },
+            'post-event': {
+                title: 'Post-Event Follow-Up',
+                description: 'Follow up with leads from trade shows and events',
+                personas: {
+                    director: {
+                        title: 'Post-Event Follow-Up — IT Director',
+                        timeline: [
+                            { day: 0, label: 'Same Day' },
+                            { day: 3, label: 'Day 3' },
+                            { day: 7, label: 'Day 7' }
+                        ],
+                        emails: [
+                            {
+                                step: 1,
+                                day: 0,
+                                subject: '[First Name]—Great connecting at [Event Name]',
+                                body: 'Hi [First Name],\n\nThanks for stopping by the Nerdio booth at [Event Name]. I really enjoyed our conversation about your AVD deployment and [specific topic discussed].\n\nA few quick takeaways from our chat:\n\n• You\'re evaluating cloud desktop solutions for [Company] in Q2\n• [Specific challenge or goal mentioned during conversation]\n• You\'re interested in seeing how Nerdio streamlines AVD management\n\nI wanted to keep the momentum going. I\'m attaching a quick one-pager on the AVD deployment process—should give you some good talking points for your team.\n\nLet\'s schedule a brief call next week to dive deeper. Thinking 20 minutes on [specific topic]?\n\nLooking forward to it,\n[Your Name]',
+                                notes: 'Send same day or next business day. Reference specific conversation from the booth to prove you actually talked.'
+                            },
+                            {
+                                step: 2,
+                                day: 3,
+                                subject: '[Event Name] follow-up—AVD best practices guide',
+                                body: 'Hi [First Name],\n\nA few days have passed since [Event Name], and I wanted to share something helpful.\n\nBased on our conversation, I think you\'ll find value in this guide: "[AVD Best Practices: Deployment, Management, Optimization]"\n\nIt covers the exact workflow you mentioned—deploying AVD for [# of] users while keeping your current [legacy system] running in parallel.\n\nKey section that might be relevant: "Phase 1: Parallel Deployment" (pages 8-12). This is the approach most teams like [Company] use to de-risk the migration.\n\nGive it a read, and if you have questions or want to discuss how this applies to your specific situation, just reply.\n\nBest,\n[Your Name]',
+                                notes: 'Send a relevant resource that matches the conversation. Make it specific enough that they recognize it came from your actual discussion.'
+                            },
+                            {
+                                step: 3,
+                                day: 7,
+                                subject: 'Quick call to answer your AVD questions?',
+                                body: 'Hi [First Name],\n\nI wanted to check in. You mentioned at [Event Name] that you\'d like to explore AVD deployment timeline + cost for [Company].\n\nI\'ve got some time this week and next. Could we grab 20 minutes? I can walk through:\n\n• Realistic timeline for your [# of users] user deployment\n• Cost comparison (current system vs. AVD)\n• Migration approach (parallel vs. cutover)\n• Support options\n\nJust let me know what works best for you.\n\nIf now isn\'t the right time, no pressure—I\'ll check back in a few weeks.\n\nBest,\n[Your Name]',
+                                notes: 'Soft ask for a meeting. Give them an out if it\'s not the right time. Keep it brief and specific.'
+                            }
+                        ]
+                    },
+                    cio: {
+                        title: 'Post-Event Follow-Up — CIO/CTO',
+                        timeline: [
+                            { day: 0, label: 'Same Day' },
+                            { day: 3, label: 'Day 3' },
+                            { day: 7, label: 'Day 7' }
+                        ],
+                        emails: [
+                            {
+                                step: 1,
+                                day: 0,
+                                subject: '[First Name]—[Event Name] conversation follow-up',
+                                body: 'Hi [First Name],\n\nThanks for taking time to chat at [Event Name]. I appreciated your perspective on [strategic topic we discussed]—specifically your point about [specific insight they shared].\n\nThat viewpoint is exactly why many CIOs are reconsidering their desktop and application delivery strategy. The shift from on-premise management to cloud-managed is becoming table stakes.\n\nI\'m not going to pitch you now. But I do want to stay connected as you explore options.\n\nA couple of resources that might be useful as you think through strategy:\n\n• Gartner Magic Quadrant: DaaS (Desktop as a Service)\n• Forrester Wave: Virtual Desktop Infrastructure\n\nBoth touch on the direction you mentioned at the event.\n\nIf you want to dig deeper on anything, I\'m here.\n\nBest,\n[Your Name]',
+                                notes: 'CIO follow-up is more strategic. Reference their specific insight. Don\'t push for a meeting—establish you understand their perspective.'
+                            },
+                            {
+                                step: 2,
+                                day: 3,
+                                subject: 'CIO perspective: Desktop modernization trends',
+                                body: 'Hi [First Name],\n\nI mentioned a couple of analyst reports in my last email. I wanted to share a specific insight from the Gartner report that aligned with your [Event Name] comment.\n\n"Enterprise CIOs are viewing desktop modernization as a strategic architecture decision, not a tactical refresh cycle. Cloud-delivered desktops and applications are now table stakes for enterprises evaluating agility, security, and TCO."\n\nThat\'s exactly what you said: It\'s not about replacing hardware—it\'s about rethinking the entire desktop delivery model.\n\nWe help CIOs like you move from that strategic thinking to implementation. Nerdio + Azure gives you the flexibility you want (cloud-native, AI-ready, hybrid-capable) without the operational complexity of managing multiple point solutions.\n\nNot pushing—just letting you know we\'re here when you\'re ready to explore execution.\n\nBest,\n[Your Name]',
+                                notes: 'CIO follow-up focuses on strategy and industry trends. Make it about their thinking, not a pitch.'
+                            },
+                            {
+                                step: 3,
+                                day: 7,
+                                subject: 'Worth a 20-minute conversation?',
+                                body: 'Hi [First Name],\n\nI realize I\'ve sent a couple of emails without directly asking: Would a brief conversation be valuable?\n\nI\'m thinking 20 minutes where I can:\n\n1. Share what we\'re seeing from other CIOs in your industry (trends, decision drivers)\n2. Answer any technical questions about cloud-delivered desktops\n3. Understand your specific priorities and constraints\n\nNo formal pitch. Just a working conversation.\n\nLet me know if that interests you. If not, I\'ll check back in Q2 or Q3 when your planning cycle progresses.\n\nBest,\n[Your Name]',
+                                notes: 'CIO email is indirect but honest. You\'re proposing conversation value, not a sales meeting.'
+                            }
+                        ]
+                    }
+                }
+            },
+            'customer-expansion': {
+                title: 'Existing Customer Expansion',
+                description: 'Expand value with current customers by introducing new services',
+                personas: {
+                    director: {
+                        title: 'Customer Expansion — IT Director',
+                        timeline: [
+                            { day: 0, label: 'Day 0' },
+                            { day: 4, label: 'Day 4' },
+                            { day: 8, label: 'Day 8' }
+                        ],
+                        emails: [
+                            {
+                                step: 1,
+                                day: 0,
+                                subject: '[First Name]—Your [Company] Nerdio wins (and what\'s next)',
+                                body: 'Hi [First Name],\n\nI wanted to take a step back and recap what you\'ve accomplished with Nerdio over the past [# of months]:\n\n• Deployed AVD for [# of] users in [timeframe]\n• Reduced desktop deployment time from [X weeks] to [Y days]\n• Your team saved approximately [# hours/month] on patch management\n• User satisfaction: [# of NPS/feedback points if available]\n\nThat\'s solid progress. Your team should be proud.\n\nNow, here\'s what I\'m seeing: You\'re optimizing desktops, but there\'s a bigger opportunity downstream—managing your entire application delivery and infrastructure spend from one platform.\n\nI wanted to see if you\'d be open to a conversation about taking this further.\n\nCheers,\n[Your Name]',
+                                notes: 'QBR framing. Recap wins to build confidence, then introduce expansion opportunity.'
+                            },
+                            {
+                                step: 2,
+                                day: 4,
+                                subject: '[Company] expansion: Windows 365 + Intune Insights',
+                                body: 'Hi [First Name],\n\nYou\'ve nailed AVD for your traditional users. Now we\'re seeing [Company]-like organizations take two more steps:\n\n1. Windows 365 Cloud PC for specific user segments (contractors, new hires, remote-first roles). It\'s simpler than AVD for standard users, lower cost, instant onboarding.\n\n2. Intune Insights for endpoint analytics—giving your team visibility into device health, app performance, and compliance across all devices (corporate, BYOD, Cloud PC, AVD).\n\nFor [Company], adding Cloud PC + Insights would give you:\n• Cost optimization (move some users to lower-cost Cloud PC)\n• Operational simplicity (federated device management in Intune)\n• User experience visibility (know what\'s breaking before they call)\n\nThe beauty: You already have Azure, Intune, and Nerdio. This is just adding two things to an already-humming system.\n\nShould we explore what Cloud PC + Insights looks like for [Company]?\n\nBest,\n[Your Name]',
+                                notes: 'Position new services as natural extensions of what they\'re already doing. Keep it simple and benefit-focused.'
+                            },
+                            {
+                                step: 3,
+                                day: 8,
+                                subject: 'Customer like [Company] expanded and saw $[Amount] savings',
+                                body: 'Hi [First Name],\n\nI wanted to share a quick win from a customer similar to [Company].\n\nThey:\n• Started with AVD for 500 standard users\n• 6 months in, added Cloud PC for their 100 contractors\n• 3 months after that, enabled Intune Insights to optimize endpoint spend\n\nResult: They reduced their total workspace cost (desktops + infrastructure + management) by 35% while actually improving user experience and IT efficiency.\n\nTheir finance team was shocked—they expected costs to go up as they added new services, not down.\n\nThat\'s because Nerdio + Azure is fundamentally more efficient than the point-solution approach they started with.\n\nI think [Company] is positioned for a similar story.\n\nWant to schedule a 20-minute call where we map out what expansion could look like for you? No pressure—just exploration.\n\nBest,\n[Your Name]',
+                                notes: 'Case study of expansion success. Reference a similar customer. Make the ROI of expansion clear.'
+                            }
+                        ]
+                    },
+                    admin: {
+                        title: 'Customer Expansion — IT Admin',
+                        timeline: [
+                            { day: 0, label: 'Day 0' },
+                            { day: 4, label: 'Day 4' },
+                            { day: 8, label: 'Day 8' }
+                        ],
+                        emails: [
+                            {
+                                step: 1,
+                                day: 0,
+                                subject: '[First Name]—Nerdio for AVD is working great. What\'s next?',
+                                body: 'Hi [First Name],\n\nI wanted to check in. You\'ve been running Nerdio + AVD for [# of months] now, and by the metrics I\'m seeing, it\'s working really well.\n\n[Specific metrics: users deployed, uptime, performance, tickets resolved, etc.]\n\nYour team has clearly figured out how to operate this efficiently. Nice work.\n\nHere\'s what I wanted to mention: There are two things most IT admins like you do next, and I wanted to see if either resonates:\n\n1. Expand AVD to additional user groups (contractors, shift workers, etc.)\n2. Add Windows 365 Cloud PC for simpler user scenarios (less operational overhead than managing AVD)\n\nBoth are "low-effort, high-value" additions to what you\'re already doing.\n\nWorth a quick conversation?\n\nBest,\n[Your Name]',
+                                notes: 'IT Admin email references their operational success, then suggests natural extensions of what they\'re doing.'
+                            },
+                            {
+                                step: 2,
+                                day: 4,
+                                subject: 'Cloud PC: Lower operational overhead than AVD (for right users)',
+                                body: 'Hi [First Name],\n\nI mentioned Cloud PC. Let me be specific about why it makes sense for [Company].\n\nAVD is great for:\n• Complex applications\n• High-performance users (engineers, designers)\n• Legacy application support\n• User customization\n\nCloud PC is better for:\n• Standard office workers (email, Teams, Office)\n• Contractors (instant onboarding, instant offboarding)\n• Temporary projects (spin up, use, tear down)\n• BYOD scenarios\n\nFor a Cloud PC user, your operational overhead is basically zero. Microsoft manages the image, patching, health—you just assign, user logs in.\n\nFor [Company], if you have 200-300 users who are \"standard office\" vs. your 500 AVD users who need more, Cloud PC saves you 20-30% on operational effort for that segment.\n\nThe beauty: One console (Nerdio) manages both AVD and Cloud PC. You don\'t add operational complexity.\n\nWant to identify which of your users would be good Cloud PC candidates?\n\nBest,\n[Your Name]',
+                                notes: 'Help IT Admin understand the operational difference between AVD and Cloud PC. Position Cloud PC as "lower overhead for the right users."'
+                            },
+                            {
+                                step: 3,
+                                day: 8,
+                                subject: 'Let\'s expand your Nerdio footprint in Q2',
+                                body: 'Hi [First Name],\n\nYou\'ve got a solid AVD deployment. Now\'s the time to expand before your budget cycle closes.\n\nHere\'s what I\'m thinking:\n\n1. Audit your current 500 AVD users—identify 200-300 who could move to Cloud PC\n2. Provision Cloud PC for that segment (takes 2-3 weeks)\n3. Measure: Operational effort, cost, user satisfaction\n4. Decision: Keep it, expand it, or adjust\n\nTimeline: Entire evaluation done by end of Q2.\n\nCost: Minimal (Cloud PC is often cheaper per user than AVD for simpler users).\n\nBenefit: Lower operational overhead, potentially lower cost, same platform you\'re already managing.\n\nInterested? Let me know and we can kick off the user audit this week.\n\nBest,\n[Your Name]',
+                                notes: 'IT Admin wants specific, actionable plan. Offer a clear project (audit, deploy, measure, decide) with a timeline.'
+                            }
+                        ]
+                    }
+                }
+            }
+        };
+
+        // APP STATE
+        let currentUseCase = 'citrix';
+        let currentPersona = 'cio';
+
+        // DOM ELEMENTS
+        const useCaseTabsEl = document.getElementById('useCaseTabs');
+        const personaChipsEl = document.getElementById('personaChips');
+        const contentPanelEl = document.getElementById('contentPanel');
+
+        // EVENT LISTENERS
+        useCaseTabsEl.addEventListener('click', (e) => {
+            if (e.target.classList.contains('selector-tab')) {
+                document.querySelectorAll('.selector-tab').forEach(tab => tab.classList.remove('active'));
+                e.target.classList.add('active');
+                currentUseCase = e.target.dataset.usecase;
+                renderContent();
+            }
+        });
+
+        personaChipsEl.addEventListener('click', (e) => {
+            if (e.target.classList.contains('persona-chip')) {
+                document.querySelectorAll('.persona-chip').forEach(chip => chip.classList.remove('active'));
+                e.target.classList.add('active');
+                currentPersona = e.target.dataset.persona;
+                renderContent();
+            }
+        });
+
+        // RENDER CONTENT
+        function renderContent() {
+            const useCase = sequences[currentUseCase];
+            const personaData = useCase.personas[currentPersona];
+
+            if (!personaData) {
+                contentPanelEl.innerHTML = '<div class="empty-state"><h2>No sequence available for this combination.</h2></div>';
+                return;
+            }
+
+            const { title, timeline, emails } = personaData;
+
+            // Timeline
+            let timelineHTML = '<div class="sequence-timeline">';
+            timeline.forEach(item => {
+                timelineHTML += `
+                    <div class="timeline-item">
+                        <div class="timeline-day">Day ${item.day}</div>
+                        <div class="timeline-label">${item.label}</div>
+                    </div>
+                `;
+            });
+            timelineHTML += '</div>';
+
+            // Emails
+            let emailsHTML = '<div class="emails-container">';
+            emails.forEach((email, idx) => {
+                const subjectForClip = email.subject.replace(/\[First Name\]/g, '[First Name]').replace(/\[Company\]/g, '[Company]');
+                const bodyForClip = email.body.replace(/\[First Name\]/g, '[First Name]').replace(/\[Company\]/g, '[Company]').replace(/\[Your Name\]/g, '[Your Name]');
+
+                emailsHTML += `
+                    <div class="email-card">
+                        <div class="email-step">
+                            <div class="step-badge">${email.step}</div>
+                            <div class="step-info">
+                                <h3>Email ${email.step}</h3>
+                                <div class="step-timing">Day ${email.day}</div>
+                            </div>
+                        </div>
+
+                        <div class="email-subject">
+                            <span class="subject-label">Subject Line</span>
+                            <div class="subject-text editable" contenteditable="true">${escapeHtml(email.subject)}</div>
+                        </div>
+
+                        <div class="email-body editable" contenteditable="true">${escapeHtml(email.body).replace(/\n/g, '<br>')}</div>
+
+                        <div class="email-notes">
+                            <strong>Pro Tip:</strong> ${email.notes}
+                        </div>
+
+                        <div class="email-actions">
+                            <button class="btn btn-copy" onclick="copyEmail(${idx})">Copy Email</button>
+                            <button class="btn btn-copy" onclick="copyEmailAndSubject(${idx})">Copy Subject + Body</button>
+                        </div>
+                    </div>
+                `;
+            });
+            emailsHTML += '</div>';
+
+            const content = `
+                <div class="content-header">
+                    <h1 class="content-title">${title}</h1>
+                    <p class="content-subtitle">Complete multi-touch email sequence • Customize and copy directly to your CRM</p>
+                </div>
+
+                <div class="sequence-actions">
+                    <button class="btn btn-copy-sequence" onclick="copyEntireSequence()">Copy Entire Sequence</button>
+                    <button class="btn btn-copy-sequence" onclick="printSequence()">Print Sequence</button>
+                </div>
+
+                ${timelineHTML}
+                ${emailsHTML}
+            `;
+
+            contentPanelEl.innerHTML = content;
+
+            // Store emails in window for copy functions
+            window.currentEmails = emails;
+        }
+
+        // COPY FUNCTIONS
+        window.copyEmail = function(idx) {
+            const email = window.currentEmails[idx];
+            const subject = document.querySelectorAll('.subject-text')[idx].textContent;
+            const body = document.querySelectorAll('.email-body')[idx].textContent;
+            const text = `Subject: ${subject}\n\n${body}`;
+            copyToClipboard(text, idx);
+        };
+
+        window.copyEmailAndSubject = function(idx) {
+            const subject = document.querySelectorAll('.subject-text')[idx].textContent;
+            const body = document.querySelectorAll('.email-body')[idx].textContent;
+            const text = `Subject: ${subject}\n\n${body}`;
+            copyToClipboard(text, idx);
+        };
+
+        window.copyEntireSequence = function() {
+            let fullSequence = `${sequences[currentUseCase].title}\n${sequences[currentUseCase].personas[currentPersona].title}\n\n---\n\n`;
+
+            const subjects = document.querySelectorAll('.subject-text');
+            const bodies = document.querySelectorAll('.email-body');
+
+            subjects.forEach((subj, idx) => {
+                fullSequence += `EMAIL ${idx + 1}\nSubject: ${subj.textContent}\n\n${bodies[idx].textContent}\n\n---\n\n`;
+            });
+
+            copyToClipboard(fullSequence);
+        };
+
+        window.printSequence = function() {
+            window.print();
+        };
+
+        function copyToClipboard(text, btnIdx = null) {
+            navigator.clipboard.writeText(text).then(() => {
+                if (btnIdx !== null) {
+                    const btn = document.querySelectorAll('.btn-copy')[btnIdx * 2];
+                    btn.classList.add('copied');
+                    btn.textContent = 'Copied!';
+                    setTimeout(() => {
+                        btn.classList.remove('copied');
+                        btn.textContent = 'Copy Email';
+                    }, 2000);
+                }
+
+                // Notification
+                const notif = document.createElement('div');
+                notif.className = 'notification';
+                notif.textContent = 'Copied to clipboard!';
+                document.body.appendChild(notif);
+
+                setTimeout(() => {
+                    notif.classList.add('hide');
+                    setTimeout(() => notif.remove(), 300);
+                }, 2500);
+            }).catch(err => {
+                console.error('Copy failed:', err);
+            });
+        }
+
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+
+        // INITIAL RENDER
+        renderContent();
+    </script>
+</body>
+</html>

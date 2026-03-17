@@ -1,0 +1,2013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Win/Loss Library - Nerdio Sales Command Centre</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0a1a28;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        /* TOP BAR */
+        .top-bar {
+            background-color: #042838;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid #1E9DB8;
+            position: sticky;
+            top: 48px;
+            z-index: 100;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nerdio-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #CDFF4E;
+            letter-spacing: 1px;
+        }
+
+        .title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1E9DB8;
+        }
+
+        .home-btn {
+            background-color: #1E9DB8;
+            color: #042838;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .home-btn:hover {
+            background-color: #CDFF4E;
+        }
+
+        /* FILTER BAR */
+        .filter-bar {
+            background-color: #042838;
+            padding: 20px 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            border-bottom: 1px solid #1E9DB8;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1E9DB8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .search-input, .filter-select {
+            background-color: #0a1a28;
+            color: #ffffff;
+            border: 1px solid #1E9DB8;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+        }
+
+        .search-input {
+            min-width: 200px;
+        }
+
+        .filter-select {
+            min-width: 120px;
+        }
+
+        .search-input::placeholder {
+            color: #A795C7;
+        }
+
+        .search-input:focus, .filter-select:focus {
+            outline: none;
+            border-color: #CDFF4E;
+            box-shadow: 0 0 8px rgba(205, 255, 78, 0.3);
+        }
+
+        .filter-select option {
+            background-color: #042838;
+            color: #ffffff;
+        }
+
+        /* STATS BAR */
+        .stats-bar {
+            background-color: #0a1a28;
+            padding: 20px 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            border-bottom: 1px solid #1E9DB8;
+        }
+
+        .stat-card {
+            background-color: #042838;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 3px solid #1E9DB8;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #1E9DB8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: #CDFF4E;
+        }
+
+        .stat-subtext {
+            font-size: 11px;
+            color: #A795C7;
+            margin-top: 5px;
+        }
+
+        /* CONTROL BAR */
+        .control-bar {
+            background-color: #042838;
+            padding: 15px 30px;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #1E9DB8;
+        }
+
+        .btn {
+            background-color: #1E9DB8;
+            color: #042838;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #CDFF4E;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: #A795C7;
+        }
+
+        .btn-secondary:hover {
+            background-color: #C0B3D8;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .tab-toggle {
+            display: flex;
+            gap: 5px;
+        }
+
+        .tab-btn {
+            background-color: #0a1a28;
+            color: #1E9DB8;
+            border: 1px solid #1E9DB8;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background-color: #1E9DB8;
+            color: #042838;
+        }
+
+        .tab-btn:hover {
+            border-color: #CDFF4E;
+        }
+
+        /* MAIN CONTENT */
+        .content {
+            padding: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* CARD GRID */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .case-card {
+            background-color: #042838;
+            border: 1px solid #1E9DB8;
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .case-card:hover {
+            border-color: #CDFF4E;
+            box-shadow: 0 8px 24px rgba(30, 157, 184, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .company-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #CDFF4E;
+        }
+
+        .result-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .result-badge.win {
+            background-color: rgba(205, 255, 78, 0.2);
+            color: #CDFF4E;
+        }
+
+        .result-badge.loss {
+            background-color: rgba(220, 100, 100, 0.2);
+            color: #dc6464;
+        }
+
+        .card-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .badge {
+            background-color: #0a1a28;
+            color: #1E9DB8;
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge.size {
+            color: #A795C7;
+        }
+
+        .badge.competitor {
+            color: #CDFF4E;
+        }
+
+        .card-competitor {
+            font-size: 12px;
+            color: #A795C7;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #1E9DB8;
+        }
+
+        .card-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: #CDFF4E;
+            margin-bottom: 10px;
+        }
+
+        .card-summary {
+            font-size: 13px;
+            color: #ffffff;
+            line-height: 1.5;
+            margin-bottom: 12px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: #A795C7;
+            padding-top: 10px;
+            border-top: 1px solid #1E9DB8;
+        }
+
+        .card-date {
+            font-size: 11px;
+            color: #A795C7;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: #1E9DB8;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 2px 6px;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            color: #CDFF4E;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: #042838;
+            padding: 30px;
+            border-radius: 8px;
+            border: 2px solid #1E9DB8;
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #1E9DB8;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #CDFF4E;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #1E9DB8;
+            font-size: 28px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .close-btn:hover {
+            color: #CDFF4E;
+        }
+
+        .detail-section {
+            margin-bottom: 20px;
+        }
+
+        .detail-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #1E9DB8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 14px;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #1E9DB8;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            background-color: #0a1a28;
+            color: #ffffff;
+            border: 1px solid #1E9DB8;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #CDFF4E;
+            box-shadow: 0 0 8px rgba(205, 255, 78, 0.3);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #1E9DB8;
+            justify-content: flex-end;
+        }
+
+        /* SIMILAR CASES */
+        .similar-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #1E9DB8;
+        }
+
+        .similar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .similar-card {
+            background-color: #0a1a28;
+            border: 1px solid #1E9DB8;
+            padding: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .similar-card:hover {
+            border-color: #CDFF4E;
+        }
+
+        .similar-card-name {
+            font-weight: 700;
+            color: #CDFF4E;
+            margin-bottom: 5px;
+        }
+
+        .similar-card-meta {
+            color: #A795C7;
+            font-size: 11px;
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 60px 30px;
+            color: #A795C7;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .empty-state-text {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        /* ANALYTICS */
+        .analytics-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+
+        .chart-container {
+            background-color: #042838;
+            border: 1px solid #1E9DB8;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #CDFF4E;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .chart-bars {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 200px;
+            gap: 10px;
+        }
+
+        .chart-bar-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+
+        .chart-bar {
+            width: 100%;
+            background: linear-gradient(to top, #1E9DB8, #CDFF4E);
+            border-radius: 4px 4px 0 0;
+            transition: all 0.3s ease;
+        }
+
+        .chart-bar:hover {
+            filter: brightness(1.2);
+        }
+
+        .chart-label {
+            font-size: 11px;
+            color: #A795C7;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+
+            .filter-select {
+                width: 100%;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-bar {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .analytics-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .success-message {
+            background-color: rgba(205, 255, 78, 0.1);
+            border: 1px solid #CDFF4E;
+            color: #CDFF4E;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+    </style>
+<style>
+/* === NERDIO BRAND BAR === */
+.nerdio-brand-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+  height: 48px;
+  background: linear-gradient(135deg, #0B1B3D 0%, #142952 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+.nerdio-brand-bar * { box-sizing: border-box; margin: 0; padding: 0; }
+.nerdio-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+.nerdio-brand-logo img {
+  height: 22px;
+  width: auto;
+}
+.nerdio-brand-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255,255,255,0.2);
+}
+.nerdio-brand-tool-name {
+  color: rgba(255,255,255,0.85);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+.nerdio-brand-home {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #00B4D8;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: rgba(0,180,216,0.1);
+  border: 1px solid rgba(0,180,216,0.2);
+  transition: all 0.2s;
+}
+.nerdio-brand-home:hover {
+  background: rgba(0,180,216,0.2);
+  border-color: rgba(0,180,216,0.4);
+  color: #FFFFFF;
+}
+.nerdio-brand-home svg {
+  width: 14px;
+  height: 14px;
+}
+.nerdio-brand-spacer {
+  height: 48px;
+  width: 100%;
+  flex-shrink: 0;
+}
+/* === END NERDIO BRAND BAR === */
+</style>
+</head>
+<body>
+
+<!-- NERDIO BRAND BAR -->
+<div class="nerdio-brand-bar">
+  <div class="nerdio-brand-logo">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA+gAAAI7CAYAAAB/frHRAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAQ0VJREFUeNrs3c9x20j+N2D4rb3/tAns0hFYjsDUbW8jR2CqNgBLEUiKQHIAW6IjsHzbm+gIzInAnE1gtRH4RctfzNAaiQCIPwTJ56li2TOWSKLRAPrTaHRnGQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQPZCEQCb8Ld//Xuc//FL/jqM/7XIX1/+889/TJUOAAACOkD3wTwF8qv8NX7mR1JQP8uD+q3SAgBAQAfoLpzf5a+DCj9+4m46AAD75P8pAqBHnyqG8+QmD/QjRQYAgIAO0KI8bE/yP+oG7nMlBwCAgA7Qrndr/M5EsQEAsC88g87WilnAn7L4zz//sVBCg9tf/82qD29f9jrfn3MlCADArvuLImDgoS5NKpZer+LPUVZhmHT+e8VfZ/nrPn/9Gn+f52HvXsluxEHPvwcAAAI6NAjkKYwdZz/Wxx63EM7G8Wd6z/P4jHmE9Y/uzAIAAAI6/BzMJxHKj3v4uOKu/Gn+uYv8z7Te9gfD4gEAAAGdfQ3lo+zHJGDvs80NY07f4TTC+iz7cVd9au8AAAACOvsSzM+z4c3QPU6v/Pul73YpqAMAAAI6uxrM013ydLd6k3fMqxjlr5v8+6bveZYH9Zm9BwAAdM066PQVzsf5H1+zH3fOt2VW7vSc+l3+3W+icwEAAEBAZ2uD+UEKuCnoZhWWRxuoSf76lm/HsT0KAAAI6GxjOE93oL9mw3vWfB3pDvqnfJuu7FkAAEBAZ5vC+STC+WjHNi3N9v7VkHcAAKBtJomji3Ce7jKf7vAmppEBacj70X/++Y+5PT74+ngQ+2wc/yvts1m+7+6VDgAAAjq7HIbS8+aTPdjUFPrudi2kx8iH9xFoC4v89TF/XW9TqC1bNSD/92n2Y5Z+QR0AgEEwxB3hvHlIP9yBfZcm80uPJNw8CufJKPsx+/63bdnWCOd32epVA1Jd/boL+w8AAAEd9jmc70xIXwqzhzu0rZ8qbE8yim0ypwAAABtniDvbEs7TMORZ/vo1/rx/bmj50jPHKXy9yn48e9xlqNza4e41wvnytqbw+3LA2zTJ/njevO7+M9wdAAABna0N56cdhvMUlm7z1+c8ON1W/aUIWbNH33MUoe1dzfBWN+S93LKQV/VO87JRWhO+zj7p2S9r/E4qg9RR8dpRDQCAgM42hvMUdLtYF3yRvy7zADht6w3z90rvmd5vGmH9vIOOhYNtCnkx2/54zV9/k/3oPBmi4zV/7zCNBsnryomju9VzRHpN4xgEAGAFz6CzbsO7GOrcdjA/yRvyL9sM50+F9Qhhf43Q3qbDCL5D338pxDZZCm9XJ1abxBB5mtexUfbHRH13SgQAQECnOymctzmx1mXXwfyJoH4fQT3d8Z61+NancedwqMEp7bcbVfhZVxEuaWb0zN8BABDQaTHgpTuvbQXQNKna6zwoX2xqe9LEbvnrKHUStPi2nwY8M3gbnStDngxv1vD3dWAAACCgsxXhfJT9GLLahmn+GszM59FJkIJ6G5O8HbRYTm3uvzS0fdzCW30ecDVt47uNDXUHAEBAZ+iusnaGtqch7SdDm/E8/z6z7MeQ9zY6DQY11L3Foe3zKKehmmY/5jNoXNetjw4AgIDOIEXYPG7hrU42OaS9QkhP4e6opZA+pLvo6dGEpoEzdagMepbz6PR5mzUfCTHIURAAAAjo0FbYPOtzIriGIa+NkD6OYeUbFXeC37cQzgfzSELJ/ptn7TyucGrCOAAABHQGZWk94ybSWsjX27LNLd6JHcJd2Dbunp9tQzh/FNLbuNvvLjoAAAI6g9I0pMxjSbOtEsPd3zZ8m8NNPove0t3zy20Y+fDE/rvN/zhr+DYTz6IDACCgMwh5ODnMmt09L4aLb6WYEK3pEmybvAs7yZrdPZ8Nec6ACvsvjdqYNXybU2cCAAAEdIag6d3Xwc3WvkbISwG1yfDu8QafZW6y/wY/KVzVOpg1e1ThndMAAAACOkPQZJKzWQwz3gVNg+qk7y8cQ+ubdAx8iGH+Wy22ockoiNEQJvsDAEBAZ49FKGkyPPpkV8oiJh2bNniLTdyFbfKZi20e2v7E/ktD3RcN3uIXZwQAAAR0NqlJKJnuwt3XR5rehT3s+fseb2hbd3H/uYMOAICAzkYJeEuiw2G6DSEvOgPWHf2w2MZZ2yvsv7RNizV//WCTs/EDACCgs8cijKwb8GY7ePe88KHB777p8Xseb2gbh65Jx5Fh7gAACOhsxLjB737c1UKJZ9HnGyjTPjsDpjtcr5tMWnjotAAAgIDOJrxa8/fud3F49CNrd0D0OEx63TB5u+3L4q0S27ZuSB87LQAAIKCzCeuGkdkelM2g78I2fP78yx7sv88NylZIBwBAQKc/eQg5EPCeF8/XL9b89Vc9fMVRg9+93YMqPttQ2QIAwLP+ogh4RpO7vLM9KaO0nZOmAe9v//r3KP5fcdf77xVCYOoc+C1/peHa6Xn4xaNJ+dbdf/c7PLnf79I25uW+WDNsC+gAAAjo9Grdu+fFJGr74Lc1fy+th36R/ZjErclQ9OxR0C/CehrBsO5d+i733f2a29rV8/DzNcP2K6cHnjj+Rkv1ad71PA4xyqnoiLvfo/MuAAjo7KV178DuUyNxlr/O1wnoa/5emdRgH2fNJjL70nF51V36rcvg8Wu23lJ0B04POxOqyzrIFk+NKIlwnOrOmzjeRk/8THE+TK/P+fvcNvyuy593+Mzn3cdxlo7j26GNhnlUbqMV56pFvIrtmJe87ygr6WzL32O2xvctO5c+2xET32l5W5+6pi53qt4OsZMl6t1htrpD+X6prqdtma3qoHrUuVS7bDvcvqfq0XJdnJcdx1W2bZ262PAcl+rxq+znkXpPbeM8rou9LJPb5nG7VO7L2/cq/v52lye+RUCHSoHKtvKMz2sE4lv7jw5dZas7tC7z18WjRuBp/nqfVeuoKRqMk3ik4rLOChdLn/cuqzbaowjA6XWV/346fj70GQie2Y5J/scvNY7/0VKAP4+ySytnTJ8JDun9yzo9X6zx1e9K/v0oe/RIV2zru6xaR+lyp+r5OnWkw+B0HvvroOZ2nMZ7pG34+EzdO1ynbFvcvnHsoyrbt1wXi5Fqt7GfFmtu24se9t+kxnnjp22M90hh/UPW7aouax+3VTpJw1w4R0CHPbqDnu52xF2rXTLrsLymeXm9z6qPzriPgDS0umot9D0Ud9pusvVHUKQG5E3+PqnRfFJ2hyo+7yprNufBQ1iPsHTWd0O1pW0oyu48Qux1hKP7gdWPcdSPUcPtTHXkPOrIrOdtGMU2jFt4uxS+UsfULOrefCD76Lzh9h0sbdt0RVDfZMfKpIW3O4y6kDr6UlC/HsIxt0bn0ccMtpBZ3HnO39f8vf8pOlY4yarfuT4b6IR1hrjvXzhPDdVPLe37FA6+xtDT5z7vKj5v1NImTMo+s+1GdP66a3kbCukO7bcI/0OpH2l/3bW4rel97mKukr62IX3Wt5bC+VP1/WKD++dgaR+1uX3FcTUZQB0s9l/b3+UgAvHXTR9z+eenY/9rbGPVc/E+rEqDgM4eGSkC2hZ3UV5nq+/Up1B+tOlhnrAUzrto9N49FZjj8047OqffdR3SoxH/tYOg97j8Pm0y9BXfI/8OXzvaX8l51Icu99cotuG847JK2/I1hib3efweRn087bAu3nS9n1ZtX0/7bxTH3M0GtvEgOvyusnqdpPN9WJWG3WSI+342ONvuRYY6If0hgEfDqXiG7OFimr++NJ1Mq6dj6HvJj6RJdo7s7a1X9VnzJiH9ZTF0tKPOgKc+86iLIcdxh+uqx/2TQl8a7fXbhurHTdb9iJo0lDqdN086Cq93WX+jgorPu+zjw3revkl83mVfla+Fx26abOdRT5P4HcQ+XKdj0fB2BHSAmkG9mPUXhuqgh/dPw8CP4m7wpKdt+qljoKWGdArmpxvYR6nM7ne0fiyHorSixdkWh/PlkN75XdilO+c7t22xfZO+PuuZ7Sw6+ro+9tYN58nUJYxtZYg7bdubNaJjspJds08ToI0crgzAOMLteY+fedBm4z7CQpNwvsh+PPYyi78PNShv0mmFZd/6DOfF/poPbX8tbd8mdF4Xl+6cr2u+tP/WDdhFSO96e9dtk9yavZ1t5g46W3dxEvDsP/uPAUiN3I/ZE+uNRwM6LSs2qRq+agTZNKPy7PEQ9Qgl77LqEyil2d3HTWcKX5q9vI7UcJ5mP9aHn61431+yehNCDU16XOdL1JWH5Z4erdecHu+pM/FWKueXDfdX0TlTt0yn2R/rtd8/E4rHUQc31tEb2/epwfbNl4+tpf1VbNtGrxtRznWPt2fPG0vbWJyz6tTH9F1S5+LJAI61YkRe8bjLLAMBHX46YQt42+vVHu2/vztcWUNq7J6tmish/u02b/heRlhoel68j8+crvjMhwZqfOZNxYb2eZOG7FLYa207lrZnFt/tLJ5tP9+ioJ6278nltyLcFtt2HSOxrirurzSh26ThBJrnNevjs9vyVP2LbRpnzZczW1fdpe7S8fLsEmKP9tfFJrdtjc6HtM9Kl+uLbUz7ebrGUm3p8Ytf8/e43tC5uFirfeHSxC4xxJ22Hezo0O99CbP71MFiPXPqeliFoOpEhsWEiFmzuRbS776sGspSYzt/vc2qPX85bjir+3mNMHRbZzsebVNq/L/Mhr9kUgo66bnck6qBIf1c7K+zGmW+bsBLobLOaI1a27K0TcUkmWd9Fn5s33HN4+qizlDoR9vW9xDqOsdb6lR5WXeETNTHdEf8dY3z1nnPs/MXHX1p+66FcwR0EHx+atzu4DaN+l4GZxOWhi1CValh/rruc43x80fZes9Wr/WZ8bknFRvY79Y8hg5rhL1pCqFNngld6ni4Hmj9KALfbM3tS9tVZajwqEGnyk2NbXnd9PGH2KbXPQbZmxr18XWTYBfbdtTXttU83lKnykXDfTeP7avSKZaup1c9HmevN3THHgR0ttobAW8txVC6afZj2F16vY2L5FH8vfj/06zZBC/71vGwj9tIexZx/K0dLrP6z2k2+sxw1uGxUPVO7rTNJcJiJvOhNc7T/n3bdFKqGF1QJRDV7lSJifxGFQNQa7NzLwW9ToNsje1rrT72tW2hagA+afgIxE/nregUq1InJz2Mnizq5sIliV3nGXS6cJz1PLRtQ9vYRqOumERoVvGic/tEw2QUjew38WfTi+Qv2fCHkmYtbCNUddJC+Jrlx+qsRiDu6zMPU4djnc+Kc06Vc+BtF+t3p5Be4zv0VT/aCg1nFbZrvMb7vu+ro+GpIJvvr7RdXS4LVqXTYt52fYxtSyG2s1njY+h+lX1+2VY4f1y/o11RdlPiPOtuwrji8REzs7MX3EGnC6OGzzXuesBLF9A0ROuv8XzftOFQu0W8R3qv9JxmGlJ4na3fq3+8B3X02GFKRbOmQ32XfBzoZ9Y9X1cNe13O7nySbW7988f7qrUOzbgWTNvcX3E9rvI7J13dnawxOmCdAHtYMcC+7Wjb0rF6ueHOh1nTYe0rtq/qsTzp8BG5t8I5Ajo0935XN2xpSZJ1zCNIz7v6fum9YxjodM23OIjhgru6/9K+O3CIUtGHNsPcQD9zVPM9q5z/zrpsUMd7D2GkVhfB7EvFUNp2wOt65FRXnSpV6uNlx0Ojr7vYtmhvTDZUD39qV1RsU3TR+X3bYoclCOjsteMdnmzstMHv9nmR+dLgd9/tcN187/CkovsO7o4O8TMrB/QIhmU/v+hoqO3jbUufsdhg/Vh0FByqvGed62ulANvD/koB9kMHb11lRNt0S7etyr6b9RRgL1vaF118LgjoULHxcLqj29YkvH7p60s2bOSP47m3nbL0vD5UMd/Ae84Hvh1Vjp8PPe6jDxusH53ccW7zTm+c80Zl9aPHO5RdBOWy0QR9rZPdxba9GcoxEGVYVufbvoM+73LEIQjo7KP3u3YXPd+e02z9SdjuexhC2GYD8nwH6+SVw5IauuhQKxsGu9jAZ7YdGPo8z21yQsvftqAOVxkK/7GvLxMhr7XAVbEj+cs2blvF/dd3u+JLS/ukqs8uQ+wjs7jvofxkflTj4pfC6Lc1P6q4i36xI+H8oGFo3URDMl3c1u3RfriLvivPfkWjoUnv/kkfw3bZe0MPfWWdros+l0FKn5Uf2/Os/WUvq9iGO3tVyqXvc/znFvfXwcC2r+26WPpeef2/G9DxX3zntsp8J9ofIKDTRePntkGwOU+/vyNDlM6zZpOLfdzA/pvm5X/V4Hvf5L//ekdmT21y97xYEg/23XiAoXWxoYC+K9f5vvdZm593OLDta62DreK64gfZ8B7bOhhoXYGtYYg7fQTLm20vgLj72uSZ+sUG70RPG/xuaiCc78D+u2jYgL+1xAtU8uuefOa2KHskYRMBaJfPpW1e50c7Wucqc91FQIfnT5DpzuGiwVscRkDa1nCXeoM/NXybTc5C2nQCmdNtnjAuvvv5Fu8/AGEZQECHVgPKeaw/vY1SOG8yZGujw6PjedBp0zKoONxuaOF8lDXvXJn1+UwtAAACOpSFvBTwmoaUm1hDd5sCXhqeP274Nh8GMEyr6WMKBxHSD7Zo3xUjH5p+Z3fPgW1Vdu05UEStGisCQECnT02DSmoI3G1LSI9wPmmhcXS96W2J59+nDd/mMPbfwRbsu4e6ljWfOGq2K7PYQ0+B79UGvtMbu+VZZc/nb+J6PGrxvUrPzz23Of6vxfcyQRrsKbO4UyfkpRnBzxteXIuQfjTkmd1bCufJ2YAmOblsYZsOl/bf/UD3XVvhPDlx5MOfQsO4p/C1icC3d1KA7fl63GYnTpXr0GGPYXfcYpvrPt83ZT+2yDawQkyF7wQI6PToJMJPE0VIPxvautIR7lI4b+N5+fmQti+WzEshvemEaamx8zV/r7dD62SJOyU3LYXza8+eQ+3Gd5oUdNTXsRPHvID+vFmFc/446/dubZshdl4hxKYRFtMe6uJB1v6IhLJ11UdxrTLZH+wQQ9ypezFMF/s2Jjx7CMKxRveQwt1dS+E8GeLd1+usnd7t1ChInSyTAe2/46y9O+epjDx7Dn/2pcLP9Dkh6LFdUhrwyrzr+Trbdogta5NMeno0a7Kh/ecYAAEdHoJnW721aQmvr5t+Lj3//LTG+dcWGw6XQxzCH73sbXUcFJ0sG508Ln12+g5ZOxPC/V7H3ZGAJ80q/Mz7Hr/Pe7uk9Jxfdi067HGVji72V5VOo9Mt3bbPFX7mnZoOAjou+OmC/7bFtyyGTF/1HfTSGtmpgyD/a5t38tPQ9osB77/UwG7z7nDqvf8WnRx9h/NJ+uys3TsI1yaGg2fPH4sKgW/Ux+ia/DPSedYs5OWqPKN83sP+Sp0AXdSLaZXw3GX7IuriqIO3rnItSu2YsWoOAjoaaW2HvOQ0gt5F10E9gnkaDt3WkOhC250XXe2/i4oX/qrS/kodLN96apinIYspmN+03EBPnStnjnBoHvg6DkQpDLl7Xk2Vx9ImPYS8m46uZ/cVQvpBV58fIwDfb3DbHsp2m5ZBBQR0ug15ty2/bbrApJ78/6aZ1OO54rYuomko9GncMU/BvIvGyNstmlgsdSS0/V1H0VD4b4yIOGxx/43iPYtgPmr5u6eG0JEjG0pNs/LHnNLx2eUcI20+0rLr1+pFxWt1ZyEvRlh12QHwocLPHMed7ja3qwj+XdbFKh1inR5v0Sk+cTSBgM52SM8zd/WsdboYfIqwdxMXiFqBL+6UX8Td8v/GBayr591Ptmlo9NKjCl08a50aKw/P9cdd9RSsj+s85xgdKsfxu6lT5Vu856iD7/sQzj13DpXPHVXvyrb+6Essg3loT7QeYNO59a7tkB7B7qrjOjmvWCfP26qTLS/puWrbUrtitsHj7TD2342QDv2wzBqNG2ppTezsxwRro44+5iDC+iQuFll0CqRG4iJ//bb0s2+WGhqjHoviemhLxlVt1Cztv66MIlifLu2/orGR9uP/4u//t9TQOcz6vTt2MsRJ/WDA0qMgxxWO09TB9ve2Hh2JcC4krBHy8rJL591xyY8eRkhvpcMyAt1Nj3VyXLFOprXYz9bdxngcoM9RHGcVr9MPc/m0NQ/O0uo2xXamkJ5tY3sHtok76LQS0rPu7sSuakSMo6F2vvQax6vPcD7d5ueWI5j2vSRcsZ9Ol/bd6dL/7zuc3zqSofZ5v+o8JOnRorsmM4WnoBAjaYTzBue6itfpdH391uSZ9BgBddVjOC+G8n+o+OOT2MZJze0aRSfRXZ/XqbhOX1f88fM2VldZWt3m8fu4kw4COlsU8tKd2MWebXoK5yc7sP+mWbvL521Ng9WdAFj7vJECw6zij6ew97XuJKBLgajNZTD3dX+l63PVTpWH4dsR9Oo+WjaJ/XW6gW28qFEni6VCizlTxk/VzaiDk1jO81u2uU6itO+qjvQqVlepPenu0iS6qx5LENKhQ4a402pIz0/Yr7MenskaiLNooO7K/pvm+2+e9XxnYEMeRn1YTg0aO8mevsv2XCB6GDGTn2um2Y/1q+ePHy+JQJhev2TtLqHoOp1fs/LyfVOjXNPPHce14WPsr9njAPtof236+vE2q/fYXTFnyvJjWPP4/YMB7bv0SOFJjWt0cbylJebSKLG0pvrsqWH9MVoivd7VKLcU0mdbNDEuCOjs7cW/eCb9ZocbVvcRzqc7uP/mS/tvVztZFhHOPXMOzc8Zizhn1O3Ym2Q/zytCf04ihNU5xxedJoPfX9EOeZs162w+HOi2zSOkf6rxa6vm8Rk3+DpT4Ry6YYg7nVwc81e6OF7u4Oali9HRLg+LXnpcYRefy57lr9fCObR+zuh7HpJljuea1+g4x893dX9t6LG79FlnPWxbujY3fbTusGE4n+/C430goLOPjYCLbLeeS7/dl3C31MlytkOblUY9WEoNujlnzOJ83/fxlULCZ3tga0L6tK/rSlyrX/e0jX1+VjFvzKY6xW6j7gACOlvcaHsdF+VtVTyv/Hbfwl08Y5/232yLN+Oh4bRL8wXAQM8XfYaU4rw8VfLrh/T8lfZXX+fG677vui5t42XH2/W67/ZB3Envu5Plch/bQiCgs6uNgJNss0Pq1r7w5q+X+7wMV2p0pzvP2fbN8l7MFWBIO/R3vlj0EIhm2Y9ON8sjtrPPzrJuR7sVnSlnG9zGi3Qtz9rtbE7vdbTh7Zr3cLxl2R+P9104YkBAZ7caAbO4kJxkwx/2Po1gfqan+Pf9N40GzuXAg3qxPvNLd81h44Fo2nJIOIlHVRZKud3rc/Zj9EOb5/flc/HtALZxEZ3NTUf1zaLD4WgoK4F0dLwtH3MvrXoC/TGLO5sKetNYQzMtATIaWDC/1Ph7dt+lBldaVzUF37QkzftsOMvQpO/2Ifsx3FCnCgwgEKXGfX6+uIxzxfGa5/uHJaIMZ+/1/H4c+2yd2cwXcS6eDvFcHCOqUr1Md77H+etNtnrStLQ96XfSsoC3Q20fPDreUvvqXbZ++yodcx+NUoHNeKEI2LT8YnIcF5JNLcuWLmofM0uGrLPvDho25Nowj8bgrWA+qLqRGrt3S41H1xuKNc7TOeNV9qNz7zD7uZNvFn9+iWN75rje6P4aRXB9Fftq9Cj0LZZeX2J/Lfa4vC6yHzceVgXpFz3vv+J4Gz2x/+6zP5Zc+zX230zNBwEdHoe9X3oI66kBUfQQez653YbAux7CetpnH7MB381QHwR0YO/Oe59K2i9pmP1LJQUI6GxzAz+9iuFnTYZSz7M/hqjNhLrO991BVm3oYFWzR/vPHTUBHWBo171vJW2V21jCFOBZnkFnsGKY1ezRxa+4M1sW+BbxuneHfCP7LgXo23gV+2+U/Rhat7wfn1MMuVvoTAFgC5xm5TcSvigmoIw7GgC0zh10YCDnolHXHb0xt8LXCj/6UqczUMYyawAA7Kq7WDWmq3Ce7pp/qvCjHq8DBHQAAPZT3Nke5a+bLkL60p3zUYUf/2iPAAI6AAD76t3S31NI/xTzobQRzi+yH4/xVHm/+X/++Y+p3QFUYZI4AAB20fET/32ch+sUlj/UnUQ2hrNP8tf7isG8cGZXAAI6AAB7aWl4+1NSyJ7kP7PIfqwWk2ZXT3//feWQpZVjij/TsqHjNb7KdaxKAyCgAwCwl95V+JlREdaXgn2b3yFNDOfuOVCLZ9ABANg1xxv+/DR8/q3dAAjoAADsu9kGP/s2fx3955//uLcbAAEdAIC9lofjk2wzk7Nd5p/9VjgHBHQAAPgjpF/nf7zO+rmbnj7jZf6ZF0oeaMIkcQAA7GpIT8+CH/3tX/+eZD+WRzts+SPScPYPZmoHBHQAAKgW1Kf5H9NYfi3N8J4mkRut+XYpjH9O4bxYlg1AQAfIff/+PTW23i81tNLdkg8vXrzQaALgcVCfx3XiLA/ro7h2jOOf3zzxK+la8lv+Ss+Uz90pBwR0YNsC8/eSH7nMw/NFS581yf+4efS/U0PrNP+3k/xzpvYIAM+E9UUEcKEbGAyTxAHb2hEwfiKcL7uJu+sAACCgA3TofUs/AwAAAjpAA1Xujo8UEwAAAjpAtw5a+hkAABDQARqYV/iZhWICAGBbmMUd2FYfsz+Wxln1MwAs+du//p1GFz37mJClxBhovR3lf1xlP9awTxb560NeX6+VDgI6wIalJdS+f/+e1qydPPMj0/xnbpUUwJ+kcH636hSriBhYOE+dSl+znx9dewjs+b/9PQ/pZ0oJAR1g8yH9JA/pv+V/fZf9MSHcIvux1vpUCdFCo3D8xP++zxuDc6UD0Jur7Pl5ZU7zc/WHWNceBHSADYf0i/yPCyVBy6E8LdF3vOJn0h9phMYHw4EBOjcq+fd03p4qJgR0ANidYJ7uznzKyuc2KKQAf5z/3kt3bgA2yqotCOgAsGPh/Nsajby5cA7QufuSf58pInaFZdYA4MeEWevcgbFSAED3LleFc/OCIKADwI7427/+fZGtWHKqhJUCADoWAfxt9uc76bfx/2FnGOK+Q75///7UuqaLFy9eLHZk+9K2FXe47vPt0lvaXtmOn/kn5dy8bEfZ85PbzPPyvVdKG/duzd8zvB2gv5Cewvjt0uoaC+dgBHS6aLxPstUzU87yBvxsRcM/TVL0SwTzg2d+7uF9UmMyf30ceuCKjoZ08n0T2zVesV3L2/Ylyuu+p+/5bJnXCbdLHSvFdr5Z/vf8PY46+O7H8TnjrOTOYZTzPMp5MPUn6v+k5MemfXdQRb1YLt+yn7+Psv2cGh4Ce7/yht5xyTk41ffLaBgWv1PUPQ1DgP6D+kwpIKDTpXcVGvGzJ0J9ld9bNo7Xaf776f0unwv+Gwxc49iuSc1f/X3b4n2mESS73r6rkn2QPv9oRYh7VyEg37ZYvgdRRu+z+s/aHsYr1Z8UStJzt9cbDpMpJJ1XOHYWPdXfSZRt3aHSBxHo0+smf5+HpbuGdnzusFX7K9Wdo7wxeP+ocZj+/4WiAwDa5hn0LZICbP76mhrxNcP5U4H2Ln+vu7gLOYTtShM03a0Rzp8yWdq+8cD24XH+SjNFf42wXBbmPrcRzPNXChPfItA2XYqkCMbf8vc9dVx+n8Q+vcnWf4552fFQ6++OerPi3y4fh3MAAAGdLALWXUsBYDmof43hzpvYphQcP8V2dRFEio6Iq7h7vMn9N4pOiE/Z6uG0y1IwuG34uePoDGgjmD+W3u8qguTBHh6Th0sdZqNdrr97bKYIAIA+GeK+HUEgBYBJR2+fGv6f8s84efHixbTHbRpHWO0jeKS7vOnO9dtNPD/dYFsbPY8cnTrnPWxi2r50N/1oXyaUi5EDVz193Ebr7x54ttPT5EPDF/MBpHPQq6V9WcwPMov/Tvvxt3RO7WIppvw7rJqP5MlJrOJ7H8f3LrahkM7783h9WZ7/YA/253Hsv2Jkyyhei+yPx5W+RNnM2h7hEvtl9Mw/35fVn/z3izllHr/Pk3VvnbrzqKzePPN5RXl1VodKyqp08ralsnpcBtNnjpmDFefr+zaO7dgfy+X61L4pjs8vXZ1TKpRbMXfKm0fnvHl8v/T6NY6RmSuFgE771nleeB3p2desj5Aez+re9FyO6USW7kae9dwR0WRbPzf43C47dZ5yEOV7tOsH5AbKdmP1d08YnbB9Ia5ooJbN+TB+9N/n+e+mhms6hj602AGzaj6StHbzxdJ3Tz93nq0eNVZMlJpep/GdP+Sv63UDaf4etUaq5T///Zl/et12IIkyKZt/ZjkMjpd+9zb2ZVshZJI937GdPuPome//y1Joesq0ad1ZCsXn8VkHFcpruQ6lsrpssd6vKqs/ffelToVf4ns9V1bXz/z/dKzf1dk3Nc4nkzifjCpeM4rjM51TUnl+bHJ8Vvyek6x8/qnl8+Hx0jmvOE508gvobGHjMYX0eZd36TYUzpfLsreOiGzFDPQVpBngb9cs400EyN9DunC+M/WXfoJmOkcs3605fNToLO6E3A6xcbV0B3D5XDftavRBrFnfpOO6mCwzhZZ0HJ31Mc9AlFPZxKKrvnMKQu/z9znZ8B31FBDmLZVJlc6KMg8TbObvNY99Oeux7h/HPi0LdY2XY4xzxVWD608RQid91vtH4fK8QllNe/5eVfdhVtIZ0tnxWaPsquz7dHycGB0moLN90nD3113Mzt0wnN8/0ShY96KeQs6ih1mym3SubCKcL7I/z3i+akhZ29u8y+G8GHa27HDN8hLSmwWCuxo//33FP6dGzrTB96iyYsV4KYR0cqcmAu9zd8GOHgeeR0NAnzoHp6GtFx0F3LYmYixMItx1GnqjgX3Vwvnx4ZG0FLDy73uyocMo7fuzFsLmeXSUtOXh7mof4TO+/02URRUfWwiRNy1eX3up9/HdR1m9iY0/91WR8+/Wdof778dnG3VwjbKrIr3Xt/y9L7s4T9Mek8Rtv3lcLNPzvz/Jfgz3uczqLTM1avmiWYSb4zXCedq21Ah5mW/OX9N64I9eaRtfZz+GQ9U9EX4awgz2S2axr86W9ts6HSB1LzaL+MxUxi+fKONUvn/NX2+zFpd828JwfrpG2c6i/qa6+/qJsk3l+jLKf1Hzva9iqT42p/bxkEJmDDVed8WKUQSb1MC6iKDQV2O2+O7FpJPjtsqlYsD92nI4f9yo7mpk1y8th6uHgNXh9y2tgxEcmnS03HXRzlgKn3fxOZ0cB/H9j7s8Vzyq+13M11PU+6suzxlx3FYNmPd9jQ7pIJz/qQ620ClTp+zqSh2+n/q8hiCg74tZhPLU8L9+6m5w+n/56yIFrwgKVUPs+zZnjY4gXKcxMV/atmn+eja8pOH4+esswk6dbTzINjfU/qcAF/0pR7GvrmO/LdYo4zoX2vT+byOUX5eU8cNw+/z1NgLlXgX1CMJXa9Tfo6i/9yvKdhHl/3Kd+mt2982F87p3R+JOdVsNruIO5Ne4G991Y7bOd//Y8mff9HSu7ir0Hnb4fa82VP+P19yXRbjtunPxsKOQPlrj+982GE78Sw91/7Sjev8qyqrONaqvcL5Oh3vtOrhuuXbYKfPUcXwnpAvotOcsGv+zqr8Qw2FfZtWeHSue0WtLnbsHlxHMZ3U/ZGkbq57kxxtax3uxHOA2UMbpM1+v84x7BMoU1N9m9UctbKs6F9k+6+9h1s8s/fzZlxqNrYO489zFvhpFA6uzxmY0Mqt+90Wbz8lHx0DdbUvnpVn2x/P7QwjpXYar8QY+912DcF43DMxjX9atVwdxbIxaPt7qfv8mQ7brdAQsBlbvj3suq8rn4xrns1SWl9HeOYpXGvF2nVUb9Tape3zGuXydfVHs+8UadWyn5w7aVp5B3y73EezWagClO3kxy3aVHuB0Ab5o+oVjaHvVE1Tjpd7ibuXbGstgnec/O+3imfsV4fiszc/ru4yjnG/Tc/xrNri2RixVd1jx2DxZd2K/J+pv1eF3p/nPfqg74oLGKu3naAz2ccfwJv+sNx08l3xV87u3dgdsaWKkqo3TdOf+TyMblmZ8L2bZrtKo/jV/n+serufpXPywZFhxlzWC7GGN75vOFS8r/NzH7OeOpb+XnGMuW9yXD8OpK14rUjmkGetnzyxLNo6ymVR4v+JzX/d4bphFOS+yP5Y567I98fmpYeFL9b5s1u++6/2zZdXTBH+nJfWmbMWE4jueVZzk8P3S75QdJ4c1wvl86ThZPPFex0vHSWlITx00G5zXAgF96501nWE9Qno6CL+W/OgoDe1tYUb3qkPwWl2HPQ0bzr//fYWTXTFa4KKH/Zc6Aro4AV7VqD9tlvF8qcNn50J6DB9/X/HH37Y56WCqJ2kiuIoX19RAcGHtT50ZmeuE86Ix/+vS/3uTVe9866KBXbdjoZXh7XHXs8p5rXTm7mhkp/PetMZM6ldptuOOZs1fGQDiM+dL37dsYrz0TPikbMLCx/8e4WKy4ufbvCambRhVKJfLsvob+3qWJrmKa3dZJ04KH1f57511eE5ovAzeGsF85XJpj+r9OKvW2dZlvV8+z6V9d9vnbO1LfinZj0dVt3+pLk6eaWum7byueM4rOpOqlN9JWWdGdNrcxnFylZV39qXrx+cNrxCBgL6VrtsKVxGsrrPyYezjrEHvb0xaNqrwo52s7ZzeM/8ObyqEnPTM/XXHd9FnXYTz/HuPK5Zxeob8uoMyTnXpbbabQ6TKetoLJ12sCBAhfVQhTEzyn7t0F71yg+rFo4bR9xU//6JByKw643g6931c1eCqscxOamDPe7oTla4NaUhq+qxFy8v2VHlk57pu6IqG91E8g1rWAZD+/ajlMqsbAOb5dz3KymcMP8+eX2d7o+JO3nGFuvS2Th2KcHcR66CXHWvpUYCPHQXPadbfkmX3Ec5ua9b7dIy+Llmxoct6/3tgHcDM4avqydt16kjq/MrLNlsK6bdRJ+qcEystQVe3rsV3eFtxJYCig2ZfHl8cNM+gb4eHnuWW3/NDhZ950/Azqtx9nHURHJfDf1b+TM5BtuakNzX239uO3vt9xc/v7A5rhNPLHTzuqjxnedvxcmdVn/V/nzG0UDIp+bFFhLUqd0PSslrFjP9lup6Zdxbf+3VqbKfv3mY4j7Ibl/zYSZM7onGXtuycOG752f5a4fxRED3JVneWj7qatbwFZR0h8yiXxZr7ch6Bct7we6zjJI7fvsL5UZM7nBGOq9T7447K6iIbsCYdmzFC5TL2Ua3OphgxVHbDbNqkrkW9OSppT1T5HgjoLIfptu/uxt22sgva2o28uPNXpcHQ5bCz4pneKuGxy4Bz2dG68lU7Fs56eMa+6qQpWyGe6x9VaDANpf5OMoYSzg8qhpLXdRuEESxflzSy6kyCVFe6e3PU8R36su8+XXf9+Sca1GVhpc3rwtt17+BGo7zsXDMe4LEwKTmPLiLQ3Dfcl/cVwse45U6MyzbqYR/155kg2Wd76KTnslq3vo4blu3FmufGsnPerI3nw6P+lN0sem9WdwGd6ro6sZWd7JtczKoEx2kLz7hXCTnTCuHxsKN10e87HCFQ5WKy6PgOb90guS2qjB7pZXK2qD9ln3MQjzuweacloWTeJJQs3TFc9funLc9eXTSyO51AKhrIq647izYnMorQsOqO5GFLoW7atFMjfn/e8JzVt/MKdeq+pX1ZZaRYW8Fz1vPd4Ms2O8Xiu8976sy43YZwHj71vSpCnKcnq9qQWYsjMKMerWqrdT2iFAF9Zyw6DAG/lTX6G7z3LxV+5nOP5VhlSH8XJ+YuL0xvWtruttxmu7P02vGG9+1jHzdUf6lv1aMRi6ydO4bzrN+7v33dLSx7rKSLR3XOeijHts7Dnzu6XncRPFLAG5UEt1mbnxnDeGcNz+tt1JlW24BZxYnGWt6Gdy18RqeP1zVop6w6htLSfHcdDfNfp05+6OARiuuSttq7DAGdSifnbVQWFu6bLknV4km5TuBts0HV1GFL292KuIs+2/YDLh4dGJX82KznSdmmG6q/1AslZY9GnLV4x/C25PietHUN6vFu4arGaieT38WzotMG17Iy8xYnJ1u1/aOBHQ5ljfyuRlytvDvYQvC67XiW8z4C2u8zkHfcmXE7wAnHqt6sSXfT/5sm++w4rJfNKn/dwb6/LymHsWHum2cW9+H7soUBZ1Tx54Y283frDZwuZveuEdDnG5jZ+0u2/cOjqnR89Dn642HOiPx4mZd8t1HGpq1qbM06WMLmbMXxlsLIuIVQ28ujK3HHdVWj8GOHH/95RYfGwwRsDULZrKe6N7Tj/7CnTos/Bc98fy1WlEfqyLxtWFf6NO3wvT9mz3dApXp/0DBgfxhYnSzqxzSr1oF5ED+XliC7j3rzpeWOh/GGOjhSGZyXfC9Lrgno7JgqDYWDbHhDctv+Pl33sh9s+POH8pl9l+smy1ZAH7Zxn43VdPc3lpk6XvF9mgTE+x6fHy2rv69imahNhc11j/n/ORb+XK82vC+b6DO0dL3k1axCWa19/uh5pEGd73USy6JNavza72E9f93EefdzkxBd4Tn/gw0fJwK6gA47adNDu37bwGfuQkA/HOh2/uaQGq4YEjhaEXS7aux8XhHQmz72cDug426ywd07UsNbD+/jLQzo9z0P2e70OhMdfF0F9NmQK2CE9HRNXXfFi+N4XUVYv1xjqcCDip+xCR6Z2zDPoKMxs6Sjmdy7+J7jIX6vHpZzs50M1eGGGtqzBg3AMr/arQ/+rgiq63sm7JZD0cYC8xP6GH3R5flj0GJujZcNOxOKO+vf4nn1OmV26GyBgA7VjLbkewqIsD06m0uk5K5N0wbg3K7bqusCDMVWnDvS+TN/pWUrX2fNn/cvgnrVu94mYkNAp1cLRdCtPtaPX8e2jEBoYTtdWHHOBXjaVs29kJ6XT8Pe87/+NfuxNNy6j/ektkGaAf5KFaAJz6DD7jZ0NzEsc7QndaDR5Dlr+j+HJysaheA6Sl2GWf8c1NPoxGm8iqUz0/PYZUtoPnaa/+7/SpaoNEIJAZ1e3Vf8mcGdnDawLFnTRtBoYBfeXbjYDzWgH7bwvdmMrjtXdiGgl1035tnmHu35ogrXCjllk48tnK8qedXlm+f7aFRy7piryw+Te6bXWcy6/i77MZS9yjn3PP+d2YqlLod8ztN5IKCza9Lw6+/fv1f5uSOl1W1AT0Oxe57QbBdm/pxX3M7rvr5QDKkfC+hba9zVG5cs1TPboePussOZ8On3+lQ898uGzhsV39815eewPo/zVArrKaSfZ+V31W+yHxPRrXPO+1xyB54d5hl0ulLWMDzIQ8exYmqkyl2d3so4QuTW79Po0ChrmBz3/Bz6cUv1ge4ab6vOeYc1Z/dtq5F9vyPll/yilu1MG2Dc4fGwSw5qTDi2jncVAilPl800f6XgfVnyo6PnOlFjOP3COQ8BnaGFRyef7hpAhfc9fp/TPSvbPrf3vKXvTLfmG6gv7xqeh7fluJvEkFx2ow1wqogq6eQaHsfSeMWPGK1SLahf5H+clfzYeM1z3uHAlyxEQGcLVTm5T/Zl1u8uvHjxIp3Yy+6QHfaxZnrcTX6/Q8VbJdi87+Muev4Zk6x8GN191AeGGzDftX3XMBpvuzLEPflc8u/nqtjOtAHeu4teybijkHbT8Fjkj5CeHndbrPiRVfX8o3MeAjp9hsd5Vu35pRul1WkjqK8yPs92aCbpvP5Os/LOj4OuyzY6AM5bqgd0b1Vja5S1f9dwVf2bb+EQ1bLjbtL2kN+OhxDvc2gpZsPu7fyZhhLvaOi/aXO74vnpVaH/fl+uKS2W62LN42RW8rupg+a05W0eO0MJ6Oy3ywo/M85DSGdD3VLAyV9Xe17Goy7LIOYS2MXhitMKP3Mcd7i7cpVVW9rlg9PNIEJJMYnQc87bahzl73NTUjc+bGH53Vf43jclE+PVDSqfoixpP7iUXZ+O88+5aPH7fspfdzsY0kdtbVccO2XtgQ9xLO5y/U7Phqf68q2l+nLY4XFy1VZHYuz/O+c8AZ39lnpgq5zkrzochp1OwKf5++/kySiWhZtV+NHTLoJk/p7pZL+rJ/qqAecmyqHtsk2dHlX22SxGrDAMZY2tT00DZgTLVXUjzZI93dLyuy65bhxEA7ONMizOXZN9a7BWmJRv3MJnpOtTWT08bxrSI2DdRZA93NGQ3ni7inCWrR7tdp/1uELJhsJ5qm9fsx+Trx60UK6nWYPl6uJcvShrZ8Q5K2th/+/lOU9Ahz/C431W7Q7vQ6O17VndI5QXjYzJrob0GmV802ZIj1BadrHf9s6Pqg2Vuzbrb4Tzq5b3P/0En9QxOasQMNc6FvPfu8rKO8Uut7j8qlw3ijI8XaP8Dp4pQw3Wn7U1ietZVt5Rn0L6p3VCUoxI+Zb9fAdzl0P613VG4SyF0rIy2dm756nc8leqK48fySvqy+Ea7zmpcK2eVXirkwrnvJt1O7PiXPl4/zvnCejscUhPAafK3b2DCOmNh0rHsPYUHB83gCddDqffYBmnk/+0Rki/aTq5WZTjzobzR0Hnvkb9vWih7t7UCOdTk8MN0klWfhf4JkLJqEbjMjWwys5hsy2+e16E9OsKjdpUhmno57cqnR0RzCfRSH2uDPetwbqqjCeryrVqvY2wd1LhR1MHZ9qXF1XeO46HuxXXoV0N6aPYrruyoF7U+aVQmlU4d1zscH1ftW550flxU7H+jeJcUXa+mFbp8IgRLVVuCJwX57wqdXtp/185522XvygCemqsfq34s2m4e+q5v1wneERwXDVhWXr/+5gEbJecZX8M1yqTGl3p2f/LuuUQjyKk8h3vQ8VNo0DybU7191PVBkDU37O69TdGN6xqQDy2yMqXd2EzAXORN3rOKjTe0jGbnsNNd90/RwN5sdS4Ooxj7V1W7RnH1BB8uyPF+DbCV9l2j6Kz4yoC569xbCzid9M58U2Nc9bhHlXVzyXlkso11b2P2R9DcFN5/hIN+5fL9XXF8XCb/+x1Vt65VEyKmULIPL5fqtPz+Le0b/4e33lUcV8eZru5BGUqg9RJsYjt++3Rv9ep87t27ljVTipri06ibqcy/fJE3Ull+irO3VVUHs2UHydnFVbm+P2cF8dn8T2Lc94oXq/iu1ZpE6Zr0NmuzzsgoMOfQ848Dx/pxFj1ruA4AuQsGga3MVz+uWBzGCfLdxUv2ukOcrZLIT2CZNGgrWIU5ZAaQykcfHzuOeZYCu+4RkjYtfp7m5dBlcblcqPwrkr9XSrb9zWC+e8BZtVxwcZD+jRv9LyqWG+OiwZf/jvrfmSqC0e70shK25GXxUlWfaTOwXI5NijDt3tUTW8rXJfHK4JeKuvrivvzLO74TWqcR5teb04qPGu/7UY1ynQvzh0r6uA8Ok6rtEWLet9kmbPLKh1Yjxxl1Tomqxyf9v0WM8SdvkJOuojXDcTppJN6Cf+bB5mvadh6GkIcr5v47/9mP3pE69x5TOY7WMapIXJS89dGESBS+X5fKufi9T378Xzf1T6G86WyPcvqLzuzXH+/PSrXou4WZVs3nJ+YGG4rGoRnWT8TLhWNrPmOld88GqzzHstwsUf1c9Gwfr6r+Xkna7QDmoTz6Zbvouse6v5OnjtW1MHrnurgdJ3HBSIo933O05YQ0NnzkN7k4lwM9TyP1ySrPnxnb8JNjAo4afAWRTkXr7p2+UR/0mD7Ro/Kdd26W9TfacY2hfSyZ9KbmO9yI2sppHe5LnP6jJd72lBNQ3DX7ZQ4rPos+qOQ3uXx8DAKYgfCefK/qPuzDuv9632r91EHu+w4ncZnrPv97vPX646/40I4F9ChrZDeSsja9XDTQkhvFBR2uFyLnm31l7oNrmlHDe3rfWhkRYP1bQfB7mHG+NQY3tchnrHdbxuU6/Gax8PrDo6H2wictztW99O547Kjer/Y03p/1rDeP1euZ03C+RPf8ShbvwNt1XXjtXAuoMNTIb3vya0eGiH7Em5iO9u++JSG811/JjptX9Tfyw3U3yPhfKsbhPNoaJ+00OBK9SDd8d2riX0i2L3Mmt31/T2gRBleqJsPDfV1A/Mva37mIo6HNjquUiBPHVVvdzVwRj19mTXrIL6P33+t3v++JGZxPrlvoVxfxhD6Nr9jmjj0ZQvXjft9vW5sK5PEsamgcx2TaKVndLt+tjl9zkmsa71PZZwmN5tHGY87/KjreEZ7n8r2Yqn+jjr+uNuovy6o3Z0f+g6Z05it911WfUbqdCw/TDrYcghZrCiDwdW5aFimcJGW4zqOgFilDIvt/NzBHda0X770UL8WWUedg1GnjqJepkkrjyt8l7Td1w0/N5XPLIbKT2J/HlY8bj93cDzMSrZ5k3U/ff5JTHQ2War7ZcFsuazueyqrLs6r9yved97C+SSV6ZuK55Muy7XsulHs98MhfUdabmcqgs2K9bpXnWDTUlgXHX12et/zkiDyoocyuIgGQdvrlaaLWVru6nZD+26Wf/bRQOrZJKs/kV6Vi/OflsOLieWyrut0LPlWNmv9UdfrhHdcf0+2dZ3zaEjcLTUwXG+eL6tR9sc8BY/rQHrNNa5Ky/BgRYNV+a1/DC+Xa7Hk2aLrO9WxxOBT59TFLt0lj7Xcn2tHXFa5070vZeV88uwx6py3g9xBZ+PibmTqhZ9k6y039VRw/Gg48E9lnMpiGkH9fdZs1ELq8PiwrcFxC+pvsezdrdLdD9GIXmS7uV5zX2V4r/xaL9PZ0jmp78/2fKyycj6pfowioNOyVUPjso5PEIM5sGP4bgo510vrmhdDjcqkhu08yvG2x6HsZftuMbTKthTUR1HGxXDCgwrl+zkrWZM+XPZU7xYVPmuxRfU3le9s3x7FAABAQB9aYNrUZ8+yAfYQxhJov/cIR5gcrdiGvdt3LXz3RREol8r5cZi8X2c5uq4eyXhmGy7UXwAABHToN0wulETn5Swsqr8AAGyQZdYAAABAQAcAAAAEdAAAABDQAQAAAAEdAAAABHQAAABAQAcAAAABHQAAABDQAQAAYID+oggA6MD9M38H4Iez/HXwzL8tFA/spxeKAIAu/O1f/77I/3iVvz7855//mCkRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAVvr/AgwAEljVzwPJzj8AAAAASUVORK5CYII=" alt="Nerdio">
+    <div class="nerdio-brand-divider"></div>
+    <span class="nerdio-brand-tool-name">Win/Loss Library</span>
+  </div>
+  <a href="../EMEA-Nerdio-Toolbox.html" class="nerdio-brand-home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+    Toolbox Home
+  </a>
+</div>
+<div class="nerdio-brand-spacer"></div>
+<!-- END NERDIO BRAND BAR -->
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="logo-section">
+            <div class="nerdio-logo">NERDIO</div>
+            <div class="title">Win/Loss Library</div>
+        </div>
+        
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+        <div class="filter-group">
+            <input type="text" id="searchInput" class="search-input" placeholder="Search by company name or tags...">
+        </div>
+        <div class="filter-group">
+            <label>Result</label>
+            <select id="resultFilter" class="filter-select">
+                <option value="">All</option>
+                <option value="Win">Wins</option>
+                <option value="Loss">Losses</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Industry</label>
+            <select id="industryFilter" class="filter-select">
+                <option value="">All</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Competitor</label>
+            <select id="competitorFilter" class="filter-select">
+                <option value="">All</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Size</label>
+            <select id="sizeFilter" class="filter-select">
+                <option value="">All</option>
+                <option value="SMB">SMB (50-250)</option>
+                <option value="Mid-Market">Mid-Market (250-1000)</option>
+                <option value="Enterprise">Enterprise (1000+)</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Solution</label>
+            <select id="solutionFilter" class="filter-select">
+                <option value="">All</option>
+                <option value="NME">NME</option>
+                <option value="NMM">NMM</option>
+                <option value="Nerdio+W365">Nerdio+W365</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Sort By</label>
+            <select id="sortBy" class="filter-select">
+                <option value="date-desc">Recent First</option>
+                <option value="date-asc">Oldest First</option>
+                <option value="value-desc">Highest Value</option>
+                <option value="value-asc">Lowest Value</option>
+                <option value="name">Company Name</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- STATS BAR -->
+    <div class="stats-bar">
+        <div class="stat-card">
+            <div class="stat-label">Total Cases</div>
+            <div class="stat-value" id="totalCases">0</div>
+            <div class="stat-subtext">across all entries</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Win Rate</div>
+            <div class="stat-value" id="winRate">0%</div>
+            <div class="stat-subtext" id="winLossCount">0 wins, 0 losses</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Average Deal Value</div>
+            <div class="stat-value" id="avgValue">£0</div>
+            <div class="stat-subtext" id="totalValue">Total: £0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Most Faced Competitor</div>
+            <div class="stat-value" id="topCompetitor">—</div>
+            <div class="stat-subtext" id="competitorCount">0 occurrences</div>
+        </div>
+    </div>
+
+    <!-- CONTROL BAR -->
+    <div class="control-bar">
+        <div class="tab-toggle">
+            <button class="tab-btn active" onclick="switchTab('reference')">Reference Cases</button>
+            <button class="tab-btn" onclick="switchTab('user')">My Entries</button>
+            <button class="tab-btn" onclick="switchTab('analytics')">Analytics</button>
+        </div>
+        <button class="btn" onclick="openAddModal()">+ Add New Entry</button>
+        <button class="btn btn-secondary" onclick="exportEntries()">Export</button>
+        <button class="btn btn-secondary" onclick="openImportModal()">Import</button>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="content">
+        <div id="referenceTab" class="tab-content">
+            <div class="card-grid" id="caseGrid"></div>
+        </div>
+
+        <div id="userTab" class="tab-content hidden">
+            <div class="card-grid" id="userGrid"></div>
+        </div>
+
+        <div id="analyticsTab" class="tab-content hidden">
+            <div class="analytics-container" id="analyticsContainer"></div>
+        </div>
+
+        <div class="empty-state hidden" id="emptyState">
+            <div class="empty-state-icon">📋</div>
+            <div class="empty-state-text">No entries match your filters</div>
+        </div>
+    </div>
+
+    <!-- DETAIL MODAL -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <div class="modal-title" id="modalCompanyName"></div>
+                </div>
+                <button class="close-btn" onclick="closeDetailModal()">&times;</button>
+            </div>
+            <div id="modalBody"></div>
+            <div id="similarCases"></div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="copyToClipboard()">Copy Key Points</button>
+                <button class="btn" id="editBtn" onclick="openEditModal()">Edit</button>
+                <button class="btn" id="deleteBtn" style="background-color: #dc6464;" onclick="deleteEntry()">Delete</button>
+                <button class="btn btn-secondary" onclick="closeDetailModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD/EDIT MODAL -->
+    <div id="formModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="formTitle">Add New Entry</div>
+                <button class="close-btn" onclick="closeFormModal()">&times;</button>
+            </div>
+            <div id="successMessage"></div>
+            <form id="entryForm" onsubmit="saveEntry(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Company Name *</label>
+                        <input type="text" id="companyName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Deal Value (£) *</label>
+                        <input type="number" id="dealValue" required min="0">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Industry *</label>
+                        <select id="formIndustry" required>
+                            <option value="">Select Industry</option>
+                            <option value="Financial Services">Financial Services</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Education">Education</option>
+                            <option value="Government">Government</option>
+                            <option value="Professional Services">Professional Services</option>
+                            <option value="Manufacturing">Manufacturing</option>
+                            <option value="Retail">Retail</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Company Size *</label>
+                        <select id="formSize" required>
+                            <option value="">Select Size</option>
+                            <option value="SMB">SMB (50-250 users)</option>
+                            <option value="Mid-Market">Mid-Market (250-1000)</option>
+                            <option value="Enterprise">Enterprise (1000+)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Result *</label>
+                        <select id="formResult" required>
+                            <option value="">Select Result</option>
+                            <option value="Win">Win</option>
+                            <option value="Loss">Loss</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Solution *</label>
+                        <select id="formSolution" required>
+                            <option value="">Select Solution</option>
+                            <option value="NME">NME</option>
+                            <option value="NMM">NMM</option>
+                            <option value="Nerdio+W365">Nerdio+W365</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Competitor Displaced</label>
+                    <select id="formCompetitor">
+                        <option value="">None</option>
+                        <option value="Citrix">Citrix</option>
+                        <option value="VMware/Omnissa">VMware/Omnissa</option>
+                        <option value="Native Azure">Native Azure</option>
+                        <option value="Physical Desktops">Physical Desktops</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Summary (2-3 sentences) *</label>
+                    <textarea id="formSummary" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Challenge/Problem</label>
+                    <textarea id="formChallenge"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>How Nerdio Solved It</label>
+                    <textarea id="formSolution"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Outcome (Quantified Results)</label>
+                    <textarea id="formOutcome"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Key Success Factors</label>
+                    <textarea id="formSuccessFactors"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Lessons Learned</label>
+                    <textarea id="formLessonsLearned"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Tags (comma-separated)</label>
+                    <input type="text" id="formTags" placeholder="e.g., cost-savings, migration, user-adoption">
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeFormModal()">Cancel</button>
+                    <button type="submit" class="btn">Save Entry</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- IMPORT MODAL -->
+    <div id="importModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Import Entries</div>
+                <button class="close-btn" onclick="closeImportModal()">&times;</button>
+            </div>
+            <div class="form-group">
+                <label>Paste JSON data to import</label>
+                <textarea id="importData" style="min-height: 300px; font-family: monospace; font-size: 12px;"></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeImportModal()">Cancel</button>
+                <button class="btn" onclick="importEntries()">Import</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // UTILITY FUNCTIONS
+        function normName(n) {
+            return (n || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+        }
+
+        // REFERENCE DATA
+        var referenceData = [
+            {
+                id: 'ref001',
+                company: 'Meridian Financial Services',
+                industry: 'Financial Services',
+                size: 'Mid-Market',
+                result: 'Win',
+                competitor: 'Citrix',
+                solution: 'NME',
+                dealValue: 185000,
+                summary: 'Major UK financial services firm replaced legacy Citrix infrastructure with Nerdio Managed Experience. Achieved 35% cost reduction and improved security compliance.',
+                challenge: 'Aging Citrix environment consuming high operational costs. Staff struggled with slow VDI performance during market hours. Compliance requirements demanded enhanced security controls.',
+                solutionDetail: 'Implemented NME with optimized image management and performance tuning. Deployed automated scaling to handle peak trading hour loads. Integrated advanced security protocols for PCI-DSS compliance.',
+                outcome: 'Cost reduced by 35% (£180K annually). Performance improved 45%. User satisfaction score increased from 62% to 89%. Compliance audit passed first time. ROI achieved in 11 months.',
+                successFactors: 'Executive sponsorship from CIO. Phased migration approach. Early involvement of IT ops team. Strong partnership with Nerdio for optimization.',
+                lessonsLearned: 'Financial services values stability and compliance above all. Detailed performance baselines are critical for demonstrating ROI. Change management for trading floor staff required dedicated support.',
+                tags: ['cost-savings', 'financial-services', 'migration', 'performance', 'compliance'],
+                date: '2025-11-15'
+            },
+            {
+                id: 'ref002',
+                company: 'Northern Healthcare Trust',
+                industry: 'Healthcare',
+                size: 'Enterprise',
+                result: 'Win',
+                competitor: 'Native Azure',
+                solution: 'Nerdio+W365',
+                dealValue: 425000,
+                summary: 'NHS Trust modernized clinical desktop delivery with Nerdio+W365. Enhanced patient data security and enabled flexible work for clinical staff across multiple hospital sites.',
+                challenge: 'Outdated physical desktop infrastructure unreliable during busy clinical hours. Patient data security concerns with legacy systems. Unable to support remote consultations post-pandemic.',
+                solutionDetail: 'Deployed Nerdio+W365 on Microsoft 365 infrastructure. Implemented role-based access for different clinical departments. Created secure patient data handling protocols within cloud environment.',
+                outcome: 'System uptime improved to 99.8%. Patient data security certifications obtained. Clinical staff productivity increased 28%. Remote consultation capability enabled (used for 15% of appointments).',
+                successFactors: 'Clinical teams engaged early in design. Compliance officer involvement. Strong IT governance. Phased rollout by department reduced disruption.',
+                lessonsLearned: 'Healthcare requires extra security validation even with cloud vendors. Training must be role-specific, not generic. Change resistance from clinicians required personal engagement.',
+                tags: ['healthcare', 'security', 'w365', 'remote-work', 'nhs'],
+                date: '2025-10-22'
+            },
+            {
+                id: 'ref003',
+                company: 'Cambridge Education Partners',
+                industry: 'Education',
+                size: 'SMB',
+                result: 'Win',
+                competitor: 'Physical Desktops',
+                solution: 'NMM',
+                dealValue: 65000,
+                summary: 'Independent education provider transitioned from physical lab computers to managed desktops. Reduced IT overhead by 60% while improving student experience.',
+                challenge: 'Managing 250 aging lab computers across 5 campus locations. High replacement costs. Limited ability to update software centrally. Students experienced slow, inconsistent performance.',
+                solutionDetail: 'Implemented Nerdio Managed Machines for all student-facing desktops. Centralized image management and patch deployment. Created separate profiles for different courses.',
+                outcome: 'IT maintenance time reduced 60%. Cost per workstation dropped 45%. Software update time reduced from days to hours. Student satisfaction increased. Capital expenditure eliminated.',
+                successFactors: 'IT director was early adopter of cloud concepts. Student feedback drove priorities. Phased rollout allowed staff training between waves.',
+                lessonsLearned: 'Education buyers care deeply about student experience metrics. Teachers need simple, reliable tools. Central IT needs strong change management support.',
+                tags: ['education', 'cost-reduction', 'nmm', 'student-experience'],
+                date: '2025-09-30'
+            },
+            {
+                id: 'ref004',
+                company: 'Strategic Government Solutions',
+                industry: 'Government',
+                size: 'Enterprise',
+                result: 'Loss',
+                competitor: 'Native Azure',
+                solution: 'Nerdio+W365',
+                dealValue: 550000,
+                summary: 'Large government agency evaluated Nerdio+W365 but selected competing native Azure solution due to existing cloud commitments and procurement constraints.',
+                challenge: 'Complex procurement process with multi-year cloud framework agreement favoring certain vendors. Political pressure from existing Microsoft relationships.',
+                solutionDetail: 'Demonstrated superior cost efficiency and management features. Provided detailed security compliance documentation. Offered flexible licensing.',
+                outcome: 'Lost to competitive incumbent. Customer confirmed Nerdio superior technical offering but procurement process favored established vendors.',
+                successFactors: 'Would have required earlier engagement during vendor selection phase. Partnership approach needed with Microsoft rather than competitive.',
+                lessonsLearned: 'Government sales require understanding procurement cycles and existing commitments. Multiple stakeholders with conflicting priorities. Early seller engagement critical before RFP issued. Consider partnership rather than competition with big cloud vendors.',
+                tags: ['government', 'loss', 'procurement', 'w365', 'azure-competition'],
+                date: '2025-10-05'
+            },
+            {
+                id: 'ref005',
+                company: 'Thomson Professional Services',
+                industry: 'Professional Services',
+                size: 'Mid-Market',
+                result: 'Win',
+                competitor: 'VMware/Omnissa',
+                solution: 'NME',
+                dealValue: 240000,
+                summary: 'Leading consulting firm replaced complex VMware Horizon environment with Nerdio Managed Experience. Reduced complexity, improved performance, and freed IT resources.',
+                challenge: 'VMware Horizon required constant tuning and patching. IT team of 8 spent 70% of time on VDI maintenance. Performance issues during peak consulting season.',
+                solutionDetail: 'Migrated to NME with automated optimization and management. Reduced image complexity. Implemented performance monitoring.',
+                outcome: 'IT team freed up 25 hours per week (from 70% to 30% VDI management). Performance improved 50%. Cost reduced 28%. System more reliable during peak periods.',
+                successFactors: 'IT team led evaluation and championed solution. Clear metrics for success defined upfront. Consulting partners engaged about performance improvements.',
+                lessonsLearned: 'IT operations teams are key allies when managing current infrastructure. Demonstrating freed-up IT capacity resonates strongly. Performance metrics matter more than cost alone for professional services.',
+                tags: ['professional-services', 'vmware', 'cost-reduction', 'performance', 'it-efficiency'],
+                date: '2025-08-17'
+            },
+            {
+                id: 'ref006',
+                company: 'Westbrook Manufacturing Group',
+                industry: 'Manufacturing',
+                size: 'Enterprise',
+                result: 'Loss',
+                competitor: 'Citrix',
+                solution: 'NMM',
+                dealValue: 380000,
+                summary: 'Industrial manufacturer evaluated NMM but renewed Citrix contract due to existing desktop automation integrations and risk aversion to change.',
+                challenge: 'Manufacturing floor required specific hardware integrations not widely supported. Existing automation software dependent on Citrix-specific APIs.',
+                solutionDetail: 'Proposed creative solutions for hardware integration. Offered extended support period for API compatibility testing.',
+                outcome: 'Lost renewal to Citrix. Customer cited integration risk and preference for existing vendor relationship despite higher cost.',
+                successFactors: 'Would have required early technical integration planning. Could have engaged with automation software vendor partnership.',
+                lessonsLearned: 'Manufacturing is conservative about infrastructure changes due to production risk. Hardware integrations must be proven before proposal. Existing vendor relationships carry massive weight.',
+                tags: ['manufacturing', 'loss', 'citrix-renewal', 'integration', 'nmm'],
+                date: '2025-09-12'
+            },
+            {
+                id: 'ref007',
+                company: 'Riverside Retail Corporation',
+                industry: 'Retail',
+                size: 'Enterprise',
+                result: 'Win',
+                competitor: 'Physical Desktops',
+                solution: 'NME',
+                dealValue: 310000,
+                summary: 'Multi-location retail chain modernized point-of-sale and back-office infrastructure with NME. Enabled faster deployment and improved consistency across stores.',
+                challenge: 'Managing 1,200 desktops across 45 store locations. High shipping costs for replacement hardware. Inconsistent configurations across stores causing support headaches.',
+                solutionDetail: 'Deployed NME with standardized images for POS and back-office roles. Reduced hardware footprint with thin client approach. Centralized patch management.',
+                outcome: 'Hardware replacement costs reduced 65%. Deployment time for new stores reduced from 2 weeks to 2 days. Support tickets dropped 40%. Consistency across locations improved.',
+                successFactors: 'Regional IT manager champion. Store operations team engaged in design. Phased rollout location by location.',
+                lessonsLearned: 'Retail values operational simplicity and rapid deployment. Store managers care about minimal downtime during business hours. Image standardization is critical.',
+                tags: ['retail', 'nme', 'multi-location', 'cost-reduction', 'deployment-speed'],
+                date: '2025-07-28'
+            },
+            {
+                id: 'ref008',
+                company: 'Heritage Insurance Group',
+                industry: 'Financial Services',
+                size: 'SMB',
+                result: 'Win',
+                competitor: 'None',
+                solution: 'Nerdio+W365',
+                dealValue: 95000,
+                summary: 'Insurance company moved from on-premises desktops to Nerdio+W365. First modern cloud infrastructure deployment. Gained agility for rapid business changes.',
+                challenge: 'Legacy on-premises infrastructure unable to support growing distributed workforce. New business units needed rapid deployment without datacenter expansion.',
+                solutionDetail: 'Deployed Nerdio+W365 on Microsoft 365. Created flexible profiles for different departments. Enabled remote workers in new markets.',
+                outcome: 'New office onboarding time reduced from 6 weeks to 3 days. Staff working from home jumped from 5% to 32%. IT capital spending eliminated.',
+                successFactors: 'Cloud-forward CEO. IT director experienced with cloud concepts. Strong change management program.',
+                lessonsLearned: 'Companies moving from on-premises to cloud value agility above all. ROI calculations must include business flexibility benefits. W365 works great for companies starting fresh.',
+                tags: ['financial-services', 'w365', 'cloud-migration', 'agility', 'remote-work'],
+                date: '2025-10-10'
+            },
+            {
+                id: 'ref009',
+                company: 'London Biotech Innovations',
+                industry: 'Healthcare',
+                size: 'SMB',
+                result: 'Loss',
+                competitor: 'VMware/Omnissa',
+                solution: 'NMM',
+                dealValue: 125000,
+                summary: 'Biotech research company evaluated NMM but retained VMware Horizon due to specific research software compatibility requirements.',
+                challenge: 'Research software had strict VMware compatibility requirements. IT team already experienced with VMware. Concern about potential research data loss during migration.',
+                solutionDetail: 'Offered migration assistance and compatibility testing. Provided extended pilot period.',
+                outcome: 'Lost to VMware renewal. Customer confirmed Nerdio benefits but research software compatibility was deal-breaker.',
+                successFactors: 'Would have required software vendor pre-qualification and compatibility certification.',
+                lessonsLearned: 'Healthcare R&D is extremely conservative about infrastructure changes. Software compatibility cannot be assumed; must be proven. Vendor partnerships with research software companies needed.',
+                tags: ['healthcare', 'loss', 'software-compatibility', 'research', 'vmware-renewal'],
+                date: '2025-10-18'
+            },
+            {
+                id: 'ref010',
+                company: 'Midlands Education Consortium',
+                industry: 'Education',
+                size: 'Enterprise',
+                result: 'Win',
+                competitor: 'Physical Desktops',
+                solution: 'NME',
+                dealValue: 520000,
+                summary: 'Large school consortium managing 15 schools consolidated fragmented desktop infrastructure onto NME. Unified management and improved student learning outcomes.',
+                challenge: 'Each school managed own desktops independently. Inconsistent software versions. Limited IT staffing. High hardware replacement costs across consortium.',
+                solutionDetail: 'Centralized image management for NME across all 15 schools. Created templates for different education levels. Implemented student usage monitoring.',
+                outcome: 'Consolidated IT staffing from 12 FTE to 4 FTE with better service. Hardware costs reduced 52%. Software deployment now consistent. Classroom uptime improved 99%.',
+                successFactors: 'Head of IT across consortium champion. Union support for IT staffing changes. Board-level IT governance established.',
+                lessonsLearned: 'Large consortia value consistency and administrative efficiency. IT staffing reduction is key selling point when consolidated. Need governance structure across multiple institutions.',
+                tags: ['education', 'nme', 'consortium', 'consolidation', 'cost-reduction'],
+                date: '2025-06-14'
+            },
+            {
+                id: 'ref011',
+                company: 'Prime Financial Advisors',
+                industry: 'Financial Services',
+                size: 'SMB',
+                result: 'Win',
+                competitor: 'Citrix',
+                solution: 'NMM',
+                dealValue: 72000,
+                summary: 'Boutique financial advisory firm upgraded from Citrix to NMM. Better user experience for advisors and significant cost savings.',
+                challenge: 'Aging Citrix infrastructure causing user experience issues. Poor performance during market hours. High licensing costs relative to company size.',
+                solutionDetail: 'Migrated to NMM with optimized performance profiles for trading platforms. Reduced image complexity. Implemented better resource allocation.',
+                outcome: 'Cost reduced 38%. Performance improved significantly. User satisfaction scores jumped from 54% to 82%. Faster application response during trading hours.',
+                successFactors: 'Financial advisors directly complained about performance. IT director had previous Nerdio experience. Simple upgrade path from Citrix.',
+                lessonsLearned: 'User experience is primary concern in advisory firms. Performance during peak trading hours is critical. Advisors value reliability over cutting-edge features.',
+                tags: ['financial-services', 'nmm', 'performance', 'cost-reduction', 'user-experience'],
+                date: '2025-08-03'
+            },
+            {
+                id: 'ref012',
+                company: 'Sovereign Government Ministry',
+                industry: 'Government',
+                size: 'Mid-Market',
+                result: 'Win',
+                competitor: 'Native Azure',
+                solution: 'NME',
+                dealValue: 280000,
+                summary: 'UK government ministry selected NME for secure desktop delivery, meeting stringent compliance requirements and cost targets.',
+                challenge: 'Needed modern desktop solution meeting Cabinet Office security standards. Cloud provider options limited by government procurement frameworks. Budget constraints.',
+                solutionDetail: 'Deployed NME on certified government cloud infrastructure. Implemented enhanced security controls and audit logging. Met all Cabinet Office compliance requirements.',
+                outcome: 'Exceeded security compliance requirements with audit score of 98%. Reduced operational costs 31%. Improved staff productivity 25%. Government framework approved for future contracts.',
+                successFactors: 'Early engagement with government compliance teams. Clear mapping to security standards. Cabinet Office pre-approval before proposal.',
+                lessonsLearned: 'Government requires compliance documentation before engagement. Building relationships with Cabinet Office modernization teams is key. Cost savings important but security is primary driver.',
+                tags: ['government', 'nme', 'compliance', 'security', 'cabinet-office'],
+                date: '2025-11-02'
+            },
+            {
+                id: 'ref013',
+                company: 'Elysian Pharma Solutions',
+                industry: 'Healthcare',
+                size: 'Mid-Market',
+                result: 'Win',
+                competitor: 'VMware/Omnissa',
+                solution: 'Nerdio+W365',
+                dealValue: 195000,
+                summary: 'Pharmaceutical company modernized desktop infrastructure with Nerdio+W365 to support distributed clinical teams and meet FDA compliance.',
+                challenge: 'VMware deployment aging and difficult to scale. New locations needed clinical data access capability. FDA audit required enhanced access controls.',
+                solutionDetail: 'Deployed Nerdio+W365 with role-based access controls for clinical, quality, and operations teams. Implemented granular audit logging for regulatory compliance.',
+                outcome: 'FDA audit passed with zero findings on IT controls. Clinical team access provisioning time reduced 85%. Enabled remote clinical operations (20% of staff now remote).',
+                successFactors: 'Quality assurance team champion. FDA compliance officer engaged early. Microsoft 365 pre-existing relationship simplified procurement.',
+                lessonsLearned: 'Pharma cares deeply about regulatory compliance; lead with that angle. Role-based access control is essential, not optional. Remote clinical work is increasingly valuable to pharma companies.',
+                tags: ['healthcare', 'pharma', 'w365', 'fda-compliance', 'regulatory'],
+                date: '2025-09-25'
+            },
+            {
+                id: 'ref014',
+                company: 'Sterling Manufacturing UK',
+                industry: 'Manufacturing',
+                size: 'Mid-Market',
+                result: 'Win',
+                competitor: 'Physical Desktops',
+                solution: 'NME',
+                dealValue: 165000,
+                summary: 'Precision manufacturing company modernized factory floor and office infrastructure. Reduced downtime risk and improved production efficiency.',
+                challenge: 'Aging desktops on factory floor causing production delays. Hardware replacement expensive and disruptive. Inconsistent office configuration across shifts.',
+                solutionDetail: 'Deployed ruggedized thin clients running NME optimized for manufacturing environment. Created shift-based user profiles. Implemented performance monitoring.',
+                outcome: 'Production downtime from IT issues reduced 72%. Hardware costs reduced 48%. Shift efficiency improved 18%. Maintenance costs cut by 55%.',
+                successFactors: 'Operations director champion driving changes. IT team involved in design for ruggedized deployment. Strong partnership with hardware provider for thin client selection.',
+                lessonsLearned: 'Manufacturing values reliability and production continuity above all else. Thin clients preferred in harsh environments. Performance metrics directly tied to production KPIs resonate strongest.',
+                tags: ['manufacturing', 'nme', 'factory-floor', 'reliability', 'efficiency'],
+                date: '2025-07-14'
+            },
+            {
+                id: 'ref015',
+                company: 'Golden Gate Professional Services',
+                industry: 'Professional Services',
+                size: 'Enterprise',
+                result: 'Win',
+                competitor: 'Citrix',
+                solution: 'NME',
+                dealValue: 395000,
+                summary: 'Global consulting firm replaced Citrix with NME, enabling hybrid work across 12 office locations. Improved consultant experience and IT efficiency.',
+                challenge: 'Citrix complexity causing performance issues for remote consultants. High support costs across global offices. Limited hybrid work capabilities.',
+                solutionDetail: 'Deployed NME across 12 offices with cloud-native architecture. Optimized for hybrid work scenarios. Implemented global performance monitoring.',
+                outcome: 'IT support costs reduced 42% globally. Consultant satisfaction improved 38%. Remote work adoption jumped from 15% to 58%. Onboarding time reduced by 5 days.',
+                successFactors: 'Chief People Officer sponsorship (hybrid work enablement). Global IT director executive champion. Phased rollout by region with local IT team involvement.',
+                lessonsLearned: 'Global professional services firms value flexibility and consultant experience highly. Hybrid work is business strategy driver, not just IT feature. Regional IT teams need empowerment in rollout decisions.',
+                tags: ['professional-services', 'nme', 'global-deployment', 'hybrid-work', 'consultant-experience'],
+                date: '2025-11-08'
+            }
+        ];
+
+        var currentTab = 'reference';
+        var currentEntries = [];
+        var currentDetailEntry = null;
+        var editingEntryId = null;
+
+        // INITIALIZATION
+        function init() {
+            loadUserEntries();
+            populateFilterOptions();
+            renderData();
+            updateStats();
+        }
+
+        function loadUserEntries() {
+            var stored = localStorage.getItem('nerdio_v4_win_loss');
+            if (stored) {
+                try {
+                    var parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed)) {
+                        referenceData = referenceData.concat(parsed);
+                    }
+                } catch (e) {
+                    console.log('Error loading user entries');
+                }
+            }
+        }
+
+        function getUserEntries() {
+            var stored = localStorage.getItem('nerdio_v4_win_loss');
+            if (stored) {
+                try {
+                    var parsed = JSON.parse(stored);
+                    return Array.isArray(parsed) ? parsed : [];
+                } catch (e) {
+                    return [];
+                }
+            }
+            return [];
+        }
+
+        function getReferenceEntries() {
+            return referenceData.filter(function(e) { return e.id && e.id.indexOf('ref') === 0; });
+        }
+
+        // FILTER AND SORT
+        function applyFilters() {
+            var searchTerm = normName(document.getElementById('searchInput').value);
+            var resultFilter = document.getElementById('resultFilter').value;
+            var industryFilter = document.getElementById('industryFilter').value;
+            var competitorFilter = document.getElementById('competitorFilter').value;
+            var sizeFilter = document.getElementById('sizeFilter').value;
+            var solutionFilter = document.getElementById('solutionFilter').value;
+
+            var allEntries = currentTab === 'reference' ? getReferenceEntries() : getUserEntries();
+
+            var filtered = allEntries.filter(function(entry) {
+                var matchSearch = searchTerm === '' ||
+                    normName(entry.company).indexOf(searchTerm) !== -1 ||
+                    (entry.tags && entry.tags.some(function(t) { return normName(t).indexOf(searchTerm) !== -1; }));
+
+                var matchResult = resultFilter === '' || entry.result === resultFilter;
+                var matchIndustry = industryFilter === '' || entry.industry === industryFilter;
+                var matchCompetitor = competitorFilter === '' || entry.competitor === competitorFilter;
+                var matchSize = sizeFilter === '' || entry.size === sizeFilter;
+                var matchSolution = solutionFilter === '' || entry.solution === solutionFilter;
+
+                return matchSearch && matchResult && matchIndustry && matchCompetitor && matchSize && matchSolution;
+            });
+
+            // SORT
+            var sortBy = document.getElementById('sortBy').value;
+            filtered.sort(function(a, b) {
+                if (sortBy === 'date-desc') return new Date(b.date || 0) - new Date(a.date || 0);
+                if (sortBy === 'date-asc') return new Date(a.date || 0) - new Date(b.date || 0);
+                if (sortBy === 'value-desc') return b.dealValue - a.dealValue;
+                if (sortBy === 'value-asc') return a.dealValue - b.dealValue;
+                if (sortBy === 'name') return a.company.localeCompare(b.company);
+                return 0;
+            });
+
+            return filtered;
+        }
+
+        function populateFilterOptions() {
+            var allEntries = referenceData;
+
+            var industries = {};
+            var competitors = {};
+
+            allEntries.forEach(function(entry) {
+                if (entry.industry) industries[entry.industry] = true;
+                if (entry.competitor) competitors[entry.competitor] = true;
+            });
+
+            var industrySelect = document.getElementById('industryFilter');
+            Object.keys(industries).sort().forEach(function(ind) {
+                var opt = document.createElement('option');
+                opt.value = ind;
+                opt.textContent = ind;
+                industrySelect.appendChild(opt);
+            });
+
+            var competitorSelect = document.getElementById('competitorFilter');
+            Object.keys(competitors).sort().forEach(function(comp) {
+                var opt = document.createElement('option');
+                opt.value = comp;
+                opt.textContent = comp;
+                competitorSelect.appendChild(opt);
+            });
+        }
+
+        function renderData() {
+            var filtered = applyFilters();
+            var gridId = currentTab === 'reference' ? 'caseGrid' : 'userGrid';
+            var grid = document.getElementById(gridId);
+            grid.innerHTML = '';
+
+            if (filtered.length === 0) {
+                document.getElementById('emptyState').classList.remove('hidden');
+                return;
+            }
+
+            document.getElementById('emptyState').classList.add('hidden');
+
+            filtered.forEach(function(entry) {
+                var card = document.createElement('div');
+                card.className = 'case-card';
+                card.innerHTML =
+                    '<div class="card-header">' +
+                        '<div class="company-name">' + escapeHtml(entry.company) + '</div>' +
+                        '<div class="result-badge ' + entry.result.toLowerCase() + '">' + entry.result + '</div>' +
+                    '</div>' +
+                    '<div class="card-meta">' +
+                        '<div class="badge">' + escapeHtml(entry.industry) + '</div>' +
+                        '<div class="badge size">' + escapeHtml(entry.size) + '</div>' +
+                        '<div class="badge competitor">' + escapeHtml(entry.solution) + '</div>' +
+                    '</div>' +
+                    (entry.competitor ? '<div class="card-competitor">Displaced: ' + escapeHtml(entry.competitor) + '</div>' : '') +
+                    '<div class="card-value">£' + formatNumber(entry.dealValue) + '</div>' +
+                    '<div class="card-summary">' + escapeHtml(entry.summary) + '</div>' +
+                    '<div class="card-footer">' +
+                        '<span class="card-date">' + (entry.date ? entry.date : 'N/A') + '</span>' +
+                        '<div class="card-actions">' +
+                            '<button class="action-btn" onclick="viewEntry(\'' + entry.id + '\')">View →</button>' +
+                        '</div>' +
+                    '</div>';
+                grid.appendChild(card);
+            });
+        }
+
+        function updateStats() {
+            var allEntries = currentTab === 'reference' ? getReferenceEntries() :
+                            currentTab === 'user' ? getUserEntries() : referenceData;
+
+            var total = allEntries.length;
+            var wins = allEntries.filter(function(e) { return e.result === 'Win'; }).length;
+            var losses = total - wins;
+            var winRate = total > 0 ? Math.round((wins / total) * 100) : 0;
+
+            var totalValue = 0;
+            allEntries.forEach(function(e) { totalValue += e.dealValue || 0; });
+            var avgValue = total > 0 ? Math.round(totalValue / total) : 0;
+
+            // Competitor counts
+            var competitorCounts = {};
+            allEntries.forEach(function(e) {
+                if (e.competitor && e.competitor !== 'None') {
+                    competitorCounts[e.competitor] = (competitorCounts[e.competitor] || 0) + 1;
+                }
+            });
+
+            var topCompetitor = 'None';
+            var topCount = 0;
+            Object.keys(competitorCounts).forEach(function(comp) {
+                if (competitorCounts[comp] > topCount) {
+                    topCompetitor = comp;
+                    topCount = competitorCounts[comp];
+                }
+            });
+
+            document.getElementById('totalCases').textContent = total;
+            document.getElementById('winRate').textContent = winRate + '%';
+            document.getElementById('winLossCount').textContent = wins + ' wins, ' + losses + ' losses';
+            document.getElementById('avgValue').textContent = '£' + formatNumber(avgValue);
+            document.getElementById('totalValue').textContent = 'Total: £' + formatNumber(totalValue);
+            document.getElementById('topCompetitor').textContent = topCompetitor;
+            document.getElementById('competitorCount').textContent = topCount + ' occurrences';
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(function(btn) {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(function(el) {
+                el.classList.add('hidden');
+            });
+
+            if (tab === 'reference') {
+                document.getElementById('referenceTab').classList.remove('hidden');
+            } else if (tab === 'user') {
+                document.getElementById('userTab').classList.remove('hidden');
+            } else if (tab === 'analytics') {
+                document.getElementById('analyticsTab').classList.remove('hidden');
+                renderAnalytics();
+            }
+
+            renderData();
+            updateStats();
+        }
+
+        function formatNumber(n) {
+            return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        function escapeHtml(text) {
+            var map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return String(text).replace(/[&<>"']/g, function(s) { return map[s]; });
+        }
+
+        // MODAL FUNCTIONS
+        function viewEntry(id) {
+            var entry = referenceData.find(function(e) { return e.id === id; });
+            if (!entry) return;
+
+            currentDetailEntry = entry;
+            document.getElementById('modalCompanyName').textContent = escapeHtml(entry.company);
+
+            var html = '<div class="detail-grid">' +
+                '<div class="detail-section">' +
+                    '<div class="detail-label">Result</div>' +
+                    '<div class="detail-value"><strong>' + entry.result + '</strong></div>' +
+                '</div>' +
+                '<div class="detail-section">' +
+                    '<div class="detail-label">Industry</div>' +
+                    '<div class="detail-value">' + escapeHtml(entry.industry) + '</div>' +
+                '</div>' +
+                '<div class="detail-section">' +
+                    '<div class="detail-label">Company Size</div>' +
+                    '<div class="detail-value">' + escapeHtml(entry.size) + '</div>' +
+                '</div>' +
+                '<div class="detail-section">' +
+                    '<div class="detail-label">Solution</div>' +
+                    '<div class="detail-value">' + escapeHtml(entry.solution) + '</div>' +
+                '</div>' +
+                '<div class="detail-section">' +
+                    '<div class="detail-label">Deal Value</div>' +
+                    '<div class="detail-value">£' + formatNumber(entry.dealValue) + '</div>' +
+                '</div>' +
+                '<div class="detail-section">' +
+                    '<div class="detail-label">Competitor Displaced</div>' +
+                    '<div class="detail-value">' + (entry.competitor ? escapeHtml(entry.competitor) : 'None') + '</div>' +
+                '</div>' +
+            '</div>';
+
+            html += '<div class="detail-section">' +
+                '<div class="detail-label">Summary</div>' +
+                '<div class="detail-value">' + escapeHtml(entry.summary) + '</div>' +
+            '</div>';
+
+            if (entry.challenge) {
+                html += '<div class="detail-section">' +
+                    '<div class="detail-label">Challenge</div>' +
+                    '<div class="detail-value">' + escapeHtml(entry.challenge) + '</div>' +
+                '</div>';
+            }
+
+            if (entry.solutionDetail) {
+                html += '<div class="detail-section">' +
+                    '<div class="detail-label">How Nerdio Solved It</div>' +
+                    '<div class="detail-value">' + escapeHtml(entry.solutionDetail) + '</div>' +
+                '</div>';
+            }
+
+            if (entry.outcome) {
+                html += '<div class="detail-section">' +
+                    '<div class="detail-label">Outcome</div>' +
+                    '<div class="detail-value">' + escapeHtml(entry.outcome) + '</div>' +
+                '</div>';
+            }
+
+            if (entry.successFactors) {
+                html += '<div class="detail-section">' +
+                    '<div class="detail-label">Key Success Factors</div>' +
+                    '<div class="detail-value">' + escapeHtml(entry.successFactors) + '</div>' +
+                '</div>';
+            }
+
+            if (entry.lessonsLearned) {
+                html += '<div class="detail-section">' +
+                    '<div class="detail-label">Lessons Learned</div>' +
+                    '<div class="detail-value">' + escapeHtml(entry.lessonsLearned) + '</div>' +
+                '</div>';
+            }
+
+            if (entry.tags && entry.tags.length > 0) {
+                html += '<div class="detail-section">' +
+                    '<div class="detail-label">Tags</div>' +
+                    '<div class="card-meta">' +
+                    entry.tags.map(function(tag) {
+                        return '<div class="badge">' + escapeHtml(tag) + '</div>';
+                    }).join('') +
+                    '</div>' +
+                '</div>';
+            }
+
+            document.getElementById('modalBody').innerHTML = html;
+
+            // Similar cases
+            var similarEntries = findSimilarCases(entry);
+            if (similarEntries.length > 0) {
+                var similarHtml = '<div class="similar-section">' +
+                    '<div class="detail-label">Similar Cases</div>' +
+                    '<div class="similar-grid">';
+
+                similarEntries.forEach(function(sim) {
+                    similarHtml += '<div class="similar-card" onclick="viewEntry(\'' + sim.id + '\')">' +
+                        '<div class="similar-card-name">' + escapeHtml(sim.company) + '</div>' +
+                        '<div class="similar-card-meta">' + escapeHtml(sim.industry) + ' • ' + escapeHtml(sim.solution) + '</div>' +
+                    '</div>';
+                });
+
+                similarHtml += '</div></div>';
+                document.getElementById('similarCases').innerHTML = similarHtml;
+            } else {
+                document.getElementById('similarCases').innerHTML = '';
+            }
+
+            // Show/hide edit and delete buttons based on entry type
+            var isUserEntry = entry.id && entry.id.indexOf('ref') !== 0;
+            document.getElementById('editBtn').style.display = isUserEntry ? 'inline-block' : 'none';
+            document.getElementById('deleteBtn').style.display = isUserEntry ? 'inline-block' : 'none';
+
+            document.getElementById('detailModal').classList.add('active');
+        }
+
+        function findSimilarCases(entry) {
+            return referenceData
+                .filter(function(e) {
+                    return e.id !== entry.id &&
+                        (e.industry === entry.industry ||
+                         e.competitor === entry.competitor ||
+                         e.solution === entry.solution ||
+                         (e.tags && entry.tags &&
+                          e.tags.some(function(t) { return entry.tags.indexOf(t) !== -1; })));
+                })
+                .slice(0, 3);
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.remove('active');
+            currentDetailEntry = null;
+        }
+
+        function openAddModal() {
+            editingEntryId = null;
+            document.getElementById('formTitle').textContent = 'Add New Entry';
+            document.getElementById('entryForm').reset();
+            document.getElementById('successMessage').innerHTML = '';
+            document.getElementById('formModal').classList.add('active');
+        }
+
+        function openEditModal() {
+            if (!currentDetailEntry) return;
+
+            editingEntryId = currentDetailEntry.id;
+            document.getElementById('formTitle').textContent = 'Edit Entry';
+            document.getElementById('companyName').value = currentDetailEntry.company || '';
+            document.getElementById('dealValue').value = currentDetailEntry.dealValue || '';
+            document.getElementById('formIndustry').value = currentDetailEntry.industry || '';
+            document.getElementById('formSize').value = currentDetailEntry.size || '';
+            document.getElementById('formResult').value = currentDetailEntry.result || '';
+            document.getElementById('formSolution').value = currentDetailEntry.solution || '';
+            document.getElementById('formCompetitor').value = currentDetailEntry.competitor || '';
+            document.getElementById('formSummary').value = currentDetailEntry.summary || '';
+            document.getElementById('formChallenge').value = currentDetailEntry.challenge || '';
+            document.getElementById('formSolution').value = currentDetailEntry.solutionDetail || '';
+            document.getElementById('formOutcome').value = currentDetailEntry.outcome || '';
+            document.getElementById('formSuccessFactors').value = currentDetailEntry.successFactors || '';
+            document.getElementById('formLessonsLearned').value = currentDetailEntry.lessonsLearned || '';
+            document.getElementById('formTags').value = (currentDetailEntry.tags || []).join(', ');
+
+            closeDetailModal();
+            document.getElementById('formModal').classList.add('active');
+        }
+
+        function closeFormModal() {
+            document.getElementById('formModal').classList.remove('active');
+            editingEntryId = null;
+        }
+
+        function saveEntry(event) {
+            event.preventDefault();
+
+            var userEntries = getUserEntries();
+            var id = editingEntryId || 'user_' + Date.now();
+
+            var entry = {
+                id: id,
+                company: document.getElementById('companyName').value,
+                industry: document.getElementById('formIndustry').value,
+                size: document.getElementById('formSize').value,
+                result: document.getElementById('formResult').value,
+                competitor: document.getElementById('formCompetitor').value,
+                solution: document.getElementById('formSolution').value,
+                dealValue: parseInt(document.getElementById('dealValue').value) || 0,
+                summary: document.getElementById('formSummary').value,
+                challenge: document.getElementById('formChallenge').value,
+                solutionDetail: document.getElementById('formSolution').value,
+                outcome: document.getElementById('formOutcome').value,
+                successFactors: document.getElementById('formSuccessFactors').value,
+                lessonsLearned: document.getElementById('formLessonsLearned').value,
+                tags: document.getElementById('formTags').value.split(',').map(function(t) { return t.trim(); }).filter(function(t) { return t.length > 0; }),
+                date: new Date().toISOString().split('T')[0]
+            };
+
+            if (editingEntryId) {
+                var idx = userEntries.findIndex(function(e) { return e.id === editingEntryId; });
+                if (idx !== -1) {
+                    userEntries[idx] = entry;
+                }
+            } else {
+                userEntries.push(entry);
+            }
+
+            localStorage.setItem('nerdio_v4_win_loss', JSON.stringify(userEntries));
+
+            // Update reference data
+            var refIdx = referenceData.findIndex(function(e) { return e.id === id; });
+            if (refIdx !== -1) {
+                referenceData[refIdx] = entry;
+            } else {
+                referenceData.push(entry);
+            }
+
+            document.getElementById('successMessage').innerHTML = '<div class="success-message">Entry saved successfully!</div>';
+            setTimeout(function() {
+                closeFormModal();
+                renderData();
+                updateStats();
+            }, 1500);
+        }
+
+        function deleteEntry() {
+            if (!currentDetailEntry || editingEntryId) return;
+
+            if (!confirm('Are you sure you want to delete this entry?')) return;
+
+            var userEntries = getUserEntries();
+            userEntries = userEntries.filter(function(e) { return e.id !== currentDetailEntry.id; });
+            localStorage.setItem('nerdio_v4_win_loss', JSON.stringify(userEntries));
+
+            referenceData = referenceData.filter(function(e) { return e.id !== currentDetailEntry.id; });
+
+            closeDetailModal();
+            renderData();
+            updateStats();
+        }
+
+        function copyToClipboard() {
+            if (!currentDetailEntry) return;
+
+            var text = 'Win/Loss Case Study: ' + currentDetailEntry.company + '\n\n' +
+                'Key Points:\n' +
+                '- Industry: ' + currentDetailEntry.industry + '\n' +
+                '- Solution: ' + currentDetailEntry.solution + '\n' +
+                '- Result: ' + currentDetailEntry.result + '\n' +
+                '- Deal Value: £' + formatNumber(currentDetailEntry.dealValue) + '\n\n' +
+                'Challenge:\n' + currentDetailEntry.challenge + '\n\n' +
+                'How Nerdio Solved It:\n' + currentDetailEntry.solutionDetail + '\n\n' +
+                'Outcome:\n' + currentDetailEntry.outcome;
+
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(function() {
+                    alert('Key points copied to clipboard!');
+                });
+            } else {
+                var textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('Key points copied to clipboard!');
+            }
+        }
+
+        function exportEntries() {
+            var entriesToExport = currentTab === 'reference' ? getReferenceEntries() : getUserEntries();
+            var json = JSON.stringify(entriesToExport, null, 2);
+
+            var blob = new Blob([json], { type: 'application/json' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'win-loss-library-' + new Date().toISOString().split('T')[0] + '.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function openImportModal() {
+            document.getElementById('importData').value = '';
+            document.getElementById('importModal').classList.add('active');
+        }
+
+        function closeImportModal() {
+            document.getElementById('importModal').classList.remove('active');
+        }
+
+        function importEntries() {
+            var data = document.getElementById('importData').value;
+            if (!data) {
+                alert('Please paste JSON data');
+                return;
+            }
+
+            try {
+                var imported = JSON.parse(data);
+                if (!Array.isArray(imported)) {
+                    alert('Invalid format. Must be a JSON array.');
+                    return;
+                }
+
+                var userEntries = getUserEntries();
+                imported.forEach(function(entry) {
+                    if (!entry.id) {
+                        entry.id = 'user_' + Date.now();
+                    }
+                    userEntries.push(entry);
+                });
+
+                localStorage.setItem('nerdio_v4_win_loss', JSON.stringify(userEntries));
+                referenceData = referenceData.concat(imported);
+
+                alert('Successfully imported ' + imported.length + ' entries!');
+                closeImportModal();
+                renderData();
+                updateStats();
+            } catch (e) {
+                alert('Invalid JSON format. Please check your data.');
+            }
+        }
+
+        function renderAnalytics() {
+            var container = document.getElementById('analyticsContainer');
+            container.innerHTML = '';
+
+            var entries = currentTab === 'reference' ? getReferenceEntries() :
+                         currentTab === 'user' ? getUserEntries() : referenceData;
+
+            // Win rate by competitor
+            var competitorStats = {};
+            entries.forEach(function(e) {
+                if (e.competitor && e.competitor !== 'None') {
+                    if (!competitorStats[e.competitor]) {
+                        competitorStats[e.competitor] = { wins: 0, losses: 0 };
+                    }
+                    if (e.result === 'Win') {
+                        competitorStats[e.competitor].wins++;
+                    } else {
+                        competitorStats[e.competitor].losses++;
+                    }
+                }
+            });
+
+            if (Object.keys(competitorStats).length > 0) {
+                var competitorChart = document.createElement('div');
+                competitorChart.className = 'chart-container';
+                competitorChart.innerHTML = '<div class="chart-title">Win Rate by Competitor</div><div class="chart-bars" id="competitorChart"></div>';
+                container.appendChild(competitorChart);
+
+                var chartDiv = competitorChart.querySelector('#competitorChart');
+                Object.keys(competitorStats).sort().forEach(function(comp) {
+                    var stats = competitorStats[comp];
+                    var total = stats.wins + stats.losses;
+                    var winRate = Math.round((stats.wins / total) * 100);
+
+                    var barWrapper = document.createElement('div');
+                    barWrapper.className = 'chart-bar-wrapper';
+                    barWrapper.innerHTML = '<div class="chart-bar" style="height: ' + (winRate * 2) + 'px;" title="' + winRate + '%"></div>' +
+                        '<div class="chart-label">' + comp + '<br>' + winRate + '%</div>';
+                    chartDiv.appendChild(barWrapper);
+                });
+            }
+
+            // Win rate by industry
+            var industryStats = {};
+            entries.forEach(function(e) {
+                if (!industryStats[e.industry]) {
+                    industryStats[e.industry] = { wins: 0, losses: 0 };
+                }
+                if (e.result === 'Win') {
+                    industryStats[e.industry].wins++;
+                } else {
+                    industryStats[e.industry].losses++;
+                }
+            });
+
+            if (Object.keys(industryStats).length > 0) {
+                var industryChart = document.createElement('div');
+                industryChart.className = 'chart-container';
+                industryChart.innerHTML = '<div class="chart-title">Win Rate by Industry</div><div class="chart-bars" id="industryChart"></div>';
+                container.appendChild(industryChart);
+
+                var chartDiv = industryChart.querySelector('#industryChart');
+                Object.keys(industryStats).sort().forEach(function(ind) {
+                    var stats = industryStats[ind];
+                    var total = stats.wins + stats.losses;
+                    var winRate = Math.round((stats.wins / total) * 100);
+
+                    var barWrapper = document.createElement('div');
+                    barWrapper.className = 'chart-bar-wrapper';
+                    barWrapper.innerHTML = '<div class="chart-bar" style="height: ' + (winRate * 2) + 'px;" title="' + winRate + '%"></div>' +
+                        '<div class="chart-label">' + ind + '<br>' + winRate + '%</div>';
+                    chartDiv.appendChild(barWrapper);
+                });
+            }
+
+            // Deal value by outcome
+            var winTotal = 0, lossTotal = 0, winCount = 0, lossCount = 0;
+            entries.forEach(function(e) {
+                if (e.result === 'Win') {
+                    winTotal += e.dealValue || 0;
+                    winCount++;
+                } else {
+                    lossTotal += e.dealValue || 0;
+                    lossCount++;
+                }
+            });
+
+            var outcomeChart = document.createElement('div');
+            outcomeChart.className = 'chart-container';
+            var outcomeHtml = '<div class="chart-title">Average Deal Value by Outcome</div><div class="chart-bars">';
+
+            if (winCount > 0) {
+                var winAvg = Math.round(winTotal / winCount);
+                outcomeHtml += '<div class="chart-bar-wrapper"><div class="chart-bar" style="height: ' + Math.min(200, (winAvg / 1000)) + 'px;"></div><div class="chart-label">Wins<br>£' + formatNumber(winAvg) + '</div></div>';
+            }
+
+            if (lossCount > 0) {
+                var lossAvg = Math.round(lossTotal / lossCount);
+                outcomeHtml += '<div class="chart-bar-wrapper"><div class="chart-bar" style="height: ' + Math.min(200, (lossAvg / 1000)) + 'px;"></div><div class="chart-label">Losses<br>£' + formatNumber(lossAvg) + '</div></div>';
+            }
+
+            outcomeHtml += '</div>';
+            outcomeChart.innerHTML = outcomeHtml;
+            container.appendChild(outcomeChart);
+        }
+
+        // EVENT LISTENERS
+        document.getElementById('searchInput').addEventListener('input', renderData);
+        document.getElementById('resultFilter').addEventListener('change', renderData);
+        document.getElementById('industryFilter').addEventListener('change', renderData);
+        document.getElementById('competitorFilter').addEventListener('change', renderData);
+        document.getElementById('sizeFilter').addEventListener('change', renderData);
+        document.getElementById('solutionFilter').addEventListener('change', renderData);
+        document.getElementById('sortBy').addEventListener('change', renderData);
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

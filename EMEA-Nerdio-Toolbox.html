@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EMEA Nerdio Toolbox</title>
+<style>
+  :root {
+    --navy: #0B1B3D;
+    --navy-light: #142952;
+    --teal: #00B4D8;
+    --green: #00C48C;
+    --white: #FFFFFF;
+    --grey-50: #F8FAFC;
+    --grey-100: #F1F5F9;
+    --grey-200: #E2E8F0;
+    --grey-300: #CBD5E1;
+    --grey-600: #475569;
+    --grey-700: #334155;
+    --orange: #FF8C42;
+    --purple: #7C3AED;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--grey-50);
+    color: var(--navy);
+    line-height: 1.6;
+  }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 50%, #1a3a6a 100%);
+    color: var(--white);
+    padding: 48px 32px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(0,180,216,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: 20%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(0,196,140,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  .hero h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .hero h1 span { color: var(--teal); }
+  .hero p {
+    font-size: 1.05rem;
+    opacity: 0.85;
+    max-width: 700px;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+    margin-top: 24px;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat-number {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--teal);
+  }
+  .stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.7;
+  }
+
+  /* Navigation */
+  .nav-bar {
+    background: var(--white);
+    border-bottom: 1px solid var(--grey-200);
+    padding: 0 32px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+  }
+  .nav-tab {
+    padding: 14px 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--grey-600);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .nav-tab:hover { color: var(--navy); background: var(--grey-50); }
+  .nav-tab.active {
+    color: var(--teal);
+    border-bottom-color: var(--teal);
+  }
+
+  /* Search */
+  .search-bar {
+    max-width: 1200px;
+    margin: 24px auto 0;
+    padding: 0 32px;
+  }
+  .search-input {
+    width: 100%;
+    padding: 14px 20px 14px 48px;
+    border: 2px solid var(--grey-200);
+    border-radius: 12px;
+    font-size: 0.95rem;
+    background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") 16px center no-repeat;
+    transition: border-color 0.2s;
+  }
+  .search-input:focus {
+    outline: none;
+    border-color: var(--teal);
+  }
+
+  /* Main content */
+  .main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 32px 64px;
+  }
+
+  /* Section */
+  .section {
+    margin-bottom: 40px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: var(--white);
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+  .section-count {
+    font-size: 0.75rem;
+    background: var(--grey-100);
+    color: var(--grey-600);
+    padding: 2px 10px;
+    border-radius: 99px;
+    font-weight: 600;
+  }
+
+  /* Cards grid */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+
+  .card {
+    background: var(--white);
+    border: 1px solid var(--grey-200);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.2s;
+    cursor: default;
+    position: relative;
+  }
+  .card:hover {
+    border-color: var(--teal);
+    box-shadow: 0 4px 12px rgba(0,180,216,0.1);
+    transform: translateY(-1px);
+  }
+  .card-badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+  .badge-ready {
+    background: rgba(0,196,140,0.12);
+    color: #059669;
+  }
+  .badge-template {
+    background: rgba(255,140,66,0.12);
+    color: #D97706;
+  }
+  .badge-skill {
+    background: rgba(124,58,237,0.12);
+    color: var(--purple);
+  }
+  .badge-reference {
+    background: rgba(0,180,216,0.12);
+    color: #0284C7;
+  }
+  .card-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--navy);
+  }
+  .card-desc {
+    font-size: 0.85rem;
+    color: var(--grey-600);
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .tag {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    background: var(--grey-100);
+    color: var(--grey-700);
+    border-radius: 4px;
+  }
+  .card-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--teal);
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: rgba(0,180,216,0.08);
+    transition: all 0.2s;
+  }
+  .card-action:hover {
+    background: rgba(0,180,216,0.15);
+  }
+  .card-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  /* How to use */
+  .how-to {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    color: var(--white);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 40px;
+  }
+  .how-to h2 {
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+    color: var(--teal);
+  }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+  }
+  .step {
+    display: flex;
+    gap: 12px;
+  }
+  .step-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(0,180,216,0.2);
+    color: var(--teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+  .step-text {
+    font-size: 0.85rem;
+    opacity: 0.9;
+    line-height: 1.5;
+  }
+  .step-text strong { color: var(--teal); }
+
+  /* Hidden sections */
+  .section[data-section] { display: none; }
+  .section[data-section].visible { display: block; }
+
+  @media (max-width: 768px) {
+    .hero { padding: 32px 20px; }
+    .hero h1 { font-size: 1.6rem; }
+    .hero-stats { gap: 20px; }
+    .main { padding: 20px; }
+    .cards { grid-template-columns: 1fr; }
+    .nav-tab { padding: 12px 14px; font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-content">
+    <h1>EMEA <span>Nerdio</span> Toolbox</h1>
+    <p>Ready-to-use tools, templates, and frameworks for the EMEA sales team. Open HTML files directly in your browser. Use MD templates with Claude to build personalised versions.</p>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-number">22</div>
+        <div class="stat-label">Ready-to-Use Tools</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">17</div>
+        <div class="stat-label">Build Templates</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">8</div>
+        <div class="stat-label">EUC References</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">2</div>
+        <div class="stat-label">AI Skills</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="nav-bar">
+  <div class="nav-inner">
+    <div class="nav-tab active" onclick="showSection('all')">All Tools</div>
+    <div class="nav-tab" onclick="showSection('ready')">Ready to Use</div>
+    <div class="nav-tab" onclick="showSection('templates')">Build Your Own</div>
+    <div class="nav-tab" onclick="showSection('euc')">EUC Universe</div>
+    <div class="nav-tab" onclick="showSection('skills')">AI Skills</div>
+    <div class="nav-tab" onclick="showSection('brand')">Brand Assets</div>
+  </div>
+</div>
+
+<div class="search-bar">
+  <input type="text" class="search-input" placeholder="Search tools, templates, references..." oninput="filterCards(this.value)">
+</div>
+
+<div class="main">
+
+  <!-- HOW TO USE -->
+  <div class="how-to">
+    <h2>How This Works</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text"><strong>Green "Ready to Use"</strong> tools work instantly — just open the HTML file in your browser. No data needed.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>Orange "Build Template"</strong> files are instructions for Claude. Upload the MD file + your data, and Claude builds your personalised version.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text"><strong>Blue "Reference"</strong> files are EUC ecosystem knowledge — maps, architectures, vendor landscapes for customer conversations.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-text"><strong>Purple ".skill" files</strong> install into Claude Desktop/Cowork to give you an always-on Nerdio AI assistant.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: DISCOVERY & RESEARCH -->
+  <div class="section visible" data-section="ready" data-also="all">
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--teal);">&#128270;</div>
+      <div class="section-title">Discovery & Research</div>
+      <span class="section-count">7 tools</span>
+    </div>
+    <div class="cards">
+      <div class="card" data-tags="discovery questions signals use-cases">
+        <span class="card-badge badge-ready">Ready to Use</span>
+        <div class="card-title">Discovery Question Engine</div>
+        <div class="card-desc">Signal-driven discovery questions mapped to Nerdio use cases. Select a scenario (Citrix migration, cost optimisation, security compliance) and get tailored question chains with follow-ups.</div>
+        <div class="card-tags"><span class="tag">Discovery</span><span class="tag">Questions</span><span class="tag">Signals</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="universal-tools/discovery-engine.html">Open Tool &#8594;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="whiteboard infrastructure mapping estate">
+        <span class="card-badge badge-ready">Ready to Use</span>
+        <div class="card-title">Estate Discovery Whiteboard</div>
+        <div class="card-desc">Interactive whiteboard to map a customer's current IT infrastructure during calls. Drag-and-drop components for VDI, RDS, cloud, endpoint, identity layers.</div>
+        <div class="card-tags"><span class="tag">Whiteboard</span><span class="tag">Infrastructure</span><span class="tag">Visual</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="universal-tools/estate-whiteboard.html">Open Tool &#8594;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="whiteboard users personas workflows operations">
+        <span class="card-badge badge-ready">Ready to Use</span>
+        <div class="card-title">User & Ops Discovery</div>
+        <div class="card-desc">Map user personas, pain points, and operational workflows. Drag-and-drop persona cards to build a picture of who uses virtual desktops and why.</div>
+        <div class="card-tags"><span class="tag">Personas</span><span class="tag">Workflows</span><span class="tag">User Mapping</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="universal-tools/user-whiteboard.html">Open Tool &#8594;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="nme capabilities interactive guide product tiers">
+        <span class="card-badge badge-ready">Ready to Use</span>
+        <div class="card-title">NME Interactive Guide</div>
+        <div class="card-desc">Interactive, filterable guide to Nerdio Manager for Enterprise capabilities. Mapped across product tiers (Core, Premium, W365, Physical) with use case discovery frameworks.</div>
+        <div class="card-tags"><span class="tag">NME</span><span class="tag">Capabilities</span><span class="tag">Product</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="universal-tools/nme-interactive-guide.html">Open Tool &#8594;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="nerdio fit qualifier qualification assessment scoring">
+        <span class="card-badge badge-ready">Ready to Use</span>
+        <div class="card-title">Nerdio Fit Qualifier</div>
+        <div class="card-desc">Interactive qualification questionnaire to assess customer fit for Nerdio. Scores across organisational, technical, and business dimensions with clear go/no-go signals.</div>
+        <div class="card-tags"><span class="tag">Qualification</span><span class="tag">Assessment</span><span class="tag">Scoring</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="universal-tools/nerdio-fit-qualifier.html">Open Tool &#8594;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="euc whiteboard workspace story architecture design">
+        <span class="card-badge badge-ready">Ready to Use</span>
+        <div class="card-title">EUC Workspace Whiteboard</div>
+        <div class="card-desc">Interactive whiteboard for designing and visualising end-user computing workspace architectures. Drag-and-drop components to build customer environment diagrams.</div>
+        <div class="card-tags"><span class="tag">EUC</span><span class="tag">Whiteboard</span><span class="tag">Architecture</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="universal-tools/euc-whiteboard.html">Open Tool &#8594;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="microsoft positioning co-sell AE ATU alignment">
+        <span class="card-badge badge-ready">Ready to Use</span>
+        <div class="card-title">Microsoft Positioning Guide</div>
+        <div class="card-desc">Role-by-role Microsoft field guide: AE, ATU, Cloud Specialist, Security Specialist motivations, co-sell angles, alignment strategies, and Nerdio risk/opportunity positioning.</div>
+        <div class="card-tags"><span class="tag">Microsoft</span><span class="tag">Co-Sell</span><span class="tag">Positioning</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="universal-tools/ms-positioning.html">Open Tool &#8594;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: PIPELINE & OUTREACH -->
+  <div class="section visible" data-section="ready" data-also="all">
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--green);">&#128640;</div>
+      <div class="section-title">Pipeline & Outreach</div>
+      <span class="section-count">3 tools</span>
+    </div>
+    <div class="cards">
+      <div class="card" data-tags="sdr prospecting pipeline qualification handoff">
+        <span class="card-badge badge-ready">Ready to Use</span>
+        <div class="card-title">SDR Pipeline Engine</div>
+        <div class="card-desc">Heat scoring frameworks, prospecting playbooks, qualification checklists, and AE handoff workflows. Built for Nerdio's EMEA motion.</div>
+        <div class="card-tags"><span class="tag">SDR</span><span class="tag">Prospecting</span><span class="tag">Playbooks</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="universal-tools/sdr-pipeline.html">Open Tool &#8594;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="outreach email sequences cadence multi-channel">
+        <span class="card-badge badge-ready">Ready to Use</span>
+        <div class="card-title">Outreach Sequences</div>
+        <div class="card-desc">Multi-channel outreach templates personalised by signal type, industry vertical, and buying stage. Email, LinkedIn, and call scripts ready to adapt.</div>
+        <div class="card-tags"><span class="tag">Email</span><span class="tag">Sequences</span><span class="tag">Cadence</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="universal-tools/outreach.html">Open Tool &#8594;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="journey customer lifecycle maturity model">
+        <span class="card-badge badge-ready">Ready to Use</span>
+        <div class="card-title">Customer Journey Models</div>
+        <div class="card-desc">Mapped customer journeys from first touch through expansion. Maturity models, evolution timelines, and stage-by-stage triggers for the Nerdio sales motion.</div>
+        <div class="card-tags"><span class="tag">Journeys</span><span class="tag">Lifecycle</span><span class="tag">Maturity</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="universal-tools/journeys.html">Open Tool &#8594;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: COMPETITIVE & POSITIONING -->
+  <div class="section visible" data-section="ready" data-also="all">
+    <div class="section-header">
+      <div class="section-icon" style="background:#E11D48;">&#9876;</div>
+      <div class="section-title">Competitive & Positioning</div>
+      <span class="section-count">7 tools</span>
+    </div>
+    <div class="cards">
+      <div class="card" data-tags="battlecards citrix vmware omnissa competitive">
+        <span class="card-badge badge-ready">Ready to Use</span>
+        <div class="card-title">Competitive Battlecards</div>
+        <div class="card-desc">Side-by-side competitive intelligence vs Citrix, VMware/Omnissa, and Native Azure. Kill shots, landmines, trap questions, and proof points.</div>
+        <div class="card-tags"><span class="tag">Citrix</span><span class="tag">VMware</span><span class="tag">Battlecards</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="universal-tools/battlecards.html">Open Tool &#8594;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="licensing microsoft E3 E5 intune azure hybrid">
+        <span class="card-badge badge-ready">Ready to Use</span>
+        <div class="card-title">Licensing Navigator</div>
+        <div class="card-desc">Microsoft licensing decoder: E3 vs E5, EMS, Intune, Azure Hybrid Benefit. Interactive calculator showing what's included and where Nerdio fits.</div>
+        <div class="card-tags"><span class="tag">Licensing</span><span class="tag">Microsoft</span><span class="tag">Calculator</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="universal-tools/licensing-navigator.html">Open Tool &#8594;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="scenario competitor objections rebuttals simulator">
+        <span class="card-badge badge-ready">Ready to Use</span>
+        <div class="card-title">Scenario Simulator</div>
+        <div class="card-desc">Pick a competitor and their likely objections — get guided rebuttals, proof points, and trap questions to regain control of the conversation.</div>
+        <div class="card-tags"><span class="tag">Objections</span><span class="tag">Rebuttals</span><span class="tag">Simulator</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="universal-tools/scenario-simulator.html">Open Tool &#8594;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="citrix avd migration assessment roi readiness">
+        <span class="card-badge badge-ready">Ready to Use</span>
+        <div class="card-title">Citrix-to-AVD Assessment</div>
+        <div class="card-desc">Interactive migration assessment comparing Citrix paths to Azure Virtual Desktop. Covers technical readiness, cost analysis, and ROI projection for migration conversations.</div>
+        <div class="card-tags"><span class="tag">Citrix</span><span class="tag">Migration</span><span class="tag">Assessment</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="universal-tools/citrix-to-avd-assessment.html">Open Tool &#8594;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="citrix avd w365 comparison platform vdi enterprise">
+        <span class="card-badge badge-ready">Ready to Use</span>
+        <div class="card-title">VDI Platform Comparison</div>
+        <div class="card-desc">Enterprise VDI platform comparison: Citrix vs AVD vs Windows 365. Architecture, features, cost dimensions, and management capabilities side-by-side.</div>
+        <div class="card-tags"><span class="tag">Citrix</span><span class="tag">AVD</span><span class="tag">W365</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="universal-tools/citrix-avd-w365-comparison.html">Open Tool &#8594;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="w365 windows 365 use case matrix microsoft co-sell ATU">
+        <span class="card-badge badge-ready">Ready to Use</span>
+        <div class="card-title">W365 Use Case Matrix</div>
+        <div class="card-desc">Maps 25 enterprise use cases to Windows 365 value pillars, licensing fit, expansion plays, and Microsoft co-sell discovery hooks for ATU/CSA contacts.</div>
+        <div class="card-tags"><span class="tag">W365</span><span class="tag">Use Cases</span><span class="tag">Co-Sell</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="universal-tools/w365-use-case-matrix.html">Open Tool &#8594;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="holiday positioning creative storytelling value">
+        <span class="card-badge badge-ready">Ready to Use</span>
+        <div class="card-title">Holiday Positioning</div>
+        <div class="card-desc">Creative seasonal positioning framework — the holiday metaphor approach to Nerdio value storytelling. Fresh angles for prospect conversations.</div>
+        <div class="card-tags"><span class="tag">Creative</span><span class="tag">Storytelling</span><span class="tag">Positioning</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="universal-tools/holiday-positioning.html">Open Tool &#8594;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: COMMERCIAL & ROI -->
+  <div class="section visible" data-section="ready" data-also="all">
+    <div class="section-header">
+      <div class="section-icon" style="background:#7C3AED;">&#128176;</div>
+      <div class="section-title">Commercial & ROI</div>
+      <span class="section-count">2 tools</span>
+    </div>
+    <div class="cards">
+      <div class="card" data-tags="roi calculator savings projection cost">
+        <span class="card-badge badge-ready">Ready to Use</span>
+        <div class="card-title">ROI Calculator</div>
+        <div class="card-desc">Input customer environment details and get projected savings with Nerdio vs current state. Covers compute, licensing, operational, and auto-scaling savings.</div>
+        <div class="card-tags"><span class="tag">ROI</span><span class="tag">Savings</span><span class="tag">Calculator</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="universal-tools/roi-calculator.html">Open Tool &#8594;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="tco comparison citrix vmware azure total cost">
+        <span class="card-badge badge-ready">Ready to Use</span>
+        <div class="card-title">TCO Comparison Builder</div>
+        <div class="card-desc">Citrix vs Nerdio vs Native Azure total cost over 1, 3, and 5 years. Covers licensing, infrastructure, operations, and hidden costs side-by-side.</div>
+        <div class="card-tags"><span class="tag">TCO</span><span class="tag">Comparison</span><span class="tag">Cost Model</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="universal-tools/tco-comparison.html">Open Tool &#8594;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: ENABLEMENT & REFERENCE -->
+  <div class="section visible" data-section="ready" data-also="all">
+    <div class="section-header">
+      <div class="section-icon" style="background:#0284C7;">&#128218;</div>
+      <div class="section-title">Enablement & Reference</div>
+      <span class="section-count">3 tools</span>
+    </div>
+    <div class="cards">
+      <div class="card" data-tags="enablement resources links directory materials">
+        <span class="card-badge badge-ready">Ready to Use</span>
+        <div class="card-title">Enablement Hub</div>
+        <div class="card-desc">Centralised resource directory with quick links to all Nerdio sales materials, partner assets, training content, and reference documentation.</div>
+        <div class="card-tags"><span class="tag">Resources</span><span class="tag">Links</span><span class="tag">Directory</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="universal-tools/enablement-hub.html">Open Tool &#8594;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="getting started onboarding guide walkthrough">
+        <span class="card-badge badge-ready">Ready to Use</span>
+        <div class="card-title">Getting Started Guide</div>
+        <div class="card-desc">Onboarding walkthrough and how-to documentation for every tool in the toolbox. Start here if you're new to the EMEA toolkit.</div>
+        <div class="card-tags"><span class="tag">Onboarding</span><span class="tag">Guide</span><span class="tag">How-To</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="universal-tools/getting-started.html">Open Tool &#8594;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="win loss case study library stories evidence">
+        <span class="card-badge badge-ready">Ready to Use</span>
+        <div class="card-title">Win/Loss Library</div>
+        <div class="card-desc">Case study browser: filter by industry, competitor displaced, and deal size. Story arcs, customer quotes, and lessons learned from real deals.</div>
+        <div class="card-tags"><span class="tag">Case Studies</span><span class="tag">Win/Loss</span><span class="tag">Evidence</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="universal-tools/win-loss-library.html">Open Tool &#8594;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: BUILD YOUR OWN (Templates) -->
+  <div class="section visible" data-section="templates" data-also="all">
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--orange);">&#128736;</div>
+      <div class="section-title">Build Your Own (Upload to Claude)</div>
+      <span class="section-count">17 templates</span>
+    </div>
+    <p style="font-size:0.85rem;color:var(--grey-600);margin:-8px 0 16px;">These tools need your territory/account data. Download the MD file, upload it to Claude with your data, and it will build a personalised version for you.</p>
+    <div class="cards">
+      <div class="card" data-tags="account intelligence territory scoring ranking signals">
+        <span class="card-badge badge-template">Build Template</span>
+        <div class="card-title">Account Intelligence</div>
+        <div class="card-desc">Territory-wide account ranking with fit scoring, signal tracking, and 6-tab deep-dive analysis. Upload your territory list and WOPR/MAL data.</div>
+        <div class="card-tags"><span class="tag">Territory</span><span class="tag">Scoring</span><span class="tag">Signals</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="template-tools/BUILD-Account-Intelligence.md">Get Instructions &#8595;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="icp ideal customer profile weighted scoring criteria">
+        <span class="card-badge badge-template">Build Template</span>
+        <div class="card-title">ICP Profiler</div>
+        <div class="card-desc">Define your ideal customer profile with weighted criteria, then auto-rank your territory against it. Needs your account list with firmographic data.</div>
+        <div class="card-tags"><span class="tag">ICP</span><span class="tag">Profiling</span><span class="tag">Scoring</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="template-tools/BUILD-ICP-Profiler.md">Get Instructions &#8595;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="territory heatmap visual matrix engagement">
+        <span class="card-badge badge-template">Build Template</span>
+        <div class="card-title">Territory Heatmap</div>
+        <div class="card-desc">Visual matrix of your territory colour-coded by fit score, deal stage, and engagement. Upload your territory data and pipeline metrics.</div>
+        <div class="card-tags"><span class="tag">Heatmap</span><span class="tag">Territory</span><span class="tag">Visual</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="template-tools/BUILD-Territory-Heatmap.md">Get Instructions &#8595;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="crm tracker tpid contacts notes engagement">
+        <span class="card-badge badge-template">Build Template</span>
+        <div class="card-title">CRM & Account Tracker</div>
+        <div class="card-desc">Lightweight CRM with TPID tracking, signals, notes, and engagement logging per account. Upload your CRM export to get started.</div>
+        <div class="card-tags"><span class="tag">CRM</span><span class="tag">Tracking</span><span class="tag">Contacts</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="template-tools/BUILD-CRM-Tracker.md">Get Instructions &#8595;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="meeting prep briefing snapshot contacts talking points">
+        <span class="card-badge badge-template">Build Template</span>
+        <div class="card-title">Meeting Prep Briefer</div>
+        <div class="card-desc">One-click account briefings: company snapshot, active signals, MS contacts, talking points, and tailored discovery questions. Needs your account + deal data.</div>
+        <div class="card-tags"><span class="tag">Meeting Prep</span><span class="tag">Briefing</span><span class="tag">Signals</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="template-tools/BUILD-Meeting-Prep.md">Get Instructions &#8595;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="qualification meddpicc scorecard rag deal health">
+        <span class="card-badge badge-template">Build Template</span>
+        <div class="card-title">Qualification Scorecard</div>
+        <div class="card-desc">MEDDPICC assessment per deal with confidence scoring, RAG flags, and deal health percentage. Upload your active deals to get started.</div>
+        <div class="card-tags"><span class="tag">MEDDPICC</span><span class="tag">Qualification</span><span class="tag">RAG</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="template-tools/BUILD-Qualification-Scorecard.md">Get Instructions &#8595;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="deal dashboard pipeline arr forecast progression">
+        <span class="card-badge badge-template">Build Template</span>
+        <div class="card-title">Deal Dashboard</div>
+        <div class="card-desc">Pipeline tracking with ARR estimates, close dates, stage progression, and activity feed. Upload your deal list to build your personal pipeline view.</div>
+        <div class="card-tags"><span class="tag">Pipeline</span><span class="tag">Dashboard</span><span class="tag">Forecast</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="template-tools/BUILD-Deal-Dashboard.md">Get Instructions &#8595;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="reverse timeline milestones close date backward planning">
+        <span class="card-badge badge-template">Build Template</span>
+        <div class="card-title">Reverse Timeline Builder</div>
+        <div class="card-desc">Work backward from your target close date to map every milestone, MEDDPICC checkpoint, and action needed. Enter your deal details to generate.</div>
+        <div class="card-tags"><span class="tag">Timeline</span><span class="tag">Milestones</span><span class="tag">Planning</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="template-tools/BUILD-Reverse-Timeline.md">Get Instructions &#8595;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="proposal builder wizard pains solution roi branded">
+        <span class="card-badge badge-template">Build Template</span>
+        <div class="card-title">Proposal Builder</div>
+        <div class="card-desc">Guided wizard: pains, solution, ROI, timeline, MS alignment. Generates a branded one-pager. Upload your deal context and solution details.</div>
+        <div class="card-tags"><span class="tag">Proposal</span><span class="tag">Wizard</span><span class="tag">Branded</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="template-tools/BUILD-Proposal-Builder.md">Get Instructions &#8595;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="command centre dashboard index hub launcher">
+        <span class="card-badge badge-template">Build Template</span>
+        <div class="card-title">Command Centre (Home)</div>
+        <div class="card-desc">Master dashboard that ties all your tools together with a data upload hub and quick-access launcher. Instructions for building your personalised home page.</div>
+        <div class="card-tags"><span class="tag">Dashboard</span><span class="tag">Hub</span><span class="tag">Index</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="template-tools/BUILD-Command-Centre.md">Get Instructions &#8595;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="avd opportunity radar territory prioritisation scoring">
+        <span class="card-badge badge-template">Build Template</span>
+        <div class="card-title">AVD Opportunity Radar</div>
+        <div class="card-desc">Territory-specific opportunity dashboard with account tiers, RDS signal scoring, deal status tracking, and interactive prioritisation. Upload your territory data.</div>
+        <div class="card-tags"><span class="tag">AVD</span><span class="tag">Opportunity</span><span class="tag">Territory</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="template-tools/BUILD-AVD-Opportunity-Radar.md">Get Instructions &#8595;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="microsoft account intelligence hierarchy team co-sell">
+        <span class="card-badge badge-template">Build Template</span>
+        <div class="card-title">Microsoft Account Intelligence</div>
+        <div class="card-desc">Microsoft account hierarchy and team structure mapping for your territory. Shows decision-maker roles, MS team alignment, co-sell strategies, and talk tracks.</div>
+        <div class="card-tags"><span class="tag">Microsoft</span><span class="tag">Intelligence</span><span class="tag">Co-Sell</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="template-tools/BUILD-Microsoft-Account-Intelligence.md">Get Instructions &#8595;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="cosell territory intelligence MAL prioritisation engagement">
+        <span class="card-badge badge-template">Build Template</span>
+        <div class="card-title">Co-Sell Territory Intelligence</div>
+        <div class="card-desc">Comprehensive co-sell account prioritisation with P1/P2/P3 banding, team tracking, engagement strategies, and Microsoft play narratives for your territory.</div>
+        <div class="card-tags"><span class="tag">Co-Sell</span><span class="tag">MAL</span><span class="tag">Prioritisation</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="template-tools/BUILD-CoSell-Territory-Intelligence.md">Get Instructions &#8595;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="cosell target list priority bands scoring pipeline">
+        <span class="card-badge badge-template">Build Template</span>
+        <div class="card-title">Co-Sell Target List</div>
+        <div class="card-desc">Clean, printable co-sell target list with priority banding, account scoring, and engagement strategies. Designed for pipeline planning sessions.</div>
+        <div class="card-tags"><span class="tag">Co-Sell</span><span class="tag">Targets</span><span class="tag">Pipeline</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="template-tools/BUILD-CoSell-Target-List.md">Get Instructions &#8595;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="territory account heatmap visual engagement status map">
+        <span class="card-badge badge-template">Build Template</span>
+        <div class="card-title">Territory Account Heatmap</div>
+        <div class="card-desc">Visual heatmap of your territory accounts colour-coded by heat level. Filter by priority, engagement status, vertical, and more. Upload your account list.</div>
+        <div class="card-tags"><span class="tag">Heatmap</span><span class="tag">Accounts</span><span class="tag">Visual</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="template-tools/BUILD-Territory-Account-Heatmap.md">Get Instructions &#8595;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="fsi financial services battlecard vertical banking">
+        <span class="card-badge badge-template">Build Template</span>
+        <div class="card-title">Vertical Battlecard (FSI Example)</div>
+        <div class="card-desc">Industry-specific one-page battlecard with pain points, value pillars, use cases, proof points, and objection handlers. FSI example — adapt for any vertical.</div>
+        <div class="card-tags"><span class="tag">FSI</span><span class="tag">Vertical</span><span class="tag">Battlecard</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="template-tools/BUILD-FSI-Battlecard.md">Get Instructions &#8595;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="insurance control plane regulated workspace vertical">
+        <span class="card-badge badge-template">Build Template</span>
+        <div class="card-title">Regulated Industry Control Plane</div>
+        <div class="card-desc">Workspace-as-control-plane positioning for regulated industries. Insurance example — adapt for healthcare, fintech, government, or pharma.</div>
+        <div class="card-tags"><span class="tag">Insurance</span><span class="tag">Regulated</span><span class="tag">Control Plane</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="template-tools/BUILD-Insurance-Control-Plane.md">Get Instructions &#8595;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: EUC UNIVERSE -->
+  <div class="section visible" data-section="euc" data-also="all">
+    <div class="section-header">
+      <div class="section-icon" style="background:#0284C7;">&#127760;</div>
+      <div class="section-title">EUC Universe Project</div>
+      <span class="section-count">8 resources</span>
+    </div>
+    <p style="font-size:0.85rem;color:var(--grey-600);margin:-8px 0 16px;">Comprehensive End-User Computing ecosystem reference materials. Use in customer conversations, partner workshops, and industry positioning.</p>
+    <div class="cards">
+      <div class="card" data-tags="euc vendor landscape ecosystem categories">
+        <span class="card-badge badge-reference">Reference</span>
+        <div class="card-title">EUC Vendor Landscape</div>
+        <div class="card-desc">Complete vendor directory across 6 EUC categories: Desktop Platforms, Endpoint Management, Identity, App Delivery, Security, and Digital Employee Experience.</div>
+        <div class="card-tags"><span class="tag">Vendors</span><span class="tag">Landscape</span><span class="tag">Ecosystem</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="euc-universe/EUC_VENDOR_LANDSCAPE.md">View Reference &#8594;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="euc atlas interactive platform visual vendor positioning">
+        <span class="card-badge badge-reference">Reference</span>
+        <div class="card-title">EUC Atlas (Interactive)</div>
+        <div class="card-desc">Interactive visual platform showing the EUC ecosystem with vendor positioning, category relationships, and Nerdio's place in the landscape.</div>
+        <div class="card-tags"><span class="tag">Interactive</span><span class="tag">Visual</span><span class="tag">Atlas</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="euc-universe/EUC_ATLAS_PLATFORM_V2.html">Open Atlas &#8594;</a>
+          <a class="card-action" href="euc-universe/EUC_ATLAS_INTERACTIVE.html">Alt Version &#8594;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="euc history evolution timeline mainframe cloud">
+        <span class="card-badge badge-reference">Reference</span>
+        <div class="card-title">EUC Evolution Timeline</div>
+        <div class="card-desc">Visual history from 1960s mainframes through 2020s cloud desktops. Interactive timeline with vendor milestones and technology shifts.</div>
+        <div class="card-tags"><span class="tag">History</span><span class="tag">Timeline</span><span class="tag">Evolution</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="euc-universe/euc-history-v2_3.html">Open Timeline &#8594;</a>
+          <a class="card-action" href="euc-universe/EUC_EVOLUTION_SUMMARY.md">Summary &#8594;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="euc architecture reference layers infrastructure">
+        <span class="card-badge badge-reference">Reference</span>
+        <div class="card-title">EUC Architecture Reference</div>
+        <div class="card-desc">Modern cloud desktop reference architecture with layered flow: Users, Devices, Identity, Desktop Platform, Operations, Applications, Management, DEX, Infrastructure.</div>
+        <div class="card-tags"><span class="tag">Architecture</span><span class="tag">Layers</span><span class="tag">Reference</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="euc-universe/EUC_ARCHITECTURE_REFERENCE.md">View Architecture &#8594;</a>
+          <a class="card-action" href="euc-universe/EUC_UNIVERSE_MAP.md">Universe Map &#8594;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="euc partner narrative strategic positioning automation">
+        <span class="card-badge badge-reference">Reference</span>
+        <div class="card-title">EUC Partner Narrative</div>
+        <div class="card-desc">Strategic narrative on why automation platforms exist and where Nerdio fits in the EUC architecture. Perfect for partner workshops and positioning conversations.</div>
+        <div class="card-tags"><span class="tag">Narrative</span><span class="tag">Partners</span><span class="tag">Strategy</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="euc-universe/EUC_PARTNER_NARRATIVE.md">View Narrative &#8594;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="euc claude prompt generator diagrams presentations">
+        <span class="card-badge badge-reference">Reference</span>
+        <div class="card-title">EUC Claude Master Prompt</div>
+        <div class="card-desc">Upload this to Claude to generate EUC diagrams, presentations, and microsite structures from the universe data. The AI instruction file for the EUC project.</div>
+        <div class="card-tags"><span class="tag">Claude</span><span class="tag">Prompt</span><span class="tag">Generator</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="euc-universe/CLAUDE_MASTER_PROMPT.md">Get Prompt &#8595;</a>
+          <a class="card-action" href="euc-universe/README_START_HERE.md">Read Me &#8594;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: AI SKILLS -->
+  <div class="section visible" data-section="skills" data-also="all">
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--purple);">&#129302;</div>
+      <div class="section-title">AI Skills (for Claude Desktop / Cowork)</div>
+      <span class="section-count">3 items</span>
+    </div>
+    <p style="font-size:0.85rem;color:var(--grey-600);margin:-8px 0 16px;">Install these into Claude Desktop or Cowork to get an always-on Nerdio AI assistant. The .skill files auto-install; the MD file is a setup guide.</p>
+    <div class="cards">
+      <div class="card" data-tags="nucleus skill ai assistant sales marketing cs">
+        <span class="card-badge badge-skill">AI Skill</span>
+        <div class="card-title">Nerdio Nucleus Skill</div>
+        <div class="card-desc">Universal AI teammate for sales, marketing, CS, and partner enablement. Install in Claude Desktop/Cowork for always-on Nerdio expertise across all functions.</div>
+        <div class="card-tags"><span class="tag">AI Skill</span><span class="tag">All Functions</span><span class="tag">Install</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="skills/nerdio-nucleus.skill">Install Skill &#8595;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="super agent skill ai knowledge base sales">
+        <span class="card-badge badge-skill">AI Skill</span>
+        <div class="card-title">Nerdio Super Agent Skill</div>
+        <div class="card-desc">Deep knowledge base, sales engine, and content factory. Comprehensive Nerdio expertise for deal support, competitive positioning, and content generation.</div>
+        <div class="card-tags"><span class="tag">AI Skill</span><span class="tag">Knowledge</span><span class="tag">Content</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="skills/nerdio-super-agent.skill">Install Skill &#8595;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="nucleus starter setup onboarding personalisation cowork">
+        <span class="card-badge badge-template">Setup Guide</span>
+        <div class="card-title">Nucleus Cowork Starter Guide</div>
+        <div class="card-desc">Step-by-step setup instructions for personalising your Nerdio AI assistant in Cowork. Covers role context, writing style, account specifics, and CRM integration.</div>
+        <div class="card-tags"><span class="tag">Setup</span><span class="tag">Onboarding</span><span class="tag">Personalise</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="skills/Nerdio-Nucleus-Cowork-Starter-v1.md">View Guide &#8595;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: BRAND ASSETS -->
+  <div class="section visible" data-section="brand" data-also="all">
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--navy);">&#127912;</div>
+      <div class="section-title">Brand Assets</div>
+      <span class="section-count">3 sets</span>
+    </div>
+    <div class="cards">
+      <div class="card" data-tags="logos nerdio brand primary secondary enterprise">
+        <span class="card-badge badge-reference">Assets</span>
+        <div class="card-title">Nerdio Logos</div>
+        <div class="card-desc">Primary and Enterprise logos in positive, negative, and white variants. PNG format, ready for presentations and documents.</div>
+        <div class="card-tags"><span class="tag">Logos</span><span class="tag">PNG</span><span class="tag">Branding</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="brand-assets/logos/">Browse Logos &#8594;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="patterns background navy teal green white">
+        <span class="card-badge badge-reference">Assets</span>
+        <div class="card-title">Background Patterns</div>
+        <div class="card-desc">Nerdio branded background patterns in navy, teal, green, and white. JPG format for slide backgrounds and marketing materials.</div>
+        <div class="card-tags"><span class="tag">Backgrounds</span><span class="tag">Patterns</span><span class="tag">JPG</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="brand-assets/patterns/">Browse Patterns &#8594;</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="icons high-level automation deployment management scalability">
+        <span class="card-badge badge-reference">Assets</span>
+        <div class="card-title">High-Level Icons</div>
+        <div class="card-desc">Nerdio value pillar icons: Automation, Deployment, Management, Productivity, Scalability. SVG format for any resolution.</div>
+        <div class="card-tags"><span class="tag">Icons</span><span class="tag">SVG</span><span class="tag">Value Pillars</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="brand-assets/icons/">Browse Icons &#8594;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showSection(section) {
+  // Update nav tabs
+  document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+  event.target.classList.add('active');
+
+  // Show/hide sections
+  document.querySelectorAll('.section').forEach(s => {
+    if (section === 'all') {
+      s.classList.add('visible');
+    } else {
+      const sectionType = s.getAttribute('data-section');
+      const alsoSection = s.getAttribute('data-also');
+      if (sectionType === section || alsoSection === section) {
+        s.classList.add('visible');
+      } else {
+        s.classList.remove('visible');
+      }
+    }
+  });
+}
+
+function filterCards(query) {
+  const q = query.toLowerCase().trim();
+  document.querySelectorAll('.card').forEach(card => {
+    const tags = card.getAttribute('data-tags') || '';
+    const title = card.querySelector('.card-title')?.textContent || '';
+    const desc = card.querySelector('.card-desc')?.textContent || '';
+    const searchable = (tags + ' ' + title + ' ' + desc).toLowerCase();
+
+    if (!q || searchable.includes(q)) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+</script>
+</body>
+</html>

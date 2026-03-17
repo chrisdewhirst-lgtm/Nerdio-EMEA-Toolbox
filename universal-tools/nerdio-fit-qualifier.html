@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nerdio Fit Qualifier</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Nerdio Brand Tokens (from official Brand Guide v1.0) ── */
+:root {
+  --navy:      #042838;   /* Navy Orbit — 30-50% weighting */
+  --white:     #FFFFFF;   /* White Glacier */
+  --teal:      #1E9DB8;   /* Nerdio Blue/Teal — 5-25% */
+  --green:     #CDFF4E;   /* Green Galaxy — 1-5% accent */
+  --purple:    #A795C7;   /* Proton Purple — 1-5% accent */
+
+  /* Derived working palette */
+  --navy-90:   rgba(4,40,56,0.92);
+  --navy-80:   rgba(4,40,56,0.80);
+  --navy-mid:  #0a3a50;
+  --navy-lt:   #0d4a63;
+  --teal-dk:   #156e80;
+  --teal-lt:   #4fb8ce;
+  --grey:      #7a9aaa;
+  --grey-lt:   #b8cfd8;
+  --grey-dk:   #2e5060;
+
+  --font: 'Poppins', sans-serif;
+}
+
+html, body { min-height: 100%; background: var(--navy); font-family: var(--font); color: var(--white); }
+
+/* Nerdio-style background — dark navy with subtle teal grid per brand guide */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse at 80% 0%, rgba(30,157,184,0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at 0% 100%, rgba(30,157,184,0.08) 0%, transparent 45%),
+    linear-gradient(rgba(30,157,184,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30,157,184,0.04) 1px, transparent 1px);
+  background-size: auto, auto, 56px 56px, 56px 56px;
+  pointer-events: none; z-index: 0;
+}
+
+#app { position: relative; z-index: 1; max-width: 920px; margin: 0 auto; padding: 0 24px 100px; min-height: 100vh; }
+
+/* ── Nerdio Logo SVG (icon = glasses with power button right lens) ── */
+.nerdio-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nerdio-logo-icon { width: 38px; height: 38px; flex-shrink: 0; }
+.nerdio-wordmark { font-family: var(--font); font-size: 19px; font-weight: 600; color: var(--white); letter-spacing: 0.5px; }
+.nerdio-wordmark span { color: var(--teal); }
+
+/* ── Header ── */
+.hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 0 18px;
+  border-bottom: 1px solid rgba(30,157,184,0.2);
+  margin-bottom: 0;
+}
+.hdr-meta { font-size: 11px; color: var(--grey); letter-spacing: 1px; font-weight: 500; text-transform: uppercase; }
+.hdr-right { display: flex; gap: 8px; }
+
+/* ── Buttons ── */
+.btn-sm {
+  background: transparent;
+  border: 1px solid rgba(30,157,184,0.35);
+  color: var(--grey-lt); font-size: 10px;
+  padding: 7px 14px; border-radius: 6px; cursor: pointer;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  font-family: var(--font); font-weight: 600;
+  transition: border-color .15s, color .15s;
+}
+.btn-sm:hover { border-color: var(--teal); color: var(--teal-lt); }
+
+/* Primary — Nerdio teal gradient per brand guide gradient #1 */
+.btn-primary {
+  background: linear-gradient(135deg, var(--teal) 0%, #156e80 100%);
+  color: var(--white); border: none; border-radius: 8px;
+  padding: 13px 28px; font-size: 14px; font-weight: 600;
+  cursor: pointer; font-family: var(--font);
+  transition: opacity .15s, transform .1s;
+  letter-spacing: 0.2px;
+}
+.btn-primary:hover { opacity: 0.9; }
+.btn-primary:active { transform: scale(0.98); }
+.btn-primary.dim { opacity: 0.32; cursor: default; }
+
+.btn-secondary {
+  background: transparent; color: var(--grey-lt);
+  border: 1px solid rgba(30,157,184,0.3);
+  border-radius: 8px; padding: 12px 18px;
+  font-size: 13px; cursor: pointer; font-family: var(--font); font-weight: 500;
+  transition: border-color .15s;
+}
+.btn-secondary:hover { border-color: rgba(30,157,184,0.6); }
+
+.btn-ghost {
+  background: transparent; color: var(--grey);
+  border: none; padding: 12px 0;
+  font-size: 13px; cursor: pointer; font-family: var(--font);
+}
+
+/* ── Card ── */
+.card {
+  background: rgba(4,40,56,0.75);
+  border: 1px solid rgba(30,157,184,0.22);
+  border-radius: 16px; padding: 28px 32px;
+  backdrop-filter: blur(12px);
+}
+
+/* ── Progress ── */
+.prog-wrap { height: 3px; background: rgba(30,157,184,0.15); border-radius: 2px; margin: 20px 0 6px; overflow: hidden; }
+/* Nerdio gradient #1: teal → green */
+.prog-fill { height: 100%; background: linear-gradient(90deg, var(--teal), var(--green)); border-radius: 2px; transition: width .4s ease; }
+.prog-meta { display: flex; justify-content: space-between; font-size: 10px; color: var(--grey); margin-bottom: 20px; font-weight: 500; letter-spacing: 0.5px; }
+
+/* ── Question labels ── */
+.q-eyebrow {
+  font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px; font-weight: 600;
+}
+.q-title  { font-size: 19px; font-weight: 700; color: var(--white); margin-bottom: 6px; line-height: 1.35; }
+.q-sub    { font-size: 13px; color: var(--grey); margin-bottom: 18px; font-weight: 400; line-height: 1.5; }
+.q-hint   { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--teal); margin-bottom: 14px; font-weight: 600; }
+
+/* ── Priority badge (1–5) used on ranking questions ── */
+.priority-mode-note {
+  background: rgba(30,157,184,0.1);
+  border: 1px solid rgba(30,157,184,0.25);
+  border-radius: 8px; padding: 10px 14px;
+  font-size: 12px; color: var(--teal-lt);
+  margin-bottom: 16px; font-weight: 500;
+}
+
+/* ── Options ── */
+.opts { display: grid; gap: 8px; }
+.opts.two-col { grid-template-columns: 1fr 1fr; }
+
+.opt {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 16px;
+  background: rgba(10,58,80,0.5);
+  border: 1.5px solid rgba(30,157,184,0.18);
+  border-radius: 10px; cursor: pointer;
+  text-align: left; width: 100%;
+  transition: background .15s, border-color .15s;
+  font-family: var(--font);
+  position: relative;
+}
+.opt:hover { background: rgba(30,157,184,0.1); border-color: rgba(30,157,184,0.45); }
+.opt.selected { background: rgba(30,157,184,0.14); border-color: var(--teal); }
+.opt.priority-active { border-color: var(--green); background: rgba(205,255,78,0.07); }
+
+.opt-icon  { font-size: 17px; min-width: 24px; text-align: center; margin-top: 2px; flex-shrink: 0; }
+.opt-body  { flex: 1; min-width: 0; }
+.opt-label { font-size: 13px; font-weight: 600; color: var(--white); line-height: 1.3; }
+.opt.selected .opt-label, .opt.priority-active .opt-label { color: var(--teal-lt); }
+.opt-sub   { font-size: 11px; color: var(--grey); margin-top: 3px; line-height: 1.45; }
+
+/* Standard checkbox / radio */
+.opt-check {
+  width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px;
+  border: 2px solid var(--grey-dk);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: var(--navy);
+  background: transparent;
+  transition: background .15s, border-color .15s;
+}
+.opt-check.sq { border-radius: 5px; }
+.opt-check.ci { border-radius: 10px; }
+.opt.selected .opt-check { background: var(--teal); border-color: var(--teal); }
+
+/* Priority picker — shown after selecting on rank-type questions */
+.priority-picker {
+  display: none; align-items: center; gap: 4px; margin-top: 8px;
+  flex-wrap: wrap;
+}
+.opt.selected .priority-picker,
+.opt.priority-active .priority-picker { display: flex; }
+
+.prio-label { font-size: 10px; color: var(--teal); letter-spacing: 1px; font-weight: 600; margin-right: 4px; }
+.prio-btn {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1.5px solid rgba(30,157,184,0.35);
+  background: rgba(10,58,80,0.6);
+  color: var(--grey-lt); font-size: 12px; font-weight: 700;
+  cursor: pointer; font-family: var(--font);
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s; flex-shrink: 0;
+}
+.prio-btn:hover { border-color: var(--teal); color: var(--teal-lt); }
+.prio-btn.active { background: var(--green); border-color: var(--green); color: var(--navy); }
+
+/* Priority badge visible on collapsed state */
+.prio-badge {
+  position: absolute; top: 10px; right: 12px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--green); color: var(--navy);
+  font-size: 11px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ── Nav row ── */
+.nav-row { display: flex; gap: 10px; margin-top: 22px; align-items: center; }
+.nav-row .btn-primary { flex: 1; text-align: center; }
+
+/* ── Dot trail ── */
+.dot-trail { display: flex; gap: 5px; justify-content: center; margin-top: 16px; }
+.dot-trail button {
+  height: 7px; border-radius: 4px;
+  background: rgba(46,80,96,0.6); border: none; cursor: pointer; padding: 0;
+  transition: all .2s;
+}
+.dot-trail button.active  { width: 22px; background: var(--teal); }
+.dot-trail button.done    { width: 7px; background: rgba(30,157,184,0.45); }
+.dot-trail button:not(.active):not(.done) { width: 7px; }
+
+/* ── Jump panel ── */
+.jump-panel {
+  background: rgba(4,40,56,0.95);
+  border: 1px solid rgba(30,157,184,0.28);
+  border-radius: 12px; padding: 18px 20px;
+  margin: 10px 0; backdrop-filter: blur(10px);
+}
+.jump-eyebrow { font-size: 10px; color: var(--teal); letter-spacing: 2px; text-transform: uppercase; font-weight: 600; margin-bottom: 12px; }
+.jump-dots { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
+.jump-dot {
+  width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; cursor: pointer;
+  font-family: var(--font); border: 1.5px solid rgba(46,80,96,0.6);
+  background: rgba(13,74,99,0.5); color: var(--grey);
+  transition: all .15s;
+}
+.jump-dot.active { background: var(--teal); color: var(--navy); border-color: var(--teal); }
+.jump-dot.done   { background: rgba(30,157,184,0.18); color: var(--teal-lt); border-color: rgba(30,157,184,0.4); }
+.jump-names { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.jump-names button { background: none; border: none; color: var(--grey); font-size: 11px; cursor: pointer; font-family: var(--font); font-weight: 500; }
+.jump-names button:hover, .jump-names button.cur { color: var(--teal-lt); }
+
+/* ── Fade transition ── */
+.fade-wrap { transition: opacity .2s, transform .2s; }
+.fade-wrap.out { opacity: 0; transform: translateY(8px); }
+
+/* ── INTRO PAGE ── */
+.intro-wrap { display: flex; flex-direction: column; align-items: center; padding: 48px 0 30px; }
+.intro-card { max-width: 700px; width: 100%; text-align: center; }
+.intro-bigicon { font-size: 52px; margin-bottom: 18px; }
+.intro-h1 {
+  font-size: 30px; font-weight: 800; line-height: 1.2;
+  margin-bottom: 10px;
+  /* Nerdio heading style: white with teal accent word */
+}
+.intro-h1 em { color: var(--teal); font-style: normal; }
+.intro-p { font-size: 15px; color: var(--grey-lt); max-width: 540px; margin: 0 auto 12px; line-height: 1.65; font-weight: 400; }
+.intro-timing { font-size: 11px; color: var(--teal); margin-bottom: 32px; letter-spacing: 1.5px; font-weight: 600; text-transform: uppercase; }
+
+/* Nerdio feature tiles */
+.intro-tiles { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 32px; text-align: left; }
+.intro-tile {
+  background: rgba(13,58,80,0.45);
+  border: 1px solid rgba(30,157,184,0.2);
+  border-radius: 12px; padding: 16px;
+  transition: border-color .2s;
+}
+.intro-tile:hover { border-color: rgba(30,157,184,0.45); }
+.intro-tile-icon { font-size: 22px; margin-bottom: 10px; }
+.intro-tile-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.intro-tile-sub   { font-size: 11px; color: var(--grey); line-height: 1.45; }
+
+/* Green galaxy accent line — from brand guide */
+.intro-accent { width: 48px; height: 3px; background: var(--green); border-radius: 2px; margin: 0 auto 24px; }
+.intro-note { font-size: 11px; color: var(--grey-dk); margin-top: 16px; }
+
+/* ── RESULTS PAGE ── */
+/* Verdict banner */
+.verdict-banner {
+  border-radius: 14px; padding: 22px 26px; margin-bottom: 14px;
+  display: flex; align-items: flex-start; gap: 18px;
+  border: 2px solid;
+}
+.v-icon {
+  width: 50px; height: 50px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 900; font-family: var(--font);
+}
+.v-body { flex: 1; }
+.v-eyebrow { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; font-weight: 600; }
+.v-headline { font-size: 20px; font-weight: 700; color: var(--white); margin-bottom: 6px; line-height: 1.3; }
+.v-summary  { font-size: 13px; color: var(--grey-lt); line-height: 1.6; font-weight: 400; }
+.v-badge {
+  border-radius: 8px; padding: 8px 16px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+  white-space: nowrap; flex-shrink: 0; align-self: flex-start;
+  text-transform: uppercase; font-family: var(--font);
+}
+
+/* Platform scores */
+.r-eyebrow { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; margin-bottom: 16px; }
+.score-row { margin-bottom: 12px; }
+.score-meta { display: flex; justify-content: space-between; margin-bottom: 5px; }
+.score-name { font-size: 13px; font-weight: 500; color: var(--grey-lt); }
+.score-name.nerdio { font-weight: 700; color: var(--teal-lt); }
+.score-pct  { font-size: 13px; font-weight: 700; color: var(--grey); }
+.score-pct.top { color: var(--teal); }
+.bar-bg   { height: 7px; background: rgba(13,58,80,0.8); border-radius: 4px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px; transition: width .9s ease .1s; }
+
+/* Signals */
+.signals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+.sig-col { display: flex; flex-direction: column; gap: 12px; }
+.sig-panel { border-radius: 12px; padding: 18px 20px; border: 1px solid; }
+.sig-ey { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; font-weight: 600; }
+.sig-list { display: flex; flex-direction: column; gap: 10px; }
+.sig-item { border-left: 3px solid; padding-left: 12px; }
+.sig-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+.sig-body  { font-size: 12px; color: var(--grey); line-height: 1.55; font-weight: 400; }
+
+/* Priority context in signals */
+.sig-prio { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: 1px;
+  background: rgba(205,255,78,0.15); color: var(--green); border: 1px solid rgba(205,255,78,0.3);
+  border-radius: 20px; padding: 2px 8px; margin-bottom: 4px; text-transform: uppercase; }
+
+/* Steps */
+.steps-panel { border-radius: 12px; padding: 20px 22px; margin-bottom: 14px; border: 1px solid; }
+.steps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.step-card { background: rgba(13,58,80,0.45); border: 1px solid rgba(30,157,184,0.18); border-radius: 10px; padding: 14px; }
+.step-top  { display: flex; justify-content: space-between; margin-bottom: 8px; align-items: flex-start; }
+.step-icon { font-size: 18px; }
+.step-tag  { font-size: 10px; letter-spacing: 1px; border-radius: 20px; padding: 3px 10px; border: 1px solid; white-space: nowrap; font-weight: 600; }
+.step-title { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 5px; }
+.step-body  { font-size: 11px; color: var(--grey); line-height: 1.55; font-weight: 400; }
+
+/* Summary */
+.sum-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.sum-item { padding: 8px 0; border-bottom: 1px solid rgba(13,58,80,0.8); }
+.sum-label { font-size: 10px; color: var(--grey); margin-bottom: 2px; font-weight: 500; letter-spacing: 0.5px; }
+.sum-val   { font-size: 12px; color: var(--grey-lt); font-weight: 400; }
+
+/* Nerdio "power strip" accent at bottom — brand graphic element */
+.nerdio-strip {
+  display: flex; align-items: center; gap: 16px;
+  background: linear-gradient(135deg, rgba(13,58,80,0.7) 0%, rgba(21,110,128,0.3) 100%);
+  border: 1px solid rgba(30,157,184,0.25);
+  border-radius: 10px; padding: 16px 22px; margin-bottom: 14px;
+}
+.ns-icon { font-size: 22px; }
+.ns-title { font-size: 12px; font-weight: 700; color: var(--teal-lt); margin-bottom: 3px; }
+.ns-body  { font-size: 11px; color: var(--grey); line-height: 1.5; font-weight: 400; }
+.ns-link  { font-size: 11px; color: var(--teal); font-weight: 600; margin-top: 4px; }
+
+/* ── Misc ── */
+.mt12 { margin-top: 12px; }
+.mt16 { margin-top: 16px; }
+.hidden { display: none !important; }
+
+/* ── Severity Matrix ── */
+.sev-table { width: 100%; border-collapse: collapse; }
+.sev-header { display: grid; grid-template-columns: 1fr 100px 100px 100px; gap: 0; margin-bottom: 8px; padding: 0 0 6px; border-bottom: 1px solid rgba(30,157,184,0.15); }
+.sev-header-cell { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; text-align: center; }
+.sev-header-cell:first-child { text-align: left; color: var(--grey); }
+.sev-header-cell.h-none  { color: var(--grey-dk); }
+.sev-header-cell.h-some  { color: #f59e0b; }
+.sev-header-cell.h-major { color: #ff6b6b; }
+
+.sev-row { display: grid; grid-template-columns: 1fr 100px 100px 100px; gap: 0; padding: 7px 0; border-bottom: 1px solid rgba(10,58,80,0.6); align-items: center; transition: background .12s; border-radius: 6px; }
+.sev-row:hover { background: rgba(30,157,184,0.04); }
+.sev-row:last-child { border-bottom: none; }
+
+.sev-label { display: flex; align-items: flex-start; gap: 10px; padding-right: 12px; }
+.sev-label-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.sev-label-text { }
+.sev-label-title { font-size: 13px; font-weight: 600; color: var(--white); line-height: 1.2; }
+.sev-label-sub   { font-size: 11px; color: var(--grey); margin-top: 2px; line-height: 1.35; }
+
+.sev-cell { display: flex; align-items: center; justify-content: center; }
+.sev-btn {
+  width: 34px; height: 34px; border-radius: 8px;
+  border: 1.5px solid rgba(46,80,96,0.6);
+  background: rgba(10,58,80,0.4);
+  cursor: pointer; font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .14s; font-family: var(--font);
+  color: transparent; position: relative;
+}
+.sev-btn::after { content: ''; width: 8px; height: 8px; border-radius: 50%; background: rgba(46,80,96,0.5); }
+.sev-btn:hover { border-color: rgba(30,157,184,0.5); }
+.sev-btn:hover::after { background: rgba(30,157,184,0.4); }
+.sev-btn.active-none  { background: rgba(122,154,170,0.15); border-color: var(--grey); }
+.sev-btn.active-none::after  { background: var(--grey); width: 10px; height: 10px; }
+.sev-btn.active-some  { background: rgba(245,158,11,0.12); border-color: #f59e0b; }
+.sev-btn.active-some::after  { background: #f59e0b; width: 10px; height: 10px; }
+.sev-btn.active-major { background: rgba(255,107,107,0.12); border-color: #ff6b6b; }
+.sev-btn.active-major::after { background: #ff6b6b; width: 12px; height: 12px; }
+
+/* Row highlight when something is selected */
+.sev-row.has-rating .sev-label-title { color: var(--teal-lt); }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--navy); }
+::-webkit-scrollbar-thumb { background: var(--teal-dk); border-radius: 3px; }
+</style>
+<style>
+/* === NERDIO BRAND BAR === */
+.nerdio-brand-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+  height: 48px;
+  background: linear-gradient(135deg, #0B1B3D 0%, #142952 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+.nerdio-brand-bar * { box-sizing: border-box; margin: 0; padding: 0; }
+.nerdio-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+.nerdio-brand-logo img {
+  height: 22px;
+  width: auto;
+}
+.nerdio-brand-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255,255,255,0.2);
+}
+.nerdio-brand-tool-name {
+  color: rgba(255,255,255,0.85);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+.nerdio-brand-home {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #00B4D8;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: rgba(0,180,216,0.1);
+  border: 1px solid rgba(0,180,216,0.2);
+  transition: all 0.2s;
+}
+.nerdio-brand-home:hover {
+  background: rgba(0,180,216,0.2);
+  border-color: rgba(0,180,216,0.4);
+  color: #FFFFFF;
+}
+.nerdio-brand-home svg {
+  width: 14px;
+  height: 14px;
+}
+.nerdio-brand-spacer {
+  height: 48px;
+  width: 100%;
+  flex-shrink: 0;
+}
+/* === END NERDIO BRAND BAR === */
+</style>
+</head>
+<body>
+
+<!-- NERDIO BRAND BAR -->
+<div class="nerdio-brand-bar">
+  <div class="nerdio-brand-logo">
+    <img src="data:image/png;base64,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" alt="Nerdio">
+    <div class="nerdio-brand-divider"></div>
+    <span class="nerdio-brand-tool-name">Nerdio Fit Qualifier</span>
+  </div>
+  <a href="../EMEA-Nerdio-Toolbox.html" class="nerdio-brand-home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+    Toolbox Home
+  </a>
+</div>
+<div class="nerdio-brand-spacer"></div>
+<!-- END NERDIO BRAND BAR -->
+
+<div id="app"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   NERDIO FIT QUALIFIER — v3.0
+   Source: Nerdio official brand guide, getnerdio.com,
+   Nerdio Help Centre, G2 / Gartner reviews, NME 7.0 release notes
+   Content: Nerdio-only — no third-party vendor content
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Real Nerdio logo paths extracted directly from getnerdio.com ── */
+// The icon path is the teal glasses/power-button mark (viewBox 0 0 160 25, icon occupies left ~55px)
+// We use just the icon portion scaled to a square for the header mark
+const NERDIO_ICON_PATH = "M42.455 11.424a1.74 1.74 0 0 1-1.728 1.728v.032a1.74 1.74 0 0 1-1.729-1.728V2.228A1.74 1.74 0 0 1 40.727.5a1.74 1.74 0 0 1 1.728 1.728v9.195Zm9.065 1.597h2.185v3.424h-2.74c-1.467 4.239-5.119 7.304-10.238 7.304-5.12 0-9.391-3.587-10.532-8.347-1.076-.392-2.185-.62-3.326-.62-1.142 0-2.218.228-3.261.62-1.109 4.76-5.804 8.347-10.532 8.347s-8.772-3.065-10.24-7.304H0v-3.424h2.25v-.098c0-5.967 5.184-10.89 10.76-10.89s10.174 4.206 10.76 9.619a13.31 13.31 0 0 1 3.033-.359c1.044 0 2.087.13 3.098.391.26-2.38 1.304-4.597 3-6.358a1.773 1.773 0 0 1 2.445 0c.653.685.653 1.76 0 2.445-.652.653-1.108 1.337-1.5 2.25-.39.913-.586 1.63-.586 2.902 0 4.076 3.326 7.402 7.401 7.402 4.076 0 7.402-3.326 7.402-7.402 0-1.956-.75-3.815-2.152-5.217a1.712 1.712 0 0 1 0-2.445 1.713 1.713 0 0 1 2.446 0c2.022 2.054 3.163 4.76 3.163 7.662v.098Zm-45.846-.098c0 4.076 3.326 7.402 7.402 7.402 4.075 0 7.401-3.326 7.401-7.402 0-4.076-3.326-7.401-7.401-7.401-4.076 0-7.402 3.325-7.402 7.401Z";
+
+/* ── Question definitions ── */
+/* Types:
+   "single"  = pick one, auto-advances
+   "multi"   = pick multiple, no ranking
+   "ranked"  = pick any, assign priority 1-5 per item
+*/
+const QUESTIONS = [
+  {
+    id: "platform",
+    section: "Current Environment",
+    icon: "🖥",
+    title: "What is your current virtual desktop or remote work delivery platform?",
+    subtitle: "Select all that apply — include everything in use today across your organisation.",
+    type: "multi",
+    options: [
+      { id:"avd_native", label:"Azure Virtual Desktop — Native",      sub:"AVD managed directly through the Azure portal, no third-party layer", icon:"☁️" },
+      { id:"citrix",     label:"Citrix",                               sub:"Citrix DaaS, Virtual Apps & Desktops, or CVAD on-prem", icon:"🔷" },
+      { id:"omnissa",    label:"Omnissa / VMware Horizon",             sub:"Horizon Cloud, Horizon on-prem, or App Volumes (formerly VMware)", icon:"🟢" },
+      { id:"parallels",  label:"Parallels RAS",                        sub:"Multi-hypervisor broker or RDS-based delivery", icon:"⚫" },
+      { id:"rds",        label:"Windows Remote Desktop Services",      sub:"Legacy Microsoft RDS, on-premises or hosted", icon:"🪟" },
+      { id:"w365",       label:"Windows 365 / Cloud PC",              sub:"Microsoft-managed Cloud PCs via Intune", icon:"💻" },
+      { id:"none",       label:"No current VDI or DaaS platform",     sub:"Physical desktops only, or greenfield — building from scratch", icon:"➕" },
+    ],
+  },
+  {
+    id: "scale",
+    section: "Environment Scale",
+    icon: "👥",
+    title: "How many users are in scope for your virtual desktop environment?",
+    subtitle: "Count all users who would access virtual desktops or Intune-managed endpoints through this platform.",
+    type: "single",
+    options: [
+      { id:"under100",   label:"Under 100 users",         sub:"Pilot, departmental, or very small deployment", icon:"🔹" },
+      { id:"100_500",    label:"100–500 users",           sub:"Small to mid-size — growing ROI territory", icon:"🔸" },
+      { id:"500_2000",   label:"500–2,000 users",         sub:"Mid-market — strong auto-scaling economics", icon:"🟡" },
+      { id:"2000_10000", label:"2,000–10,000 users",      sub:"Enterprise — significant Azure spend at stake", icon:"🟠" },
+      { id:"over10000",  label:"10,000+ users",           sub:"Large enterprise — Nerdio scales to this and beyond", icon:"🔴" },
+    ],
+  },
+  {
+    id: "cloud",
+    section: "Azure Relationship",
+    icon: "☁️",
+    title: "What is your organisation's current relationship with Microsoft Azure?",
+    subtitle: "This shapes both the technical fit and the procurement path for Nerdio.",
+    type: "single",
+    options: [
+      { id:"azure_primary",  label:"Azure is our primary cloud platform",               sub:"Significant Azure investment, committed workloads", icon:"⭐" },
+      { id:"azure_macc",     label:"We have a Microsoft Azure Consumption Commitment",  sub:"MACC in place — Marketplace purchases draw from this", icon:"💰" },
+      { id:"azure_some",     label:"We use Azure alongside other clouds",               sub:"Mixed cloud — AWS, GCP, or on-prem alongside Azure", icon:"🔀" },
+      { id:"azure_starting", label:"We are just starting our Azure journey",            sub:"Early evaluation stage — little or no current footprint", icon:"📋" },
+      { id:"azure_gov",      label:"Azure Government or Sovereign Cloud",              sub:"Azure Gov (US), UK Government cloud, or other regulated instance", icon:"🏛" },
+    ],
+  },
+  {
+    id: "driver",
+    section: "Primary Driver",
+    icon: "🎯",
+    title: "What is the primary business driver for evaluating Nerdio?",
+    subtitle: "Choose the one that best describes the conversation you are having internally right now.",
+    type: "single",
+    options: [
+      { id:"cost",       label:"Reduce Azure and infrastructure spend",             sub:"Azure compute bills are too high, unpredictable, or growing", icon:"💷" },
+      { id:"migration",  label:"Migrate off a legacy VDI platform",                sub:"Citrix, Omnissa, RDS — contract pressure or strategic shift", icon:"🚀" },
+      { id:"ops",        label:"Reduce IT operational complexity",                 sub:"Team overwhelmed managing AVD manually through Azure portal", icon:"⚙️" },
+      { id:"security",   label:"Improve security and compliance posture",          sub:"CIS benchmarks, Intune policy enforcement, or audit requirements", icon:"🔒" },
+      { id:"scale_fast", label:"Deploy or scale virtual desktops rapidly",         sub:"Need to be live quickly — new project, new market, or rapid growth", icon:"📈" },
+      { id:"w365",       label:"Adopt or manage Windows 365 Cloud PC",            sub:"Evaluating, rolling out, or optimising Microsoft Cloud PC", icon:"🪟" },
+      { id:"msp",        label:"Build or expand a managed desktop practice (MSP)", sub:"Delivering virtual desktop services to multiple client tenants", icon:"🏢" },
+      { id:"visibility", label:"Gain visibility and control across endpoints",     sub:"No single pane of glass for AVD, W365, and Intune today", icon:"👁" },
+    ],
+  },
+  {
+    id: "pain",
+    section: "Current Challenges",
+    icon: "⚡",
+    title: "How significant are these challenges in your environment right now?",
+    subtitle: "Rate any that apply — skip any that don't. This sharpens the conversation but isn't required to continue.",
+    type: "severity",
+    areas: [
+      { id:"cost_waste",     label:"Azure compute spend",        sub:"Running costs feel too high or unpredictable", icon:"💸" },
+      { id:"broken_hosts",   label:"Session host reliability",   sub:"Users report connection failures or broken hosts", icon:"🔥" },
+      { id:"image_mgmt",     label:"Image & patch management",   sub:"Updates are slow, risky, or hard to roll back", icon:"🖼" },
+      { id:"console_chaos",  label:"Too many management tools",  sub:"Constant context-switching between portals", icon:"🖥" },
+      { id:"slow_deploy",    label:"Slow provisioning",          sub:"New host pools or users take days to stand up", icon:"⏱" },
+      { id:"intune_blind",   label:"Intune visibility",          sub:"No real-time view of device compliance or patching", icon:"📊" },
+      { id:"w365_complexity",label:"Windows 365 at scale",       sub:"Provisioning, licences, and resizing are manual", icon:"💻" },
+      { id:"msp_margin",     label:"MSP margin pressure",        sub:"Azure compute costs eating into service margins", icon:"📉" },
+    ],
+  },
+  {
+    id: "microsoft",
+    section: "Microsoft Direction",
+    icon: "🪟",
+    title: "What is your organisation's strategic direction with Microsoft's cloud desktop stack?",
+    subtitle: "This is the single biggest factor in determining Nerdio fit.",
+    type: "single",
+    options: [
+      { id:"all_in_avd",    label:"AVD is our committed strategic platform",          sub:"Already deployed or actively moving — this is the long-term call", icon:"✅" },
+      { id:"avd_w365_mix",  label:"Mix of AVD and Windows 365 — or evaluating both", sub:"Some users on pooled AVD, others on Cloud PC, or undecided", icon:"🔄" },
+      { id:"moving_to_avd", label:"Planning the move to AVD — evaluating the path",  sub:"Currently on Citrix, Omnissa, or RDS — AVD is the target", icon:"🗺" },
+      { id:"w365_primary",  label:"Windows 365 is the primary target",               sub:"Cloud PC for most or all users — simplicity over flexibility", icon:"💻" },
+      { id:"uncertain",     label:"Not yet committed to a Microsoft cloud path",      sub:"Still evaluating platforms or timeline is unclear", icon:"❓" },
+      { id:"non_ms",        label:"Planning to remain on Citrix or a non-Microsoft platform", sub:"Clear strategic reasons to stay on the current stack", icon:"🚫" },
+    ],
+  },
+  {
+    id: "timeline",
+    section: "Decision Timeline",
+    icon: "📅",
+    title: "What is the timeframe for this evaluation and decision?",
+    subtitle: "Be realistic — the right next step depends on where you are in the buying process.",
+    type: "single",
+    options: [
+      { id:"now",      label:"Active — decision within 60 days",              sub:"Budget approved or imminent, evaluation underway", icon:"🟢" },
+      { id:"quarter",  label:"This quarter — 60 to 90 days",                 sub:"Progressing well, commercial discussion likely within Q", icon:"🟡" },
+      { id:"h2",       label:"Next 3 to 6 months",                           sub:"Planning phase — building the business case", icon:"🟠" },
+      { id:"long",     label:"12+ months — early research",                  sub:"Strategic scoping, no active project yet", icon:"🔵" },
+      { id:"contract", label:"Triggered by a contract renewal or event",      sub:"Citrix/Omnissa renewal, Microsoft audit, or project milestone", icon:"📋" },
+    ],
+  },
+  {
+    id: "blockers",
+    section: "Evaluation Blockers",
+    icon: "🚧",
+    title: "Are any of these factors likely to slow down or complicate a Nerdio evaluation?",
+    subtitle: "Select all that apply — knowing the blockers early means we can plan around them.",
+    type: "multi",
+    options: [
+      { id:"budget_frozen",  label:"Budget is constrained or currently frozen",         sub:"Limited or no discretionary IT spend available", icon:"❄️" },
+      { id:"contract_lock",  label:"Locked into an existing vendor contract",           sub:"Citrix, Omnissa, or other deal still running — switchover cost", icon:"⛓" },
+      { id:"gov_proc",       label:"Government or public sector procurement rules apply", sub:"Framework agreements, tender requirements, or FCA/NCSC constraints", icon:"🏛" },
+      { id:"no_azure_mgmt",  label:"Limited internal Azure expertise",                  sub:"Team manages AVD through Citrix/Omnissa — Azure-native skills gap", icon:"🛠" },
+      { id:"multi_cloud",    label:"Multi-cloud strategy — not Azure-only",             sub:"AWS, GCP, or on-prem workloads must be part of the solution", icon:"🌐" },
+      { id:"no_blockers",    label:"No significant blockers identified",                sub:"Clear evaluation path — ready to begin a proof of value", icon:"✅" },
+    ],
+  },
+];
+
+/* ── State ── */
+const state = {
+  step: "intro",   // intro | questions | results
+  currentQ: 0,
+  answers: {},     // { [qId]: string | string[] | {id:string, priority:number}[] }
+  priorities: {},  // { [qId]: { [optId]: number } }
+  showJump: false,
+};
+
+/* ── Helpers ── */
+function getSelectedIds(qId) {
+  const v = state.answers[qId];
+  if (!v) return [];
+  if (Array.isArray(v)) return v;
+  return [v];
+}
+function getPriority(qId, optId) {
+  return (state.priorities[qId] || {})[optId] || 0;
+}
+function countAnswered() {
+  return Object.keys(state.answers).filter(k => {
+    const q = QUESTIONS.find(x => x.id === k);
+    const v = state.answers[k];
+    if (q && q.type === "severity") return Object.values(v||{}).some(s => s==="some"||s==="major");
+    return Array.isArray(v) ? v.length > 0 : !!v;
+  }).length;
+}
+function isQAnswered(qId) {
+  const q = QUESTIONS.find(x => x.id === qId);
+  if (!q) return false;
+  if (q.type === "severity") {
+    const v = state.answers[qId] || {};
+    return Object.values(v).some(s => s === "some" || s === "major");
+  }
+  const v = state.answers[qId];
+  return Array.isArray(v) ? v.length > 0 : !!v;
+}
+
+/* ── Transition ── */
+function fade(fn) {
+  const el = document.querySelector(".fade-wrap");
+  if (el) el.classList.add("out");
+  setTimeout(() => { fn(); render(); }, 200);
+}
+
+/* ── Scoring engine (Nerdio-only content) ── */
+function scoreAnswers(answers, priorities) {
+  let nScore = 0;
+  const signals = { positive: [], caution: [], disqualify: [] };
+  let verdict = "good";
+
+  const platform  = answers.platform  || [];
+  const scale     = answers.scale     || "";
+  const cloud     = answers.cloud     || "";
+  const driver    = answers.driver    || "";
+  const pain      = answers.pain      || {};  // {cost_waste:"major", broken_hosts:"some", ...}
+  const microsoft = answers.microsoft || "";
+  const timeline  = answers.timeline  || "";
+  const blockers  = answers.blockers  || [];
+
+  const platPrio  = {};  // platform is now multi (no priority)
+  const blocPrio  = {};  // blockers is now multi (no priority)
+
+  // Helper — severity helpers
+  function isMajor(id) { return pain[id] === "major"; }
+  function isSome(id)  { return pain[id] === "some"; }
+  function isAny(id)   { return pain[id] === "major" || pain[id] === "some"; }
+  function sevLabel(id) { return pain[id] === "major" ? " — Major Pain" : pain[id] === "some" ? " — Sometimes" : ""; }
+
+  /* ── Scale ── */
+  if (scale === "under100")   { nScore -= 8;  signals.caution.push("Scale — under 100 users:Nerdio delivers value at any size, but the auto-scaling ROI payback is most compelling above 200 users. For smaller deployments, the operational automation gains (image management, Scripted Actions, unified console) often drive the case more than compute savings."); }
+  if (scale === "100_500")    { nScore += 8;  signals.positive.push("Scale — 100–500 users:Nerdio delivers meaningful ROI at this size. Auto-scaling savings of 30–55% on Azure compute, plus image automation and reduced admin overhead, typically provide clear payback within the first quarter of deployment."); }
+  if (scale === "500_2000")   { nScore += 16; signals.positive.push("Scale — 500–2,000 users:Strong Nerdio ROI territory. Azure compute savings at this scale are significant, and operational automation across host pool management, image lifecycle, and Intune Insights frees meaningful IT capacity."); }
+  if (scale === "2000_10000") { nScore += 22; signals.positive.push("Scale — 2,000–10,000 users:Enterprise scale. Nerdio's patented auto-scaling, multi-region support, and Scripted Actions automation deliver compounding returns across this user base. Azure spend reduction of 55–80% is well-documented at this scale."); }
+  if (scale === "over10000")  { nScore += 28; signals.positive.push("Scale — 10,000+ users:Maximum ROI territory. Nerdio is purpose-built to scale here — multi-region host pool management, Azure API Limit Booster, and enterprise-grade RBAC. Compute savings at this scale significantly exceed the licence investment."); }
+
+  /* ── Cloud ── */
+  if (cloud === "azure_primary")  { nScore += 20; signals.positive.push("Azure as primary cloud:Perfect architectural fit. Nerdio Manager deploys as an Azure App Service inside your own subscription — no data leaves your tenancy. Full access to Reserved Instance and Azure Hybrid Benefit pricing on top of Nerdio's auto-scaling."); }
+  if (cloud === "azure_macc")     { nScore += 26; signals.positive.push("Azure Consumption Commitment (MACC) in place:Critical commercial advantage. Nerdio is available on Azure Marketplace, meaning your subscription draws down against your existing MACC commitment. No new budget line — spend comes from already-committed Azure funds. This is often the fastest path to procurement approval."); }
+  if (cloud === "azure_some")     { nScore += 10; signals.caution.push("Mixed cloud environment:Nerdio addresses your Azure workloads specifically. Where you have AVD or Windows 365 running in Azure, Nerdio applies fully. Size the applicable ROI based on the proportion of workloads in Azure — the case is proportionally strong."); }
+  if (cloud === "azure_starting") { nScore -= 5;  signals.caution.push("Early Azure journey:Nerdio compounds in value as your Azure footprint grows. It's worth deploying alongside the initial AVD buildout — Nerdio's deployment wizard significantly reduces the time to get the first host pool live. Sequence it as part of the foundation, not a follow-on."); }
+  if (cloud === "azure_gov")      { nScore += 15; signals.positive.push("Azure Government / Sovereign Cloud:Nerdio Manager for MSP supports Azure Government and GCC High clouds. For NME (enterprise), confirm current government cloud region support directly with the Nerdio team for your specific Azure Gov instance."); }
+
+  /* ── Driver ── */
+  if (driver === "cost")       { nScore += 20; signals.positive.push("Cost reduction is the primary driver:Nerdio's strongest quantified proof point. Patented auto-scaling delivers up to 80% reduction in Azure compute spend (55% average). Nerdio powers down unused session hosts in real time and pre-scales before demand — so users never notice savings happening."); }
+  if (driver === "migration")  { nScore += 18; signals.positive.push("Migrating off a legacy VDI platform:Nerdio accelerates the transition to AVD significantly. The NME deployment wizard gets a target environment live in hours. Migration tools automate the heavy lifting of moving from Citrix or Omnissa. Customers have completed migrations in weeks that were expected to take months."); }
+  if (driver === "ops")        { nScore += 18; signals.positive.push("Reducing IT operational complexity:Nerdio replaces the multi-console AVD management experience with a single, purpose-built interface. Auto-Heal detects and remediates broken session hosts automatically. Scripted Actions automate repetitive tasks. Image lifecycle management adds version control and staged rollouts. What once took hours per week takes minutes."); }
+  if (driver === "security")   { nScore += 14; signals.positive.push("Security and compliance posture:Nerdio deploys CIS Benchmark-aligned Intune baselines and automated compliance enforcement. All data stays in your own Azure subscription — Nerdio is agentless and never touches user data. Role-based access control (RBAC) is granular and auditable."); }
+  if (driver === "scale_fast") { nScore += 16; signals.positive.push("Rapid deployment and scaling:Nerdio's guided deployment wizard takes a new AVD environment from zero to live in under an hour. Scripted Actions make subsequent environment builds repeatable and error-free. Scaling existing environments takes minutes, not days."); }
+  if (driver === "w365")       { nScore += 14; signals.positive.push("Windows 365 adoption and management:NME 7.0 introduced comprehensive Windows 365 management — provisioning, resizing, licence tracking, and a TCO modelling tool to right-size users between Cloud PC and AVD based on actual usage patterns and cost."); }
+  if (driver === "msp")        { nScore += 22; signals.positive.push("MSP managed desktop practice:Nerdio Manager for MSP (NMM) is the purpose-built platform. Multi-tenant dashboard, delegated administration, white-label support, automated billing via CSP, and cost estimator tool. The Partnerd programme provides significant licence discounts as practice volume grows."); }
+  if (driver === "visibility")  { nScore += 14; signals.positive.push("Unified endpoint visibility:Nerdio's single pane of glass covers AVD, Windows 365, and Intune-managed devices from one console. Intune Insights transforms complex Intune data into automated, scheduled reports — no manual KQL, no stale exports. IT teams gain visibility they simply cannot get from native Microsoft tooling."); }
+
+  /* ── Challenges (severity: "some" | "major") ── */
+  if (isAny("cost_waste")) {
+    nScore += isMajor("cost_waste") ? 18 : 10;
+    signals.positive.push(`Azure compute spend${sevLabel("cost_waste")}:This is the fastest ROI proof point in any Nerdio evaluation. Auto-scaling powers down idle session hosts automatically and spins them back up before demand hits — users see no difference, but Azure bills drop 55–80%. A 2-week pilot on a single host pool typically proves the entire business case.`);
+  }
+  if (isAny("broken_hosts")) {
+    nScore += isMajor("broken_hosts") ? 15 : 8;
+    signals.positive.push(`Session host reliability${sevLabel("broken_hosts")}:Nerdio's Auto-Heal sequence monitors session host health and automatically detects, remediates, and if needed, rebuilds broken hosts. The helpdesk ticket for 'user cannot connect' is one of the most common AVD issues — and one of the first to disappear after Nerdio deployment.`);
+  }
+  if (isAny("image_mgmt")) {
+    nScore += isMajor("image_mgmt") ? 12 : 6;
+    signals.positive.push(`Image & patch management${sevLabel("image_mgmt")}:Nerdio's golden image workflow adds version control, staged deployment, and one-click rollback to the AVD image lifecycle. Image updates that previously required manual processes and late-night maintenance windows become routine, audited operations.`);
+  }
+  if (isAny("console_chaos")) {
+    nScore += isMajor("console_chaos") ? 10 : 5;
+    signals.positive.push(`Management tool sprawl${sevLabel("console_chaos")}:Nerdio replaces the Azure portal, native AVD console, and Intune management silos with a single purpose-built interface. Admins stop context-switching between tools and gain a consistent workflow for all Microsoft cloud desktop operations.`);
+  }
+  if (isAny("slow_deploy")) {
+    nScore += isMajor("slow_deploy") ? 12 : 6;
+    signals.positive.push(`Slow provisioning${sevLabel("slow_deploy")}:A new AVD host pool that takes days to provision manually through Azure can be live in under an hour using Nerdio's guided deployment wizard. Scripted Actions make subsequent deployments repeatable — junior team members can execute them reliably.`);
+  }
+  if (isAny("intune_blind")) {
+    nScore += isMajor("intune_blind") ? 10 : 5;
+    signals.positive.push(`Intune visibility${sevLabel("intune_blind")}:Nerdio's Intune Insights module transforms raw Intune telemetry into actionable dashboards and automated scheduled reports. Device compliance, patching status, and app deployment coverage become visible in real time — not in quarterly exports.`);
+  }
+  if (isAny("w365_complexity")) {
+    nScore += isMajor("w365_complexity") ? 12 : 6;
+    signals.positive.push(`Windows 365 at scale${sevLabel("w365_complexity")}:NME 7.0 provides full lifecycle management for Windows 365 Cloud PCs — provisioning, resizing, licence tracking, and migration tooling between AVD and W365. The TCO Analyser helps right-size the mix based on real usage data.`);
+  }
+  if (isAny("msp_margin")) {
+    nScore += isMajor("msp_margin") ? 16 : 8;
+    signals.positive.push(`MSP margin pressure${sevLabel("msp_margin")}:NMM's auto-scaling reduces the Azure compute cost that erodes MSP margins. The Cost Estimator tool enables accurate, profitable quoting. The Partnerd programme provides licence discounts that improve NMM unit economics as practice volume grows.`);
+  }
+
+  /* ── Microsoft direction ── */
+  if (microsoft === "all_in_avd")    { nScore += 22; signals.positive.push("Committed to Azure Virtual Desktop:Highest-confidence Nerdio scenario. The platform decision is made — Nerdio is the management layer purpose-built for AVD. Deployment can begin on a free 30-day trial from Azure Marketplace today."); }
+  if (microsoft === "avd_w365_mix")  { nScore += 18; signals.positive.push("AVD and Windows 365 together:Nerdio manages both from a single console. The NME TCO Analyser right-sizes which users belong on AVD vs. Windows 365 based on actual usage and cost — then helps you execute the migration between them if needed."); }
+  if (microsoft === "moving_to_avd") { nScore += 20; signals.positive.push("Planning the move to AVD:Strong Nerdio use case. The migration wizard automates the heavy lifting from Citrix or Omnissa. Nerdio deploys the AVD target environment in hours, runs parallel operation during the transition, and provides a structured cutover path."); }
+  if (microsoft === "w365_primary")  { nScore += 14; signals.positive.push("Windows 365 as primary target:Nerdio NME 7.0 is specifically built for this. W365 provisioning, resizing, licence management, and performance visibility — all in one place. The TCO Analyser helps validate the cost model before and during rollout."); }
+  if (microsoft === "uncertain")     { nScore += 4;  signals.caution.push("Microsoft platform direction unclear:The platform decision should ideally be resolved before Nerdio goes deep in evaluation. If the outcome lands on AVD or Windows 365 — which it does for the majority of organisations evaluating cloud desktops in 2025 — Nerdio is the natural next conversation. Start with the free AVD Modeler tool to quantify the cost case."); }
+  if (microsoft === "non_ms") {
+    nScore -= 35;
+    signals.disqualify.push("Confirmed long-term commitment to a non-Microsoft platform:Nerdio Manager is purpose-built for Microsoft Azure Virtual Desktop and Windows 365. If the organisation has made a firm strategic decision to remain on Citrix DaaS or Omnissa as the long-term desktop delivery platform — not as a migration source — Nerdio is not the right fit at this time. Revisit if the platform strategy changes.");
+    verdict = "poor";
+  }
+
+  /* ── Timeline ── */
+  if (timeline === "now")      { signals.positive.push("Active decision within 60 days:The free 30-day trial on Azure Marketplace is the right immediate action. Nerdio is deployed into your own Azure subscription at zero cost — captures real baseline data and enables a live comparison before the commercial conversation closes."); }
+  if (timeline === "contract") { signals.positive.push("Contract-renewal triggered:Optimal timing. Citrix and Omnissa renewal windows are the moment when the total cost comparison is most compelling and organisational motivation to move is highest. A Nerdio proof of value takes 4 to 6 weeks — plan to have results before the renewal deadline."); }
+  if (timeline === "long")     { signals.caution.push("12+ months horizon:No immediate urgency — but every month without Nerdio's auto-scaling is measurable Azure spend that accumulates. Consider running the free AVD Cost Modeler (nmeadvisor.getnerdio.com) now to quantify the case, so the business case is ready when budget planning opens."); }
+  if (timeline === "h2")       { signals.positive.push("3 to 6 month window:Good evaluation timeline. Enough time to run a structured proof of value (typically 4 to 6 weeks), build a data-backed business case, and complete procurement. Consider starting the free trial now to capture baseline Azure cost data in advance."); }
+
+  /* ── Blockers ── */
+  if (blockers.includes("budget_frozen")) {
+    if (cloud === "azure_macc") {
+      nScore += 8;
+      signals.positive.push("Budget frozen — MACC in place (mitigated):Azure Marketplace purchases draw down against your existing MACC commitment. No new budget request required — the spend comes from Azure funds you have already committed. This is the most common path to procurement approval when discretionary budgets are locked.");
+    } else {
+      signals.caution.push("Budget constrained:If an Azure Consumption Commitment exists, Nerdio via Azure Marketplace draws from that committed spend — no new budget line needed. If not, the Azure compute savings that Nerdio generates from day one typically justify the investment within the first month. A cost-neutral framing is often the right approach.");
+    }
+  }
+  if (blockers.includes("contract_lock")) {
+    signals.caution.push("Existing vendor contract:Identify the renewal date and work backwards. A Nerdio proof of value takes 4 to 6 weeks. Aim to have completed the evaluation and business case at least 3 months before the renewal decision point — that is the window where the comparison has maximum commercial leverage.");
+  }
+  if (blockers.includes("gov_proc")) {
+    signals.caution.push("Government procurement rules:Nerdio is available on Azure Marketplace, which is an approved procurement route in many government frameworks. Check current Nerdio availability on G-Cloud, Crown Commercial Service, or your relevant national framework. Engage the Nerdio public sector team directly for framework-specific guidance.");
+  }
+  if (blockers.includes("no_azure_mgmt")) {
+    signals.caution.push("Limited Azure internal expertise:Nerdio is specifically designed to close this skills gap. The deployment wizard, Scripted Actions library, and guided host pool configuration are built for IT professionals who manage AVD without deep Azure engineering backgrounds. Nerdio's onboarding and Customer Success programmes accelerate the team's capability alongside the deployment.");
+  }
+  if (blockers.includes("multi_cloud")) {
+    signals.caution.push("Multi-cloud requirement:Nerdio addresses the Azure portion of your desktop estate. Where AVD or Windows 365 is in scope, Nerdio applies fully — size the ROI based on that portion. Non-Azure endpoints and workloads are outside Nerdio's scope.");
+  }
+  if (blockers.includes("no_blockers")) {
+    nScore += 8;
+    signals.positive.push("No significant blockers:Clean evaluation path. The recommended immediate action is the free 30-day Nerdio trial on Azure Marketplace — gets the platform live in your own environment before commercial discussions complete, and starts capturing baseline Azure cost data for the business case.");
+  }
+
+  /* ── Legacy platform signals ── */
+  if (platform.includes("citrix")) {
+    nScore += 4;
+    signals.positive.push(`Citrix in current estate:Nerdio includes a Citrix-to-AVD migration pathway. The competitive comparison is primarily economic — Citrix licensing on Azure versus Nerdio's per-user pricing. Multiple customers have completed Citrix-to-AVD migrations using Nerdio and reported significant cost reductions from removing the Citrix licence layer. When does your Citrix agreement renew?`);
+  }
+  if (platform.includes("omnissa")) {
+    nScore += 3;
+    signals.positive.push(`Omnissa / VMware Horizon in current estate:Post-Broadcom acquisition uncertainty has accelerated Horizon customer reviews across EMEA. Horizon's architecture was built for vSphere — on Azure, it carries the complexity of a hypervisor-native tool in a hypervisor-free cloud. Nerdio's migration tools support the Horizon-to-AVD transition path.`);
+  }
+  if (platform.includes("rds")) {
+    nScore += 6;
+    signals.positive.push(`Windows RDS in current estate:Microsoft's investment is firmly in AVD as the cloud successor to RDS. Nerdio accelerates the RDS-to-AVD transition and provides the automation and management layer that makes cloud-native delivery operationally sustainable.`);
+  }
+  if (platform.includes("w365") && !platform.includes("avd_native")) {
+    nScore += 8;
+    signals.positive.push(`Windows 365 without AVD:Nerdio NME 7.0 is built specifically for Windows 365 management at scale. Provisioning, resizing, licence usage tracking, and the TCO Analyser are all available. Many organisations running W365 only are discovering that Nerdio unlocks the management capability that makes Cloud PC sustainable as user numbers grow.`);
+  }
+  if (platform.includes("avd_native")) {
+    nScore += 10;
+    signals.positive.push(`AVD currently managed natively:This is the clearest Nerdio use case — you already have AVD, and you are experiencing the operational overhead of managing it through native Azure tooling. Nerdio directly addresses every friction point of native AVD management: auto-scaling, image lifecycle, auto-heal, unified dashboard, and Scripted Actions.`);
+  }
+  if (platform.includes("none")) {
+    nScore += 10;
+    signals.positive.push("Greenfield deployment:The cleanest Nerdio scenario. No migration risk, no parallel operation complexity. Nerdio's deployment wizard sets up a fully automated, production-ready AVD environment in hours. Deploy the right architecture from day one.");
+  }
+
+  /* ── Final verdict logic ── */
+  const pos  = signals.positive.length;
+  const caut = signals.caution.length;
+  const disq = signals.disqualify.length;
+
+  if (disq > 0 || nScore < -5)          verdict = "poor";
+  else if (scale === "under100" && caut >= 2) verdict = "marginal";
+  else if (caut >= 4 && pos <= 3)        verdict = "marginal";
+  else if (pos >= 7 && caut <= 1)        verdict = "strong";
+  else if (pos >= 4)                     verdict = "good";
+  else                                   verdict = "marginal";
+
+  /* ── Platform comparison scores ── */
+  const platScores = {
+    "AVD + Nerdio Manager": Math.max(0, Math.min(100, 48 + nScore)),
+    "Native AVD (no tooling)": Math.max(0, Math.min(100,
+      scale === "under100" ? 58 : scale === "100_500" ? 40 : 22)),
+    "Citrix DaaS": Math.max(0, Math.min(100,
+      microsoft === "non_ms" ? 65 :
+      platform.includes("citrix") && microsoft !== "all_in_avd" && microsoft !== "moving_to_avd" ? 44 : 16)),
+    "Omnissa Horizon": Math.max(0, Math.min(100,
+      platform.includes("omnissa") && microsoft === "non_ms" ? 54 : 12)),
+    "Parallels RAS": Math.max(0, Math.min(100,
+      driver === "msp" && scale === "100_500" ? 30 :
+      platform.includes("parallels") && microsoft === "non_ms" ? 38 : 10)),
+  };
+
+  return { signals, verdict, platScores };
+}
+
+/* ── Verdict definitions ── */
+const VERDICTS = {
+  strong:   { label:"Strong Fit", col:"#CDFF4E", txtCol:"#042838", icon:"✓",
+    headline:"Nerdio is a strong match for your requirements.",
+    summary: "Your environment, scale, and strategic direction align closely with Nerdio's core value proposition. The ROI case will be compelling and the path to deployment is straightforward." },
+  good:     { label:"Good Fit",   col:"#1E9DB8", txtCol:"#FFFFFF", icon:"↑",
+    headline:"Nerdio is a solid fit — with a few areas to explore.",
+    summary: "The fundamentals are right. Some considerations need working through in the evaluation, but none are blockers. The value case is real and quantifiable." },
+  marginal: { label:"Worth Exploring", col:"#f59e0b", txtCol:"#042838", icon:"~",
+    headline:"Nerdio may be a fit — but the case needs careful framing.",
+    summary: "Some aspects of your environment profile reduce the immediate ROI impact or add complexity. A focused proof of value would clarify whether the economics work in your specific context." },
+  poor:     { label:"Qualify Out",  col:"#ff4d6d", txtCol:"#FFFFFF", icon:"✕",
+    headline:"Nerdio is not the right fit for your current situation.",
+    summary: "Based on your answers, the strategic conditions for a successful Nerdio deployment are not present. Better to know now than after investing evaluation time." },
+};
+
+/* ══════════════════════ RENDER FUNCTIONS ══════════════════════ */
+
+function logoHtml(small) {
+  const h = small ? 20 : 26;
+  // Scale: icon fits within viewBox 0 0 54 23 (the glasses portion of the full 160x25 logo)
+  return `<a class="nerdio-logo" href="#" onclick="return false">
+    <svg height="${h}" viewBox="0 0 54 23" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+      <path fill="#1C9DB9" d="${NERDIO_ICON_PATH}"/>
+    </svg>
+    <span class="nerdio-wordmark">nerdio</span>
+  </a>`;
+}
+
+/* ── INTRO ── */
+function renderIntro() {
+  return `
+  <header class="hdr">
+    ${logoHtml(false)}
+    <span class="hdr-meta">Fit Qualifier</span>
+  </header>
+  <div class="intro-wrap fade-wrap">
+    <div class="card intro-card">
+      <div class="intro-bigicon">🎯</div>
+      <h1 class="intro-h1">Is Nerdio the <em>Right Fit</em> for You?</h1>
+      <div class="intro-accent"></div>
+      <p class="intro-p">8 questions about your current environment, active pain points, and strategic direction — then a clear qualification verdict with scored platform comparison, prioritised signals, and specific next steps.</p>
+      <p class="intro-timing">4 – 6 minutes &nbsp;·&nbsp; Navigate freely between questions at any time</p>
+      <div class="intro-tiles">
+        <div class="intro-tile">
+          <div class="intro-tile-icon">📊</div>
+          <div class="intro-tile-title">Platform Comparison</div>
+          <div class="intro-tile-sub">Scored across AVD + Nerdio, Native AVD, Citrix, Omnissa, and Parallels</div>
+        </div>
+        <div class="intro-tile">
+          <div class="intro-tile-icon">🔍</div>
+          <div class="intro-tile-title">Priority-Weighted Signals</div>
+          <div class="intro-tile-sub">Severity rating on challenges, multi-select on environment details</div>
+        </div>
+        <div class="intro-tile">
+          <div class="intro-tile-icon">🗺</div>
+          <div class="intro-tile-title">Clear Next Steps</div>
+          <div class="intro-tile-sub">Specific, sequenced actions based on your qualification profile</div>
+        </div>
+      </div>
+      <button class="btn-primary" id="btn-start" style="font-size:15px;padding:14px 52px;">Start the Qualification →</button>
+      <p class="intro-note">Built from Nerdio's official product documentation, pricing, and customer case studies</p>
+    </div>
+  </div>`;
+}
+
+/* ── QUESTIONS ── */
+function renderQuestions() {
+  const q   = QUESTIONS[state.currentQ];
+  const tot = QUESTIONS.length;
+  const ans = countAnswered();
+  const pct = (ans / tot) * 100;
+  const sel = getSelectedIds(q.id);
+  const twoCol = q.options && q.options.length > 5 && q.type !== "ranked";
+
+  /* Jump panel */
+  const jumpHtml = state.showJump ? `
+    <div class="jump-panel">
+      <div class="jump-eyebrow">Jump to question</div>
+      <div class="jump-dots">
+        ${QUESTIONS.map((qq, i) => {
+          const done = isQAnswered(qq.id);
+          const cls  = i === state.currentQ ? "active" : done ? "done" : "";
+          return `<button class="jump-dot ${cls}" data-jump="${i}" title="${qq.section}">${done && i !== state.currentQ ? "✓" : i+1}</button>`;
+        }).join("")}
+      </div>
+      <div class="jump-names">
+        ${QUESTIONS.map((qq, i) => `<button data-jump="${i}" class="${i === state.currentQ ? "cur" : ""}">${i+1}. ${qq.section}</button>`).join("")}
+      </div>
+    </div>` : "";
+
+  /* Options — severity matrix or standard */
+  let mainContent;
+  if (q.type === "severity") {
+    const sevState = state.answers[q.id] || {};
+    const sevRows = q.areas.map(area => {
+      const cur = sevState[area.id] || "";
+      const hasRating = cur === "some" || cur === "major";
+      return `<div class="sev-row${hasRating ? " has-rating" : ""}">
+        <div class="sev-label">
+          <span class="sev-label-icon">${area.icon}</span>
+          <div class="sev-label-text">
+            <div class="sev-label-title">${area.label}</div>
+            <div class="sev-label-sub">${area.sub}</div>
+          </div>
+        </div>
+        <div class="sev-cell">
+          <button class="sev-btn${cur === "none" ? " active-none" : ""}" data-sev-id="${area.id}" data-sev-val="none"></button>
+        </div>
+        <div class="sev-cell">
+          <button class="sev-btn${cur === "some" ? " active-some" : ""}" data-sev-id="${area.id}" data-sev-val="some"></button>
+        </div>
+        <div class="sev-cell">
+          <button class="sev-btn${cur === "major" ? " active-major" : ""}" data-sev-id="${area.id}" data-sev-val="major"></button>
+        </div>
+      </div>`;
+    }).join("");
+    mainContent = `
+      <div class="sev-header">
+        <div class="sev-header-cell">Challenge area</div>
+        <div class="sev-header-cell h-none">Not an issue</div>
+        <div class="sev-header-cell h-some">Sometimes</div>
+        <div class="sev-header-cell h-major">Major pain</div>
+      </div>
+      ${sevRows}`;
+  } else {
+    const optsHtml = q.options.map(opt => {
+      const isSel = sel.includes(opt.id);
+      const shape = q.type === "single" ? "ci" : "sq";
+      const checkHtml = `<div class="opt-check ${shape}">${isSel ? "✓" : ""}</div>`;
+      return `
+      <button class="opt${isSel ? " selected" : ""}" data-opt="${opt.id}">
+        <span class="opt-icon">${opt.icon}</span>
+        <div class="opt-body">
+          <div class="opt-label">${opt.label}</div>
+          <div class="opt-sub">${opt.sub}</div>
+        </div>
+        ${checkHtml}
+      </button>`;
+    }).join("");
+    mainContent = `<div class="opts${twoCol ? " two-col" : ""}">${optsHtml}</div>`;
+  }
+
+  const isCurAnswered = isQAnswered(q.id);
+  const isLast = state.currentQ === tot - 1;
+
+  return `
+  <header class="hdr">
+    ${logoHtml(true)}
+    <div class="hdr-right">
+      <button class="btn-sm" id="btn-jump">${state.showJump ? "Close" : "Jump To"}</button>
+      <button class="btn-sm" id="btn-see-results">See Results</button>
+    </div>
+  </header>
+  ${jumpHtml}
+  <div class="prog-wrap"><div class="prog-fill" style="width:${pct}%"></div></div>
+  <div class="prog-meta"><span>${q.section}</span><span>${ans} / ${tot} answered</span></div>
+
+  <div class="card fade-wrap">
+    <div class="q-eyebrow"><span>${q.icon}</span><span>Question ${state.currentQ + 1} of ${tot}</span></div>
+    <h2 class="q-title">${q.title}</h2>
+    <p class="q-sub">${q.subtitle}</p>
+    ${q.type === "multi" ? '<p class="q-hint">Select all that apply</p>' : ""}
+    ${mainContent}
+    <div class="nav-row">
+      <button class="btn-secondary" id="btn-back">← Back</button>
+      ${q.type === "multi" || q.type === "severity"
+        ? `<button class="btn-primary${q.type === "multi" && !isCurAnswered ? " dim" : ""}" id="btn-next">${isLast ? "See Results →" : "Continue →"}</button>`
+        : `<button class="btn-ghost" id="btn-skip">Skip this question</button>`}
+    </div>
+  </div>
+  <div class="dot-trail">
+    ${QUESTIONS.map((qq, i) => {
+      const done = isQAnswered(qq.id);
+      const cls  = i === state.currentQ ? "active" : done ? "done" : "";
+      return `<button class="${cls}" data-jump="${i}" title="${qq.section}"></button>`;
+    }).join("")}
+  </div>`;
+}
+
+/* ── RESULTS ── */
+function renderResults() {
+  const r = scoreAnswers(state.answers, state.priorities);
+  const v = VERDICTS[r.verdict];
+  const sorted = Object.entries(r.platScores).sort((a, b) => b[1] - a[1]);
+  const topPlat = sorted[0][0];
+
+  function sigPanelHtml(items, col, label, icon, bgOp) {
+    if (!items.length) return "";
+    const titleColMap = { "#1E9DB8":"#4fb8ce", "#CDFF4E":"#a8e63a", "#ff4d6d":"#ff8899", "#f59e0b":"#fcd34d" };
+    const titCol = titleColMap[col] || col;
+    const itemsHtml = items.map(sig => {
+      const ci = sig.indexOf(":");
+      const title = ci > -1 ? sig.slice(0, ci) : sig;
+      const body  = ci > -1 ? sig.slice(ci + 1).trim() : "";
+      // Check if title contains priority info
+      const hasPrio = title.includes("Priority");
+      return `<div class="sig-item" style="border-left-color:${col}">
+        ${hasPrio ? `<div class="sig-prio">${title.match(/\(Priority (\d)\)/)?.[0] || ""}</div>` : ""}
+        <div class="sig-title" style="color:${titCol}">${title.replace(/\s*\(Priority \d\)/,"")}</div>
+        ${body ? `<div class="sig-body">${body}</div>` : ""}
+      </div>`;
+    }).join("");
+    return `
+    <div class="sig-panel" style="background:${col}${bgOp||"12"};border-color:${col}30">
+      <div class="sig-ey" style="color:${col}">${icon} ${label} (${items.length})</div>
+      <div class="sig-list">${itemsHtml}</div>
+    </div>`;
+  }
+
+  const isPoor = r.verdict === "poor";
+  const stepsData = isPoor ? [
+    { icon:"🗺", title:"Revisit If Platform Direction Changes",   body:"If the organisation moves toward AVD or Windows 365 as the strategic platform, Nerdio becomes an immediate fit. Keep this evaluation on file.", tag:"Future", col:"#8fa8b2" },
+    { icon:"📊", title:"Use the Free Nerdio AVD Modeler",         body:"Even without a current project, the free AVD Cost Modeler at nmeadvisor.getnerdio.com quantifies what AVD would look like — useful for future planning.", tag:"Anytime", col:"#1E9DB8" },
+  ] : [
+    { icon:"🚀", title:"Start the 30-Day Free Trial",             body:"Deploy Nerdio Manager via Azure Marketplace at zero licence cost. Gets the platform live in your own Azure subscription before commercial conversations complete — critical for real baseline data.", tag:"Immediate", col:"#CDFF4E" },
+    { icon:"📊", title:"Capture Baseline Azure Cost Data",         body:"Export 4 weeks of Azure compute spend from Azure Cost Management before enabling auto-scaling. This becomes the 'before' benchmark for your ROI business case.", tag:"Week 1", col:"#1E9DB8" },
+    { icon:"⚡", title:"Enable Auto-Scaling on a Pilot Host Pool", body:"Configure auto-scaling for a single host pool and run for 2 weeks. Compare Azure Cost Management data before and after. This single data set typically proves the entire business case.", tag:"Week 2–3", col:"#1E9DB8" },
+    { icon:"📋", title:"Build the Business Case from POV Data",    body:"Use the Nerdio Advisor TCO Analyser and 4-week POV data to build a CFO-ready summary. Nerdio's team can support the business case preparation with benchmarks.", tag:"Week 4", col:"#A795C7" },
+  ];
+
+  const stepsHtml = stepsData.map(st => `
+    <div class="step-card">
+      <div class="step-top">
+        <span class="step-icon">${st.icon}</span>
+        <span class="step-tag" style="color:${st.col};border-color:${st.col}44;background:${st.col}18">${st.tag}</span>
+      </div>
+      <div class="step-title">${st.title}</div>
+      <div class="step-body">${st.body}</div>
+    </div>`).join("");
+
+  const barsHtml = sorted.map(([plat, score], i) => {
+    const isNerdio = plat.includes("Nerdio");
+    const isTop = i === 0;
+    const barBg = isNerdio
+      ? "linear-gradient(90deg,#1E9DB8,#CDFF4E)"
+      : isTop ? "#156e80" : "#2e5060";
+    return `
+    <div class="score-row">
+      <div class="score-meta">
+        <span class="score-name${isNerdio?" nerdio":""}">${isNerdio?"⭐ ":""}${plat}</span>
+        <span class="score-pct${isTop?" top":""}">${score}%</span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:${score}%;background:${barBg}"></div></div>
+    </div>`;
+  }).join("");
+
+  const sumHtml = QUESTIONS.map(qq => {
+    const ans = state.answers[qq.id];
+    if (!ans || (Array.isArray(ans) && ans.length === 0)) return "";
+    if (qq.type === "severity" && (typeof ans !== "object" || Array.isArray(ans))) return "";
+    let labels;
+    if (qq.type === "severity") {
+      const sevMap = { major: "⚠ Major pain", some: "~ Sometimes" };
+      const rated = (qq.areas || []).filter(a => ans[a.id] === "major" || ans[a.id] === "some");
+      if (!rated.length) return "";
+      labels = rated.map(a => `${a.label} (${sevMap[ans[a.id]]})`).join(", ");
+    } else if (Array.isArray(ans)) {
+      const prios = qq.type === "ranked" ? (state.priorities[qq.id] || {}) : {};
+      labels = ans.map(a => {
+        const opt = qq.options.find(o => o.id === a);
+        const p = prios[a];
+        return opt ? `${opt.label}${p ? ` [P${p}]` : ""}` : a;
+      }).join(", ");
+    } else {
+      labels = qq.options.find(o => o.id === ans)?.label || ans;
+    }
+    return `<div class="sum-item"><div class="sum-label">${qq.icon} ${qq.section}</div><div class="sum-val">${labels}</div></div>`;
+  }).join("");
+
+  return `
+  <header class="hdr">
+    ${logoHtml(true)}
+    <div class="hdr-right">
+      <button class="btn-sm" id="btn-edit">Edit Answers</button>
+      <button class="btn-sm" id="btn-restart">Start Over</button>
+    </div>
+  </header>
+  <div class="fade-wrap" style="padding-top:20px">
+
+    <!-- VERDICT BANNER -->
+    <div class="verdict-banner" style="background:${v.col}12;border-color:${v.col}">
+      <div class="v-icon" style="background:${v.col};color:${v.txtCol}">${v.icon}</div>
+      <div class="v-body">
+        <div class="v-eyebrow" style="color:${v.col}">Nerdio Qualification Result</div>
+        <div class="v-headline">${v.headline}</div>
+        <div class="v-summary">${v.summary}</div>
+      </div>
+      <div class="v-badge" style="background:${v.col};color:${v.txtCol}">${v.label}</div>
+    </div>
+
+    <!-- PLATFORM SCORES -->
+    <div class="card mt12">
+      <div class="r-eyebrow" style="color:#1E9DB8">Platform Fit Scores — Based on Your Profile</div>
+      ${barsHtml}
+    </div>
+
+    <!-- SIGNALS -->
+    <div class="signals-grid mt12">
+      <div class="sig-col">
+        ${sigPanelHtml(r.signals.positive, "#1E9DB8", "Positive Signals", "✓")}
+      </div>
+      <div class="sig-col">
+        ${sigPanelHtml(r.signals.disqualify, "#ff4d6d", "Disqualifying Factors", "✕", "0a")}
+        ${sigPanelHtml(r.signals.caution, "#f59e0b", "Considerations", "⚠")}
+      </div>
+    </div>
+
+    <!-- NEXT STEPS -->
+    <div class="steps-panel" style="background:rgba(4,40,56,0.75);border-color:rgba(205,255,78,0.25)">
+      <div class="r-eyebrow" style="color:#CDFF4E">Recommended Next Steps</div>
+      <div class="steps-grid">${stepsHtml}</div>
+    </div>
+
+    <!-- NERDIO LINKS -->
+    <div class="nerdio-strip">
+      <span class="ns-icon">🔗</span>
+      <div style="flex:1">
+        <div class="ns-title">Useful Nerdio Resources</div>
+        <div class="ns-body">Free 30-day trial available on Azure Marketplace · AVD Cost Modeler at nmeadvisor.getnerdio.com · NME Help Centre at nmehelp.getnerdio.com · NMM Help Centre at nmmhelp.getnerdio.com</div>
+        <div class="ns-link">getnerdio.com</div>
+      </div>
+    </div>
+
+    <!-- ANSWER SUMMARY -->
+    <div class="card">
+      <div class="r-eyebrow" style="color:var(--grey)">Your Answers — Summary</div>
+      <div class="sum-grid">${sumHtml}</div>
+      <button class="btn-secondary mt16" id="btn-edit2">← Edit Answers</button>
+    </div>
+
+  </div>`;
+}
+
+/* ══════════════════════ RENDER + EVENTS ══════════════════════ */
+function render() {
+  const app = document.getElementById("app");
+  if (state.step === "intro")     app.innerHTML = renderIntro();
+  else if (state.step === "questions") app.innerHTML = renderQuestions();
+  else if (state.step === "results")   app.innerHTML = renderResults();
+  attachEvents();
+}
+
+function attachEvents() {
+  /* Intro */
+  const btnStart = document.getElementById("btn-start");
+  if (btnStart) btnStart.addEventListener("click", () => fade(() => { state.step = "questions"; }));
+
+  /* Questions nav */
+  const btnBack = document.getElementById("btn-back");
+  if (btnBack) btnBack.addEventListener("click", () => {
+    fade(() => { if (state.currentQ > 0) state.currentQ--; else state.step = "intro"; });
+  });
+
+  const btnNext = document.getElementById("btn-next");
+  if (btnNext) {
+    btnNext.addEventListener("click", () => {
+      if (btnNext.classList.contains("dim")) return; // answered check is visual only
+      fade(() => {
+        if (state.currentQ < QUESTIONS.length - 1) state.currentQ++;
+        else state.step = "results";
+      });
+    });
+  }
+
+  const btnSkip = document.getElementById("btn-skip");
+  if (btnSkip) btnSkip.addEventListener("click", () => {
+    fade(() => {
+      if (state.currentQ < QUESTIONS.length - 1) state.currentQ++;
+      else state.step = "results";
+    });
+  });
+
+  const btnJump = document.getElementById("btn-jump");
+  if (btnJump) btnJump.addEventListener("click", () => { state.showJump = !state.showJump; render(); });
+
+  const btnSeeResults = document.getElementById("btn-see-results");
+  if (btnSeeResults) btnSeeResults.addEventListener("click", () => fade(() => { state.step = "results"; }));
+
+  /* Option clicks — standard questions */
+  const q = state.step === "questions" ? QUESTIONS[state.currentQ] : null;
+  if (q && q.type !== "severity") {
+    document.querySelectorAll(".opt").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        const optId = btn.dataset.opt;
+
+        if (q.type === "single") {
+          state.answers[q.id] = optId;
+          setTimeout(() => {
+            fade(() => {
+              if (state.currentQ < QUESTIONS.length - 1) state.currentQ++;
+              else state.step = "results";
+            });
+          }, 160);
+        } else {
+          /* multi — toggle */
+          let cur = state.answers[q.id] || [];
+          if (!Array.isArray(cur)) cur = [cur];
+          const exclusive = (optId === "none" || optId === "no_blockers");
+          if (exclusive) {
+            state.answers[q.id] = cur.includes(optId) ? [] : [optId];
+          } else {
+            const filtered = cur.filter(x => x !== "none" && x !== "no_blockers");
+            if (filtered.includes(optId)) {
+              state.answers[q.id] = filtered.filter(x => x !== optId);
+            } else {
+              state.answers[q.id] = [...filtered, optId];
+            }
+          }
+          render(); attachEvents();
+        }
+      });
+    });
+  }
+
+  /* Severity button clicks — event delegation to avoid re-attachment issues */
+  if (q && q.type === "severity") {
+    const app = document.getElementById("app");
+    if (app && !app._sevListenerAttached) {
+      app._sevListenerAttached = true;
+      app.addEventListener("click", function(e) {
+        const btn = e.target.closest ? e.target.closest(".sev-btn") : null;
+        if (!btn) return;
+        if (state.step !== "questions") return;
+        const curQ = QUESTIONS[state.currentQ];
+        if (!curQ || curQ.type !== "severity") return;
+        const id  = btn.dataset.sevId;
+        const val = btn.dataset.sevVal;
+        if (!id || !val) return;
+        if (!state.answers[curQ.id]) state.answers[curQ.id] = {};
+        if (state.answers[curQ.id][id] === val) {
+          delete state.answers[curQ.id][id];
+        } else {
+          state.answers[curQ.id][id] = val;
+        }
+        render();
+      });
+    }
+  }
+
+  /* Jump buttons */
+  document.querySelectorAll("[data-jump]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const idx = parseInt(btn.dataset.jump);
+      fade(() => { state.currentQ = idx; state.step = "questions"; state.showJump = false; });
+    });
+  });
+
+  /* Results buttons */
+  const btnEdit  = document.getElementById("btn-edit");
+  const btnEdit2 = document.getElementById("btn-edit2");
+  if (btnEdit)  btnEdit.addEventListener("click",  () => fade(() => { state.step = "questions"; }));
+  if (btnEdit2) btnEdit2.addEventListener("click", () => fade(() => { state.step = "questions"; }));
+
+  const btnRestart = document.getElementById("btn-restart");
+  if (btnRestart) btnRestart.addEventListener("click", () => {
+    fade(() => { state.answers = {}; state.priorities = {}; state.currentQ = 0; state.step = "intro"; state.showJump = false; });
+  });
+}
+
+/* Boot */
+render();
+</script>
+</body>
+</html>

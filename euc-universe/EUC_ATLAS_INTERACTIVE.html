@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The EUC Atlas — Interactive Prototype</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0B1929; --surface:#112240; --elevated:#1A3050;
+  --teal:#1E9DB8; --green:#CDFF4E; --purple:#A795C7; --orange:#FF8C42;
+  --L1:#B0BEC5; --L2:#42A5F5; --L3:#AB47BC; --L4:#66BB6A;
+  --L5:#26C6DA; --L6:#FFA726; --L7:#1565C0; --L8:#EC407A; --L9:#78909C;
+  --era1:#78909C; --era2:#42A5F5; --era3:#AB47BC; --era4:#FFA726;
+  --era5:#26C6DA; --era6:#66BB6A; --era7:#CDFF4E;
+  --t1:rgba(255,255,255,0.9); --t2:rgba(255,255,255,0.55); --t3:rgba(255,255,255,0.3);
+  --b1:rgba(255,255,255,0.06); --b2:rgba(255,255,255,0.12);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);font-size:15px;line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:999;background:rgba(11,25,41,0.95);backdrop-filter:blur(24px);border-bottom:1px solid var(--b1);}
+.nav-inner{display:flex;max-width:1400px;margin:0 auto;padding:0 20px;overflow-x:auto;scrollbar-width:none;}
+.nav-inner::-webkit-scrollbar{display:none;}
+.nav a{padding:14px 16px;font-size:10.5px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--t3);text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent;transition:all 0.2s;}
+.nav a:hover{color:var(--t1);}
+.nav a.active{color:var(--teal);border-bottom-color:var(--teal);}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 28px;position:relative;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(30,157,184,0.09) 0%,transparent 70%),var(--bg);}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(30,157,184,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(30,157,184,0.025) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;}
+.eyebrow{font-size:10px;font-weight:800;letter-spacing:0.4em;text-transform:uppercase;color:var(--teal);margin-bottom:32px;position:relative;}
+.hero h1{font-size:clamp(38px,6vw,76px);font-weight:900;line-height:1.05;margin-bottom:20px;position:relative;}
+.hero h1 .accent{display:block;background:linear-gradient(90deg,var(--teal),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-size:16px;font-weight:300;color:var(--t2);max-width:640px;line-height:1.8;position:relative;margin-bottom:40px;}
+.scroll-cue{color:var(--t3);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;animation:bob 2.5s ease-in-out infinite;position:relative;}
+.scroll-cue svg{display:block;margin:8px auto 0;width:20px;height:20px;}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+
+/* ── SECTIONS ── */
+.sec{max-width:1400px;margin:0 auto;padding:96px 28px;}
+.sec-head{margin-bottom:56px;padding-bottom:32px;border-bottom:1px solid var(--b1);}
+.sec-num{font-size:10px;font-weight:800;letter-spacing:0.35em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;}
+.sec-title{font-size:clamp(26px,3.5vw,40px);font-weight:800;line-height:1.15;margin-bottom:10px;}
+.sec-sub{font-size:15px;color:var(--t2);max-width:680px;line-height:1.75;}
+.divider{border:none;height:1px;background:linear-gradient(90deg,transparent,var(--b2),transparent);}
+
+/* ── FADE IN ── */
+.fi{opacity:0;transform:translateY(20px);transition:opacity 0.6s ease,transform 0.6s ease;}
+.fi.vis{opacity:1;transform:translateY(0);}
+.fi.d1{transition-delay:0.07s;}.fi.d2{transition-delay:0.14s;}.fi.d3{transition-delay:0.21s;}
+
+/* ══════════════════════════════════════════
+   UNIVERSE MAP — Interactive SVG Layers
+   ══════════════════════════════════════════ */
+.universe-wrap{position:relative;margin:32px 0;}
+.universe-svg{width:100%;height:auto;display:block;}
+.universe-svg .layer-bg{cursor:pointer;transition:opacity 0.2s;}
+.universe-svg .layer-bg:hover{opacity:0.85;}
+.universe-svg text{font-family:'Inter',sans-serif;pointer-events:none;}
+
+/* Detail panel */
+.layer-detail{position:fixed;top:0;right:-480px;width:480px;height:100vh;background:var(--surface);border-left:1px solid var(--b2);z-index:1000;transition:right 0.35s cubic-bezier(0.4,0,0.2,1);overflow-y:auto;padding:40px 32px;}
+.layer-detail.open{right:0;}
+.layer-detail-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:8px;border:1px solid var(--b2);background:transparent;color:var(--t2);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.layer-detail-close:hover{background:rgba(255,255,255,0.05);color:var(--t1);}
+.layer-detail .ld-color{width:48px;height:6px;border-radius:3px;margin-bottom:20px;}
+.layer-detail h2{font-size:22px;font-weight:800;margin-bottom:8px;}
+.layer-detail .ld-desc{font-size:14px;color:var(--t2);line-height:1.75;margin-bottom:24px;}
+.layer-detail h4{font-size:10px;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:var(--t3);margin-bottom:10px;}
+.layer-detail ul{list-style:none;margin-bottom:24px;}
+.layer-detail ul li{font-size:13px;color:var(--t2);line-height:1.7;padding:4px 0 4px 16px;position:relative;}
+.layer-detail ul li::before{content:'';position:absolute;left:0;top:12px;width:6px;height:6px;border-radius:50%;}
+.layer-detail .ld-pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px;}
+.layer-detail .ld-pill{padding:4px 12px;font-size:11px;font-weight:600;border-radius:100px;border:1px solid;background:transparent;}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.overlay.open{opacity:1;pointer-events:auto;}
+
+/* ══════════════════════════════════════════
+   ARCHITECTURE — Interactive Flow
+   ══════════════════════════════════════════ */
+.arch-svg{width:100%;max-width:900px;margin:40px auto;display:block;height:auto;}
+.arch-svg .arch-node-g{cursor:pointer;transition:transform 0.15s;}
+.arch-svg .arch-node-g:hover{transform:translateY(-2px);}
+.arch-svg text{font-family:'Inter',sans-serif;}
+
+/* Tooltip */
+.arch-tip{position:fixed;background:var(--elevated);border:1px solid var(--b2);border-radius:12px;padding:16px 20px;max-width:320px;z-index:1001;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity 0.2s,transform 0.2s;}
+.arch-tip.show{opacity:1;transform:translateY(0);}
+.arch-tip h4{font-size:13px;font-weight:700;margin-bottom:4px;}
+.arch-tip p{font-size:12px;color:var(--t2);line-height:1.6;}
+
+/* ══════════════════════════════════════════
+   TIMELINE — Horizontal Scroll
+   ══════════════════════════════════════════ */
+.timeline-container{position:relative;overflow-x:auto;padding:20px 0 40px;scrollbar-width:thin;scrollbar-color:var(--b2) transparent;}
+.timeline-svg{display:block;min-width:1300px;height:520px;}
+.timeline-svg .era-zone{cursor:pointer;}
+.timeline-svg .era-zone:hover .era-bg{opacity:0.12;}
+.timeline-svg .era-bg{opacity:0;transition:opacity 0.25s;}
+.timeline-svg text{font-family:'Inter',sans-serif;}
+
+/* Era detail card */
+.era-detail{max-height:0;overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s;opacity:0;margin:0 auto;max-width:900px;}
+.era-detail.open{max-height:600px;opacity:1;}
+.era-detail-inner{background:rgba(0,0,0,0.3);border:1px solid var(--b2);border-radius:16px;padding:28px 32px;margin:20px 0;}
+.era-detail-inner h3{font-size:18px;font-weight:800;margin-bottom:12px;}
+.era-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+@media(max-width:640px){.era-detail-grid{grid-template-columns:1fr;}}
+.era-detail-card{background:rgba(255,255,255,0.02);border:1px solid var(--b1);border-radius:10px;padding:16px;}
+.era-detail-card .edc-label{font-size:9px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:var(--t3);margin-bottom:6px;}
+.era-detail-card p{font-size:13px;color:var(--t2);line-height:1.7;}
+
+/* ══════════════════════════════════════════
+   VENDOR LANDSCAPE — Interactive Clusters
+   ══════════════════════════════════════════ */
+.vendor-filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;}
+.vendor-filters button{padding:6px 16px;font-size:11px;font-weight:700;letter-spacing:0.06em;border-radius:100px;border:1px solid var(--b2);background:transparent;color:var(--t2);cursor:pointer;transition:all 0.2s;font-family:inherit;}
+.vendor-filters button:hover{border-color:var(--teal);color:var(--teal);}
+.vendor-filters button.active{background:var(--teal);border-color:var(--teal);color:var(--bg);}
+.vendor-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+@media(max-width:900px){.vendor-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.vendor-grid{grid-template-columns:1fr;}}
+.vendor-cluster{background:rgba(0,0,0,0.25);border:1px solid var(--b1);border-radius:14px;padding:20px;transition:all 0.3s ease;opacity:1;transform:scale(1);}
+.vendor-cluster.hidden{opacity:0;transform:scale(0.95);pointer-events:none;position:absolute;visibility:hidden;}
+.vendor-cluster .vc-label{font-size:9px;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--b1);}
+.vendor-cluster .vc-pills{display:flex;flex-wrap:wrap;gap:5px;}
+.vendor-cluster .vp{padding:4px 11px;font-size:11px;font-weight:500;border-radius:100px;background:rgba(255,255,255,0.03);border:1px solid var(--b1);color:var(--t1);cursor:default;transition:all 0.15s;}
+.vendor-cluster .vp:hover{border-color:var(--b2);transform:translateY(-1px);}
+.vendor-cluster .vp.lead{font-weight:700;}
+.vendor-cluster .vp.dead{opacity:0.35;text-decoration:line-through;}
+
+/* ══════════════════════════════════════════
+   CHARTS — SVG Animated
+   ══════════════════════════════════════════ */
+.chart-wrap{max-width:900px;margin:40px auto;}
+.chart-wrap svg{width:100%;height:auto;display:block;}
+.chart-wrap svg text{font-family:'Inter',sans-serif;}
+.chart-wrap svg .chart-line{stroke-dasharray:1000;stroke-dashoffset:1000;transition:stroke-dashoffset 1.5s ease;}
+.chart-wrap svg .chart-line.drawn{stroke-dashoffset:0;}
+.chart-wrap svg .chart-dot{opacity:0;transition:opacity 0.3s;transition-delay:1.2s;}
+.chart-wrap svg .chart-dot.drawn{opacity:1;}
+.chart-label-box{display:flex;justify-content:center;gap:28px;margin-top:16px;}
+.chart-legend{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--t2);}
+.chart-legend-dot{width:12px;height:12px;border-radius:3px;}
+
+/* ══════════════════════════════════════════
+   FUTURE — Expandable Cards
+   ══════════════════════════════════════════ */
+.future-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:700px){.future-grid{grid-template-columns:1fr;}}
+.future-card{background:rgba(255,255,255,0.02);border:1px solid var(--b1);border-radius:14px;overflow:hidden;cursor:pointer;transition:border-color 0.2s;}
+.future-card:hover{border-color:var(--b2);}
+.future-card.span{grid-column:span 2;}
+@media(max-width:700px){.future-card.span{grid-column:span 1;}}
+.fc-header{padding:22px 24px;display:flex;align-items:center;gap:14px;}
+.fc-num{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0;}
+.fc-title{font-size:15px;font-weight:700;flex:1;}
+.fc-chevron{width:20px;height:20px;transition:transform 0.3s;color:var(--t3);}
+.future-card.open .fc-chevron{transform:rotate(180deg);}
+.fc-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease;}
+.future-card.open .fc-body{max-height:300px;}
+.fc-body-inner{padding:0 24px 24px;font-size:13px;color:var(--t2);line-height:1.75;}
+
+/* ── Footer ── */
+footer{text-align:center;padding:48px 28px;border-top:1px solid var(--b1);font-size:12px;color:var(--t3);}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#hero">Home</a>
+    <a href="#universe">Universe Map</a>
+    <a href="#arch">Architecture</a>
+    <a href="#timeline">Timeline</a>
+    <a href="#vendors">Vendors</a>
+    <a href="#complexity">Complexity</a>
+    <a href="#future">Future</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="hero">
+  <div class="hero-grid"></div>
+  <p class="eyebrow">Interactive Prototype</p>
+  <h1>The EUC<br><span class="accent">Atlas</span></h1>
+  <p class="hero-sub">Navigate the complete End User Computing ecosystem. Click any layer, node, or era to explore. Every diagram is interactive.</p>
+  <div class="scroll-cue">Scroll to explore<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+</section>
+
+
+<!-- ═══ UNIVERSE MAP ═══ -->
+<hr class="divider">
+<div class="sec" id="universe">
+  <div class="sec-head fi">
+    <div class="sec-num">01 &middot; Universe Map</div>
+    <h2 class="sec-title">The EUC Universe</h2>
+    <p class="sec-sub">Click any layer to explore its capabilities, vendor ecosystem, and relationships. The panel reveals full detail for each functional domain.</p>
+  </div>
+
+  <div class="universe-wrap fi d1">
+    <svg class="universe-svg" viewBox="0 0 1200 680" xmlns="http://www.w3.org/2000/svg">
+      <!-- Background -->
+      <defs>
+        <filter id="glow"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+
+      <!-- Layer bands -->
+      <g class="layer-bg" data-layer="0" onclick="openLayer(0)">
+        <rect x="0" y="0" width="1200" height="68" rx="8" fill="#B0BEC5" opacity="0.08"/>
+        <rect x="0" y="0" width="6" height="68" rx="3" fill="#B0BEC5" opacity="0.6"/>
+        <text x="24" y="28" fill="#B0BEC5" font-size="11" font-weight="800" letter-spacing="0.12em" text-transform="uppercase">USERS / WORKLOADS</text>
+        <text x="24" y="48" fill="rgba(255,255,255,0.45)" font-size="11">Employees, contractors, AI agents, task workers</text>
+        <text x="900" y="38" fill="rgba(255,255,255,0.3)" font-size="10" text-anchor="start">HR/IAM systems &middot; Persona routing &middot; Workload classification</text>
+        <text x="1180" y="38" fill="#B0BEC5" font-size="10" font-weight="700" text-anchor="end" opacity="0.5">CLICK &rarr;</text>
+      </g>
+
+      <g class="layer-bg" data-layer="1" onclick="openLayer(1)">
+        <rect x="0" y="72" width="1200" height="68" rx="8" fill="#42A5F5" opacity="0.08"/>
+        <rect x="0" y="72" width="6" height="68" rx="3" fill="#42A5F5" opacity="0.6"/>
+        <text x="24" y="100" fill="#42A5F5" font-size="11" font-weight="800" letter-spacing="0.12em">DEVICES</text>
+        <text x="24" y="120" fill="rgba(255,255,255,0.45)" font-size="11">PCs, Macs, thin clients, browsers, mobile</text>
+        <text x="900" y="110" fill="rgba(255,255,255,0.3)" font-size="10">Surface &middot; Dell &middot; HP &middot; Lenovo &middot; Apple &middot; IGEL &middot; 10ZiG</text>
+      </g>
+
+      <g class="layer-bg" data-layer="2" onclick="openLayer(2)">
+        <rect x="0" y="144" width="1200" height="68" rx="8" fill="#AB47BC" opacity="0.08"/>
+        <rect x="0" y="144" width="6" height="68" rx="3" fill="#AB47BC" opacity="0.6"/>
+        <text x="24" y="172" fill="#AB47BC" font-size="11" font-weight="800" letter-spacing="0.12em">IDENTITY &amp; SECURITY</text>
+        <text x="24" y="192" fill="rgba(255,255,255,0.45)" font-size="11">Zero Trust perimeter — Entra ID, Conditional Access, MFA, SASE</text>
+        <text x="900" y="182" fill="rgba(255,255,255,0.3)" font-size="10">Entra ID &middot; Okta &middot; Zscaler &middot; Palo Alto &middot; Cloudflare</text>
+      </g>
+
+      <g class="layer-bg" data-layer="3" onclick="openLayer(3)">
+        <rect x="0" y="216" width="1200" height="68" rx="8" fill="#66BB6A" opacity="0.08"/>
+        <rect x="0" y="216" width="6" height="68" rx="3" fill="#66BB6A" opacity="0.6"/>
+        <text x="24" y="244" fill="#66BB6A" font-size="11" font-weight="800" letter-spacing="0.12em">DESKTOP PLATFORMS</text>
+        <text x="24" y="264" fill="rgba(255,255,255,0.45)" font-size="11">Cloud desktop hosting — AVD, Windows 365, Citrix DaaS, Omnissa</text>
+        <text x="900" y="254" fill="rgba(255,255,255,0.3)" font-size="10">Azure Virtual Desktop &middot; Windows 365 &middot; Citrix &middot; Omnissa</text>
+      </g>
+
+      <g class="layer-bg" data-layer="4" onclick="openLayer(4)">
+        <rect x="0" y="288" width="1200" height="68" rx="8" fill="#26C6DA" opacity="0.10"/>
+        <rect x="0" y="288" width="6" height="68" rx="3" fill="#26C6DA" opacity="0.8"/>
+        <text x="24" y="316" fill="#26C6DA" font-size="11" font-weight="800" letter-spacing="0.12em">OPERATIONS &amp; AUTOMATION</text>
+        <text x="24" y="336" fill="rgba(255,255,255,0.45)" font-size="11">Auto-scaling, cost optimisation, provisioning, image lifecycle</text>
+        <text x="900" y="326" fill="rgba(255,255,255,0.3)" font-size="10">Nerdio NME &middot; Nerdio NMM &middot; Terraform &middot; Bicep &middot; PowerShell</text>
+      </g>
+
+      <g class="layer-bg" data-layer="5" onclick="openLayer(5)">
+        <rect x="0" y="360" width="1200" height="68" rx="8" fill="#FFA726" opacity="0.08"/>
+        <rect x="0" y="360" width="6" height="68" rx="3" fill="#FFA726" opacity="0.6"/>
+        <text x="24" y="388" fill="#FFA726" font-size="11" font-weight="800" letter-spacing="0.12em">APPLICATION DELIVERY</text>
+        <text x="24" y="408" fill="rgba(255,255,255,0.45)" font-size="11">MSIX App Attach, app layering, SaaS, virtualisation</text>
+        <text x="900" y="398" fill="rgba(255,255,255,0.3)" font-size="10">MSIX &middot; App Volumes &middot; Citrix Layering &middot; Rimo3 &middot; Liquidware</text>
+      </g>
+
+      <g class="layer-bg" data-layer="6" onclick="openLayer(6)">
+        <rect x="0" y="432" width="1200" height="68" rx="8" fill="#1565C0" opacity="0.08"/>
+        <rect x="0" y="432" width="6" height="68" rx="3" fill="#1565C0" opacity="0.6"/>
+        <text x="24" y="460" fill="#1565C0" font-size="11" font-weight="800" letter-spacing="0.12em">ENDPOINT MANAGEMENT</text>
+        <text x="24" y="480" fill="rgba(255,255,255,0.45)" font-size="11">Configuration, compliance, patching, lifecycle management</text>
+        <text x="900" y="470" fill="rgba(255,255,255,0.3)" font-size="10">Intune &middot; Config Manager &middot; Jamf &middot; Workspace ONE &middot; Tanium</text>
+      </g>
+
+      <g class="layer-bg" data-layer="7" onclick="openLayer(7)">
+        <rect x="0" y="504" width="1200" height="68" rx="8" fill="#EC407A" opacity="0.08"/>
+        <rect x="0" y="504" width="6" height="68" rx="3" fill="#EC407A" opacity="0.6"/>
+        <text x="24" y="532" fill="#EC407A" font-size="11" font-weight="800" letter-spacing="0.12em">DIGITAL EMPLOYEE EXPERIENCE</text>
+        <text x="24" y="552" fill="rgba(255,255,255,0.45)" font-size="11">Session quality, login times, app responsiveness, experience scoring</text>
+        <text x="900" y="542" fill="rgba(255,255,255,0.3)" font-size="10">ControlUp &middot; Nexthink &middot; Lakeside &middot; Rimo3 &middot; 1E</text>
+      </g>
+
+      <g class="layer-bg" data-layer="8" onclick="openLayer(8)">
+        <rect x="0" y="576" width="1200" height="68" rx="8" fill="#78909C" opacity="0.08"/>
+        <rect x="0" y="576" width="6" height="68" rx="3" fill="#78909C" opacity="0.6"/>
+        <text x="24" y="604" fill="#78909C" font-size="11" font-weight="800" letter-spacing="0.12em">INFRASTRUCTURE</text>
+        <text x="24" y="624" fill="rgba(255,255,255,0.45)" font-size="11">Azure compute, storage, networking, GPU, reserved instances</text>
+        <text x="900" y="614" fill="rgba(255,255,255,0.3)" font-size="10">Azure &middot; AWS &middot; GCP &middot; Azure Stack HCI &middot; Azure Local</text>
+      </g>
+
+      <!-- Flow arrows (right side) -->
+      <g opacity="0.25">
+        <line x1="1190" y1="68" x2="1190" y2="644" stroke="url(#flowGrad)" stroke-width="2"/>
+        <defs><linearGradient id="flowGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#B0BEC5"/><stop offset="50%" stop-color="#26C6DA"/><stop offset="100%" stop-color="#78909C"/></linearGradient></defs>
+        <polygon points="1186,644 1190,652 1194,644" fill="#78909C" opacity="0.4"/>
+      </g>
+
+      <!-- DEX monitoring span (dotted line) -->
+      <line x1="16" y1="538" x2="16" y2="68" stroke="#EC407A" stroke-width="1" stroke-dasharray="4 4" opacity="0.25"/>
+
+    </svg>
+  </div>
+</div>
+
+<!-- Layer detail panel + overlay -->
+<div class="overlay" id="overlay" onclick="closeLayer()"></div>
+<div class="layer-detail" id="layerDetail">
+  <button class="layer-detail-close" onclick="closeLayer()">&times;</button>
+  <div class="ld-color" id="ldColor"></div>
+  <h2 id="ldTitle"></h2>
+  <p class="ld-desc" id="ldDesc"></p>
+  <h4>Key Capabilities</h4>
+  <ul id="ldCaps"></ul>
+  <h4>Vendor Ecosystem</h4>
+  <div class="ld-pills" id="ldVendors"></div>
+  <h4 style="margin-top:24px;">Relationships</h4>
+  <p id="ldRels" style="font-size:13px;color:var(--t2);line-height:1.7;"></p>
+</div>
+
+
+<!-- ═══ ARCHITECTURE FLOW ═══ -->
+<hr class="divider">
+<div class="sec" id="arch">
+  <div class="sec-head fi">
+    <div class="sec-num">02 &middot; Architecture</div>
+    <h2 class="sec-title">Cloud Desktop Architecture</h2>
+    <p class="sec-sub">Hover over any node for detail. The flow shows how a user request traverses from device through identity, platform, operations, and down to infrastructure.</p>
+  </div>
+
+  <div class="fi d1">
+    <svg class="arch-svg" viewBox="0 0 700 880" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="nodeShadow"><feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.15"/></filter>
+      </defs>
+
+      <!-- Nodes -->
+      <g class="arch-node-g" data-arch="0" onmouseenter="showArchTip(event,0)" onmouseleave="hideArchTip()">
+        <rect x="50" y="10" width="600" height="64" rx="12" fill="#42A5F5" fill-opacity="0.08" stroke="#42A5F5" stroke-opacity="0.25" filter="url(#nodeShadow)"/>
+        <rect x="66" y="22" width="40" height="40" rx="10" fill="#42A5F5" fill-opacity="0.15"/>
+        <text x="86" y="48" fill="#42A5F5" font-size="16" font-weight="800" text-anchor="middle">D</text>
+        <text x="124" y="38" fill="rgba(255,255,255,0.9)" font-size="14" font-weight="700">User Device</text>
+        <text x="124" y="56" fill="rgba(255,255,255,0.4)" font-size="11">Windows, macOS, thin client, browser, mobile</text>
+        <text x="620" y="48" fill="rgba(255,255,255,0.25)" font-size="10" text-anchor="end">Surface, Dell, HP, IGEL</text>
+      </g>
+      <line x1="350" y1="74" x2="350" y2="104" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+      <polygon points="346,104 350,112 354,104" fill="rgba(255,255,255,0.12)"/>
+      <text x="362" y="95" fill="rgba(255,255,255,0.2)" font-size="8" font-weight="700" letter-spacing="0.1em">HTTPS</text>
+
+      <g class="arch-node-g" data-arch="1" onmouseenter="showArchTip(event,1)" onmouseleave="hideArchTip()">
+        <rect x="50" y="112" width="600" height="64" rx="12" fill="#AB47BC" fill-opacity="0.08" stroke="#AB47BC" stroke-opacity="0.25" filter="url(#nodeShadow)"/>
+        <rect x="66" y="124" width="40" height="40" rx="10" fill="#AB47BC" fill-opacity="0.15"/>
+        <text x="86" y="150" fill="#AB47BC" font-size="14" font-weight="800" text-anchor="middle">ID</text>
+        <text x="124" y="140" fill="rgba(255,255,255,0.9)" font-size="14" font-weight="700">Identity &amp; Conditional Access</text>
+        <text x="124" y="158" fill="rgba(255,255,255,0.4)" font-size="11">Entra ID &rarr; MFA &rarr; Conditional Access policy evaluation</text>
+        <text x="620" y="150" fill="rgba(255,255,255,0.25)" font-size="10" text-anchor="end">Entra ID, Okta, Duo</text>
+      </g>
+      <line x1="350" y1="176" x2="350" y2="206" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+      <polygon points="346,206 350,214 354,206" fill="rgba(255,255,255,0.12)"/>
+      <text x="362" y="197" fill="rgba(255,255,255,0.2)" font-size="8" font-weight="700" letter-spacing="0.1em">TOKEN</text>
+
+      <g class="arch-node-g" data-arch="2" onmouseenter="showArchTip(event,2)" onmouseleave="hideArchTip()">
+        <rect x="50" y="214" width="600" height="64" rx="12" fill="#66BB6A" fill-opacity="0.08" stroke="#66BB6A" stroke-opacity="0.25" filter="url(#nodeShadow)"/>
+        <rect x="66" y="226" width="40" height="40" rx="10" fill="#66BB6A" fill-opacity="0.15"/>
+        <text x="86" y="252" fill="#66BB6A" font-size="16" font-weight="800" text-anchor="middle">P</text>
+        <text x="124" y="242" fill="rgba(255,255,255,0.9)" font-size="14" font-weight="700">Desktop Platform</text>
+        <text x="124" y="260" fill="rgba(255,255,255,0.4)" font-size="11">Host pool selection, session connect, RDP Shortpath</text>
+        <text x="620" y="252" fill="rgba(255,255,255,0.25)" font-size="10" text-anchor="end">AVD, W365, Citrix DaaS</text>
+      </g>
+      <line x1="350" y1="278" x2="350" y2="308" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+      <polygon points="346,308 350,316 354,308" fill="rgba(255,255,255,0.12)"/>
+      <text x="362" y="299" fill="rgba(255,255,255,0.2)" font-size="8" font-weight="700" letter-spacing="0.1em">API</text>
+
+      <g class="arch-node-g" data-arch="3" onmouseenter="showArchTip(event,3)" onmouseleave="hideArchTip()">
+        <rect x="50" y="316" width="600" height="64" rx="12" fill="#26C6DA" fill-opacity="0.10" stroke="#26C6DA" stroke-opacity="0.3" filter="url(#nodeShadow)"/>
+        <rect x="66" y="328" width="40" height="40" rx="10" fill="#26C6DA" fill-opacity="0.15"/>
+        <text x="86" y="354" fill="#26C6DA" font-size="13" font-weight="800" text-anchor="middle">Op</text>
+        <text x="124" y="344" fill="rgba(255,255,255,0.9)" font-size="14" font-weight="700">Operations &amp; Automation</text>
+        <text x="124" y="362" fill="rgba(255,255,255,0.4)" font-size="11">Auto-scaling, cost optimisation, image lifecycle, auto-heal</text>
+        <text x="620" y="354" fill="rgba(255,255,255,0.25)" font-size="10" text-anchor="end">Nerdio NME / NMM</text>
+      </g>
+      <line x1="350" y1="380" x2="350" y2="410" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+      <polygon points="346,410 350,418 354,410" fill="rgba(255,255,255,0.12)"/>
+      <text x="362" y="401" fill="rgba(255,255,255,0.2)" font-size="8" font-weight="700" letter-spacing="0.1em">DELIVERY</text>
+
+      <g class="arch-node-g" data-arch="4" onmouseenter="showArchTip(event,4)" onmouseleave="hideArchTip()">
+        <rect x="50" y="418" width="600" height="64" rx="12" fill="#FFA726" fill-opacity="0.08" stroke="#FFA726" stroke-opacity="0.25" filter="url(#nodeShadow)"/>
+        <rect x="66" y="430" width="40" height="40" rx="10" fill="#FFA726" fill-opacity="0.15"/>
+        <text x="86" y="456" fill="#FFA726" font-size="16" font-weight="800" text-anchor="middle">A</text>
+        <text x="124" y="446" fill="rgba(255,255,255,0.9)" font-size="14" font-weight="700">Application Delivery</text>
+        <text x="124" y="464" fill="rgba(255,255,255,0.4)" font-size="11">MSIX App Attach, SaaS, app layering, browser apps</text>
+        <text x="620" y="456" fill="rgba(255,255,255,0.25)" font-size="10" text-anchor="end">MSIX, App Volumes, SaaS</text>
+      </g>
+      <line x1="350" y1="482" x2="350" y2="512" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+      <polygon points="346,512 350,520 354,512" fill="rgba(255,255,255,0.12)"/>
+      <text x="362" y="503" fill="rgba(255,255,255,0.2)" font-size="8" font-weight="700" letter-spacing="0.1em">COMPLIANCE</text>
+
+      <g class="arch-node-g" data-arch="5" onmouseenter="showArchTip(event,5)" onmouseleave="hideArchTip()">
+        <rect x="50" y="520" width="290" height="64" rx="12" fill="#1565C0" fill-opacity="0.08" stroke="#1565C0" stroke-opacity="0.25" filter="url(#nodeShadow)"/>
+        <rect x="66" y="532" width="40" height="40" rx="10" fill="#1565C0" fill-opacity="0.15"/>
+        <text x="86" y="557" fill="#1565C0" font-size="11" font-weight="800" text-anchor="middle">EM</text>
+        <text x="124" y="550" fill="rgba(255,255,255,0.9)" font-size="13" font-weight="700">Endpoint Mgmt</text>
+        <text x="124" y="568" fill="rgba(255,255,255,0.4)" font-size="10">Intune, compliance, patching</text>
+      </g>
+      <g class="arch-node-g" data-arch="6" onmouseenter="showArchTip(event,6)" onmouseleave="hideArchTip()">
+        <rect x="360" y="520" width="290" height="64" rx="12" fill="#EC407A" fill-opacity="0.08" stroke="#EC407A" stroke-opacity="0.25" filter="url(#nodeShadow)"/>
+        <rect x="376" y="532" width="40" height="40" rx="10" fill="#EC407A" fill-opacity="0.15"/>
+        <text x="396" y="557" fill="#EC407A" font-size="11" font-weight="800" text-anchor="middle">DX</text>
+        <text x="434" y="550" fill="rgba(255,255,255,0.9)" font-size="13" font-weight="700">DEX Monitoring</text>
+        <text x="434" y="568" fill="rgba(255,255,255,0.4)" font-size="10">ControlUp, Nexthink, Lakeside</text>
+      </g>
+
+      <line x1="195" y1="584" x2="350" y2="614" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+      <line x1="505" y1="584" x2="350" y2="614" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+      <polygon points="346,614 350,622 354,614" fill="rgba(255,255,255,0.08)"/>
+
+      <g class="arch-node-g" data-arch="7" onmouseenter="showArchTip(event,7)" onmouseleave="hideArchTip()">
+        <rect x="50" y="622" width="600" height="64" rx="12" fill="#78909C" fill-opacity="0.08" stroke="#78909C" stroke-opacity="0.25" filter="url(#nodeShadow)"/>
+        <rect x="66" y="634" width="40" height="40" rx="10" fill="#78909C" fill-opacity="0.15"/>
+        <text x="86" y="660" fill="#78909C" font-size="14" font-weight="800" text-anchor="middle">IN</text>
+        <text x="124" y="650" fill="rgba(255,255,255,0.9)" font-size="14" font-weight="700">Cloud Infrastructure</text>
+        <text x="124" y="668" fill="rgba(255,255,255,0.4)" font-size="11">Azure VMs, managed disks, Azure Files, VNets, ExpressRoute</text>
+        <text x="620" y="660" fill="rgba(255,255,255,0.25)" font-size="10" text-anchor="end">Azure, AWS, GCP, HCI</text>
+      </g>
+    </svg>
+  </div>
+</div>
+<div class="arch-tip" id="archTip"><h4 id="atTitle"></h4><p id="atBody"></p></div>
+
+
+<!-- ═══ TIMELINE ═══ -->
+<hr class="divider">
+<div class="sec" id="timeline">
+  <div class="sec-head fi">
+    <div class="sec-num">03 &middot; Evolution</div>
+    <h2 class="sec-title">EUC Evolution Timeline</h2>
+    <p class="sec-sub">Click any era to expand its detail. Scroll horizontally to traverse six decades of computing architecture.</p>
+  </div>
+
+  <div class="timeline-container fi d1">
+    <svg class="timeline-svg" viewBox="0 0 1300 520" xmlns="http://www.w3.org/2000/svg">
+      <!-- Gradient timeline bar -->
+      <defs>
+        <linearGradient id="tlGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#78909C"/><stop offset="16%" stop-color="#42A5F5"/>
+          <stop offset="33%" stop-color="#AB47BC"/><stop offset="50%" stop-color="#FFA726"/>
+          <stop offset="67%" stop-color="#26C6DA"/><stop offset="83%" stop-color="#66BB6A"/>
+          <stop offset="100%" stop-color="#CDFF4E"/>
+        </linearGradient>
+      </defs>
+      <rect x="40" y="52" width="1220" height="4" rx="2" fill="url(#tlGrad)" opacity="0.6"/>
+
+      <!-- Era columns -->
+      <g class="era-zone" data-era="0" onclick="toggleEra(0)">
+        <rect class="era-bg" x="20" y="0" width="170" height="520" rx="8" fill="#78909C"/>
+        <circle cx="85" cy="54" r="12" fill="#0B1929" stroke="#78909C" stroke-width="3"/>
+        <circle cx="85" cy="54" r="5" fill="#78909C"/>
+        <text x="85" y="86" fill="#78909C" font-size="10" font-weight="800" text-anchor="middle" letter-spacing="0.1em">1960s–70s</text>
+        <text x="85" y="108" fill="rgba(255,255,255,0.85)" font-size="14" font-weight="800" text-anchor="middle">Mainframe</text>
+        <text x="85" y="140" fill="rgba(255,255,255,0.35)" font-size="10" text-anchor="middle">Centralised compute</text>
+        <text x="85" y="156" fill="rgba(255,255,255,0.35)" font-size="10" text-anchor="middle">Dumb terminals</text>
+        <text x="85" y="172" fill="rgba(255,255,255,0.35)" font-size="10" text-anchor="middle">IBM System/360</text>
+        <text x="85" y="200" fill="rgba(255,255,255,0.25)" font-size="9" text-anchor="middle">IBM &middot; DEC &middot; Honeywell</text>
+      </g>
+
+      <g class="era-zone" data-era="1" onclick="toggleEra(1)">
+        <rect class="era-bg" x="195" y="0" width="170" height="520" rx="8" fill="#42A5F5"/>
+        <circle cx="280" cy="54" r="12" fill="#0B1929" stroke="#42A5F5" stroke-width="3"/>
+        <circle cx="280" cy="54" r="5" fill="#42A5F5"/>
+        <text x="280" y="86" fill="#42A5F5" font-size="10" font-weight="800" text-anchor="middle" letter-spacing="0.1em">1980s</text>
+        <text x="280" y="108" fill="rgba(255,255,255,0.85)" font-size="14" font-weight="800" text-anchor="middle">PC Revolution</text>
+        <text x="280" y="140" fill="rgba(255,255,255,0.35)" font-size="10" text-anchor="middle">Decentralised PCs</text>
+        <text x="280" y="156" fill="rgba(255,255,255,0.35)" font-size="10" text-anchor="middle">MS-DOS, Windows</text>
+        <text x="280" y="172" fill="rgba(255,255,255,0.35)" font-size="10" text-anchor="middle">Shadow IT born</text>
+        <text x="280" y="200" fill="rgba(255,255,255,0.25)" font-size="9" text-anchor="middle">Microsoft &middot; Apple &middot; Intel</text>
+      </g>
+
+      <g class="era-zone" data-era="2" onclick="toggleEra(2)">
+        <rect class="era-bg" x="370" y="0" width="170" height="520" rx="8" fill="#AB47BC"/>
+        <circle cx="455" cy="54" r="12" fill="#0B1929" stroke="#AB47BC" stroke-width="3"/>
+        <circle cx="455" cy="54" r="5" fill="#AB47BC"/>
+        <text x="455" y="86" fill="#AB47BC" font-size="10" font-weight="800" text-anchor="middle" letter-spacing="0.1em">1990s</text>
+        <text x="455" y="108" fill="rgba(255,255,255,0.85)" font-size="14" font-weight="800" text-anchor="middle">Client-Server</text>
+        <text x="455" y="140" fill="rgba(255,255,255,0.35)" font-size="10" text-anchor="middle">LANs, Citrix WinFrame</text>
+        <text x="455" y="156" fill="rgba(255,255,255,0.35)" font-size="10" text-anchor="middle">Internet arrives</text>
+        <text x="455" y="172" fill="rgba(255,255,255,0.35)" font-size="10" text-anchor="middle">Terminal Services</text>
+        <text x="455" y="200" fill="rgba(255,255,255,0.25)" font-size="9" text-anchor="middle">Citrix &middot; Microsoft &middot; Novell</text>
+      </g>
+
+      <g class="era-zone" data-era="3" onclick="toggleEra(3)">
+        <rect class="era-bg" x="545" y="0" width="170" height="520" rx="8" fill="#FFA726"/>
+        <circle cx="630" cy="54" r="12" fill="#0B1929" stroke="#FFA726" stroke-width="3"/>
+        <circle cx="630" cy="54" r="5" fill="#FFA726"/>
+        <text x="630" y="86" fill="#FFA726" font-size="10" font-weight="800" text-anchor="middle" letter-spacing="0.1em">2000–2012</text>
+        <text x="630" y="108" fill="rgba(255,255,255,0.85)" font-size="14" font-weight="800" text-anchor="middle">VDI Era</text>
+        <text x="630" y="140" fill="rgba(255,255,255,0.35)" font-size="10" text-anchor="middle">VMware ESX, XenDesktop</text>
+        <text x="630" y="156" fill="rgba(255,255,255,0.35)" font-size="10" text-anchor="middle">Virtual desktops</text>
+        <text x="630" y="172" fill="rgba(255,255,255,0.35)" font-size="10" text-anchor="middle">40% failure rate</text>
+        <text x="630" y="200" fill="rgba(255,255,255,0.25)" font-size="9" text-anchor="middle">Citrix &middot; VMware &middot; Microsoft</text>
+      </g>
+
+      <g class="era-zone" data-era="4" onclick="toggleEra(4)">
+        <rect class="era-bg" x="720" y="0" width="170" height="520" rx="8" fill="#26C6DA"/>
+        <circle cx="805" cy="54" r="12" fill="#0B1929" stroke="#26C6DA" stroke-width="3"/>
+        <circle cx="805" cy="54" r="5" fill="#26C6DA"/>
+        <text x="805" y="86" fill="#26C6DA" font-size="10" font-weight="800" text-anchor="middle" letter-spacing="0.1em">2013–2019</text>
+        <text x="805" y="108" fill="rgba(255,255,255,0.85)" font-size="14" font-weight="800" text-anchor="middle">Cloud Transition</text>
+        <text x="805" y="140" fill="rgba(255,255,255,0.35)" font-size="10" text-anchor="middle">Azure, O365, Intune</text>
+        <text x="805" y="156" fill="rgba(255,255,255,0.35)" font-size="10" text-anchor="middle">Zero Trust, SD-WAN</text>
+        <text x="805" y="172" fill="rgba(255,255,255,0.35)" font-size="10" text-anchor="middle">Identity is perimeter</text>
+        <text x="805" y="200" fill="rgba(255,255,255,0.25)" font-size="9" text-anchor="middle">Microsoft &middot; Zscaler &middot; Okta</text>
+      </g>
+
+      <g class="era-zone" data-era="5" onclick="toggleEra(5)">
+        <rect class="era-bg" x="895" y="0" width="170" height="520" rx="8" fill="#66BB6A"/>
+        <circle cx="980" cy="54" r="12" fill="#0B1929" stroke="#66BB6A" stroke-width="3"/>
+        <circle cx="980" cy="54" r="5" fill="#66BB6A"/>
+        <text x="980" y="86" fill="#66BB6A" font-size="10" font-weight="800" text-anchor="middle" letter-spacing="0.1em">2020–2024</text>
+        <text x="980" y="108" fill="rgba(255,255,255,0.85)" font-size="14" font-weight="800" text-anchor="middle">Cloud Desktop</text>
+        <text x="980" y="140" fill="rgba(255,255,255,0.35)" font-size="10" text-anchor="middle">AVD, Windows 365</text>
+        <text x="980" y="156" fill="rgba(255,255,255,0.35)" font-size="10" text-anchor="middle">Nerdio, IaC, DEX</text>
+        <text x="980" y="172" fill="rgba(255,255,255,0.35)" font-size="10" text-anchor="middle">Broadcom disruption</text>
+        <text x="980" y="200" fill="rgba(255,255,255,0.25)" font-size="9" text-anchor="middle">Microsoft &middot; Nerdio &middot; ControlUp</text>
+      </g>
+
+      <g class="era-zone" data-era="6" onclick="toggleEra(6)">
+        <rect class="era-bg" x="1070" y="0" width="170" height="520" rx="8" fill="#CDFF4E"/>
+        <circle cx="1155" cy="54" r="12" fill="#0B1929" stroke="#CDFF4E" stroke-width="3"/>
+        <circle cx="1155" cy="54" r="5" fill="#CDFF4E"/>
+        <text x="1155" y="86" fill="#CDFF4E" font-size="10" font-weight="800" text-anchor="middle" letter-spacing="0.1em">2025+</text>
+        <text x="1155" y="108" fill="rgba(255,255,255,0.85)" font-size="14" font-weight="800" text-anchor="middle">AI Workspace</text>
+        <text x="1155" y="140" fill="rgba(255,255,255,0.35)" font-size="10" text-anchor="middle">Copilot, AI ops</text>
+        <text x="1155" y="156" fill="rgba(255,255,255,0.35)" font-size="10" text-anchor="middle">Autonomous scaling</text>
+        <text x="1155" y="172" fill="rgba(255,255,255,0.35)" font-size="10" text-anchor="middle">Physical/virtual merge</text>
+        <text x="1155" y="200" fill="rgba(255,255,255,0.25)" font-size="9" text-anchor="middle">Microsoft &middot; Nerdio &middot; AI native</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Era detail panels (one per era, toggle on click) -->
+  <div class="era-detail" id="eraDetail0"><div class="era-detail-inner" style="border-color:rgba(120,144,156,0.3);"><h3 style="color:#78909C;">The Mainframe Age &middot; 1960s–1970s</h3><div class="era-detail-grid"><div class="era-detail-card"><div class="edc-label">Architecture</div><p>Room-sized machines running batch jobs. Dumb terminals connected via coaxial. Zero local processing. IBM System/360 defined the model: one OS across hardware sizes.</p></div><div class="era-detail-card"><div class="edc-label">Operational Challenge</div><p>Cost prohibitive. Multi-million dollar installations. Only governments, banks, and universities could afford access. IT was a priesthood controlling all compute resources.</p></div><div class="era-detail-card"><div class="edc-label">Why It Matters Today</div><p>Philosophically identical to cloud desktops: powerful compute in a datacentre, a thin device at the edge. The architecture was right; the network didn't exist yet.</p></div><div class="era-detail-card"><div class="edc-label">Key Vendors</div><p>IBM (dominant), DEC, Honeywell, Burroughs, UNIVAC, NCR. Known collectively as "IBM and the BUNCH."</p></div></div></div></div>
+  <div class="era-detail" id="eraDetail1"><div class="era-detail-inner" style="border-color:rgba(66,165,245,0.3);"><h3 style="color:#42A5F5;">The PC Revolution &middot; 1980s</h3><div class="era-detail-grid"><div class="era-detail-card"><div class="edc-label">Architecture</div><p>IBM PC (1981) with open architecture. Microsoft licensed MS-DOS to every clone manufacturer. Compute decentralised to every desk. Local storage, local processing, local chaos.</p></div><div class="era-detail-card"><div class="edc-label">Operational Challenge</div><p>Shadow IT born. No backups, no software inventory, no patch management. Viruses spread via floppy disk. IT went from managing one machine to managing thousands with no tools.</p></div><div class="era-detail-card"><div class="edc-label">The DNA Moment</div><p>Created the central paradox of all EUC: the more freedom users have, the harder IT's job becomes. Every subsequent era attempts to rebalance this equation.</p></div><div class="era-detail-card"><div class="edc-label">Key Vendors</div><p>Microsoft (dominant), Apple, Novell (NetWare), Intel, Lotus (1-2-3), WordPerfect. Atari, Commodore, Tandy all died.</p></div></div></div></div>
+  <div class="era-detail" id="eraDetail2"><div class="era-detail-inner" style="border-color:rgba(171,71,188,0.3);"><h3 style="color:#AB47BC;">Client-Server &amp; Citrix &middot; 1990s</h3><div class="era-detail-grid"><div class="era-detail-card"><div class="edc-label">Architecture</div><p>LANs connected PCs. Client-server emerged. Citrix (founded 1989) invented multi-user Windows delivery. WinFrame shipped 1995. Microsoft licensed the tech for Terminal Services.</p></div><div class="era-detail-card"><div class="edc-label">Operational Challenge</div><p>Physical visits for every patch. Primitive tools (SMS, LANDesk). Internet arrived (1993-95) creating new security and delivery questions. Browser became a thin client.</p></div><div class="era-detail-card"><div class="edc-label">The Citrix Insight</div><p>Why manage software on 1,000 PCs when you can run it once on a server? This insight proved so durable it underpins modern cloud desktops 30 years later.</p></div><div class="era-detail-card"><div class="edc-label">Key Vendors</div><p>Citrix, Microsoft, Novell NetWare, Cisco, Sun Microsystems, 3Com. Netscape and WordPerfect declined.</p></div></div></div></div>
+  <div class="era-detail" id="eraDetail3"><div class="era-detail-inner" style="border-color:rgba(255,167,38,0.3);"><h3 style="color:#FFA726;">The VDI Era &middot; 2000–2012</h3><div class="era-detail-grid"><div class="era-detail-card"><div class="edc-label">Architecture</div><p>VMware made server virtualisation mainstream. VDI: virtual desktops in on-prem datacentres. One golden image, infinite desktops. Citrix XenDesktop vs VMware View.</p></div><div class="era-detail-card"><div class="edc-label">Operational Challenge</div><p>$1M+ deployments, 18-month timelines, 6-8 specialist skills required, ~40% failure rate. Boot storms, storage I/O, profile corruption. A cottage industry of fixes emerged.</p></div><div class="era-detail-card"><div class="edc-label">The Profile Problem</div><p>FSLogix (founded 2012, acquired by Microsoft 2018) solved VDI's worst pain with profile containers. Now free with every M365 licence and core to every AVD deployment.</p></div><div class="era-detail-card"><div class="edc-label">Key Vendors</div><p>Citrix XenDesktop, VMware View/Horizon, Microsoft RDS, Wyse, AppSense, RES Software, Liquidware, Quest.</p></div></div></div></div>
+  <div class="era-detail" id="eraDetail4"><div class="era-detail-inner" style="border-color:rgba(38,198,218,0.3);"><h3 style="color:#26C6DA;">Cloud Transition &middot; 2013–2019</h3><div class="era-detail-grid"><div class="era-detail-card"><div class="edc-label">Architecture</div><p>Nadella's cloud-first pivot (2014). SaaS displaced on-prem apps. Identity replaced the network perimeter. Hybrid everything. Azure AD, Intune, Conditional Access built.</p></div><div class="era-detail-card"><div class="edc-label">Operational Challenge</div><p>Perimeter dissolved. SD-WAN needed for SaaS performance. Zero Trust philosophy required new tooling. Mobile/BYOD added management surface. DEX monitoring emerged.</p></div><div class="era-detail-card"><div class="edc-label">Zero Trust</div><p>John Kindervag (Forrester, 2010): "Never trust, always verify." Identity, device health, context, and risk signals evaluated for every access request. Microsoft's Conditional Access became the practical implementation.</p></div><div class="era-detail-card"><div class="edc-label">Key Vendors</div><p>Microsoft (Azure, O365, Intune), Zscaler, Palo Alto, Okta, VMware VeloCloud, Lakeside SysTrack.</p></div></div></div></div>
+  <div class="era-detail" id="eraDetail5"><div class="era-detail-inner" style="border-color:rgba(102,187,106,0.3);"><h3 style="color:#66BB6A;">Cloud Desktop &middot; 2020–2024</h3><div class="era-detail-grid"><div class="era-detail-card"><div class="edc-label">Architecture</div><p>COVID compressed 5 years into 3 months. AVD (Sept 2019) gained massive urgency. Windows 365 (Aug 2021) democratised Cloud PCs. Infrastructure as Code replaced GUIs.</p></div><div class="era-detail-card"><div class="edc-label">Operational Challenge</div><p>Cloud solved infrastructure. Created operational complexity: cost management, scaling, image lifecycle, multi-tenant orchestration. The complexity shifted, not decreased.</p></div><div class="era-detail-card"><div class="edc-label">The Broadcom Disruption</div><p>Broadcom acquired VMware (Oct 2023). Prices up 10x. Perpetual licences eliminated. Omnissa spun off. Largest platform migration wave in EUC history. Microsoft and Nerdio primary beneficiaries.</p></div><div class="era-detail-card"><div class="edc-label">Key Vendors</div><p>Microsoft (AVD, W365), Nerdio (NME, NMM), ControlUp, Nexthink, Citrix DaaS. Nerdio reached $1B+ valuation.</p></div></div></div></div>
+  <div class="era-detail" id="eraDetail6"><div class="era-detail-inner" style="border-color:rgba(205,255,78,0.3);"><h3 style="color:#CDFF4E;">AI Workspace &middot; 2025+</h3><div class="era-detail-grid"><div class="era-detail-card"><div class="edc-label">Architecture</div><p>AI-augmented operations. Physical and virtual device convergence. Copilot embedded across M365. The EUC platform becomes the secure delivery vehicle for AI-enabled work.</p></div><div class="era-detail-card"><div class="edc-label">Operational Challenge</div><p>AI governance, data residency, autonomous operations trust. Managing AI tools safely at scale on compliant infrastructure. New skill requirements for EUC teams.</p></div><div class="era-detail-card"><div class="edc-label">Autonomous Operations</div><p>Auto-scaling was step one. Auto-heal was step two. AI-driven predictive operations is step three. EUC administrators will manage policies and exceptions, not individual VMs.</p></div><div class="era-detail-card"><div class="edc-label">Key Vendors</div><p>Microsoft, Nerdio (Scott Manchester as CPTO from Jan 2026), AI-native tooling, converged management platforms.</p></div></div></div></div>
+</div>
+
+
+<!-- ═══ VENDORS ═══ -->
+<hr class="divider">
+<div class="sec" id="vendors">
+  <div class="sec-head fi">
+    <div class="sec-num">04 &middot; Vendor Landscape</div>
+    <h2 class="sec-title">Industry Landscape</h2>
+    <p class="sec-sub">Filter by category. Vendors are colour-coded to their functional layer. Bold names indicate market leaders.</p>
+  </div>
+
+  <div class="vendor-filters fi d1">
+    <button class="active" onclick="filterVendors('all',this)">All</button>
+    <button onclick="filterVendors('platform',this)">Platforms</button>
+    <button onclick="filterVendors('identity',this)">Identity</button>
+    <button onclick="filterVendors('endpoint',this)">Endpoint</button>
+    <button onclick="filterVendors('operations',this)">Automation</button>
+    <button onclick="filterVendors('dex',this)">DEX</button>
+    <button onclick="filterVendors('security',this)">Security</button>
+    <button onclick="filterVendors('apps',this)">Apps</button>
+    <button onclick="filterVendors('infra',this)">Infrastructure</button>
+  </div>
+
+  <div class="vendor-grid fi d2">
+    <div class="vendor-cluster" data-cat="platform"><div class="vc-label" style="color:var(--L4);">Desktop Platforms</div><div class="vc-pills"><span class="vp lead" style="border-color:rgba(102,187,106,0.4);color:var(--L4);">Azure Virtual Desktop</span><span class="vp lead" style="border-color:rgba(102,187,106,0.4);color:var(--L4);">Windows 365</span><span class="vp">Citrix DaaS</span><span class="vp">Omnissa Horizon</span><span class="vp">Amazon WorkSpaces</span><span class="vp dead">VMware Horizon (legacy)</span></div></div>
+    <div class="vendor-cluster" data-cat="identity"><div class="vc-label" style="color:var(--L3);">Identity &amp; Security</div><div class="vc-pills"><span class="vp lead" style="border-color:rgba(171,71,188,0.4);color:var(--L3);">Microsoft Entra ID</span><span class="vp">Okta</span><span class="vp">Ping Identity</span><span class="vp">Duo / Cisco</span><span class="vp">CyberArk</span></div></div>
+    <div class="vendor-cluster" data-cat="endpoint"><div class="vc-label" style="color:var(--L7);">Endpoint Management</div><div class="vc-pills"><span class="vp lead" style="border-color:rgba(21,101,192,0.4);color:var(--L7);">Microsoft Intune</span><span class="vp">Config Manager</span><span class="vp">Jamf</span><span class="vp">Workspace ONE</span><span class="vp">Ivanti</span><span class="vp">Tanium</span><span class="vp">1E</span></div></div>
+    <div class="vendor-cluster" data-cat="operations"><div class="vc-label" style="color:var(--L5);">Automation &amp; Operations</div><div class="vc-pills"><span class="vp lead" style="border-color:rgba(38,198,218,0.5);color:var(--L5);">Nerdio NME</span><span class="vp lead" style="border-color:rgba(38,198,218,0.5);color:var(--L5);">Nerdio NMM</span><span class="vp">Terraform</span><span class="vp">Azure Bicep / ARM</span><span class="vp">PowerShell</span></div></div>
+    <div class="vendor-cluster" data-cat="dex"><div class="vc-label" style="color:var(--L8);">Digital Employee Experience</div><div class="vc-pills"><span class="vp lead" style="border-color:rgba(236,64,122,0.4);color:var(--L8);">ControlUp</span><span class="vp lead" style="border-color:rgba(236,64,122,0.4);color:var(--L8);">Nexthink</span><span class="vp">Lakeside SysTrack</span><span class="vp">Aternity</span><span class="vp">Rimo3</span><span class="vp">1E Tachyon</span></div></div>
+    <div class="vendor-cluster" data-cat="security"><div class="vc-label" style="color:var(--purple);">Security / SASE</div><div class="vc-pills"><span class="vp lead" style="border-color:rgba(167,149,199,0.4);color:var(--purple);">Zscaler</span><span class="vp">Palo Alto Prisma</span><span class="vp">Cloudflare</span><span class="vp">Netskope</span><span class="vp">Cisco Umbrella</span><span class="vp">Cato Networks</span></div></div>
+    <div class="vendor-cluster" data-cat="apps"><div class="vc-label" style="color:var(--L6);">Application Delivery</div><div class="vc-pills"><span class="vp lead" style="border-color:rgba(255,167,38,0.4);color:var(--L6);">MSIX / App Attach</span><span class="vp">App Volumes</span><span class="vp">Citrix Layering</span><span class="vp">Rimo3</span><span class="vp">Liquidware</span></div></div>
+    <div class="vendor-cluster" data-cat="infra"><div class="vc-label" style="color:var(--L9);">Infrastructure</div><div class="vc-pills"><span class="vp lead" style="border-color:rgba(120,144,156,0.4);color:var(--L9);">Microsoft Azure</span><span class="vp">AWS</span><span class="vp">Google Cloud</span><span class="vp">Azure Stack HCI</span></div></div>
+    <div class="vendor-cluster" data-cat="infra"><div class="vc-label" style="color:var(--L9);">Networking</div><div class="vc-pills"><span class="vp">Cisco Meraki</span><span class="vp">Fortinet</span><span class="vp">Cato Networks</span><span class="vp">Aryaka</span></div></div>
+  </div>
+</div>
+
+
+<!-- ═══ COMPLEXITY CHARTS ═══ -->
+<hr class="divider">
+<div class="sec" id="complexity">
+  <div class="sec-head fi">
+    <div class="sec-num">05 &middot; Complexity</div>
+    <h2 class="sec-title">The Complexity Shift</h2>
+    <p class="sec-sub">Two animated charts showing how EUC complexity relocated — from infrastructure to operations — and how the control vs freedom equation has evolved across eras.</p>
+  </div>
+
+  <!-- Chart 1: Complexity Shift -->
+  <h3 class="fi" style="font-size:16px;font-weight:700;margin-bottom:8px;">Infrastructure vs Operations Complexity</h3>
+  <div class="chart-wrap fi d1" id="chart1wrap">
+    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+      <!-- Axes -->
+      <line x1="60" y1="20" x2="60" y2="350" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <line x1="60" y1="350" x2="770" y2="350" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <!-- Y labels -->
+      <text x="50" y="25" fill="rgba(255,255,255,0.3)" font-size="9" text-anchor="end">100%</text>
+      <text x="50" y="190" fill="rgba(255,255,255,0.3)" font-size="9" text-anchor="end">50%</text>
+      <text x="50" y="355" fill="rgba(255,255,255,0.3)" font-size="9" text-anchor="end">0%</text>
+      <!-- X labels -->
+      <text x="100" y="370" fill="rgba(255,255,255,0.3)" font-size="9" text-anchor="middle">2000</text>
+      <text x="260" y="370" fill="rgba(255,255,255,0.3)" font-size="9" text-anchor="middle">2008</text>
+      <text x="420" y="370" fill="rgba(255,255,255,0.3)" font-size="9" text-anchor="middle">2015</text>
+      <text x="580" y="370" fill="rgba(255,255,255,0.3)" font-size="9" text-anchor="middle">2020</text>
+      <text x="740" y="370" fill="rgba(255,255,255,0.3)" font-size="9" text-anchor="middle">2025</text>
+      <!-- Crossover line -->
+      <line x1="380" y1="20" x2="380" y2="350" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="4 4"/>
+      <text x="380" y="388" fill="rgba(255,255,255,0.25)" font-size="9" text-anchor="middle" font-weight="700">THE SHIFT</text>
+      <!-- Infrastructure line (grey, descending) -->
+      <polyline class="chart-line" id="infraLine" points="100,50 180,45 260,60 340,120 420,180 500,230 580,265 660,290 740,305" fill="none" stroke="#78909C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- Operations line (teal, ascending) -->
+      <polyline class="chart-line" id="opsLine" points="100,290 180,275 260,240 340,195 420,150 500,105 580,72 660,52 740,38" fill="none" stroke="#26C6DA" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- Dots -->
+      <circle class="chart-dot" id="infraDots" cx="740" cy="305" r="4" fill="#78909C"/>
+      <circle class="chart-dot" id="opsDots" cx="740" cy="38" r="4" fill="#26C6DA"/>
+    </svg>
+    <div class="chart-label-box">
+      <div class="chart-legend"><div class="chart-legend-dot" style="background:#78909C;"></div>Infrastructure complexity</div>
+      <div class="chart-legend"><div class="chart-legend-dot" style="background:#26C6DA;"></div>Operational complexity</div>
+    </div>
+  </div>
+
+  <!-- Chart 2: Control vs Freedom -->
+  <h3 class="fi" style="font-size:16px;font-weight:700;margin:48px 0 8px;">Control vs Freedom</h3>
+  <div class="chart-wrap fi d2" id="chart2wrap">
+    <svg viewBox="0 0 700 600" xmlns="http://www.w3.org/2000/svg">
+      <!-- Quadrant grid -->
+      <rect x="60" y="20" width="310" height="265" rx="0" fill="rgba(255,255,255,0.015)"/>
+      <rect x="370" y="20" width="310" height="265" rx="0" fill="rgba(38,198,218,0.03)"/>
+      <rect x="60" y="285" width="310" height="265" rx="0" fill="rgba(255,100,100,0.02)"/>
+      <rect x="370" y="285" width="310" height="265" rx="0" fill="rgba(255,255,255,0.015)"/>
+      <!-- Axes -->
+      <line x1="60" y1="285" x2="680" y2="285" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+      <line x1="370" y1="20" x2="370" y2="550" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+      <!-- Labels -->
+      <text x="215" y="42" fill="rgba(255,255,255,0.15)" font-size="10" font-weight="700" text-anchor="middle" letter-spacing="0.1em">LOCKED DOWN</text>
+      <text x="525" y="42" fill="rgba(38,198,218,0.4)" font-size="10" font-weight="700" text-anchor="middle" letter-spacing="0.1em">OPTIMAL</text>
+      <text x="215" y="540" fill="rgba(255,100,100,0.25)" font-size="10" font-weight="700" text-anchor="middle" letter-spacing="0.1em">BROKEN</text>
+      <text x="525" y="540" fill="rgba(255,255,255,0.15)" font-size="10" font-weight="700" text-anchor="middle" letter-spacing="0.1em">UNMANAGED</text>
+      <text x="370" y="572" fill="rgba(255,255,255,0.3)" font-size="10" text-anchor="middle">USER FREEDOM &rarr;</text>
+      <text x="30" y="285" fill="rgba(255,255,255,0.3)" font-size="10" text-anchor="middle" transform="rotate(-90 30 285)">IT CONTROL &rarr;</text>
+      <!-- Path connecting eras -->
+      <polyline class="chart-line" id="cfLine" points="140,80 560,460 180,170 240,100 600,440 550,80" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <!-- Era dots -->
+      <g class="chart-dot" id="cfDots">
+        <circle cx="140" cy="80" r="10" fill="#78909C" opacity="0.8"/><text x="140" y="65" fill="#78909C" font-size="9" font-weight="700" text-anchor="middle">Mainframe</text>
+        <circle cx="560" cy="460" r="10" fill="#42A5F5" opacity="0.8"/><text x="560" y="480" fill="#42A5F5" font-size="9" font-weight="700" text-anchor="middle">PC Era</text>
+        <circle cx="180" cy="170" r="10" fill="#AB47BC" opacity="0.8"/><text x="180" y="155" fill="#AB47BC" font-size="9" font-weight="700" text-anchor="middle">Citrix/TS</text>
+        <circle cx="240" cy="100" r="10" fill="#FFA726" opacity="0.8"/><text x="240" y="85" fill="#FFA726" font-size="9" font-weight="700" text-anchor="middle">VDI</text>
+        <circle cx="600" cy="440" r="10" fill="#26C6DA" opacity="0.8"/><text x="600" y="425" fill="#26C6DA" font-size="9" font-weight="700" text-anchor="middle">SaaS/Mobile</text>
+        <circle cx="550" cy="80" r="14" fill="#66BB6A" opacity="0.9" stroke="#CDFF4E" stroke-width="2"/><text x="550" y="63" fill="#66BB6A" font-size="10" font-weight="800" text-anchor="middle">Cloud Desktop</text>
+      </g>
+    </svg>
+  </div>
+</div>
+
+
+<!-- ═══ FUTURE ═══ -->
+<hr class="divider">
+<div class="sec" id="future">
+  <div class="sec-head fi">
+    <div class="sec-num">06 &middot; Future</div>
+    <h2 class="sec-title">The Future of EUC</h2>
+    <p class="sec-sub">Five trajectories shaping the next phase. Click to expand.</p>
+  </div>
+
+  <div class="future-grid fi d1">
+    <div class="future-card" onclick="toggleFuture(this)">
+      <div class="fc-header"><div class="fc-num" style="background:rgba(38,198,218,0.12);color:var(--L5);">01</div><div class="fc-title">AI-Enabled Workspace Operations</div><svg class="fc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="fc-body"><div class="fc-body-inner">Copilot embeds AI across M365. The EUC platform becomes the secure delivery vehicle for the AI-enabled workforce. Operations platforms will use AI for predictive scaling, anomaly detection, and automated remediation. Managing AI tools safely — data residency, governance, compliance — becomes a core EUC responsibility.</div></div>
+    </div>
+    <div class="future-card" onclick="toggleFuture(this)">
+      <div class="fc-header"><div class="fc-num" style="background:rgba(102,187,106,0.12);color:var(--L4);">02</div><div class="fc-title">Physical &amp; Virtual Convergence</div><svg class="fc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="fc-body"><div class="fc-body-inner">The boundary between a physical PC managed by Intune and a Cloud PC managed by Windows 365 is dissolving. Unified endpoint management treats all devices — physical, virtual, Cloud PC — as first-class objects in a single policy framework. The user should not know or care whether their desktop is local or cloud-hosted.</div></div>
+    </div>
+    <div class="future-card" onclick="toggleFuture(this)">
+      <div class="fc-header"><div class="fc-num" style="background:rgba(255,167,38,0.12);color:var(--L6);">03</div><div class="fc-title">Platform Consolidation</div><svg class="fc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="fc-body"><div class="fc-body-inner">The Broadcom disruption accelerated consolidation already underway. Microsoft's cloud desktop stack (AVD + Windows 365 + Intune + Entra ID) is the gravitational centre. Citrix retains enterprise presence but faces headwinds. Omnissa's future is uncertain. The ecosystem consolidates around Microsoft, with Nerdio providing the operational layer.</div></div>
+    </div>
+    <div class="future-card" onclick="toggleFuture(this)">
+      <div class="fc-header"><div class="fc-num" style="background:rgba(236,64,122,0.12);color:var(--L8);">04</div><div class="fc-title">DEX as a Business Metric</div><svg class="fc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="fc-body"><div class="fc-body-inner">Digital Employee Experience will evolve from IT monitoring to a business performance metric. Boards will measure technology effectiveness through experience scores, not uptime. DEX data will drive investment decisions: which offices need better connectivity, which applications cause friction, which user segments are underserved.</div></div>
+    </div>
+    <div class="future-card span" onclick="toggleFuture(this)">
+      <div class="fc-header"><div class="fc-num" style="background:rgba(205,255,78,0.12);color:var(--green);">05</div><div class="fc-title">Autonomous Operations</div><svg class="fc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="fc-body"><div class="fc-body-inner">The logical endpoint of automation: environments that monitor themselves, detect anomalies, remediate issues, scale resources, and optimise costs without human intervention. Auto-scaling was step one. Auto-heal was step two. AI-driven predictive operations is step three. The EUC administrator of the future manages policies and exceptions, not individual VMs.</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p style="color:var(--teal);font-weight:700;margin-bottom:4px;">The EUC Atlas &middot; Interactive Prototype</p>
+  <p>Architecture, vendors, evolution, operational reality &middot; March 2026</p>
+</footer>
+
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- JAVASCRIPT                                                 -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script>
+/* ── LAYER DATA ── */
+const layers = [
+  { name:'Users / Workloads', color:'#B0BEC5', desc:'The actors and workloads consuming computing environments: employees, contractors, developers, task workers, kiosk users, and increasingly AI agents operating as first-class workspace consumers.', caps:['Persona-based provisioning','Workload classification (knowledge, task, developer, kiosk)','Session-type routing (persistent vs pooled)','Role-based access control','User segmentation and analytics'], vendors:['HR/IAM systems','Azure AD Groups','Dynamic user targeting'], rels:'Users connect through Devices (layer below). Identity policies determine what each user can access. User personas drive which Desktop Platform configuration is assigned.' },
+  { name:'Devices', color:'#42A5F5', desc:'Physical and virtual endpoints used to access the workspace. The device is the point of user interaction with the entire stack and the first enforcement point for security policies.', caps:['Device compliance enforcement','OS patching and updates','Hardware lifecycle management','BYOD policy enforcement','Thin client management','Browser-based access (clientless)'], vendors:['Microsoft Surface','Dell','HP','Lenovo','Apple','IGEL','10ZiG','Chromebooks','Any modern browser'], rels:'Devices authenticate through Identity & Security. Device compliance state feeds Conditional Access decisions. Endpoint Management manages device configuration. DEX monitors device-level performance.' },
+  { name:'Identity & Security', color:'#AB47BC', desc:'Authentication, authorisation, and policy enforcement. In a Zero Trust architecture, identity has replaced the network as the security perimeter. Every access request is verified regardless of origin.', caps:['Single sign-on (SSO)','Multi-factor authentication (MFA)','Conditional Access policy evaluation','Risk-based authentication','Privileged access management','ZTNA / SASE integration','Session token management'], vendors:['Microsoft Entra ID','Okta','Ping Identity','Duo / Cisco','Zscaler','Palo Alto Prisma','Cloudflare','Netskope','CyberArk'], rels:'Identity sits between Devices and Desktop Platforms. It evaluates: user identity + device compliance + location + risk score. The decision (allow/block/MFA) gates access to everything below.' },
+  { name:'Desktop Platforms', color:'#66BB6A', desc:'The cloud or on-premises platform that hosts and delivers Windows desktop sessions or Cloud PCs to users. This is the core compute delivery layer.', caps:['Session hosting (multi-session and personal)','VM provisioning and host pool management','Golden image management','Protocol delivery (RDP Shortpath, Blast, ICA)','Multi-region deployment','Disaster recovery and business continuity'], vendors:['Azure Virtual Desktop','Windows 365','Citrix DaaS','Omnissa Horizon','Amazon WorkSpaces','Microsoft RDS (legacy)'], rels:'Desktop Platforms are managed by Operations & Automation (below). They consume Infrastructure resources (base layer). Applications are delivered into desktop sessions. Endpoint Management enforces policies on virtual desktops.' },
+  { name:'Operations & Automation', color:'#26C6DA', desc:'The management and automation layer between cloud desktop platforms and the teams who operate them. Transforms manual operations into automated, cost-optimised workflows. This is where Nerdio sits.', caps:['Auto-scaling (patented — 55% avg Azure savings)','Cost optimisation and right-sizing','Automated provisioning (full AVD env in <1 hour)','Golden image lifecycle management','Auto-heal for broken session hosts','Multi-tenant management','Migration tooling (Citrix/VMware to AVD)'], vendors:['Nerdio Manager for Enterprise (NME)','Nerdio Manager for MSP (NMM)','Terraform','Azure Bicep / ARM templates','Custom PowerShell','Azure Automation'], rels:'Operations sits directly below Desktop Platforms, managing them via Azure APIs. It orchestrates Infrastructure resource allocation. It integrates with Endpoint Management for policy deployment and DEX for performance data.' },
+  { name:'Application Delivery', color:'#FFA726', desc:'Technologies that deliver applications to users — whether installed in golden images, streamed on demand, layered as modular components, virtualised in containers, or accessed as SaaS through a browser.', caps:['MSIX App Attach (on-demand app streaming)','Application layering (composable desktop layers)','App virtualisation (containerised apps)','SaaS delivery (browser-based)','Application compatibility testing','Image-based installation (traditional)'], vendors:['Microsoft MSIX / App Attach','Omnissa App Volumes','Citrix App Layering','Rimo3 (readiness testing)','Liquidware FlexApp'], rels:'Applications are delivered into Desktop Platform sessions. Operations manages app deployment automation. Endpoint Management can also deploy apps directly to physical devices via Intune.' },
+  { name:'Endpoint Management', color:'#1565C0', desc:'Configuration, compliance, and lifecycle management of all endpoints — physical devices, virtual desktops, and Cloud PCs. The policy enforcement layer that ensures every endpoint meets organisational standards.', caps:['Device configuration profiles','Compliance policies and reporting','Software deployment','Patch management','Remote wipe and retirement','Windows Autopilot / Autopatch','Enrolment and provisioning'], vendors:['Microsoft Intune','Configuration Manager (legacy)','Jamf (macOS)','Workspace ONE (Omnissa)','Ivanti','Tanium','1E Tachyon'], rels:'Endpoint Management enforces policies across Devices (physical) and Desktop Platforms (virtual). It feeds compliance data to Identity/Conditional Access. Operations platforms orchestrate Intune policies at scale.' },
+  { name:'Digital Employee Experience', color:'#EC407A', desc:'Measures how well technology actually serves employees. Not uptime — experience. Captures real-time signals on session performance, application responsiveness, and user sentiment across the entire stack.', caps:['Login duration monitoring','App launch timing','Session reliability scoring','Proactive issue detection and alerting','Experience scoring (composite metrics)','Capacity planning from usage data','Sentiment analysis'], vendors:['ControlUp','Nexthink','Lakeside SysTrack','Aternity (Riverbed)','Rimo3','1E Tachyon','Microsoft Endpoint Analytics'], rels:'DEX monitors ALL layers — it spans the entire stack. It instruments Devices, Desktop Platform sessions, Application performance, and Infrastructure resource consumption. DEX data feeds Operations for proactive optimisation.' },
+  { name:'Infrastructure', color:'#78909C', desc:'The underlying compute, storage, and network infrastructure. Increasingly cloud-hosted on Azure, AWS, or GCP, with hybrid deployments and on-premises datacentres remaining for specific workloads.', caps:['VM hosting (general and GPU compute)','Storage (Azure Files, Azure NetApp Files, managed disks)','Networking (VNets, ExpressRoute, SD-WAN)','Reserved instances and savings plans','Azure regions and availability zones','Hybrid connectivity (Azure Stack HCI, Azure Local)'], vendors:['Microsoft Azure','AWS','Google Cloud','Azure Stack HCI','Azure Local','On-premises datacentres'], rels:'Infrastructure is the foundation layer. Everything above runs on it. Operations manages how infrastructure resources are allocated and scaled. The cost of this layer is the primary target for auto-scaling optimisation.' }
+];
+
+/* ── ARCHITECTURE TOOLTIPS ── */
+const archData = [
+  { title:'User Device', body:'Session originates here. Windows, macOS, thin client, browser, or mobile. Device compliance is checked before any connection is established. IGEL, Surface, Dell, HP, Lenovo, or any HTML5-capable browser.' },
+  { title:'Identity & Conditional Access', body:'Entra ID authenticates the user. Conditional Access evaluates: identity + device compliance + location + risk score. Decision: allow, block, or require MFA. This is Zero Trust in practice.' },
+  { title:'Desktop Platform', body:'AVD host pool or Windows 365 Cloud PC. Session host is selected based on load balancing. Connection established via RDP Shortpath (direct UDP) or gateway fallback. Multi-session Windows 11 or personal desktop.' },
+  { title:'Operations & Automation', body:'Nerdio manages the platform: auto-scaling matches VMs to demand (55% avg cost savings), auto-heal replaces broken hosts, image lifecycle automates patching, provisioning deploys full environments in under an hour.' },
+  { title:'Application Delivery', body:'MSIX App Attach streams applications on demand without baking them into images. SaaS apps run in browser. Legacy apps installed in golden image or delivered via layering technology.' },
+  { title:'Endpoint Management', body:'Intune enforces compliance policies, configuration profiles, and patching on both the user\'s physical device AND the virtual desktop session. Dual management plane for the cloud desktop era.' },
+  { title:'DEX Monitoring', body:'ControlUp, Nexthink, Lakeside instrument the session: login duration, app launch time, network quality, resource consumption. Feeds proactive remediation and capacity planning. The "was the user\'s experience good?" layer.' },
+  { title:'Cloud Infrastructure', body:'Azure VMs provide compute. Azure Files or ANF store FSLogix profiles. VNets segment traffic. ExpressRoute or SD-WAN provides connectivity. GPU VMs for graphics workloads. Reserved instances for cost optimisation.' }
+];
+
+/* ── LAYER PANEL ── */
+function openLayer(i) {
+  const L = layers[i];
+  document.getElementById('ldColor').style.background = L.color;
+  document.getElementById('ldTitle').textContent = L.name;
+  document.getElementById('ldDesc').textContent = L.desc;
+  const ul = document.getElementById('ldCaps'); ul.innerHTML = '';
+  L.caps.forEach(c => { const li = document.createElement('li'); li.textContent = c; li.querySelector || (li.style.cssText = ''); li.innerHTML = '<span style="position:absolute;left:0;top:12px;width:6px;height:6px;border-radius:50%;background:'+L.color+';"></span>' + c; ul.appendChild(li); });
+  const pills = document.getElementById('ldVendors'); pills.innerHTML = '';
+  L.vendors.forEach(v => { const s = document.createElement('span'); s.className = 'ld-pill'; s.style.borderColor = L.color + '60'; s.style.color = L.color; s.textContent = v; pills.appendChild(s); });
+  document.getElementById('ldRels').textContent = L.rels;
+  document.getElementById('layerDetail').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+}
+function closeLayer() {
+  document.getElementById('layerDetail').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+
+/* ── ARCHITECTURE TOOLTIP ── */
+const tip = document.getElementById('archTip');
+function showArchTip(e, i) {
+  const d = archData[i];
+  document.getElementById('atTitle').textContent = d.title;
+  document.getElementById('atBody').textContent = d.body;
+  tip.style.left = (e.clientX + 16) + 'px';
+  tip.style.top = (e.clientY - 20) + 'px';
+  tip.classList.add('show');
+}
+function hideArchTip() { tip.classList.remove('show'); }
+
+/* ── TIMELINE ERA TOGGLE ── */
+let openEraIdx = -1;
+function toggleEra(i) {
+  if (openEraIdx === i) { document.getElementById('eraDetail'+i).classList.remove('open'); openEraIdx = -1; return; }
+  for (let j = 0; j < 7; j++) document.getElementById('eraDetail'+j).classList.remove('open');
+  document.getElementById('eraDetail'+i).classList.add('open');
+  openEraIdx = i;
+}
+
+/* ── VENDOR FILTER ── */
+function filterVendors(cat, btn) {
+  document.querySelectorAll('.vendor-filters button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.vendor-cluster').forEach(c => {
+    if (cat === 'all' || c.dataset.cat === cat) { c.classList.remove('hidden'); }
+    else { c.classList.add('hidden'); }
+  });
+}
+
+/* ── FUTURE CARD TOGGLE ── */
+function toggleFuture(el) { el.classList.toggle('open'); }
+
+/* ── SCROLL ANIMATIONS ── */
+const fiObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.15 });
+document.querySelectorAll('.fi').forEach(el => fiObserver.observe(el));
+
+/* ── CHART ANIMATIONS ── */
+const chartObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.chart-line').forEach(l => l.classList.add('drawn'));
+      e.target.querySelectorAll('.chart-dot').forEach(d => d.classList.add('drawn'));
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.chart-wrap').forEach(el => chartObserver.observe(el));
+
+/* ── NAV ACTIVE STATE ── */
+const navLinks = document.querySelectorAll('.nav a');
+const navObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const a = document.querySelector('.nav a[href="#'+entry.target.id+'"]');
+      if (a) a.classList.add('active');
+    }
+  });
+}, { rootMargin: '-15% 0px -75% 0px' });
+document.querySelectorAll('.sec, .hero').forEach(el => { if (el.id) navObserver.observe(el); });
+</script>
+</body>
+</html>

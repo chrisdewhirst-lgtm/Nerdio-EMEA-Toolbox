@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nerdio ROI Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        /* Header */
+        header {
+            background-color: #042838;
+            color: #FFFFFF;
+            padding: 20px 40px;
+            position: sticky;
+            top: 48px;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nerdio-logo {
+            width: 40px;
+            height: 40px;
+        }
+
+        .header-text h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .header-text p {
+            font-size: 12px;
+            opacity: 0.8;
+            font-weight: 400;
+        }
+
+        /* Main Container */
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 1600px;
+            margin: 40px auto;
+            padding: 0 40px;
+        }
+
+        /* Left Panel - Inputs */
+        .input-panel {
+            background-color: #FFFFFF;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .input-section {
+            margin-bottom: 35px;
+            padding-bottom: 35px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .input-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #042838;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #042838;
+            margin-bottom: 8px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d0d0d0;
+            border-radius: 4px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="number"]:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #1E9DB8;
+            box-shadow: 0 0 0 3px rgba(30, 157, 184, 0.1);
+        }
+
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-item,
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .radio-item input[type="radio"],
+        .checkbox-item input[type="checkbox"] {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+            accent-color: #1E9DB8;
+        }
+
+        .radio-item label,
+        .checkbox-item label {
+            margin: 0;
+            font-size: 13px;
+            cursor: pointer;
+            color: #333;
+            font-weight: 400;
+        }
+
+        /* Toggle Switch */
+        .toggle-container {
+            display: flex;
+            gap: 12px;
+            background-color: #f0f0f0;
+            padding: 6px;
+            border-radius: 4px;
+            width: fit-content;
+        }
+
+        .toggle-btn {
+            padding: 8px 16px;
+            border: none;
+            background-color: transparent;
+            color: #666;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .toggle-btn.active {
+            background-color: #1E9DB8;
+            color: #FFFFFF;
+        }
+
+        /* Slider */
+        .slider-container {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .form-group input[type="range"] {
+            flex: 1;
+            height: 6px;
+            border-radius: 3px;
+            background: linear-gradient(to right, #1E9DB8 0%, #1E9DB8 var(--value), #d0d0d0 var(--value), #d0d0d0 100%);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .form-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #1E9DB8;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-group input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #1E9DB8;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1E9DB8;
+            min-width: 45px;
+        }
+
+        /* Right Panel - Results */
+        .results-panel {
+            position: sticky;
+            top: 120px;
+            max-height: calc(100vh - 140px);
+            overflow-y: auto;
+        }
+
+        .results-section {
+            background-color: #FFFFFF;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .headline-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .metric-box {
+            background: linear-gradient(135deg, #042838 0%, #1E3a52 100%);
+            padding: 20px;
+            border-radius: 8px;
+            color: #FFFFFF;
+            text-align: center;
+        }
+
+        .metric-box.highlight {
+            background: linear-gradient(135deg, #CDFF4E 0%, #b8e630 100%);
+            color: #042838;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            font-weight: 600;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .results-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #042838;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 13px;
+        }
+
+        .result-row:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .result-value {
+            color: #042838;
+            font-weight: 600;
+        }
+
+        .result-value.positive {
+            color: #CDFF4E;
+        }
+
+        /* Bar Chart */
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            height: 100px;
+            margin: 15px 0;
+        }
+
+        .bar {
+            flex: 1;
+            background-color: #1E9DB8;
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 8px 4px 4px;
+            font-size: 10px;
+            font-weight: 600;
+            color: #FFFFFF;
+            text-align: center;
+        }
+
+        .bar.before {
+            background-color: #A795C7;
+        }
+
+        .bar.savings {
+            background-color: #CDFF4E;
+            color: #042838;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background-color: #1E9DB8;
+            color: #FFFFFF;
+        }
+
+        .btn-primary:hover {
+            background-color: #178aa6;
+            box-shadow: 0 4px 12px rgba(30, 157, 184, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: #042838;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e0e0e0;
+        }
+
+        .btn-tertiary {
+            background-color: transparent;
+            color: #1E9DB8;
+            border: 1px solid #1E9DB8;
+        }
+
+        .btn-tertiary:hover {
+            background-color: #f0f9fb;
+        }
+
+        /* Disclaimer */
+        .disclaimer {
+            font-size: 11px;
+            color: #999;
+            font-style: italic;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .results-panel {
+                position: static;
+                max-height: none;
+            }
+
+            .headline-metrics {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+
+            .header-text h1 {
+                font-size: 20px;
+            }
+
+            .header-text p {
+                display: none;
+            }
+
+            .container {
+                padding: 0 20px;
+                margin: 20px auto;
+            }
+
+            .input-panel,
+            .results-section {
+                padding: 20px;
+            }
+
+            .headline-metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .metric-value {
+                font-size: 24px;
+            }
+        }
+
+        @media print {
+            header {
+                position: static;
+            }
+
+            .input-panel {
+                display: none;
+            }
+
+            .results-panel {
+                position: static;
+                max-height: none;
+            }
+
+            .action-buttons {
+                display: none;
+            }
+
+            .container {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            button {
+                display: none;
+            }
+        }
+
+        /* Scrollbar styling for results panel */
+        .results-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .results-panel::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 3px;
+        }
+
+        .results-panel::-webkit-scrollbar-thumb {
+            background: #1E9DB8;
+            border-radius: 3px;
+        }
+
+        .results-panel::-webkit-scrollbar-thumb:hover {
+            background: #178aa6;
+        }
+
+        .stacked-bar-container {
+            margin: 15px 0;
+        }
+
+        .stacked-bar {
+            display: flex;
+            height: 30px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .stack-segment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 0 8px;
+        }
+
+        .stack-azure {
+            background-color: #1E9DB8;
+        }
+
+        .stack-operations {
+            background-color: #A795C7;
+        }
+
+        .stack-licensing {
+            background-color: #42a898;
+        }
+
+        .stack-risk {
+            background-color: #CDFF4E;
+            color: #042838;
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 12px;
+            font-size: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+        }
+    /* .home-btn removed - using brand bar */
+    
+    </style>
+<style>
+/* === NERDIO BRAND BAR === */
+.nerdio-brand-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+  height: 48px;
+  background: linear-gradient(135deg, #0B1B3D 0%, #142952 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+.nerdio-brand-bar * { box-sizing: border-box; margin: 0; padding: 0; }
+.nerdio-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+.nerdio-brand-logo img {
+  height: 22px;
+  width: auto;
+}
+.nerdio-brand-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255,255,255,0.2);
+}
+.nerdio-brand-tool-name {
+  color: rgba(255,255,255,0.85);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+.nerdio-brand-home {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #00B4D8;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: rgba(0,180,216,0.1);
+  border: 1px solid rgba(0,180,216,0.2);
+  transition: all 0.2s;
+}
+.nerdio-brand-home:hover {
+  background: rgba(0,180,216,0.2);
+  border-color: rgba(0,180,216,0.4);
+  color: #FFFFFF;
+}
+.nerdio-brand-home svg {
+  width: 14px;
+  height: 14px;
+}
+.nerdio-brand-spacer {
+  height: 48px;
+  width: 100%;
+  flex-shrink: 0;
+}
+/* === END NERDIO BRAND BAR === */
+</style>
+</head>
+<body>
+
+<!-- NERDIO BRAND BAR -->
+<div class="nerdio-brand-bar">
+  <div class="nerdio-brand-logo">
+    <img src="data:image/png;base64,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" alt="Nerdio">
+    <div class="nerdio-brand-divider"></div>
+    <span class="nerdio-brand-tool-name">ROI Calculator</span>
+  </div>
+  <a href="../EMEA-Nerdio-Toolbox.html" class="nerdio-brand-home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+    Toolbox Home
+  </a>
+</div>
+<div class="nerdio-brand-spacer"></div>
+<!-- END NERDIO BRAND BAR -->
+
+<script>
+</script>
+
+    
+    <!-- Header -->
+    <header>
+        <div class="header-logo-container">
+            <svg class="nerdio-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <!-- Left lens -->
+                <circle cx="30" cy="50" r="18" fill="none" stroke="#1E9DB8" stroke-width="2"/>
+                <!-- Right lens -->
+                <circle cx="70" cy="50" r="18" fill="none" stroke="#1E9DB8" stroke-width="2"/>
+                <!-- Bridge -->
+                <line x1="48" y1="50" x2="52" y2="50" stroke="#1E9DB8" stroke-width="2"/>
+                <!-- Left arm -->
+                <path d="M 12 50 Q 8 50 8 55" fill="none" stroke="#1E9DB8" stroke-width="2" stroke-linecap="round"/>
+                <!-- Right arm -->
+                <path d="M 88 50 Q 92 50 92 55" fill="none" stroke="#1E9DB8" stroke-width="2" stroke-linecap="round"/>
+                <!-- Power button in right lens -->
+                <circle cx="80" cy="38" r="4" fill="none" stroke="#1E9DB8" stroke-width="1.5"/>
+                <path d="M 80 32 Q 80 30 80 30" stroke="#1E9DB8" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <div class="header-text">
+                <h1>nerdio</h1>
+                <p>ROI Calculator</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Left Panel - Inputs -->
+        <div class="input-panel">
+            <!-- Section 1: Environment Profile -->
+            <div class="input-section">
+                <div class="section-title">Environment Profile</div>
+
+                <div class="form-group">
+                    <label for="orgName">Organization Name</label>
+                    <input type="text" id="orgName" placeholder="Enter organization name">
+                </div>
+
+                <div class="form-group">
+                    <label>Current Platform</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="platform1" name="platform" value="citrix" checked>
+                            <label for="platform1">Citrix</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="platform2" name="platform" value="vmware">
+                            <label for="platform2">VMware</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="platform3" name="platform" value="azure">
+                            <label for="platform3">Native Azure</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="platform4" name="platform" value="physical">
+                            <label for="platform4">Physical</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="platform5" name="platform" value="mixed">
+                            <label for="platform5">Mixed</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Product</label>
+                    <div class="toggle-container">
+                        <button class="toggle-btn active" data-toggle="nme">NME (Enterprise)</button>
+                        <button class="toggle-btn" data-toggle="nmm">NMM (MSP)</button>
+                    </div>
+                    <input type="hidden" id="product" value="nme">
+                </div>
+
+                <div class="form-group">
+                    <label for="vdiUsers">Number of Virtual Desktop Users</label>
+                    <input type="number" id="vdiUsers" value="500" min="1">
+                </div>
+
+                <div class="form-group">
+                    <label for="physicalEndpoints">Physical Endpoints (Intune)</label>
+                    <input type="number" id="physicalEndpoints" value="0" min="0">
+                </div>
+            </div>
+
+            <!-- Section 2: Current Azure Costs -->
+            <div class="input-section">
+                <div class="section-title">Current Azure Costs</div>
+
+                <div class="form-group">
+                    <label for="monthlyAzure">Monthly Azure Compute Spend ($)</label>
+                    <input type="number" id="monthlyAzure" value="25000" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label>Current Auto-Scaling</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="scaling1" name="scaling" value="none" checked>
+                            <label for="scaling1">None</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="scaling2" name="scaling" value="basic">
+                            <label for="scaling2">Basic Scheduling</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="scaling3" name="scaling" value="some">
+                            <label for="scaling3">Some Optimization</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="utilization">Average VM Utilization Rate</label>
+                    <div class="slider-container">
+                        <input type="range" id="utilization" min="10" max="100" value="40">
+                        <span class="slider-value"><span id="utilizationValue">40</span>%</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Reserved Instances Purchased</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="ri1" name="reservedInstances" value="no" checked>
+                            <label for="ri1">No</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="ri2" name="reservedInstances" value="yes">
+                            <label for="ri2">Yes</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3: Current Operational Costs -->
+            <div class="input-section">
+                <div class="section-title">Operational Costs</div>
+
+                <div class="form-group">
+                    <label for="adminCount">Full-Time Admins on VDI/Desktop</label>
+                    <input type="number" id="adminCount" value="3" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="adminSalary">Average Admin Annual Salary ($)</label>
+                    <input type="number" id="adminSalary" value="95000" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="adminHours">Hours Per Week on Manual VDI Tasks</label>
+                    <input type="number" id="adminHours" value="20" min="0" max="40">
+                </div>
+
+                <div class="form-group">
+                    <label for="provisionTime">Avg Time to Provision AVD Environment (Days)</label>
+                    <input type="number" id="provisionTime" value="5" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="helpDeskTickets">Monthly Helpdesk Tickets - Desktop Issues</label>
+                    <input type="number" id="helpDeskTickets" value="100" min="0">
+                </div>
+            </div>
+
+            <!-- Section 4: Current Licensing -->
+            <div class="input-section">
+                <div class="section-title">Current Licensing</div>
+
+                <div class="form-group">
+                    <label for="vdiLicensing">Current VDI Platform Annual License Cost ($)</label>
+                    <input type="number" id="vdiLicensing" value="0" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label>Licensing Includes</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lic1" name="licensing" value="broker">
+                            <label for="lic1">Broker</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lic2" name="licensing" value="gateway">
+                            <label for="lic2">Gateway</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lic3" name="licensing" value="storefront">
+                            <label for="lic3">StoreFront</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lic4" name="licensing" value="infrastructure">
+                            <label for="lic4">Infrastructure</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="infrastructureCost">Annual Infrastructure Maintenance Cost ($)</label>
+                    <input type="number" id="infrastructureCost" value="0" min="0">
+                </div>
+            </div>
+
+            <!-- Section 5: Risk & Compliance -->
+            <div class="input-section">
+                <div class="section-title">Risk & Compliance</div>
+
+                <div class="form-group">
+                    <label for="auditHours">Hours Per Audit for Compliance Evidence</label>
+                    <input type="number" id="auditHours" value="40" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="auditsPerYear">Audits Per Year</label>
+                    <input type="number" id="auditsPerYear" value="2" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="downtimeCost">Cost Per Hour of Production Downtime ($)</label>
+                    <input type="number" id="downtimeCost" value="5000" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="downtimeIncidents">Unplanned Downtime Incidents Per Year</label>
+                    <input type="number" id="downtimeIncidents" value="4" min="0">
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn-primary" onclick="exportSummary()">Export Summary</button>
+                <button class="btn-secondary" onclick="resetToDefaults()">Reset Defaults</button>
+                <button class="btn-tertiary" onclick="loadSampleData()">Load Sample</button>
+            </div>
+
+            <div class="disclaimer">
+                Estimates based on Nerdio customer benchmarks.<br>Actual results may vary.
+            </div>
+        </div>
+
+        <!-- Right Panel - Results -->
+        <div class="results-panel">
+            <!-- Headline Metrics -->
+            <div class="results-section">
+                <div class="headline-metrics">
+                    <div class="metric-box highlight">
+                        <div class="metric-label">Annual Savings</div>
+                        <div class="metric-value" id="annualSavings">$0</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">ROI %</div>
+                        <div class="metric-value" id="roiPercentage">0%</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">Payback (Months)</div>
+                        <div class="metric-value" id="paybackMonths">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Azure Compute Savings -->
+            <div class="results-section">
+                <div class="results-title">Azure Compute Savings</div>
+                <div class="result-row">
+                    <span class="result-label">Current Annual Azure Spend</span>
+                    <span class="result-value" id="currentAzure">$0</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">Projected with Nerdio</span>
+                    <span class="result-value" id="projectedAzure">$0</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label"><strong>Annual Compute Savings</strong></span>
+                    <span class="result-value positive" id="azureSavings">$0</span>
+                </div>
+                <div class="bar-chart">
+                    <div class="bar before" style="height: 0%" id="barBefore">
+                        <span id="barBeforeLabel">Before</span>
+                    </div>
+                    <div class="bar savings" style="height: 0%" id="barAfter">
+                        <span id="barAfterLabel">After</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Operational Efficiency Savings -->
+            <div class="results-section">
+                <div class="results-title">Operational Efficiency</div>
+                <div class="result-row">
+                    <span class="result-label">Current Annual Admin Cost</span>
+                    <span class="result-value" id="currentAdminCost">$0</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">Projected with Automation (70% reduction)</span>
+                    <span class="result-value" id="projectedAdminCost">$0</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label"><strong>Annual Operational Savings</strong></span>
+                    <span class="result-value positive" id="operationalSavings">$0</span>
+                </div>
+                <div class="result-row" style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #f0f0f0;">
+                    <span class="result-label">Provisioning Time Improvement</span>
+                    <span class="result-value" id="provisioningImprovement">0 days → &lt;1 hour</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">Helpdesk Ticket Reduction (75%)</span>
+                    <span class="result-value" id="ticketReduction">0 → 0 tickets/month</span>
+                </div>
+            </div>
+
+            <!-- License & Infrastructure Savings -->
+            <div class="results-section">
+                <div class="results-title">License & Infrastructure</div>
+                <div class="result-row">
+                    <span class="result-label">Current Annual VDI Licensing</span>
+                    <span class="result-value" id="currentLicensing">$0</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">Current Infrastructure Maintenance</span>
+                    <span class="result-value" id="currentInfra">$0</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">Nerdio Annual Cost</span>
+                    <span class="result-value" id="nerdioAnnualCost">$0</span>
+                </div>
+                <div class="result-row" style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #f0f0f0;">
+                    <span class="result-label"><strong>Net License/Infra Savings</strong></span>
+                    <span class="result-value positive" id="licensingSavings">$0</span>
+                </div>
+            </div>
+
+            <!-- Risk Reduction Value -->
+            <div class="results-section">
+                <div class="results-title">Risk Reduction Value</div>
+                <div class="result-row">
+                    <span class="result-label">Current Audit Prep Cost/Year</span>
+                    <span class="result-value" id="currentAuditCost">$0</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">With Nerdio (80% reduction)</span>
+                    <span class="result-value" id="projectedAuditCost">$0</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">Current Downtime Cost/Year</span>
+                    <span class="result-value" id="currentDowntimeCost">$0</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">With Nerdio Auto-Heal (60% reduction)</span>
+                    <span class="result-value" id="projectedDowntimeCost">$0</span>
+                </div>
+                <div class="result-row" style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #f0f0f0;">
+                    <span class="result-label"><strong>Annual Risk Reduction Value</strong></span>
+                    <span class="result-value positive" id="riskSavings">$0</span>
+                </div>
+            </div>
+
+            <!-- Total Value Summary -->
+            <div class="results-section">
+                <div class="results-title">Value Breakdown</div>
+                <div class="stacked-bar-container">
+                    <div class="stacked-bar" id="stackedBar">
+                        <div class="stack-segment stack-azure" id="azureSegment" style="width: 0%;">Azure</div>
+                        <div class="stack-segment stack-operations" id="opsSegment" style="width: 0%;">Ops</div>
+                        <div class="stack-segment stack-licensing" id="licSegment" style="width: 0%;">License</div>
+                        <div class="stack-segment stack-risk" id="riskSegment" style="width: 0%;">Risk</div>
+                    </div>
+                </div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #1E9DB8;"></div>
+                        <span id="legendAzure">Azure</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #A795C7;"></div>
+                        <span id="legendOps">Operations</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #42a898;"></div>
+                        <span id="legendLic">License</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #CDFF4E;"></div>
+                        <span id="legendRisk">Risk</span>
+                    </div>
+                </div>
+                <div class="result-row" style="margin-top: 18px; padding-top: 15px; border-top: 1px solid #f0f0f0;">
+                    <span class="result-label">3-Year Value</span>
+                    <span class="result-value" id="value3Year">$0</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">5-Year Value</span>
+                    <span class="result-value" id="value5Year">$0</span>
+                </div>
+            </div>
+
+            <!-- Nerdio Investment -->
+            <div class="results-section">
+                <div class="results-title">Nerdio Investment</div>
+                <div class="result-row">
+                    <span class="result-label">Monthly Nerdio Cost</span>
+                    <span class="result-value" id="monthlyCost">$0</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">Annual Nerdio Cost</span>
+                    <span class="result-value" id="annualCost">$0</span>
+                </div>
+                <div class="result-row" style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #f0f0f0;">
+                    <span class="result-label"><strong>Net Annual Benefit</strong></span>
+                    <span class="result-value positive" id="netBenefit">$0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const NERDIO_COST_PER_USER_PER_MONTH = 3;
+
+        // Get all input elements
+        function getFormData() {
+            const vdiUsers = parseInt(document.getElementById('vdiUsers').value) || 0;
+            const monthlyAzure = parseFloat(document.getElementById('monthlyAzure').value) || 0;
+            const adminCount = parseInt(document.getElementById('adminCount').value) || 0;
+            const adminSalary = parseFloat(document.getElementById('adminSalary').value) || 0;
+            const adminHours = parseInt(document.getElementById('adminHours').value) || 0;
+            const provisionTime = parseInt(document.getElementById('provisionTime').value) || 0;
+            const helpDeskTickets = parseInt(document.getElementById('helpDeskTickets').value) || 0;
+            const vdiLicensing = parseFloat(document.getElementById('vdiLicensing').value) || 0;
+            const infrastructureCost = parseFloat(document.getElementById('infrastructureCost').value) || 0;
+            const auditHours = parseInt(document.getElementById('auditHours').value) || 0;
+            const auditsPerYear = parseInt(document.getElementById('auditsPerYear').value) || 0;
+            const downtimeCost = parseFloat(document.getElementById('downtimeCost').value) || 0;
+            const downtimeIncidents = parseInt(document.getElementById('downtimeIncidents').value) || 0;
+            const utilization = parseInt(document.getElementById('utilization').value) || 40;
+
+            const scaling = document.querySelector('input[name="scaling"]:checked').value;
+            const physicalEndpoints = parseInt(document.getElementById('physicalEndpoints').value) || 0;
+
+            return {
+                vdiUsers,
+                monthlyAzure,
+                adminCount,
+                adminSalary,
+                adminHours,
+                provisionTime,
+                helpDeskTickets,
+                vdiLicensing,
+                infrastructureCost,
+                auditHours,
+                auditsPerYear,
+                downtimeCost,
+                downtimeIncidents,
+                utilization,
+                scaling,
+                physicalEndpoints
+            };
+        }
+
+        // Calculate all savings
+        function calculateSavings(data) {
+            // Azure Compute Savings
+            const currentAnnualAzure = data.monthlyAzure * 12;
+            let scalingSavingsPercent = 0;
+
+            if (data.scaling === 'none') {
+                scalingSavingsPercent = 0.55;
+            } else if (data.scaling === 'basic') {
+                scalingSavingsPercent = 0.30;
+            } else if (data.scaling === 'some') {
+                scalingSavingsPercent = 0.15;
+            }
+
+            // Adjust based on utilization - higher utilization means less savings potential
+            const utilizationFactor = (100 - data.utilization) / 100;
+            const adjustedSavingsPercent = scalingSavingsPercent * (0.5 + (utilizationFactor * 0.5));
+
+            const azureSavings = currentAnnualAzure * adjustedSavingsPercent;
+            const projectedAzure = currentAnnualAzure - azureSavings;
+
+            // Operational Efficiency Savings
+            const adminHourlyRate = data.adminSalary / (40 * 52); // 40 hours/week, 52 weeks/year
+            const currentAdminCost = data.adminCount * data.adminSalary * (data.adminHours / 40);
+            const operationalSavings = currentAdminCost * 0.70;
+            const projectedAdminCost = currentAdminCost - operationalSavings;
+
+            // Helpdesk Reduction
+            const currentMonthlyTickets = data.helpDeskTickets;
+            const projectedMonthlyTickets = Math.ceil(currentMonthlyTickets * 0.25);
+            const ticketReductionMonthly = currentMonthlyTickets - projectedMonthlyTickets;
+
+            // License & Infrastructure Savings
+            const currentLicensing = data.vdiLicensing + data.infrastructureCost;
+            const nerdioAnnualCost = data.vdiUsers * NERDIO_COST_PER_USER_PER_MONTH * 12;
+            const licensingSavings = currentLicensing - nerdioAnnualCost;
+
+            // Risk Reduction Value
+            const currentAuditCost = data.auditHours * data.auditsPerYear * adminHourlyRate;
+            const projectedAuditCost = currentAuditCost * 0.20; // 80% reduction
+            const auditSavings = currentAuditCost - projectedAuditCost;
+
+            const currentDowntimeCost = data.downtimeIncidents * 2 * data.downtimeCost; // assume 2 hours per incident
+            const projectedDowntimeCost = currentDowntimeCost * 0.40; // 60% reduction
+            const downtimeSavings = currentDowntimeCost - projectedDowntimeCost;
+
+            const riskSavings = auditSavings + downtimeSavings;
+
+            // Total Savings
+            const totalAnnualSavings = azureSavings + operationalSavings + licensingSavings + riskSavings;
+            const netBenefit = totalAnnualSavings - nerdioAnnualCost;
+            const roi = (netBenefit / nerdioAnnualCost) * 100;
+            const paybackMonths = nerdioAnnualCost / ((totalAnnualSavings + nerdioAnnualCost) / 12);
+
+            return {
+                currentAnnualAzure,
+                azureSavings,
+                projectedAzure,
+                operationalSavings,
+                currentAdminCost,
+                projectedAdminCost,
+                ticketReductionMonthly,
+                currentMonthlyTickets,
+                projectedMonthlyTickets,
+                licensingSavings,
+                currentLicensing,
+                nerdioAnnualCost,
+                riskSavings,
+                currentAuditCost,
+                projectedAuditCost,
+                currentDowntimeCost,
+                projectedDowntimeCost,
+                totalAnnualSavings,
+                netBenefit,
+                roi,
+                paybackMonths: Math.max(0, paybackMonths),
+                adminHourlyRate
+            };
+        }
+
+        // Format currency
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        // Update all results
+        function updateResults() {
+            const data = getFormData();
+            const savings = calculateSavings(data);
+
+            // Headline Metrics
+            document.getElementById('annualSavings').textContent = formatCurrency(savings.totalAnnualSavings);
+            document.getElementById('roiPercentage').textContent = `${Math.round(savings.roi)}%`;
+            document.getElementById('paybackMonths').textContent = `${Math.round(savings.paybackMonths)}`;
+
+            // Azure Compute
+            document.getElementById('currentAzure').textContent = formatCurrency(savings.currentAnnualAzure);
+            document.getElementById('projectedAzure').textContent = formatCurrency(savings.projectedAzure);
+            document.getElementById('azureSavings').textContent = formatCurrency(savings.azureSavings);
+
+            // Bar chart
+            const maxValue = Math.max(savings.currentAnnualAzure, savings.projectedAzure) || 1;
+            const beforePercent = (savings.currentAnnualAzure / maxValue) * 100;
+            const afterPercent = (savings.projectedAzure / maxValue) * 100;
+
+            document.getElementById('barBefore').style.height = `${beforePercent}%`;
+            document.getElementById('barAfter').style.height = `${afterPercent}%`;
+            document.getElementById('barBeforeLabel').textContent = beforePercent > 20 ? formatCurrency(savings.currentAnnualAzure) : '';
+            document.getElementById('barAfterLabel').textContent = afterPercent > 20 ? formatCurrency(savings.projectedAzure) : '';
+
+            // Operational Efficiency
+            document.getElementById('currentAdminCost').textContent = formatCurrency(savings.currentAdminCost);
+            document.getElementById('projectedAdminCost').textContent = formatCurrency(savings.projectedAdminCost);
+            document.getElementById('operationalSavings').textContent = formatCurrency(savings.operationalSavings);
+            document.getElementById('provisioningImprovement').textContent = `${data.provisionTime} days → <1 hour`;
+            document.getElementById('ticketReduction').textContent = `${savings.currentMonthlyTickets} → ${savings.projectedMonthlyTickets} tickets/month`;
+
+            // License & Infrastructure
+            document.getElementById('currentLicensing').textContent = formatCurrency(data.vdiLicensing);
+            document.getElementById('currentInfra').textContent = formatCurrency(data.infrastructureCost);
+            document.getElementById('nerdioAnnualCost').textContent = formatCurrency(savings.nerdioAnnualCost);
+            document.getElementById('licensingSavings').textContent = formatCurrency(savings.licensingSavings);
+
+            // Risk Reduction
+            document.getElementById('currentAuditCost').textContent = formatCurrency(savings.currentAuditCost);
+            document.getElementById('projectedAuditCost').textContent = formatCurrency(savings.projectedAuditCost);
+            document.getElementById('currentDowntimeCost').textContent = formatCurrency(savings.currentDowntimeCost);
+            document.getElementById('projectedDowntimeCost').textContent = formatCurrency(savings.projectedDowntimeCost);
+            document.getElementById('riskSavings').textContent = formatCurrency(savings.riskSavings);
+
+            // Value Breakdown
+            const totalValue = savings.azureSavings + savings.operationalSavings + (savings.licensingSavings > 0 ? savings.licensingSavings : 0) + savings.riskSavings;
+            const azurePercent = (savings.azureSavings / totalValue) * 100;
+            const opsPercent = (savings.operationalSavings / totalValue) * 100;
+            const licPercent = Math.max(0, (savings.licensingSavings / totalValue) * 100);
+            const riskPercent = (savings.riskSavings / totalValue) * 100;
+
+            document.getElementById('azureSegment').style.width = `${azurePercent}%`;
+            document.getElementById('opsSegment').style.width = `${opsPercent}%`;
+            document.getElementById('licSegment').style.width = `${licPercent}%`;
+            document.getElementById('riskSegment').style.width = `${riskPercent}%`;
+
+            document.getElementById('legendAzure').textContent = `Azure (${formatCurrency(savings.azureSavings)})`;
+            document.getElementById('legendOps').textContent = `Operations (${formatCurrency(savings.operationalSavings)})`;
+            document.getElementById('legendLic').textContent = `License (${formatCurrency(savings.licensingSavings)})`;
+            document.getElementById('legendRisk').textContent = `Risk (${formatCurrency(savings.riskSavings)})`;
+
+            document.getElementById('value3Year').textContent = formatCurrency(savings.totalAnnualSavings * 3 - savings.nerdioAnnualCost * 3);
+            document.getElementById('value5Year').textContent = formatCurrency(savings.totalAnnualSavings * 5 - savings.nerdioAnnualCost * 5);
+
+            // Nerdio Investment
+            document.getElementById('monthlyCost').textContent = formatCurrency(data.vdiUsers * NERDIO_COST_PER_USER_PER_MONTH);
+            document.getElementById('annualCost').textContent = formatCurrency(savings.nerdioAnnualCost);
+            document.getElementById('netBenefit').textContent = formatCurrency(savings.netBenefit);
+        }
+
+        // Event Listeners
+        document.getElementById('vdiUsers').addEventListener('input', updateResults);
+        document.getElementById('monthlyAzure').addEventListener('input', updateResults);
+        document.getElementById('adminCount').addEventListener('input', updateResults);
+        document.getElementById('adminSalary').addEventListener('input', updateResults);
+        document.getElementById('adminHours').addEventListener('input', updateResults);
+        document.getElementById('provisionTime').addEventListener('input', updateResults);
+        document.getElementById('helpDeskTickets').addEventListener('input', updateResults);
+        document.getElementById('vdiLicensing').addEventListener('input', updateResults);
+        document.getElementById('infrastructureCost').addEventListener('input', updateResults);
+        document.getElementById('auditHours').addEventListener('input', updateResults);
+        document.getElementById('auditsPerYear').addEventListener('input', updateResults);
+        document.getElementById('downtimeCost').addEventListener('input', updateResults);
+        document.getElementById('downtimeIncidents').addEventListener('input', updateResults);
+        document.getElementById('physicalEndpoints').addEventListener('input', updateResults);
+
+        document.querySelectorAll('input[name="scaling"]').forEach(el => {
+            el.addEventListener('change', updateResults);
+        });
+
+        document.getElementById('utilization').addEventListener('input', function() {
+            document.getElementById('utilizationValue').textContent = this.value;
+            updateResults();
+        });
+
+        // Toggle buttons for product selection
+        document.querySelectorAll('.toggle-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById('product').value = this.dataset.toggle;
+                updateResults();
+            });
+        });
+
+        // Reset to defaults
+        function resetToDefaults() {
+            document.getElementById('orgName').value = '';
+            document.getElementById('vdiUsers').value = 500;
+            document.getElementById('physicalEndpoints').value = 0;
+            document.getElementById('monthlyAzure').value = 25000;
+            document.getElementById('utilization').value = 40;
+            document.getElementById('utilizationValue').textContent = 40;
+            document.getElementById('adminCount').value = 3;
+            document.getElementById('adminSalary').value = 95000;
+            document.getElementById('adminHours').value = 20;
+            document.getElementById('provisionTime').value = 5;
+            document.getElementById('helpDeskTickets').value = 100;
+            document.getElementById('vdiLicensing').value = 0;
+            document.getElementById('infrastructureCost').value = 0;
+            document.getElementById('auditHours').value = 40;
+            document.getElementById('auditsPerYear').value = 2;
+            document.getElementById('downtimeCost').value = 5000;
+            document.getElementById('downtimeIncidents').value = 4;
+
+            document.getElementById('platform1').checked = true;
+            document.getElementById('scaling1').checked = true;
+            document.getElementById('ri1').checked = true;
+
+            document.querySelectorAll('input[name="licensing"]').forEach(cb => cb.checked = false);
+
+            updateResults();
+        }
+
+        // Load sample data (Citrix customer)
+        function loadSampleData() {
+            document.getElementById('orgName').value = 'Acme Corp';
+            document.getElementById('vdiUsers').value = 1000;
+            document.getElementById('physicalEndpoints').value = 500;
+            document.getElementById('monthlyAzure').value = 50000;
+            document.getElementById('utilization').value = 45;
+            document.getElementById('utilizationValue').textContent = 45;
+            document.getElementById('adminCount').value = 4;
+            document.getElementById('adminSalary').value = 100000;
+            document.getElementById('adminHours').value = 25;
+            document.getElementById('provisionTime').value = 7;
+            document.getElementById('helpDeskTickets').value = 250;
+            document.getElementById('vdiLicensing').value = 200000;
+            document.getElementById('infrastructureCost').value = 150000;
+            document.getElementById('auditHours').value = 60;
+            document.getElementById('auditsPerYear').value = 3;
+            document.getElementById('downtimeCost').value = 10000;
+            document.getElementById('downtimeIncidents').value = 6;
+
+            document.getElementById('platform1').checked = true;
+            document.getElementById('scaling1').checked = true;
+            document.getElementById('ri1').checked = true;
+
+            updateResults();
+        }
+
+        // Export Summary
+        function exportSummary() {
+            const data = getFormData();
+            const savings = calculateSavings(data);
+            const orgName = document.getElementById('orgName').value || 'Organization';
+
+            const summary = `
+NERDIO ROI CALCULATOR SUMMARY
+============================
+Organization: ${orgName}
+Generated: ${new Date().toLocaleDateString()}
+
+ENVIRONMENT PROFILE
+-------------------
+Virtual Desktop Users: ${data.vdiUsers}
+Physical Endpoints: ${data.physicalEndpoints}
+Current Monthly Azure Spend: ${formatCurrency(data.monthlyAzure)}
+
+ANNUAL SAVINGS SUMMARY
+---------------------
+Azure Compute Savings: ${formatCurrency(savings.azureSavings)}
+Operational Efficiency Savings: ${formatCurrency(savings.operationalSavings)}
+License & Infrastructure Savings: ${formatCurrency(savings.licensingSavings)}
+Risk Reduction Value: ${formatCurrency(savings.riskSavings)}
+
+TOTAL ANNUAL SAVINGS: ${formatCurrency(savings.totalAnnualSavings)}
+Nerdio Annual Cost: ${formatCurrency(savings.nerdioAnnualCost)}
+NET ANNUAL BENEFIT: ${formatCurrency(savings.netBenefit)}
+
+ROI & PAYBACK
+-------------
+ROI Percentage: ${Math.round(savings.roi)}%
+Payback Period: ${Math.round(savings.paybackMonths)} months
+
+MULTI-YEAR VALUE
+----------------
+3-Year Value: ${formatCurrency(savings.totalAnnualSavings * 3 - savings.nerdioAnnualCost * 3)}
+5-Year Value: ${formatCurrency(savings.totalAnnualSavings * 5 - savings.nerdioAnnualCost * 5)}
+
+OPERATIONAL IMPROVEMENTS
+------------------------
+Provisioning Time: ${data.provisionTime} days → <1 hour
+Helpdesk Tickets: ${savings.currentMonthlyTickets} → ${savings.projectedMonthlyTickets} per month
+Admin Hours Reduction: 70%
+Audit Preparation: 80% reduction
+Downtime Incidents: 60% reduction
+
+DETAILED BREAKDOWN
+------------------
+Current Annual Azure Compute: ${formatCurrency(savings.currentAnnualAzure)}
+Projected with Nerdio: ${formatCurrency(savings.projectedAzure)}
+VM Utilization: ${data.utilization}%
+
+Current Annual Admin Cost: ${formatCurrency(savings.currentAdminCost)}
+Projected with Automation: ${formatCurrency(savings.projectedAdminCost)}
+Admins: ${data.adminCount} @ ${formatCurrency(data.adminSalary)}/year
+
+Current VDI Licensing: ${formatCurrency(data.vdiLicensing)}
+Current Infrastructure Maintenance: ${formatCurrency(data.infrastructureCost)}
+Nerdio Cost: ${data.vdiUsers} users × $${NERDIO_COST_PER_USER_PER_MONTH}/month
+
+COMPLIANCE & RISK
+-----------------
+Current Audit Cost: ${formatCurrency(savings.currentAuditCost)}
+Current Downtime Cost: ${formatCurrency(savings.currentDowntimeCost)}
+
+DISCLAIMER
+----------
+Estimates based on Nerdio customer benchmarks. Actual results may vary.
+This analysis was generated using the Nerdio ROI Calculator.
+            `;
+
+            // Create a blob and download
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(summary));
+            element.setAttribute('download', `nerdio-roi-summary-${new Date().getTime()}.txt`);
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', updateResults);
+    </script>
+</body>
+</html>

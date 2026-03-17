@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Getting Started — Nerdio Sales Command Centre</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#042838;--navy-light:#0a3a50;--navy-mid:#0d2f42;
+  --teal:#1E9DB8;--white:#FFFFFF;--green:#CDFF4E;--purple:#A795C7;
+  --gray-50:#f5f8fa;--gray-100:#eaf0f4;--gray-200:#dce4ea;--gray-300:#b8c7d1;--gray-500:#6b8294;
+}
+body{font-family:'Poppins',sans-serif;background:var(--navy);color:var(--white);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;
+  background:radial-gradient(ellipse at 20% 50%,rgba(30,157,184,0.08) 0%,transparent 60%),
+             radial-gradient(ellipse at 80% 20%,rgba(167,149,199,0.06) 0%,transparent 50%),
+             radial-gradient(ellipse at 50% 90%,rgba(205,255,78,0.03) 0%,transparent 40%);
+  pointer-events:none;z-index:0}
+
+/* HOME BTN */
+/* .home-btn removed - using brand bar */
+
+
+/* HEADER */
+.header{position:relative;z-index:2;padding:40px 48px 0;max-width:1200px;margin:0 auto}
+.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px}
+.brand-line{height:1px;background:linear-gradient(90deg,rgba(30,157,184,0.4),transparent);margin-bottom:40px}
+
+/* HERO */
+.hero{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:0 48px 40px;text-align:center}
+.hero h1{font-size:36px;font-weight:800;letter-spacing:-1px;line-height:1.2;margin-bottom:12px}
+.hero h1 span{background:linear-gradient(135deg,var(--teal),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:15px;color:var(--gray-300);max-width:680px;margin:0 auto;line-height:1.7}
+
+/* MODE SWITCHER */
+.mode-bar{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:0 48px 32px;display:flex;justify-content:center;gap:8px}
+.mode-btn{padding:10px 24px;border-radius:10px;border:1px solid rgba(30,157,184,0.3);background:transparent;color:var(--gray-300);font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.mode-btn:hover{border-color:var(--teal);color:var(--white)}
+.mode-btn.active{background:rgba(30,157,184,0.15);border-color:var(--teal);color:var(--teal)}
+
+/* WALKTHROUGH CONTAINER */
+.wt-wrap{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:0 48px 48px}
+
+/* ─── GUIDED VIEW ─── */
+.step-progress{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:40px;padding:0 20px}
+.step-dot{width:40px;height:40px;border-radius:50%;border:2px solid rgba(30,157,184,0.3);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--gray-500);transition:all 0.3s;cursor:pointer;background:transparent;flex-shrink:0;position:relative}
+.step-dot:hover{border-color:var(--teal);color:var(--white)}
+.step-dot.active{background:var(--teal);border-color:var(--teal);color:var(--white);box-shadow:0 0 20px rgba(30,157,184,0.4)}
+.step-dot.completed{background:rgba(205,255,78,0.15);border-color:var(--green);color:var(--green)}
+.step-line{width:40px;height:2px;background:rgba(30,157,184,0.2);flex-shrink:0;transition:background 0.3s}
+.step-line.completed{background:var(--green)}
+.step-label{position:absolute;top:48px;font-size:9px;color:var(--gray-500);white-space:nowrap;text-transform:uppercase;letter-spacing:0.5px;font-weight:600}
+.step-dot.active .step-label{color:var(--teal)}
+
+/* STEP CONTENT */
+.step-content{display:none;animation:fadeUp 0.4s ease}
+.step-content.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+.step-header{margin-bottom:28px}
+.step-eyebrow{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--teal);margin-bottom:8px}
+.step-title{font-size:26px;font-weight:800;margin-bottom:8px}
+.step-desc{font-size:14px;color:var(--gray-300);line-height:1.7;max-width:700px}
+
+/* TOOL RECOMMEND CARDS */
+.rec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-bottom:24px}
+.rec-card{background:linear-gradient(145deg,rgba(10,58,80,0.6),rgba(4,40,56,0.8));border:1px solid rgba(30,157,184,0.15);border-radius:14px;padding:24px;transition:all 0.3s;position:relative;overflow:hidden}
+.rec-card:hover{border-color:var(--teal);box-shadow:0 8px 32px rgba(30,157,184,0.12)}
+.rec-card-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px}
+.rec-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.rec-info{flex:1}
+.rec-name{font-size:15px;font-weight:700;margin-bottom:2px}
+.rec-role{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--teal)}
+.rec-why{font-size:13px;color:var(--gray-300);line-height:1.6;margin-bottom:14px}
+.rec-tip{background:rgba(205,255,78,0.06);border:1px solid rgba(205,255,78,0.15);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--green);line-height:1.5}
+.rec-tip strong{color:var(--green)}
+.rec-link{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:8px 16px;border-radius:8px;background:rgba(30,157,184,0.12);border:1px solid rgba(30,157,184,0.3);color:var(--teal);text-decoration:none;font-size:12px;font-weight:600;transition:all 0.2s}
+.rec-link:hover{background:rgba(30,157,184,0.25);border-color:var(--teal)}
+
+/* NAV BUTTONS */
+.step-nav{display:flex;justify-content:space-between;align-items:center;margin-top:32px;padding-top:24px;border-top:1px solid rgba(30,157,184,0.1)}
+.nav-btn{padding:12px 28px;border-radius:10px;font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;border:none}
+.nav-btn.prev{background:transparent;border:1px solid rgba(30,157,184,0.3);color:var(--gray-300)}
+.nav-btn.prev:hover{border-color:var(--teal);color:var(--white)}
+.nav-btn.next{background:var(--teal);color:var(--white)}
+.nav-btn.next:hover{background:#22b1cf;box-shadow:0 4px 16px rgba(30,157,184,0.3)}
+.nav-btn:disabled{opacity:0.3;pointer-events:none}
+.step-counter{font-size:12px;color:var(--gray-500);font-weight:600}
+
+/* ─── EXPLORE VIEW ─── */
+.explore-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.explore-card{background:linear-gradient(145deg,rgba(10,58,80,0.6),rgba(4,40,56,0.8));border:1px solid rgba(30,157,184,0.15);border-radius:14px;padding:24px;transition:all 0.3s;cursor:pointer;text-decoration:none;color:var(--white);display:flex;flex-direction:column}
+.explore-card:hover{border-color:var(--teal);transform:translateY(-3px);box-shadow:0 8px 32px rgba(30,157,184,0.12)}
+.explore-card-icon{font-size:28px;margin-bottom:12px}
+.explore-card-name{font-size:15px;font-weight:700;margin-bottom:4px}
+.explore-card-when{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--teal);margin-bottom:8px}
+.explore-card-desc{font-size:12px;color:var(--gray-300);line-height:1.6;flex:1;margin-bottom:12px}
+.explore-stages{display:flex;flex-wrap:wrap;gap:4px}
+.explore-stage{padding:2px 8px;border-radius:5px;font-size:9px;font-weight:600;background:rgba(30,157,184,0.1);color:var(--teal);border:1px solid rgba(30,157,184,0.2)}
+.explore-stage.green{background:rgba(205,255,78,0.08);color:var(--green);border-color:rgba(205,255,78,0.2)}
+.explore-stage.purple{background:rgba(167,149,199,0.1);color:var(--purple);border-color:rgba(167,149,199,0.2)}
+
+/* ─── QUICK START VIEW ─── */
+.qs-container{max-width:720px;margin:0 auto}
+.qs-item{background:linear-gradient(145deg,rgba(10,58,80,0.4),rgba(4,40,56,0.6));border:1px solid rgba(30,157,184,0.12);border-radius:12px;margin-bottom:12px;overflow:hidden;transition:all 0.2s}
+.qs-item:hover{border-color:rgba(30,157,184,0.3)}
+.qs-header{display:flex;align-items:center;gap:14px;padding:18px 20px;cursor:pointer}
+.qs-num{width:32px;height:32px;border-radius:50%;background:rgba(30,157,184,0.15);color:var(--teal);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.qs-label{flex:1;font-size:14px;font-weight:600}
+.qs-arrow{color:var(--gray-500);transition:transform 0.3s;font-size:14px}
+.qs-item.open .qs-arrow{transform:rotate(180deg);color:var(--teal)}
+.qs-body{display:none;padding:0 20px 18px 66px;font-size:13px;color:var(--gray-300);line-height:1.7}
+.qs-item.open .qs-body{display:block;animation:fadeUp 0.3s ease}
+.qs-body a{color:var(--teal);text-decoration:none;font-weight:600}
+.qs-body a:hover{color:var(--green)}
+.qs-body p{margin-bottom:10px}
+
+/* FOOTER */
+.footer{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:20px 48px 40px;border-top:1px solid rgba(30,157,184,0.1);display:flex;justify-content:space-between;align-items:center}
+.footer-left{font-size:11px;color:var(--gray-500)}
+.footer-right a{font-size:11px;color:var(--teal);text-decoration:none;font-weight:600}
+
+@media(max-width:768px){
+  .header,.hero,.wt-wrap,.mode-bar,.footer{padding-left:20px;padding-right:20px}
+  .hero h1{font-size:26px}
+  .rec-grid,.explore-grid{grid-template-columns:1fr}
+  .step-progress{flex-wrap:wrap;gap:4px}
+  .step-line{width:20px}
+  .step-label{display:none}
+}
+</style>
+<style>
+/* === NERDIO BRAND BAR === */
+.nerdio-brand-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+  height: 48px;
+  background: linear-gradient(135deg, #0B1B3D 0%, #142952 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+.nerdio-brand-bar * { box-sizing: border-box; margin: 0; padding: 0; }
+.nerdio-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+.nerdio-brand-logo img {
+  height: 22px;
+  width: auto;
+}
+.nerdio-brand-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255,255,255,0.2);
+}
+.nerdio-brand-tool-name {
+  color: rgba(255,255,255,0.85);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+.nerdio-brand-home {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #00B4D8;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: rgba(0,180,216,0.1);
+  border: 1px solid rgba(0,180,216,0.2);
+  transition: all 0.2s;
+}
+.nerdio-brand-home:hover {
+  background: rgba(0,180,216,0.2);
+  border-color: rgba(0,180,216,0.4);
+  color: #FFFFFF;
+}
+.nerdio-brand-home svg {
+  width: 14px;
+  height: 14px;
+}
+.nerdio-brand-spacer {
+  height: 48px;
+  width: 100%;
+  flex-shrink: 0;
+}
+/* === END NERDIO BRAND BAR === */
+</style>
+</head>
+<body>
+
+<!-- NERDIO BRAND BAR -->
+<div class="nerdio-brand-bar">
+  <div class="nerdio-brand-logo">
+    <img src="data:image/png;base64,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" alt="Nerdio">
+    <div class="nerdio-brand-divider"></div>
+    <span class="nerdio-brand-tool-name">Getting Started Guide</span>
+  </div>
+  <a href="../EMEA-Nerdio-Toolbox.html" class="nerdio-brand-home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+    Toolbox Home
+  </a>
+</div>
+<div class="nerdio-brand-spacer"></div>
+<!-- END NERDIO BRAND BAR -->
+
+<script>
+</script>
+
+
+
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div style="display:flex;align-items:center;gap:16px">
+      <svg width="140" height="44" viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="22" cy="26" r="15" fill="none" stroke="#1E9DB8" stroke-width="3.2"/>
+        <circle cx="58" cy="26" r="15" fill="none" stroke="#1E9DB8" stroke-width="3.2"/>
+        <path d="M37 22 Q40 15 43 22" fill="none" stroke="#1E9DB8" stroke-width="3.2" stroke-linecap="round"/>
+        <path d="M7 23 L3 17" fill="none" stroke="#1E9DB8" stroke-width="3.2" stroke-linecap="round"/>
+        <path d="M73 23 L77 17" fill="none" stroke="#1E9DB8" stroke-width="3.2" stroke-linecap="round"/>
+        <path d="M58 18 L58 23" fill="none" stroke="#1E9DB8" stroke-width="2.2" stroke-linecap="round"/>
+        <path d="M52 21 A7.5 7.5 0 1 0 64 21" fill="none" stroke="#1E9DB8" stroke-width="2.2" stroke-linecap="round"/>
+        <text x="86" y="32" fill="#FFFFFF" font-family="Poppins, sans-serif" font-size="16" font-weight="600" letter-spacing="0.5">nerdio</text>
+      </svg>
+    </div>
+    <div style="font-size:10px;font-weight:600;color:var(--gray-500);text-transform:uppercase;letter-spacing:1.5px">Getting Started</div>
+  </div>
+  <div class="brand-line"></div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Your first week with the<br><span>Sales Command Centre</span></h1>
+  <p>An interactive walkthrough that maps every tool to your sales workflow — so you know exactly what to use, when to use it, and why it matters.</p>
+</div>
+
+<!-- MODE SWITCHER -->
+<div class="mode-bar">
+  <button class="mode-btn active" onclick="setMode('guided')">Guided Walkthrough</button>
+  <button class="mode-btn" onclick="setMode('explore')">Explore by Tool</button>
+  <button class="mode-btn" onclick="setMode('quickstart')">Quick Start Checklist</button>
+</div>
+
+<!-- WALKTHROUGH CONTENT -->
+<div class="wt-wrap">
+
+<!-- ══════════════ GUIDED WALKTHROUGH ══════════════ -->
+<div id="view-guided">
+
+  <!-- Progress dots -->
+  <div class="step-progress" id="stepProgress"></div>
+
+  <!-- STEP 1: KNOW YOUR TERRITORY -->
+  <div class="step-content" data-step="1">
+    <div class="step-header">
+      <div class="step-eyebrow">Step 1 — Territory Preparation</div>
+      <div class="step-title">Know Your Territory</div>
+      <div class="step-desc">Before you pick up the phone, you need to understand the landscape. Who are the target accounts in your patch? What signals suggest they're ready for Nerdio? Start by building a picture of your territory and the accounts within it.</div>
+    </div>
+    <div class="rec-grid">
+      <div class="rec-card">
+        <div class="rec-card-top">
+          <div class="rec-icon" style="background:rgba(30,157,184,0.15)">🏢</div>
+          <div class="rec-info">
+            <div class="rec-name">Account Intelligence</div>
+            <div class="rec-role">Primary tool for this stage</div>
+          </div>
+        </div>
+        <div class="rec-why">Your account database with heat scoring, sector filters, and territory views. Browse Tier 1/2/3 accounts, check 6sense intent signals, review Citrix and VMware exposure flags, and add your own notes as you research each account.</div>
+        <div class="rec-tip"><strong>Pro tip:</strong> Start with the Tier 1 — Flagship tab. These 30 accounts are your highest-priority targets. Use the sector filters (FSI / Retail) to focus your first day.</div>
+        <a class="rec-link" href="nerdio_crm_4.html">Open Account Intelligence →</a>
+      </div>
+      <div class="rec-card">
+        <div class="rec-card-top">
+          <div class="rec-icon" style="background:rgba(167,149,199,0.15)">🚀</div>
+          <div class="rec-info">
+            <div class="rec-name">SDR Pipeline Engine</div>
+            <div class="rec-role">Research companion</div>
+          </div>
+        </div>
+        <div class="rec-why">Deep-dive research playbooks for FSI and Retail accounts. Shows you exactly what to look for — Citrix end-of-life exposure, VMware/Broadcom impact, Azure spend signals, and Windows 10 EOL urgency — with specific trigger events that open doors.</div>
+        <div class="rec-tip"><strong>Pro tip:</strong> Use the Research Playbook and Triggers tabs to understand what makes an account "ready" before you start outreach.</div>
+        <a class="rec-link" href="nerdio_sdr_pipeline_engine.html">Open SDR Engine →</a>
+      </div>
+      <div class="rec-card">
+        <div class="rec-card-top">
+          <div class="rec-icon" style="background:rgba(30,157,184,0.15)">🔍</div>
+          <div class="rec-info">
+            <div class="rec-name">Account Intelligence — UKI FY26</div>
+            <div class="rec-role">Relationship intelligence</div>
+          </div>
+        </div>
+        <div class="rec-why">Searchable account database with Microsoft team contacts, signal tracking, and strategic notes. Track engagement signals as they happen and keep a single source of truth for each account's positioning and relationship context.</div>
+        <div class="rec-tip"><strong>Pro tip:</strong> Add signals as you hear them — a passing comment about Citrix costs or a LinkedIn post about cloud strategy. These build your account story over time and make your outreach razor-sharp.</div>
+        <a class="rec-link" href="nerdio-account-intelligence.html">Open Account Intelligence UKI →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: LEARN THE COMPETITIVE LANDSCAPE -->
+  <div class="step-content" data-step="2">
+    <div class="step-header">
+      <div class="step-eyebrow">Step 2 — Competitive Intelligence</div>
+      <div class="step-title">Learn the Competitive Landscape</div>
+      <div class="step-desc">Every deal has a competitive context. Your prospects are running Citrix, VMware/Omnissa, native Azure, or some combination. Understanding how Nerdio positions against each is essential before any conversation.</div>
+    </div>
+    <div class="rec-grid">
+      <div class="rec-card">
+        <div class="rec-card-top">
+          <div class="rec-icon" style="background:rgba(205,255,78,0.1)">🎯</div>
+          <div class="rec-info">
+            <div class="rec-name">Competitive Battlecards</div>
+            <div class="rec-role">Primary tool for this stage</div>
+          </div>
+        </div>
+        <div class="rec-why">Side-by-side competitive positioning for Citrix, VMware/Omnissa, and Native Azure. Covers feature comparisons, discovery questions that expose pain, objection handling, proof points, landmines to plant, and ready-to-use talk tracks.</div>
+        <div class="rec-tip"><strong>Pro tip:</strong> Don't just memorise features. Focus on the "Landmines to Set" and "Discovery Questions" sections — these are what shift a conversation in your favour.</div>
+        <a class="rec-link" href="nerdio-battlecards.html">Open Battlecards →</a>
+      </div>
+      <div class="rec-card">
+        <div class="rec-card-top">
+          <div class="rec-icon" style="background:rgba(30,157,184,0.15)">🗺️</div>
+          <div class="rec-info">
+            <div class="rec-name">Journey Models — Customer Journeys</div>
+            <div class="rec-role">Strategic context</div>
+          </div>
+        </div>
+        <div class="rec-why">The Customer Journeys tab lets you compare up to 3 journeys side-by-side — both AS-IS migration paths (from Citrix, VMware, on-prem, native Azure) and TO-BE destinations (AVD, Windows 365, Hybrid, Intune). This gives you the full strategic picture of where a customer is today and where Nerdio takes them.</div>
+        <div class="rec-tip"><strong>Pro tip:</strong> Select one AS-IS journey and one TO-BE destination to see how they map together. This becomes your narrative for the customer conversation.</div>
+        <a class="rec-link" href="nerdio-journeys.html">Open Journey Models →</a>
+      </div>
+      <div class="rec-card">
+        <div class="rec-card-top">
+          <div class="rec-icon" style="background:rgba(205,255,78,0.1)">🤝</div>
+          <div class="rec-info">
+            <div class="rec-name">Microsoft Strategic Positioning</div>
+            <div class="rec-role">Co-sell intelligence</div>
+          </div>
+        </div>
+        <div class="rec-why">Stakeholder-specific messaging for Microsoft field teams and co-sell motions. Understand how Microsoft sees Nerdio, what their priorities are, and how to position joint value propositions that get Microsoft excited to co-sell with you.</div>
+        <div class="rec-tip"><strong>Pro tip:</strong> Before any Microsoft co-sell meeting, review the stakeholder tabs to match your messaging to the specific Microsoft role you're engaging — an ATU rep cares about different things than a CSA or partner manager.</div>
+        <a class="rec-link" href="nerdio-microsoft-positioning.html">Open Microsoft Positioning →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: PREPARE YOUR OUTREACH -->
+  <div class="step-content" data-step="3">
+    <div class="step-header">
+      <div class="step-eyebrow">Step 3 — Outreach & Prospecting</div>
+      <div class="step-title">Prepare Your Outreach</div>
+      <div class="step-desc">Now you know your accounts and the competitive context. Time to make contact. These tools give you the messaging frameworks, email sequences, LinkedIn approaches, and call scripts to start conversations the right way.</div>
+    </div>
+    <div class="rec-grid">
+      <div class="rec-card">
+        <div class="rec-card-top">
+          <div class="rec-icon" style="background:rgba(167,149,199,0.15)">🚀</div>
+          <div class="rec-info">
+            <div class="rec-name">SDR Pipeline Engine</div>
+            <div class="rec-role">Primary tool for this stage</div>
+          </div>
+        </div>
+        <div class="rec-why">Your complete multi-channel outreach playbook. Email sequences, LinkedIn messaging scripts, cold call frameworks, and personalised hooks — all tailored to Nerdio's positioning against specific competitive situations.</div>
+        <div class="rec-tip"><strong>Pro tip:</strong> Start with the Outreach Hooks tab to match your messaging to the specific trigger event for each account, then use the Email Sequence tab for the full cadence.</div>
+        <a class="rec-link" href="nerdio_sdr_pipeline_engine.html">Open SDR Engine →</a>
+      </div>
+      <div class="rec-card">
+        <div class="rec-card-top">
+          <div class="rec-icon" style="background:rgba(30,157,184,0.15)">📧</div>
+          <div class="rec-info">
+            <div class="rec-name">Outreach Sequences</div>
+            <div class="rec-role">Ready-to-send templates</div>
+          </div>
+        </div>
+        <div class="rec-why">Eight pre-built email sequences covering every major use case — Citrix displacement, VMware migration, Azure cost optimisation, new AVD deployment, Win10 EOL, MSP recruitment, post-event follow-up, and customer expansion. Editable in-place with one-click copy.</div>
+        <div class="rec-tip"><strong>Pro tip:</strong> These are templates — personalise them with specific account details from the Account Intelligence tool before sending.</div>
+        <a class="rec-link" href="nerdio-outreach.html">Open Outreach Sequences →</a>
+      </div>
+      <div class="rec-card">
+        <div class="rec-card-top">
+          <div class="rec-icon" style="background:rgba(167,149,199,0.15)">🏖️</div>
+          <div class="rec-info">
+            <div class="rec-name">Holiday Positioning Engine</div>
+            <div class="rec-role">Creative campaigns</div>
+          </div>
+        </div>
+        <div class="rec-why">Story-driven positioning tool for seasonal campaigns and creative outreach. When standard emails aren't cutting through, this gives you a fresh angle — framing Nerdio value through an engaging holiday metaphor that stands out in crowded inboxes.</div>
+        <div class="rec-tip"><strong>Pro tip:</strong> Use this for seasonal campaigns (end of financial year, summer, new year) or post-event follow-ups when you want to be memorable rather than just another vendor email.</div>
+        <a class="rec-link" href="nerdio-holiday-positioning.html">Open Holiday Positioning →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4: PREPARE FOR MEETINGS -->
+  <div class="step-content" data-step="4">
+    <div class="step-header">
+      <div class="step-eyebrow">Step 4 — Meeting Preparation</div>
+      <div class="step-title">Prepare for Discovery Meetings</div>
+      <div class="step-desc">You've booked a meeting. Now make it count. These tools help you prepare the right questions for the right audience, understand where the customer sits on their cloud journey, and position Nerdio against their specific situation.</div>
+    </div>
+    <div class="rec-grid">
+      <div class="rec-card">
+        <div class="rec-card-top">
+          <div class="rec-icon" style="background:rgba(167,149,199,0.15)">💬</div>
+          <div class="rec-info">
+            <div class="rec-name">Discovery Question Engine</div>
+            <div class="rec-role">Primary tool for this stage</div>
+          </div>
+        </div>
+        <div class="rec-why">50+ persona-targeted discovery questions filtered by stakeholder role (CIO, IT Admin, Architect), competitive situation, product focus, and deal stage. Each question comes with coaching notes, "listen-for" signals, and Nerdio capability mapping.</div>
+        <div class="rec-tip"><strong>Pro tip:</strong> Filter by the persona you're meeting. A CIO cares about cost governance and risk — an IT Admin cares about daily simplification. Different questions for different audiences.</div>
+        <a class="rec-link" href="nerdio-discovery-engine.html">Open Discovery Engine →</a>
+      </div>
+      <div class="rec-card">
+        <div class="rec-card-top">
+          <div class="rec-icon" style="background:rgba(30,157,184,0.15)">🗺️</div>
+          <div class="rec-info">
+            <div class="rec-name">Journey Models — Assessment Tool</div>
+            <div class="rec-role">Meeting framework</div>
+          </div>
+        </div>
+        <div class="rec-why">The Assessment Tool tab lets you score a customer across 10 maturity dimensions, then generates a radar chart showing their current state vs. target. This produces a gap analysis with prioritised Nerdio capabilities — a powerful meeting artefact.</div>
+        <div class="rec-tip"><strong>Pro tip:</strong> Run the assessment collaboratively with the customer during the meeting. It positions you as a strategic advisor, not just a vendor, and gives you a natural framework for the conversation.</div>
+        <a class="rec-link" href="nerdio-journeys.html">Open Journey Models →</a>
+      </div>
+      <div class="rec-card">
+        <div class="rec-card-top">
+          <div class="rec-icon" style="background:rgba(30,157,184,0.15)">🖊️</div>
+          <div class="rec-info">
+            <div class="rec-name">Discovery Whiteboards</div>
+            <div class="rec-role">Workshop tool</div>
+          </div>
+        </div>
+        <div class="rec-why">Two interactive whiteboards for discovery workshops — the <a href="nerdio-whiteboard.html" style="color:var(--teal)">Estate Whiteboard</a> maps infrastructure, challenges, and projects, while the <a href="nerdio-whiteboard-users.html" style="color:var(--teal)">User &amp; Ops Whiteboard</a> captures users, devices, locations, and operational posture. Both have "Show Me Value" engines that auto-generate Nerdio recommendations linked to what the customer has told you.</div>
+        <div class="rec-tip"><strong>Pro tip:</strong> Use the Estate Whiteboard to open a workshop, then the User &amp; Ops board to go deeper. Hit "Show Me Value" at the end — it produces a ready-made value story anchored to their specific environment.</div>
+        <a class="rec-link" href="nerdio-whiteboard.html">Open Estate Whiteboard →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5: BUILD THE BUSINESS CASE -->
+  <div class="step-content" data-step="5">
+    <div class="step-header">
+      <div class="step-eyebrow">Step 5 — Building the Business Case</div>
+      <div class="step-title">Build the Business Case</div>
+      <div class="step-desc">Discovery is done — now quantify the value. These tools help you build an ROI story, demonstrate cost savings, and create the financial justification that gets deals approved by finance and procurement.</div>
+    </div>
+    <div class="rec-grid">
+      <div class="rec-card">
+        <div class="rec-card-top">
+          <div class="rec-icon" style="background:rgba(205,255,78,0.1)">🧮</div>
+          <div class="rec-info">
+            <div class="rec-name">ROI Calculator</div>
+            <div class="rec-role">Primary tool for this stage</div>
+          </div>
+        </div>
+        <div class="rec-why">Interactive ROI modelling across four value dimensions: Azure compute savings (auto-scaling), operational efficiency gains, license consolidation, and risk reduction. Shows ROI percentage, payback period, and 3/5-year projections with an exportable summary.</div>
+        <div class="rec-tip"><strong>Pro tip:</strong> Lead with the auto-scaling compute savings — this is the most tangible, quantifiable benefit. Nerdio's patented auto-scaling delivers 55% average savings. Then layer on operational and license savings for the full picture.</div>
+        <a class="rec-link" href="nerdio-roi-calculator.html">Open ROI Calculator →</a>
+      </div>
+      <div class="rec-card">
+        <div class="rec-card-top">
+          <div class="rec-icon" style="background:rgba(30,157,184,0.15)">🗺️</div>
+          <div class="rec-info">
+            <div class="rec-name">Journey Models — Maturity Model</div>
+            <div class="rec-role">Strategic narrative</div>
+          </div>
+        </div>
+        <div class="rec-why">The Maturity Model maps the customer's journey from Level 1 (Manual/Legacy) to Level 5 (Autonomous). Use this to frame the business case not just as a cost saving, but as a transformation story — "here's where you are, here's where you need to be, and here's the path."</div>
+        <div class="rec-tip"><strong>Pro tip:</strong> Executives respond to maturity models. It shifts the conversation from "buy our product" to "accelerate your transformation."</div>
+        <a class="rec-link" href="nerdio-journeys.html">Open Journey Models →</a>
+      </div>
+      <div class="rec-card">
+        <div class="rec-card-top">
+          <div class="rec-icon" style="background:rgba(205,255,78,0.1)">📋</div>
+          <div class="rec-info">
+            <div class="rec-name">Microsoft Licensing Navigator</div>
+            <div class="rec-role">Licensing intelligence</div>
+          </div>
+        </div>
+        <div class="rec-why">When building the business case, licensing is often the sticking point. This tool maps M365 bundles to AVD/W365 eligibility, models per-user costs with add-ons like Copilot, and shows where Nerdio sits in the licensing picture — helping you navigate complex Microsoft EA conversations with confidence.</div>
+        <div class="rec-tip"><strong>Pro tip:</strong> Use the bundle comparison to show customers what they already have (and what they're missing). Often they're already licensed for AVD but don't know it — Nerdio unlocks that hidden value.</div>
+        <a class="rec-link" href="nerdio-licensing-navigator.html">Open Licensing Navigator →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 6: MANAGE YOUR PIPELINE -->
+  <div class="step-content" data-step="6">
+    <div class="step-header">
+      <div class="step-eyebrow">Step 6 — Deal Management</div>
+      <div class="step-title">Manage Your Pipeline</div>
+      <div class="step-desc">You have deals in motion. Now manage them with discipline. These tools provide deal tracking, MEDPIC qualification, reverse timeline planning, and pipeline visibility — so nothing falls through the cracks.</div>
+    </div>
+    <div class="rec-grid">
+      <div class="rec-card">
+        <div class="rec-card-top">
+          <div class="rec-icon" style="background:rgba(167,149,199,0.15)">⏱️</div>
+          <div class="rec-info">
+            <div class="rec-name">Deal Reverse Timeline Builder</div>
+            <div class="rec-role">Primary tool for this stage</div>
+          </div>
+        </div>
+        <div class="rec-why">Enter a target close date and complexity level — the tool reverse-engineers a complete deal timeline across 7 phases with MEDPIC qualification at every stage. Includes Nerdio positioning guidance, partner tasks, coaching alerts, and deal health scoring.</div>
+        <div class="rec-tip"><strong>Pro tip:</strong> Build the timeline as soon as a deal enters pipeline. Work backwards from the close date to ensure you have time for every critical step — especially technical validation and procurement. Deals that skip steps stall.</div>
+        <a class="rec-link" href="nerdio-reverse-timeline.html">Open Timeline Builder →</a>
+      </div>
+      <div class="rec-card">
+        <div class="rec-card-top">
+          <div class="rec-icon" style="background:rgba(205,255,78,0.1)">📊</div>
+          <div class="rec-info">
+            <div class="rec-name">Deal Pipeline Dashboard</div>
+            <div class="rec-role">Pipeline overview</div>
+          </div>
+        </div>
+        <div class="rec-why">Visual pipeline with MEDPIC scores, deal status tracking, activity feeds, and summary statistics. See your entire opportunity set at a glance — deals by stage, by score, by partner status. Identify which deals need attention and where to focus your week.</div>
+        <div class="rec-tip"><strong>Pro tip:</strong> Review the dashboard every Monday morning. Sort by MEDPIC score to find deals that are under-qualified. A deal with a low score needs more discovery, not more demos.</div>
+        <a class="rec-link" href="nerdio-deal-dashboard.html">Open Pipeline Dashboard →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <div class="step-nav">
+    <button class="nav-btn prev" id="btnPrev" onclick="navStep(-1)">← Previous</button>
+    <div class="step-counter" id="stepCounter">Step 1 of 6</div>
+    <button class="nav-btn next" id="btnNext" onclick="navStep(1)">Next Step →</button>
+  </div>
+</div>
+
+<!-- ══════════════ EXPLORE VIEW ══════════════ -->
+<div id="view-explore" style="display:none">
+
+  <div class="explore-grid">
+
+    <a class="explore-card" href="nerdio_crm_4.html">
+      <div class="explore-card-icon">🏢</div>
+      <div class="explore-card-name">Account Intelligence</div>
+      <div class="explore-card-when">Use when: starting territory planning or researching a specific account</div>
+      <div class="explore-card-desc">Your account database. 90 UK accounts across FSI and Retail with heat scoring, Citrix/VMware exposure flags, 6sense intent signals, territory views, and note-taking. Import your own data from Excel, CSV, or API.</div>
+      <div class="explore-stages">
+        <span class="explore-stage">Territory Prep</span>
+        <span class="explore-stage">Account Research</span>
+        <span class="explore-stage purple">Data Import</span>
+      </div>
+    </a>
+
+    <a class="explore-card" href="nerdio_sdr_pipeline_engine.html">
+      <div class="explore-card-icon">🚀</div>
+      <div class="explore-card-name">SDR Pipeline Engine</div>
+      <div class="explore-card-when">Use when: building an outreach cadence for target accounts</div>
+      <div class="explore-card-desc">Complete SDR playbook — target account profiles, trigger events, research checklists, outreach hooks, email sequences, LinkedIn scripts, call frameworks, and meeting positioning. Your daily prospecting companion.</div>
+      <div class="explore-stages">
+        <span class="explore-stage">Research</span>
+        <span class="explore-stage">Outreach</span>
+        <span class="explore-stage green">Prospecting</span>
+        <span class="explore-stage">Calls</span>
+      </div>
+    </a>
+
+    <a class="explore-card" href="nerdio-battlecards.html">
+      <div class="explore-card-icon">🎯</div>
+      <div class="explore-card-name">Competitive Battlecards</div>
+      <div class="explore-card-when">Use when: preparing for a call where a competitor is in play</div>
+      <div class="explore-card-desc">Side-by-side positioning vs Citrix, VMware/Omnissa, and Native Azure. Feature comparisons, discovery questions, objection handling, proof points, and landmines to set in competitive deals.</div>
+      <div class="explore-stages">
+        <span class="explore-stage">Competitive Intel</span>
+        <span class="explore-stage purple">Objection Handling</span>
+        <span class="explore-stage">Talk Tracks</span>
+      </div>
+    </a>
+
+    <a class="explore-card" href="nerdio-journeys.html">
+      <div class="explore-card-icon">🗺️</div>
+      <div class="explore-card-name">Journey Models & Assessment</div>
+      <div class="explore-card-when">Use when: positioning strategically or running a maturity assessment</div>
+      <div class="explore-card-desc">Six journey frameworks including the 5-level maturity model, interactive assessment tool with radar charts, customer lifecycle, and the combined AS-IS / TO-BE customer journey selector (up to 3 journeys side-by-side).</div>
+      <div class="explore-stages">
+        <span class="explore-stage">Strategy</span>
+        <span class="explore-stage green">Assessment</span>
+        <span class="explore-stage">Maturity</span>
+        <span class="explore-stage purple">Journeys</span>
+      </div>
+    </a>
+
+    <a class="explore-card" href="nerdio-discovery-engine.html">
+      <div class="explore-card-icon">💬</div>
+      <div class="explore-card-name">Discovery Question Engine</div>
+      <div class="explore-card-when">Use when: preparing questions before a customer meeting</div>
+      <div class="explore-card-desc">50+ persona-targeted discovery questions filtered by stakeholder role, competitive situation, and deal stage. Each includes coaching notes, "listen-for" signals, and maps to Nerdio capabilities.</div>
+      <div class="explore-stages">
+        <span class="explore-stage">Meeting Prep</span>
+        <span class="explore-stage purple">Discovery</span>
+        <span class="explore-stage">Persona-Based</span>
+      </div>
+    </a>
+
+    <a class="explore-card" href="nerdio-outreach.html">
+      <div class="explore-card-icon">📧</div>
+      <div class="explore-card-name">Outreach Sequences</div>
+      <div class="explore-card-when">Use when: sending emails for a specific campaign or use case</div>
+      <div class="explore-card-desc">Eight ready-to-send email sequences for every major motion — Citrix displacement, VMware migration, Azure cost optimisation, new AVD, Win10 EOL, MSP recruitment, post-event, and expansion. Editable with one-click copy.</div>
+      <div class="explore-stages">
+        <span class="explore-stage green">Email Campaigns</span>
+        <span class="explore-stage">Templates</span>
+        <span class="explore-stage">Prospecting</span>
+      </div>
+    </a>
+
+    <a class="explore-card" href="nerdio-roi-calculator.html">
+      <div class="explore-card-icon">🧮</div>
+      <div class="explore-card-name">ROI Calculator</div>
+      <div class="explore-card-when">Use when: building a business case or justifying cost</div>
+      <div class="explore-card-desc">Model ROI across compute savings, operational efficiency, license consolidation, and risk reduction. Generates ROI percentage, payback period, and 3/5-year projections. Export a summary for stakeholders.</div>
+      <div class="explore-stages">
+        <span class="explore-stage">Business Case</span>
+        <span class="explore-stage green">Cost Savings</span>
+        <span class="explore-stage purple">Executive Pitch</span>
+      </div>
+    </a>
+
+    <a class="explore-card" href="nerdio-reverse-timeline.html">
+      <div class="explore-card-icon">⏱️</div>
+      <div class="explore-card-name">Deal Reverse Timeline</div>
+      <div class="explore-card-when">Use when: a deal enters pipeline and you need a close plan</div>
+      <div class="explore-card-desc">Enter a close date and complexity — get a reverse-engineered timeline across 7 phases with MEDPIC qualification, Nerdio positioning, partner tasks, coaching alerts, and deal scoring at every stage.</div>
+      <div class="explore-stages">
+        <span class="explore-stage">Deal Planning</span>
+        <span class="explore-stage purple">MEDPIC</span>
+        <span class="explore-stage">Close Plan</span>
+      </div>
+    </a>
+
+    <a class="explore-card" href="nerdio-deal-dashboard.html">
+      <div class="explore-card-icon">📊</div>
+      <div class="explore-card-name">Deal Pipeline Dashboard</div>
+      <div class="explore-card-when">Use when: reviewing pipeline health or preparing for a forecast call</div>
+      <div class="explore-card-desc">Visual pipeline with MEDPIC scores, deal tracking, activity feeds, and summary cards. See all opportunities by stage, score, and partner status. Your Monday morning pipeline review in one view.</div>
+      <div class="explore-stages">
+        <span class="explore-stage green">Pipeline Review</span>
+        <span class="explore-stage">Forecasting</span>
+        <span class="explore-stage">Deal Health</span>
+      </div>
+    </a>
+
+    <a class="explore-card" href="nerdio-whiteboard.html">
+      <div class="explore-card-icon">🖊️</div>
+      <div class="explore-card-name">Estate Discovery Whiteboard</div>
+      <div class="explore-card-when">Use when: mapping a customer's environment in a workshop or prep session</div>
+      <div class="explore-card-desc">Drag-and-drop canvas with pre-built infrastructure components, challenges, and projects. Map the customer estate, then overlay Nerdio value from all four pillars. Dual mode for internal prep vs customer-facing workshops.</div>
+      <div class="explore-stages">
+        <span class="explore-stage">Estate Mapping</span>
+        <span class="explore-stage green">Value Mapping</span>
+        <span class="explore-stage purple">Workshops</span>
+      </div>
+    </a>
+
+    <a class="explore-card" href="nerdio-whiteboard-users.html">
+      <div class="explore-card-icon">👥</div>
+      <div class="explore-card-name">User &amp; Operations Discovery</div>
+      <div class="explore-card-when">Use when: capturing user profiles, devices, locations, apps, and operational posture</div>
+      <div class="explore-card-desc">Map the environment from a people perspective — user types, endpoints, connectivity, security posture, and how IT manages everything. Includes Show Me Value engine and dual mode for internal prep vs customer workshops.</div>
+      <div class="explore-stages">
+        <span class="explore-stage">User Personas</span>
+        <span class="explore-stage green">Ops Posture</span>
+        <span class="explore-stage purple">Show Me Value</span>
+      </div>
+    </a>
+
+    <a class="explore-card" href="nerdio-licensing-navigator.html">
+      <div class="explore-card-icon">📋</div>
+      <div class="explore-card-name">Microsoft Licensing Navigator</div>
+      <div class="explore-card-when">Use when: discussing licensing with a customer or mapping entitlements to Nerdio capabilities</div>
+      <div class="explore-card-desc">Compare M365 bundles, check AVD/W365 eligibility per tier, model per-user costs with add-ons, and identify upsell opportunities. Every licensing decision point has Nerdio positioning built in.</div>
+      <div class="explore-stages">
+        <span class="explore-stage green">Licensing</span>
+        <span class="explore-stage">Cost Modelling</span>
+        <span class="explore-stage purple">Entitlements</span>
+      </div>
+    </a>
+
+    <a class="explore-card" href="nerdio-account-intelligence.html">
+      <div class="explore-card-icon">🔍</div>
+      <div class="explore-card-name">Account Intelligence — UKI FY26</div>
+      <div class="explore-card-when">Use when: researching accounts, tracking signals, or preparing for engagement</div>
+      <div class="explore-card-desc">Searchable account database with Microsoft team contacts, signal tracking, strategic notes, and deal context. Your single source of truth for account-level positioning and relationship intelligence.</div>
+      <div class="explore-stages">
+        <span class="explore-stage">Accounts</span>
+        <span class="explore-stage green">Signal Tracking</span>
+        <span class="explore-stage purple">MS Contacts</span>
+      </div>
+    </a>
+
+    <a class="explore-card" href="nerdio-holiday-positioning.html">
+      <div class="explore-card-icon">🏖️</div>
+      <div class="explore-card-name">Holiday Positioning Engine</div>
+      <div class="explore-card-when">Use when: creating seasonal outreach, event follow-ups, or creative campaigns that stand out</div>
+      <div class="explore-card-desc">Story-driven positioning tool that frames Nerdio value through a creative holiday metaphor. Great for seasonal campaigns and creative outreach that cuts through inbox noise.</div>
+      <div class="explore-stages">
+        <span class="explore-stage purple">Creative</span>
+        <span class="explore-stage">Campaigns</span>
+        <span class="explore-stage green">Seasonal</span>
+      </div>
+    </a>
+
+    <a class="explore-card" href="nerdio-microsoft-positioning.html">
+      <div class="explore-card-icon">🤝</div>
+      <div class="explore-card-name">Microsoft Strategic Positioning</div>
+      <div class="explore-card-when">Use when: preparing for Microsoft co-sell conversations, partner motions, or joint pitches</div>
+      <div class="explore-card-desc">Stakeholder-specific messaging for Microsoft field teams, co-sell playbooks, and joint value propositions. Aligned to Microsoft's strategic priorities and Nerdio's competitive advantages.</div>
+      <div class="explore-stages">
+        <span class="explore-stage green">Co-Sell</span>
+        <span class="explore-stage">MS Field Teams</span>
+        <span class="explore-stage purple">Joint Value</span>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<!-- ══════════════ QUICK START VIEW ══════════════ -->
+<div id="view-quickstart" style="display:none">
+  <div class="qs-container">
+
+    <div class="qs-item open">
+      <div class="qs-header" onclick="toggleQS(this)">
+        <div class="qs-num">1</div>
+        <div class="qs-label">Explore your territory in Account Intelligence</div>
+        <div class="qs-arrow">▼</div>
+      </div>
+      <div class="qs-body">
+        <p>Open <a href="nerdio_crm_4.html">Account Intelligence</a> and browse the Tier 1 accounts. Use the FSI and Retail filters to understand your patch. Check each account's heat score, Citrix/VMware exposure, and any existing notes. Add your own research notes as you go — they auto-save to your browser.</p>
+        <p>If you have your own account data, use the Data Sources tab to import from Excel or CSV.</p>
+      </div>
+    </div>
+
+    <div class="qs-item">
+      <div class="qs-header" onclick="toggleQS(this)">
+        <div class="qs-num">2</div>
+        <div class="qs-label">Study the Competitive Battlecards</div>
+        <div class="qs-arrow">▼</div>
+      </div>
+      <div class="qs-body">
+        <p>Open <a href="nerdio-battlecards.html">Competitive Battlecards</a> and read through all three competitors: Citrix, VMware/Omnissa, and Native Azure. Focus on the Discovery Questions and Landmines sections — these will shape how you lead conversations.</p>
+        <p>Key narrative: Nerdio isn't "cheaper Citrix" — it's a fundamentally different, cloud-native approach. You're not selling a product, you're selling a simpler architecture.</p>
+      </div>
+    </div>
+
+    <div class="qs-item">
+      <div class="qs-header" onclick="toggleQS(this)">
+        <div class="qs-num">3</div>
+        <div class="qs-label">Understand the Customer Journeys</div>
+        <div class="qs-arrow">▼</div>
+      </div>
+      <div class="qs-body">
+        <p>Open <a href="nerdio-journeys.html">Journey Models</a> and go to the Customer Journeys tab. Select one AS-IS migration path (e.g., "From Citrix DaaS") and one TO-BE destination (e.g., "To Azure Virtual Desktop"). This pairing becomes your story for that account type.</p>
+        <p>Then check the Assessment Tool tab — practise scoring a hypothetical account across the 10 dimensions. This is a powerful tool for customer meetings.</p>
+      </div>
+    </div>
+
+    <div class="qs-item">
+      <div class="qs-header" onclick="toggleQS(this)">
+        <div class="qs-num">4</div>
+        <div class="qs-label">Build your first outreach cadence</div>
+        <div class="qs-arrow">▼</div>
+      </div>
+      <div class="qs-body">
+        <p>Pick your top 5 Tier 1 accounts. For each, open the <a href="nerdio_sdr_pipeline_engine.html">SDR Pipeline Engine</a> and identify their primary trigger event (Citrix EOL, VMware/Broadcom, Azure cost pressure, etc.).</p>
+        <p>Then use the Email Sequence tab for a multi-touch cadence, the LinkedIn tab for social touches, and the Call Script tab for phone outreach. Layer in ready-made templates from <a href="nerdio-outreach.html">Outreach Sequences</a>.</p>
+      </div>
+    </div>
+
+    <div class="qs-item">
+      <div class="qs-header" onclick="toggleQS(this)">
+        <div class="qs-num">5</div>
+        <div class="qs-label">Prep for your first discovery meeting</div>
+        <div class="qs-arrow">▼</div>
+      </div>
+      <div class="qs-body">
+        <p>When you book a meeting, open <a href="nerdio-discovery-engine.html">Discovery Question Engine</a> and filter by the persona you're meeting (CIO, IT Director, Architect, etc.). Pick 5-7 questions that match their likely pain points.</p>
+        <p>Review the coaching notes and "listen-for" signals — these tell you what a positive response sounds like and how to pivot to Nerdio capabilities. Go in with questions, not a pitch.</p>
+      </div>
+    </div>
+
+    <div class="qs-item">
+      <div class="qs-header" onclick="toggleQS(this)">
+        <div class="qs-num">6</div>
+        <div class="qs-label">Set up deal tracking for active opportunities</div>
+        <div class="qs-arrow">▼</div>
+      </div>
+      <div class="qs-body">
+        <p>Once a deal enters pipeline, create a reverse timeline in the <a href="nerdio-reverse-timeline.html">Deal Reverse Timeline Builder</a>. Enter the target close date and complexity level — the tool will generate your deal plan with MEDPIC milestones at every stage.</p>
+        <p>Then add the deal to the <a href="nerdio-deal-dashboard.html">Pipeline Dashboard</a> for ongoing tracking. Review every Monday: which deals have low MEDPIC scores? Those need more discovery, not more demos.</p>
+      </div>
+    </div>
+
+    <div class="qs-item">
+      <div class="qs-header" onclick="toggleQS(this)">
+        <div class="qs-num">7</div>
+        <div class="qs-label">Build the business case with ROI modelling</div>
+        <div class="qs-arrow">▼</div>
+      </div>
+      <div class="qs-body">
+        <p>When a deal progresses to business case stage, open the <a href="nerdio-roi-calculator.html">ROI Calculator</a>. Model the customer's expected savings across four dimensions: Azure compute (auto-scaling), operational efficiency, license consolidation, and risk reduction.</p>
+        <p>Lead with the compute savings — Nerdio's patented auto-scaling delivers 55% average savings. The calculator produces an exportable summary you can share with the economic buyer.</p>
+      </div>
+    </div>
+
+    <div class="qs-item">
+      <div class="qs-header" onclick="toggleQS(this)">
+        <div class="qs-num">8</div>
+        <div class="qs-label">Learn Microsoft licensing with the Licensing Navigator</div>
+        <div class="qs-arrow">▼</div>
+      </div>
+      <div class="qs-body">
+        <p>Open the <a href="nerdio-licensing-navigator.html">Microsoft Licensing Navigator</a> and familiarise yourself with the M365 bundle tiers. Understand which bundles include AVD rights, which qualify for Windows 365, and where Copilot fits. This is essential knowledge for every customer conversation — licensing questions come up constantly.</p>
+        <p>Key insight: Many customers are already licensed for AVD through their M365 E3/E5 agreements but don't realise it. Nerdio unlocks that hidden value.</p>
+      </div>
+    </div>
+
+    <div class="qs-item">
+      <div class="qs-header" onclick="toggleQS(this)">
+        <div class="qs-num">9</div>
+        <div class="qs-label">Prepare for Microsoft co-sell conversations</div>
+        <div class="qs-arrow">▼</div>
+      </div>
+      <div class="qs-body">
+        <p>Open the <a href="nerdio-microsoft-positioning.html">Microsoft Strategic Positioning</a> tool and study the stakeholder-specific messaging. Before any Microsoft co-sell meeting, review the tab for the specific Microsoft role you're engaging — ATU reps, CSAs, partner managers, and Azure specialists all have different priorities.</p>
+        <p>Also review the <a href="nerdio-account-intelligence.html">Account Intelligence UKI</a> tool for any Microsoft contacts already mapped to your target accounts.</p>
+      </div>
+    </div>
+
+    <div class="qs-item">
+      <div class="qs-header" onclick="toggleQS(this)">
+        <div class="qs-num">10</div>
+        <div class="qs-label">Run a discovery workshop with the Whiteboards</div>
+        <div class="qs-arrow">▼</div>
+      </div>
+      <div class="qs-body">
+        <p>When you book a discovery workshop, use the <a href="nerdio-whiteboard.html">Estate Discovery Whiteboard</a> to map the customer's infrastructure, challenges, and projects. Follow up with the <a href="nerdio-whiteboard-users.html">User &amp; Ops Whiteboard</a> to capture user types, devices, locations, and operational posture.</p>
+        <p>When the board is populated, click "Show Me Value" — the engine analyses everything on the board and auto-generates Nerdio recommendations linked directly to what the customer has told you. It's a powerful way to close a workshop with clear next steps.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-left">Nerdio Sales Command Centre — Getting Started Guide</div>
+  <div class="footer-right">
+    <a href="index.html">← Back to Command Centre</a>
+  </div>
+</div>
+
+<script>
+// ── MODE SWITCHING ──
+function setMode(mode) {
+  document.querySelectorAll('.mode-btn').forEach((b,i) => {
+    b.classList.toggle('active', b.textContent.toLowerCase().includes(mode === 'guided' ? 'guided' : mode === 'explore' ? 'explore' : 'quick'));
+  });
+  document.getElementById('view-guided').style.display = mode === 'guided' ? 'block' : 'none';
+  document.getElementById('view-explore').style.display = mode === 'explore' ? 'block' : 'none';
+  document.getElementById('view-quickstart').style.display = mode === 'quickstart' ? 'block' : 'none';
+}
+
+// ── GUIDED WALKTHROUGH ──
+const TOTAL_STEPS = 6;
+let currentStep = 1;
+
+const stepNames = ['Territory','Competitive','Outreach','Meetings','Business Case','Pipeline'];
+
+function buildProgress() {
+  const wrap = document.getElementById('stepProgress');
+  wrap.innerHTML = '';
+  for (let i = 1; i <= TOTAL_STEPS; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'step-dot' + (i === currentStep ? ' active' : (i < currentStep ? ' completed' : ''));
+    dot.textContent = i;
+    dot.onclick = () => goToStep(i);
+    const label = document.createElement('div');
+    label.className = 'step-label';
+    label.textContent = stepNames[i-1];
+    dot.appendChild(label);
+    wrap.appendChild(dot);
+    if (i < TOTAL_STEPS) {
+      const line = document.createElement('div');
+      line.className = 'step-line' + (i < currentStep ? ' completed' : '');
+      wrap.appendChild(line);
+    }
+  }
+}
+
+function showStep() {
+  document.querySelectorAll('.step-content').forEach(el => {
+    el.classList.toggle('active', el.dataset.step == currentStep);
+  });
+  document.getElementById('stepCounter').textContent = `Step ${currentStep} of ${TOTAL_STEPS}`;
+  document.getElementById('btnPrev').disabled = currentStep === 1;
+  document.getElementById('btnNext').textContent = currentStep === TOTAL_STEPS ? 'Back to Start ↻' : 'Next Step →';
+  buildProgress();
+}
+
+function navStep(dir) {
+  if (dir === 1 && currentStep === TOTAL_STEPS) { currentStep = 1; }
+  else { currentStep = Math.max(1, Math.min(TOTAL_STEPS, currentStep + dir)); }
+  showStep();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goToStep(n) {
+  currentStep = n;
+  showStep();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── QUICK START ACCORDION ──
+function toggleQS(header) {
+  const item = header.closest('.qs-item');
+  item.classList.toggle('open');
+}
+
+// ── INIT ──
+buildProgress();
+showStep();
+</script>
+</body>
+</html>

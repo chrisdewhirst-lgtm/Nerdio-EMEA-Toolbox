@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User &amp; Operations Discovery — Nerdio</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#042838;--navy-light:#0a3a50;--navy-mid:#0d2f42;
+  --teal:#1E9DB8;--white:#FFFFFF;--green:#CDFF4E;--purple:#A795C7;
+  --gray-50:#f5f8fa;--gray-100:#eaf0f4;--gray-200:#dce4ea;--gray-300:#b8c7d1;--gray-500:#6b8294;
+  --red:#ff6b6b;--orange:#ffa94d;--yellow:#ffd43b;--blue:#4dabf7;
+}
+html,body{height:100%}
+body{font-family:'Poppins',sans-serif;background:var(--gray-50);color:var(--navy);height:100%;overflow:hidden;display:flex;flex-direction:column}
+
+/* HOME BTN */
+/* .home-btn removed - using brand bar */
+
+
+/* TOP BAR */
+.topbar{background:var(--navy);color:var(--white);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:100}
+.topbar-left{display:flex;align-items:center;gap:14px}
+.topbar-title{font-size:14px;font-weight:700}
+.topbar-sub{font-size:10px;color:var(--gray-500);text-transform:uppercase;letter-spacing:1px}
+.topbar-center{display:flex;align-items:center;gap:6px}
+.mode-toggle{display:flex;background:rgba(255,255,255,0.08);border-radius:8px;overflow:hidden}
+.mode-toggle button{padding:6px 16px;border:none;background:transparent;color:var(--gray-300);font-family:'Poppins',sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.mode-toggle button.active{background:var(--teal);color:var(--white)}
+.topbar-right{display:flex;gap:8px;align-items:center}
+.tb-btn{padding:6px 14px;border-radius:7px;border:1px solid rgba(30,157,184,0.4);background:transparent;color:var(--teal);font-family:'Poppins',sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.tb-btn:hover{background:rgba(30,157,184,0.15)}
+.tb-btn.green{border-color:rgba(205,255,78,0.4);color:var(--green)}
+.tb-btn.green:hover{background:rgba(205,255,78,0.1)}
+.tb-btn.accent{border-color:rgba(167,149,199,0.4);color:var(--purple)}
+.tb-btn.accent:hover{background:rgba(167,149,199,0.1)}
+.customer-name{padding:5px 12px;border-radius:6px;border:1px solid rgba(30,157,184,0.3);background:rgba(255,255,255,0.06);color:var(--white);font-family:'Poppins',sans-serif;font-size:12px;font-weight:500;width:200px}
+.customer-name::placeholder{color:var(--gray-500)}
+
+/* MAIN LAYOUT */
+.main{display:flex;flex:1;min-height:0;overflow:hidden}
+
+/* LEFT PALETTE */
+.palette{width:250px;background:var(--white);border-right:1px solid var(--gray-200);overflow-y:scroll;overflow-x:hidden;flex-shrink:0;height:100%}
+.pal-section{padding:10px 12px 4px;border-bottom:1px solid var(--gray-100)}
+.pal-section.collapsed .pal-items{display:none}
+.pal-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--gray-500);margin-bottom:6px;cursor:pointer;display:flex;align-items:center;justify-content:space-between}
+.pal-label .pal-toggle{font-size:10px;transition:transform 0.2s}
+.pal-section.collapsed .pal-toggle{transform:rotate(-90deg)}
+.pal-item{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;cursor:grab;border:1px solid transparent;transition:all 0.15s;margin-bottom:3px;font-size:11px;font-weight:500;user-select:none}
+.pal-item:hover{background:var(--gray-50);border-color:var(--gray-200)}
+.pal-item:active{cursor:grabbing;opacity:0.7}
+.pal-icon{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.pal-item .pal-sub{font-size:9px;color:var(--gray-500);font-weight:400}
+.pal-item-text{flex:1;min-width:0}
+.pal-item-text div:first-child{line-height:1.3}
+
+/* CANVAS */
+.canvas-wrap{flex:1;position:relative;overflow:hidden;background:#f0f4f8}
+.canvas{position:absolute;top:0;left:0;width:5000px;height:3500px;
+  background:linear-gradient(rgba(0,0,0,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.03) 1px,transparent 1px);
+  background-size:40px 40px;cursor:default}
+
+/* ZONES — 3 rows, top row has 3 zones, middle has 3, bottom has 2 wide */
+.zone{position:absolute;border-radius:16px;border:2px dashed;padding:12px;min-width:200px;min-height:120px}
+.zone-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.zone-count{font-size:9px;font-weight:600;padding:1px 6px;border-radius:4px;background:rgba(0,0,0,0.06)}
+
+/* Row 1: Users | Devices | Locations */
+.zone.users{left:40px;top:40px;width:450px;height:360px;border-color:rgba(30,157,184,0.3);background:rgba(30,157,184,0.03)}
+.zone.users .zone-label{color:var(--teal)}
+.zone.devices{left:520px;top:40px;width:450px;height:360px;border-color:rgba(167,149,199,0.3);background:rgba(167,149,199,0.03)}
+.zone.devices .zone-label{color:var(--purple)}
+.zone.locations{left:1000px;top:40px;width:400px;height:360px;border-color:rgba(77,171,247,0.3);background:rgba(77,171,247,0.03)}
+.zone.locations .zone-label{color:var(--blue)}
+
+/* Row 2: Apps & Data | Connectivity | Security / Avail / Perf */
+.zone.apps{left:40px;top:440px;width:450px;height:360px;border-color:rgba(205,255,78,0.35);background:rgba(205,255,78,0.02)}
+.zone.apps .zone-label{color:#5a7a00}
+.zone.connectivity{left:520px;top:440px;width:450px;height:360px;border-color:rgba(255,169,77,0.3);background:rgba(255,169,77,0.03)}
+.zone.connectivity .zone-label{color:var(--orange)}
+.zone.security{left:1000px;top:440px;width:400px;height:360px;border-color:rgba(255,107,107,0.3);background:rgba(255,107,107,0.03)}
+.zone.security .zone-label{color:var(--red)}
+
+/* Row 3: Management & Support | Nerdio Opportunity */
+.zone.management{left:40px;top:840px;width:620px;height:320px;border-color:rgba(107,130,148,0.3);background:rgba(107,130,148,0.03)}
+.zone.management .zone-label{color:var(--gray-500)}
+.zone.nerdio-opp{left:690px;top:840px;width:710px;height:320px;border-color:rgba(30,157,184,0.4);background:rgba(4,40,56,0.04)}
+.zone.nerdio-opp .zone-label{color:var(--navy)}
+
+/* DROPPED ITEMS */
+.dropped-item{position:absolute;background:var(--white);border-radius:10px;padding:10px 12px;border:1px solid var(--gray-200);box-shadow:0 2px 8px rgba(0,0,0,0.06);cursor:grab;min-width:110px;max-width:200px;transition:box-shadow 0.2s,border-color 0.2s;z-index:10;user-select:none}
+.dropped-item:hover{box-shadow:0 4px 16px rgba(0,0,0,0.1);border-color:var(--teal)}
+.dropped-item.dragging{opacity:0.8;box-shadow:0 8px 24px rgba(0,0,0,0.15);z-index:100;cursor:grabbing}
+.dropped-item .di-header{display:flex;align-items:center;gap:5px;margin-bottom:3px}
+.dropped-item .di-icon{font-size:15px}
+.dropped-item .di-name{font-size:11px;font-weight:600;flex:1}
+.dropped-item .di-delete{width:18px;height:18px;border-radius:50%;border:none;background:transparent;color:var(--gray-300);cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.dropped-item .di-delete:hover{background:rgba(255,107,107,0.1);color:var(--red)}
+.dropped-item .di-detail{font-size:9px;color:var(--gray-500);line-height:1.4}
+.dropped-item .di-note{margin-top:5px;width:100%;border:1px solid var(--gray-200);border-radius:5px;padding:3px 7px;font-family:'Poppins',sans-serif;font-size:10px;color:var(--navy);resize:none;outline:none;min-height:24px}
+.dropped-item .di-note:focus{border-color:var(--teal)}
+.dropped-item .di-badges{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}
+.di-badge{padding:1px 6px;border-radius:4px;font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+.di-badge.teal{background:rgba(30,157,184,0.1);color:var(--teal)}
+.di-badge.green{background:rgba(205,255,78,0.15);color:#5a7a00}
+.di-badge.purple{background:rgba(167,149,199,0.1);color:var(--purple)}
+.di-badge.red{background:rgba(255,107,107,0.1);color:var(--red)}
+.di-badge.orange{background:rgba(255,169,77,0.1);color:#b36b00}
+.di-badge.blue{background:rgba(77,171,247,0.1);color:#1971c2}
+.di-badge.gray{background:rgba(107,130,148,0.1);color:var(--gray-500)}
+
+/* NERDIO ITEMS */
+.dropped-item.nerdio-item{border-left:3px solid var(--teal);background:linear-gradient(135deg,#fff,rgba(30,157,184,0.03))}
+
+/* QUANTITY INPUT ON ITEMS */
+.di-qty{display:flex;align-items:center;gap:4px;margin-top:4px}
+.di-qty label{font-size:9px;color:var(--gray-500)}
+.di-qty input{width:60px;padding:2px 6px;border:1px solid var(--gray-200);border-radius:4px;font-family:'Poppins',sans-serif;font-size:10px;outline:none;color:var(--navy)}
+.di-qty input:focus{border-color:var(--teal)}
+
+/* CUSTOMER MODE */
+body.customer-mode .palette{display:none}
+body.customer-mode .value-panel{display:none}
+body.customer-mode .di-delete{display:none}
+body.customer-mode .topbar{background:linear-gradient(135deg,var(--navy),var(--navy-light))}
+
+/* RIGHT PANEL */
+.value-panel{width:270px;background:var(--navy);color:var(--white);border-left:1px solid rgba(30,157,184,0.2);overflow-y:auto;flex-shrink:0;display:none}
+.value-panel.visible{display:block}
+.vp-header{padding:12px 14px;border-bottom:1px solid rgba(30,157,184,0.15)}
+.vp-title{font-size:13px;font-weight:700;margin-bottom:2px}
+.vp-sub{font-size:10px;color:var(--gray-500)}
+.vp-section{padding:10px 14px;border-bottom:1px solid rgba(30,157,184,0.08)}
+.vp-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:6px}
+.vp-item{display:flex;align-items:flex-start;gap:8px;padding:5px 0;cursor:grab;user-select:none}
+.vp-item:hover{opacity:0.8}
+.vp-dot{width:8px;height:8px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.vp-dot.auto{background:var(--teal)}
+.vp-dot.cost{background:var(--green)}
+.vp-dot.sec{background:var(--purple)}
+.vp-dot.vis{background:var(--orange)}
+.vp-text{font-size:11px;line-height:1.3}
+.vp-text strong{font-weight:600;display:block;font-size:11px}
+.vp-text span{color:var(--gray-500);font-size:9px}
+
+/* SUMMARY OVERLAY */
+.summary-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(4,40,56,0.85);z-index:500;overflow-y:auto;padding:40px}
+.summary-overlay.visible{display:block}
+.summary-card{max-width:960px;margin:0 auto;background:var(--white);border-radius:16px;padding:36px;color:var(--navy)}
+.summary-close{position:fixed;top:20px;right:20px;width:40px;height:40px;border-radius:50%;border:none;background:rgba(255,255,255,0.15);color:var(--white);font-size:20px;cursor:pointer;z-index:501}
+.summary-close:hover{background:rgba(255,255,255,0.25)}
+.sum-title{font-size:22px;font-weight:800;margin-bottom:4px}
+.sum-sub{font-size:12px;color:var(--gray-500);margin-bottom:20px}
+.sum-section{margin-bottom:20px}
+.sum-section-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;padding-bottom:5px;border-bottom:2px solid}
+.sum-items{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.sum-item{background:var(--gray-50);border-radius:8px;padding:9px 11px;border-left:3px solid var(--gray-200)}
+.sum-item .si-name{font-size:11px;font-weight:600;margin-bottom:2px}
+.sum-item .si-detail{font-size:9px;color:var(--gray-500)}
+.sum-item .si-note{font-size:10px;color:var(--navy);margin-top:3px;font-style:italic}
+.sum-item .si-qty{font-size:10px;color:var(--teal);font-weight:600;margin-top:2px}
+
+/* DRAG GHOST */
+.drag-ghost{position:fixed;pointer-events:none;z-index:9000;opacity:0.85;padding:8px 14px;background:var(--white);border:1px solid var(--teal);border-radius:8px;font-size:11px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,0.15);display:none}
+
+/* VALUE OVERLAY */
+.val-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(4,40,56,0.92);z-index:600;overflow-y:auto;padding:30px}
+.val-overlay.visible{display:block}
+.val-card{max-width:1000px;margin:0 auto;background:var(--white);border-radius:16px;overflow:hidden;color:var(--navy)}
+.val-hero{background:linear-gradient(135deg,var(--navy),var(--navy-light));padding:32px 36px;color:var(--white)}
+.val-hero-top{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.val-hero h2{font-size:22px;font-weight:800}
+.val-hero p{font-size:13px;color:var(--gray-300);line-height:1.6;max-width:700px}
+.val-stats{display:flex;gap:24px;margin-top:16px;flex-wrap:wrap}
+.val-stat{text-align:center}
+.val-stat-num{font-size:26px;font-weight:800;display:block}
+.val-stat-num.teal{color:var(--teal)}
+.val-stat-num.green{color:var(--green)}
+.val-stat-num.purple{color:var(--purple)}
+.val-stat-num.orange{color:var(--orange)}
+.val-stat-num.red{color:var(--red)}
+.val-stat-num.blue{color:#4dabf7}
+.val-stat-label{font-size:9px;color:var(--gray-500);text-transform:uppercase;letter-spacing:1px}
+.val-body{padding:28px 36px}
+.val-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin:20px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--gray-200)}
+.val-rec{background:var(--gray-50);border-radius:12px;padding:20px;margin-bottom:16px;border-left:4px solid var(--teal);position:relative}
+.val-rec.high{border-left-color:var(--red)}
+.val-rec.medium{border-left-color:var(--orange)}
+.val-rec.low{border-left-color:var(--teal)}
+.val-rec-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+.val-rec-title{font-size:15px;font-weight:700}
+.val-rec-impact{padding:3px 10px;border-radius:6px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;flex-shrink:0}
+.val-rec-impact.high{background:rgba(255,107,107,0.1);color:var(--red)}
+.val-rec-impact.medium{background:rgba(255,169,77,0.1);color:var(--orange)}
+.val-rec-impact.low{background:rgba(30,157,184,0.1);color:var(--teal)}
+.val-rec-why{font-size:12px;color:var(--gray-500);line-height:1.6;margin-bottom:12px}
+.val-rec-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.val-rec-box{background:var(--white);border-radius:8px;padding:10px 12px;border:1px solid var(--gray-200)}
+.val-rec-box h5{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.val-rec-box h5.benefits{color:#5a7a00}
+.val-rec-box h5.outcomes{color:var(--teal)}
+.val-rec-box h5.next{color:var(--purple)}
+.val-rec-box ul{padding-left:14px;font-size:11px;color:var(--navy);line-height:1.5}
+.val-rec-box li{margin-bottom:2px}
+.val-rec-triggers{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}
+.val-rec-trigger{padding:2px 8px;border-radius:5px;font-size:9px;font-weight:600;background:rgba(30,157,184,0.08);color:var(--teal)}
+.val-close{position:fixed;top:20px;right:20px;width:40px;height:40px;border-radius:50%;border:none;background:rgba(255,255,255,0.15);color:var(--white);font-size:20px;cursor:pointer;z-index:601}
+.val-close:hover{background:rgba(255,255,255,0.25)}
+.val-btn-cta{display:inline-block;padding:8px 18px;background:linear-gradient(135deg,var(--navy),var(--navy-light));color:var(--white);border-radius:8px;font-size:11px;font-weight:600;text-decoration:none;transition:all 0.2s}
+.val-btn-cta:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(4,40,56,0.3)}
+.val-empty{text-align:center;padding:40px;font-size:13px;color:var(--gray-500)}
+</style>
+<style>
+/* === NERDIO BRAND BAR === */
+.nerdio-brand-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+  height: 48px;
+  background: linear-gradient(135deg, #0B1B3D 0%, #142952 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+.nerdio-brand-bar * { box-sizing: border-box; margin: 0; padding: 0; }
+.nerdio-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+.nerdio-brand-logo img {
+  height: 22px;
+  width: auto;
+}
+.nerdio-brand-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255,255,255,0.2);
+}
+.nerdio-brand-tool-name {
+  color: rgba(255,255,255,0.85);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+.nerdio-brand-home {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #00B4D8;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: rgba(0,180,216,0.1);
+  border: 1px solid rgba(0,180,216,0.2);
+  transition: all 0.2s;
+}
+.nerdio-brand-home:hover {
+  background: rgba(0,180,216,0.2);
+  border-color: rgba(0,180,216,0.4);
+  color: #FFFFFF;
+}
+.nerdio-brand-home svg {
+  width: 14px;
+  height: 14px;
+}
+.nerdio-brand-spacer {
+  height: 48px;
+  width: 100%;
+  flex-shrink: 0;
+}
+/* === END NERDIO BRAND BAR === */
+</style>
+</head>
+<body>
+
+<!-- NERDIO BRAND BAR -->
+<div class="nerdio-brand-bar">
+  <div class="nerdio-brand-logo">
+    <img src="data:image/png;base64,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" alt="Nerdio">
+    <div class="nerdio-brand-divider"></div>
+    <span class="nerdio-brand-tool-name">User & Ops Discovery</span>
+  </div>
+  <a href="../EMEA-Nerdio-Toolbox.html" class="nerdio-brand-home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+    Toolbox Home
+  </a>
+</div>
+<div class="nerdio-brand-spacer"></div>
+<!-- END NERDIO BRAND BAR -->
+
+<script>
+</script>
+
+
+
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <svg width="100" height="32" viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="22" cy="26" r="15" fill="none" stroke="#1E9DB8" stroke-width="3.2"/>
+      <circle cx="58" cy="26" r="15" fill="none" stroke="#1E9DB8" stroke-width="3.2"/>
+      <path d="M37 22 Q40 15 43 22" fill="none" stroke="#1E9DB8" stroke-width="3.2" stroke-linecap="round"/>
+      <path d="M7 23 L3 17" fill="none" stroke="#1E9DB8" stroke-width="3.2" stroke-linecap="round"/>
+      <path d="M73 23 L77 17" fill="none" stroke="#1E9DB8" stroke-width="3.2" stroke-linecap="round"/>
+      <path d="M58 18 L58 23" fill="none" stroke="#1E9DB8" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M52 21 A7.5 7.5 0 1 0 64 21" fill="none" stroke="#1E9DB8" stroke-width="2.2" stroke-linecap="round"/>
+      <text x="86" y="32" fill="#FFFFFF" font-family="Poppins,sans-serif" font-size="16" font-weight="600" letter-spacing="0.5">nerdio</text>
+    </svg>
+    <div>
+      <div class="topbar-title">User &amp; Operations Discovery</div>
+      <div class="topbar-sub">Map users, services, connectivity &amp; operational posture</div>
+    </div>
+  </div>
+  <div class="topbar-center">
+    <input class="customer-name" id="custName" type="text" placeholder="Customer name…" spellcheck="false">
+    <div class="mode-toggle">
+      <button class="active" onclick="setMode('internal')">Internal</button>
+      <button onclick="setMode('customer')">Customer</button>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <a class="tb-btn accent" href="nerdio-whiteboard.html" style="text-decoration:none">Estate Board →</a>
+    <button class="tb-btn" onclick="toggleValuePanel()">Nerdio Value ▸</button>
+    <button class="tb-btn" onclick="showSummary()">Summary</button>
+    <button class="tb-btn green" onclick="showValue()" style="background:rgba(205,255,78,0.1)">✦ Show Me Value</button>
+    <button class="tb-btn green" onclick="saveSession()">Save</button>
+    <button class="tb-btn" onclick="clearAll()">Clear</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- LEFT PALETTE -->
+<div class="palette" id="palette">
+
+  <div class="pal-section" id="sec-users">
+    <div class="pal-label" onclick="toggleSection('sec-users')">👥 User Profiles <span class="pal-toggle">▼</span></div>
+    <div class="pal-items">
+      <div class="pal-item" draggable="true" data-type="users" data-icon="💼" data-name="Knowledge Workers" data-detail="Office / M365 / Teams" data-badges="office" data-hasqty="true">
+        <div class="pal-icon" style="background:rgba(30,157,184,0.1)">💼</div>
+        <div class="pal-item-text"><div>Knowledge Workers</div><div class="pal-sub">Office / M365 / Teams</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="users" data-icon="📞" data-name="Contact Centre" data-detail="Telephony / CRM agents" data-badges="voice,specialist" data-hasqty="true">
+        <div class="pal-icon" style="background:rgba(30,157,184,0.1)">📞</div>
+        <div class="pal-item-text"><div>Contact Centre</div><div class="pal-sub">Telephony / CRM agents</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="users" data-icon="🏭" data-name="Task / Shift Workers" data-detail="Shared devices / kiosks" data-badges="shared,frontline" data-hasqty="true">
+        <div class="pal-icon" style="background:rgba(30,157,184,0.1)">🏭</div>
+        <div class="pal-item-text"><div>Task / Shift Workers</div><div class="pal-sub">Shared devices / kiosks</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="users" data-icon="💻" data-name="Developers / Engineers" data-detail="High-perf / GPU workloads" data-badges="power,gpu" data-hasqty="true">
+        <div class="pal-icon" style="background:rgba(30,157,184,0.1)">💻</div>
+        <div class="pal-item-text"><div>Developers / Engineers</div><div class="pal-sub">High-perf / GPU</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="users" data-icon="🏠" data-name="Remote / Hybrid" data-detail="Work-from-home users" data-badges="remote" data-hasqty="true">
+        <div class="pal-icon" style="background:rgba(30,157,184,0.1)">🏠</div>
+        <div class="pal-item-text"><div>Remote / Hybrid</div><div class="pal-sub">Work-from-home</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="users" data-icon="🤝" data-name="Contractors / 3rd Party" data-detail="Temp / external access" data-badges="external" data-hasqty="true">
+        <div class="pal-icon" style="background:rgba(30,157,184,0.1)">🤝</div>
+        <div class="pal-item-text"><div>Contractors / 3rd Party</div><div class="pal-sub">External access</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="users" data-icon="👔" data-name="Executives / VIP" data-detail="Premium experience" data-badges="vip" data-hasqty="true">
+        <div class="pal-icon" style="background:rgba(30,157,184,0.1)">👔</div>
+        <div class="pal-item-text"><div>Executives / VIP</div><div class="pal-sub">Premium experience</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pal-section" id="sec-devices">
+    <div class="pal-label" onclick="toggleSection('sec-devices')">🖥️ Devices & Endpoints <span class="pal-toggle">▼</span></div>
+    <div class="pal-items">
+      <div class="pal-item" draggable="true" data-type="devices" data-icon="🖥️" data-name="Corporate Desktop" data-detail="Managed / domain-joined" data-badges="managed" data-hasqty="true">
+        <div class="pal-icon" style="background:rgba(167,149,199,0.1)">🖥️</div>
+        <div class="pal-item-text"><div>Corporate Desktop</div><div class="pal-sub">Managed / domain-joined</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="devices" data-icon="💻" data-name="Laptop" data-detail="Mobile workforce" data-badges="mobile" data-hasqty="true">
+        <div class="pal-icon" style="background:rgba(167,149,199,0.1)">💻</div>
+        <div class="pal-item-text"><div>Laptop</div><div class="pal-sub">Mobile workforce</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="devices" data-icon="📱" data-name="Mobile / Tablet" data-detail="iOS / Android" data-badges="byod" data-hasqty="true">
+        <div class="pal-icon" style="background:rgba(167,149,199,0.1)">📱</div>
+        <div class="pal-item-text"><div>Mobile / Tablet</div><div class="pal-sub">iOS / Android</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="devices" data-icon="🖱️" data-name="Thin Client" data-detail="VDI endpoints" data-badges="vdi" data-hasqty="true">
+        <div class="pal-icon" style="background:rgba(167,149,199,0.1)">🖱️</div>
+        <div class="pal-item-text"><div>Thin Client</div><div class="pal-sub">VDI endpoints</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="devices" data-icon="☁️" data-name="Cloud PC / VDI" data-detail="Virtual desktops" data-badges="virtual" data-hasqty="true">
+        <div class="pal-icon" style="background:rgba(167,149,199,0.1)">☁️</div>
+        <div class="pal-item-text"><div>Cloud PC / VDI</div><div class="pal-sub">Virtual desktops</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="devices" data-icon="📺" data-name="Shared / Kiosk" data-detail="Multi-user devices" data-badges="shared" data-hasqty="true">
+        <div class="pal-icon" style="background:rgba(167,149,199,0.1)">📺</div>
+        <div class="pal-item-text"><div>Shared / Kiosk</div><div class="pal-sub">Multi-user devices</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="devices" data-icon="🏠" data-name="BYOD" data-detail="Personal devices" data-badges="unmanaged" data-hasqty="true">
+        <div class="pal-icon" style="background:rgba(167,149,199,0.1)">🏠</div>
+        <div class="pal-item-text"><div>BYOD</div><div class="pal-sub">Personal / unmanaged</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pal-section" id="sec-locations">
+    <div class="pal-label" onclick="toggleSection('sec-locations')">📍 Locations <span class="pal-toggle">▼</span></div>
+    <div class="pal-items">
+      <div class="pal-item" draggable="true" data-type="locations" data-icon="🏢" data-name="HQ / Primary Office" data-detail="Main site" data-badges="primary" data-hasqty="true">
+        <div class="pal-icon" style="background:rgba(77,171,247,0.1)">🏢</div>
+        <div class="pal-item-text"><div>HQ / Primary Office</div><div class="pal-sub">Main site</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="locations" data-icon="🏬" data-name="Branch Office" data-detail="Regional / satellite" data-badges="branch" data-hasqty="true">
+        <div class="pal-icon" style="background:rgba(77,171,247,0.1)">🏬</div>
+        <div class="pal-item-text"><div>Branch Office</div><div class="pal-sub">Regional / satellite</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="locations" data-icon="🏠" data-name="Home / Remote" data-detail="Distributed workforce" data-badges="remote" data-hasqty="true">
+        <div class="pal-icon" style="background:rgba(77,171,247,0.1)">🏠</div>
+        <div class="pal-item-text"><div>Home / Remote</div><div class="pal-sub">Distributed workforce</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="locations" data-icon="🌍" data-name="International" data-detail="Global offices" data-badges="global" data-hasqty="true">
+        <div class="pal-icon" style="background:rgba(77,171,247,0.1)">🌍</div>
+        <div class="pal-item-text"><div>International</div><div class="pal-sub">Global offices</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="locations" data-icon="🏪" data-name="Retail / Store" data-detail="Customer-facing sites" data-badges="retail" data-hasqty="true">
+        <div class="pal-icon" style="background:rgba(77,171,247,0.1)">🏪</div>
+        <div class="pal-item-text"><div>Retail / Store</div><div class="pal-sub">Customer-facing</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="locations" data-icon="🏗️" data-name="Data Centre" data-detail="On-prem DC" data-badges="dc" data-hasqty="true">
+        <div class="pal-icon" style="background:rgba(77,171,247,0.1)">🏗️</div>
+        <div class="pal-item-text"><div>Data Centre</div><div class="pal-sub">On-prem DC</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pal-section" id="sec-apps">
+    <div class="pal-label" onclick="toggleSection('sec-apps')">📦 Apps & Data <span class="pal-toggle">▼</span></div>
+    <div class="pal-items">
+      <div class="pal-item" draggable="true" data-type="apps" data-icon="📧" data-name="Microsoft 365" data-detail="Exchange / Teams / SharePoint" data-badges="microsoft,saas">
+        <div class="pal-icon" style="background:rgba(205,255,78,0.1)">📧</div>
+        <div class="pal-item-text"><div>Microsoft 365</div><div class="pal-sub">Exchange / Teams / SPO</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="apps" data-icon="📊" data-name="Line-of-Business App" data-detail="Internal / legacy app" data-badges="lob,legacy">
+        <div class="pal-icon" style="background:rgba(205,255,78,0.1)">📊</div>
+        <div class="pal-item-text"><div>Line-of-Business App</div><div class="pal-sub">Internal / legacy</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="apps" data-icon="🌐" data-name="SaaS Application" data-detail="Salesforce / ServiceNow / etc" data-badges="saas,cloud">
+        <div class="pal-icon" style="background:rgba(205,255,78,0.1)">🌐</div>
+        <div class="pal-item-text"><div>SaaS Application</div><div class="pal-sub">Salesforce / ServiceNow</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="apps" data-icon="🗄️" data-name="File Shares / DFS" data-detail="Network drives / mapped" data-badges="data,legacy">
+        <div class="pal-icon" style="background:rgba(205,255,78,0.1)">🗄️</div>
+        <div class="pal-item-text"><div>File Shares / DFS</div><div class="pal-sub">Network drives</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="apps" data-icon="🗃️" data-name="Database / ERP" data-detail="SQL / SAP / Oracle" data-badges="data,critical">
+        <div class="pal-icon" style="background:rgba(205,255,78,0.1)">🗃️</div>
+        <div class="pal-item-text"><div>Database / ERP</div><div class="pal-sub">SQL / SAP / Oracle</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="apps" data-icon="🖨️" data-name="Print / Peripherals" data-detail="Printers / scanners / USB" data-badges="peripheral">
+        <div class="pal-icon" style="background:rgba(205,255,78,0.1)">🖨️</div>
+        <div class="pal-item-text"><div>Print / Peripherals</div><div class="pal-sub">Printers / scanners</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="apps" data-icon="🎨" data-name="Specialist / CAD" data-detail="GPU / graphics intensive" data-badges="gpu,specialist">
+        <div class="pal-icon" style="background:rgba(205,255,78,0.1)">🎨</div>
+        <div class="pal-item-text"><div>Specialist / CAD</div><div class="pal-sub">GPU / graphics</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pal-section" id="sec-connectivity">
+    <div class="pal-label" onclick="toggleSection('sec-connectivity')">🔌 Connectivity <span class="pal-toggle">▼</span></div>
+    <div class="pal-items">
+      <div class="pal-item" draggable="true" data-type="connectivity" data-icon="🌐" data-name="Corporate WAN" data-detail="MPLS / SD-WAN" data-badges="network">
+        <div class="pal-icon" style="background:rgba(255,169,77,0.1)">🌐</div>
+        <div class="pal-item-text"><div>Corporate WAN</div><div class="pal-sub">MPLS / SD-WAN</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="connectivity" data-icon="📡" data-name="Internet Breakout" data-detail="Direct / local internet" data-badges="internet">
+        <div class="pal-icon" style="background:rgba(255,169,77,0.1)">📡</div>
+        <div class="pal-item-text"><div>Internet Breakout</div><div class="pal-sub">Direct / local internet</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="connectivity" data-icon="🔒" data-name="VPN" data-detail="Remote access VPN" data-badges="vpn,security">
+        <div class="pal-icon" style="background:rgba(255,169,77,0.1)">🔒</div>
+        <div class="pal-item-text"><div>VPN</div><div class="pal-sub">Remote access</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="connectivity" data-icon="☁️" data-name="ExpressRoute / VNet" data-detail="Azure private connectivity" data-badges="azure,private">
+        <div class="pal-icon" style="background:rgba(255,169,77,0.1)">☁️</div>
+        <div class="pal-item-text"><div>ExpressRoute / VNet</div><div class="pal-sub">Azure private link</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="connectivity" data-icon="🛡️" data-name="ZTNA / SASE" data-detail="Zero Trust network access" data-badges="ztna,modern">
+        <div class="pal-icon" style="background:rgba(255,169,77,0.1)">🛡️</div>
+        <div class="pal-item-text"><div>ZTNA / SASE</div><div class="pal-sub">Zero Trust access</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="connectivity" data-icon="📶" data-name="Wi-Fi / LAN" data-detail="Office network" data-badges="local">
+        <div class="pal-icon" style="background:rgba(255,169,77,0.1)">📶</div>
+        <div class="pal-item-text"><div>Wi-Fi / LAN</div><div class="pal-sub">Office network</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="connectivity" data-icon="🏠" data-name="Home Broadband" data-detail="ISP / consumer internet" data-badges="remote,variable">
+        <div class="pal-icon" style="background:rgba(255,169,77,0.1)">🏠</div>
+        <div class="pal-item-text"><div>Home Broadband</div><div class="pal-sub">ISP / consumer</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pal-section" id="sec-security">
+    <div class="pal-label" onclick="toggleSection('sec-security')">🔐 Security / Availability / Performance <span class="pal-toggle">▼</span></div>
+    <div class="pal-items">
+      <div class="pal-item" draggable="true" data-type="security" data-icon="🛡️" data-name="MFA / Cond. Access" data-detail="Entra ID policies" data-badges="security,identity">
+        <div class="pal-icon" style="background:rgba(255,107,107,0.1)">🛡️</div>
+        <div class="pal-item-text"><div>MFA / Cond. Access</div><div class="pal-sub">Entra ID policies</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="security" data-icon="🔍" data-name="EDR / Defender" data-detail="Endpoint protection" data-badges="security,endpoint">
+        <div class="pal-icon" style="background:rgba(255,107,107,0.1)">🔍</div>
+        <div class="pal-item-text"><div>EDR / Defender</div><div class="pal-sub">Endpoint protection</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="security" data-icon="📋" data-name="Compliance Policy" data-detail="CIS / ISO / PCI" data-badges="compliance">
+        <div class="pal-icon" style="background:rgba(255,107,107,0.1)">📋</div>
+        <div class="pal-item-text"><div>Compliance Policy</div><div class="pal-sub">CIS / ISO / PCI</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="security" data-icon="🔄" data-name="DR / BC Plan" data-detail="Disaster recovery / failover" data-badges="availability">
+        <div class="pal-icon" style="background:rgba(255,107,107,0.1)">🔄</div>
+        <div class="pal-item-text"><div>DR / BC Plan</div><div class="pal-sub">Disaster recovery</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="security" data-icon="⚡" data-name="SLA / Uptime Target" data-detail="99.9% / 99.99% etc" data-badges="availability">
+        <div class="pal-icon" style="background:rgba(255,107,107,0.1)">⚡</div>
+        <div class="pal-item-text"><div>SLA / Uptime Target</div><div class="pal-sub">Availability targets</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="security" data-icon="📈" data-name="Performance Baseline" data-detail="Latency / UX metrics" data-badges="performance">
+        <div class="pal-icon" style="background:rgba(255,107,107,0.1)">📈</div>
+        <div class="pal-item-text"><div>Performance Baseline</div><div class="pal-sub">Latency / UX metrics</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="security" data-icon="🔐" data-name="DLP / Data Class." data-detail="Data loss prevention" data-badges="security,data">
+        <div class="pal-icon" style="background:rgba(255,107,107,0.1)">🔐</div>
+        <div class="pal-item-text"><div>DLP / Data Class.</div><div class="pal-sub">Data loss prevention</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pal-section" id="sec-management">
+    <div class="pal-label" onclick="toggleSection('sec-management')">⚙️ Manage / Support / Optimise <span class="pal-toggle">▼</span></div>
+    <div class="pal-items">
+      <div class="pal-item" draggable="true" data-type="management" data-icon="🎫" data-name="Service Desk" data-detail="ITSM / ticketing" data-badges="support">
+        <div class="pal-icon" style="background:rgba(107,130,148,0.1)">🎫</div>
+        <div class="pal-item-text"><div>Service Desk</div><div class="pal-sub">ITSM / ticketing</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="management" data-icon="📊" data-name="Monitoring / Alerts" data-detail="SCOM / Datadog / etc" data-badges="monitoring">
+        <div class="pal-icon" style="background:rgba(107,130,148,0.1)">📊</div>
+        <div class="pal-item-text"><div>Monitoring / Alerts</div><div class="pal-sub">SCOM / Datadog</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="management" data-icon="🔧" data-name="Patch Management" data-detail="WSUS / SCCM / Intune" data-badges="patching">
+        <div class="pal-icon" style="background:rgba(107,130,148,0.1)">🔧</div>
+        <div class="pal-item-text"><div>Patch Management</div><div class="pal-sub">WSUS / SCCM / Intune</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="management" data-icon="📦" data-name="App Packaging" data-detail="MSIX / manual / Intune" data-badges="apps">
+        <div class="pal-icon" style="background:rgba(107,130,148,0.1)">📦</div>
+        <div class="pal-item-text"><div>App Packaging</div><div class="pal-sub">MSIX / manual</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="management" data-icon="🖼️" data-name="Image Management" data-detail="Gold image / SOE build" data-badges="images">
+        <div class="pal-icon" style="background:rgba(107,130,148,0.1)">🖼️</div>
+        <div class="pal-item-text"><div>Image Management</div><div class="pal-sub">Gold image / SOE</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="management" data-icon="💰" data-name="Cost Management" data-detail="Azure Cost Mgmt / FinOps" data-badges="cost">
+        <div class="pal-icon" style="background:rgba(107,130,148,0.1)">💰</div>
+        <div class="pal-item-text"><div>Cost Management</div><div class="pal-sub">Azure Cost / FinOps</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="management" data-icon="📐" data-name="Capacity Planning" data-detail="Scaling / right-sizing" data-badges="optimise">
+        <div class="pal-icon" style="background:rgba(107,130,148,0.1)">📐</div>
+        <div class="pal-item-text"><div>Capacity Planning</div><div class="pal-sub">Scaling / right-sizing</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="management" data-icon="🤖" data-name="Automation / Scripts" data-detail="PowerShell / runbooks" data-badges="automation">
+        <div class="pal-icon" style="background:rgba(107,130,148,0.1)">🤖</div>
+        <div class="pal-item-text"><div>Automation / Scripts</div><div class="pal-sub">PowerShell / runbooks</div></div>
+      </div>
+      <div class="pal-item" draggable="true" data-type="management" data-icon="👥" data-name="Outsourced / MSP" data-detail="Managed service provider" data-badges="external">
+        <div class="pal-icon" style="background:rgba(107,130,148,0.1)">👥</div>
+        <div class="pal-item-text"><div>Outsourced / MSP</div><div class="pal-sub">Managed service</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pal-section" id="sec-custom">
+    <div class="pal-label">➕ Custom Item</div>
+    <div class="pal-items">
+      <div style="display:flex;gap:4px;padding-bottom:8px;flex-wrap:wrap">
+        <input type="text" id="customName" placeholder="Add custom…" style="flex:1;min-width:80px;padding:5px 8px;border:1px solid var(--gray-200);border-radius:6px;font-family:'Poppins',sans-serif;font-size:10px;outline:none">
+        <select id="customType" style="padding:3px 4px;border:1px solid var(--gray-200);border-radius:6px;font-family:'Poppins',sans-serif;font-size:9px;outline:none">
+          <option value="users">User</option>
+          <option value="devices">Device</option>
+          <option value="locations">Location</option>
+          <option value="apps">App/Data</option>
+          <option value="connectivity">Connect</option>
+          <option value="security">Sec/Perf</option>
+          <option value="management">Manage</option>
+        </select>
+        <button onclick="addCustom()" style="padding:3px 8px;border:1px solid var(--teal);border-radius:6px;background:rgba(30,157,184,0.1);color:var(--teal);font-family:'Poppins',sans-serif;font-size:11px;font-weight:600;cursor:pointer">+</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CANVAS -->
+<div class="canvas-wrap" id="canvasWrap">
+  <div class="canvas" id="canvas">
+    <div class="zone users" id="zoneUsers">
+      <div class="zone-label">👥 Users &amp; Personas <span class="zone-count" id="usersCount">0</span></div>
+    </div>
+    <div class="zone devices" id="zoneDevices">
+      <div class="zone-label">🖥️ Devices &amp; Endpoints <span class="zone-count" id="devicesCount">0</span></div>
+    </div>
+    <div class="zone locations" id="zoneLocations">
+      <div class="zone-label">📍 Locations <span class="zone-count" id="locationsCount">0</span></div>
+    </div>
+    <div class="zone apps" id="zoneApps">
+      <div class="zone-label">📦 Apps, Data &amp; Services <span class="zone-count" id="appsCount">0</span></div>
+    </div>
+    <div class="zone connectivity" id="zoneConnectivity">
+      <div class="zone-label">🔌 Connectivity &amp; Networks <span class="zone-count" id="connectivityCount">0</span></div>
+    </div>
+    <div class="zone security" id="zoneSecurity">
+      <div class="zone-label">🔐 Security / Availability / Performance <span class="zone-count" id="securityCount">0</span></div>
+    </div>
+    <div class="zone management" id="zoneManagement">
+      <div class="zone-label">⚙️ Management, Support &amp; Optimisation <span class="zone-count" id="managementCount">0</span></div>
+    </div>
+    <div class="zone nerdio-opp" id="zoneNerdio">
+      <div class="zone-label">
+        <svg width="16" height="16" viewBox="0 0 80 50" fill="none"><circle cx="22" cy="25" r="10" stroke="#1E9DB8" stroke-width="3" fill="none"/><circle cx="52" cy="25" r="10" stroke="#1E9DB8" stroke-width="3" fill="none"/><path d="M32 25 Q37 19 42 25" fill="none" stroke="#1E9DB8" stroke-width="2.5" stroke-linecap="round"/></svg>
+        Nerdio Opportunity <span class="zone-count" id="nerdioCount">0</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RIGHT PANEL -->
+<div class="value-panel" id="valuePanel">
+  <div class="vp-header">
+    <div class="vp-title">Nerdio — User &amp; Ops Value</div>
+    <div class="vp-sub">Drag to the Nerdio Opportunity zone</div>
+  </div>
+  <div class="vp-section">
+    <div class="vp-label">User Experience</div>
+    <div class="vp-item" draggable="true" data-type="nerdio" data-icon="🚀" data-name="Rapid Provisioning" data-detail="New users in minutes, not days" data-badges="automation" data-pillar="ux">
+      <div class="vp-dot auto"></div><div class="vp-text"><strong>Rapid Provisioning</strong><span>New users in minutes, not days</span></div>
+    </div>
+    <div class="vp-item" draggable="true" data-type="nerdio" data-icon="📍" data-name="Any Location Access" data-detail="AVD / W365 from anywhere" data-badges="flexibility" data-pillar="ux">
+      <div class="vp-dot auto"></div><div class="vp-text"><strong>Any Location Access</strong><span>AVD / W365 from anywhere</span></div>
+    </div>
+    <div class="vp-item" draggable="true" data-type="nerdio" data-icon="⚡" data-name="Auto-Scale to Demand" data-detail="Match capacity to user load" data-badges="performance" data-pillar="ux">
+      <div class="vp-dot auto"></div><div class="vp-text"><strong>Auto-Scale to Demand</strong><span>Capacity matches user load</span></div>
+    </div>
+    <div class="vp-item" draggable="true" data-type="nerdio" data-icon="🔧" data-name="Auto-Heal Sessions" data-detail="Self-repairing broken hosts" data-badges="availability" data-pillar="ux">
+      <div class="vp-dot auto"></div><div class="vp-text"><strong>Auto-Heal Sessions</strong><span>Self-repairing broken hosts</span></div>
+    </div>
+  </div>
+  <div class="vp-section">
+    <div class="vp-label">Device &amp; Endpoint</div>
+    <div class="vp-item" draggable="true" data-type="nerdio" data-icon="📱" data-name="Unified Endpoint Mgmt" data-detail="AVD + W365 + Intune in one pane" data-badges="visibility" data-pillar="endpoint">
+      <div class="vp-dot vis"></div><div class="vp-text"><strong>Unified Endpoint Mgmt</strong><span>AVD + W365 + Intune in one pane</span></div>
+    </div>
+    <div class="vp-item" draggable="true" data-type="nerdio" data-icon="🖼️" data-name="Golden Image Lifecycle" data-detail="Automated image build & deploy" data-badges="automation" data-pillar="endpoint">
+      <div class="vp-dot vis"></div><div class="vp-text"><strong>Golden Image Lifecycle</strong><span>Automated image build &amp; deploy</span></div>
+    </div>
+    <div class="vp-item" draggable="true" data-type="nerdio" data-icon="📋" data-name="Intune Insights" data-detail="Device health, patch, warranty" data-badges="visibility" data-pillar="endpoint">
+      <div class="vp-dot vis"></div><div class="vp-text"><strong>Intune Insights</strong><span>Device health, patch &amp; warranty</span></div>
+    </div>
+  </div>
+  <div class="vp-section">
+    <div class="vp-label">Security &amp; Compliance</div>
+    <div class="vp-item" draggable="true" data-type="nerdio" data-icon="🛡️" data-name="CIS Baseline Policies" data-detail="Pre-built compliance templates" data-badges="compliance" data-pillar="security">
+      <div class="vp-dot sec"></div><div class="vp-text"><strong>CIS Baseline Policies</strong><span>Pre-built compliance templates</span></div>
+    </div>
+    <div class="vp-item" draggable="true" data-type="nerdio" data-icon="🔍" data-name="Config Drift Detection" data-detail="Continuous compliance monitoring" data-badges="security" data-pillar="security">
+      <div class="vp-dot sec"></div><div class="vp-text"><strong>Config Drift Detection</strong><span>Continuous compliance monitoring</span></div>
+    </div>
+    <div class="vp-item" draggable="true" data-type="nerdio" data-icon="🔐" data-name="RBAC & Approvals" data-detail="Governance workflows" data-badges="governance" data-pillar="security">
+      <div class="vp-dot sec"></div><div class="vp-text"><strong>RBAC &amp; Approvals</strong><span>Governance workflows</span></div>
+    </div>
+  </div>
+  <div class="vp-section">
+    <div class="vp-label">Cost &amp; Operations</div>
+    <div class="vp-item" draggable="true" data-type="nerdio" data-icon="💰" data-name="55% Compute Savings" data-detail="Patented auto-scaling engine" data-badges="cost" data-pillar="cost">
+      <div class="vp-dot cost"></div><div class="vp-text"><strong>55% Compute Savings</strong><span>Patented auto-scaling engine</span></div>
+    </div>
+    <div class="vp-item" draggable="true" data-type="nerdio" data-icon="📐" data-name="Right-Sizing / RI" data-detail="VM + Reserved Instance optimisation" data-badges="cost" data-pillar="cost">
+      <div class="vp-dot cost"></div><div class="vp-text"><strong>Right-Sizing / RI</strong><span>VM + Reserved Instance optimisation</span></div>
+    </div>
+    <div class="vp-item" draggable="true" data-type="nerdio" data-icon="📊" data-name="TCO Modelling" data-detail="AVD vs W365 cost analysis" data-badges="cost" data-pillar="cost">
+      <div class="vp-dot cost"></div><div class="vp-text"><strong>TCO Modelling</strong><span>AVD vs W365 cost analysis</span></div>
+    </div>
+    <div class="vp-item" draggable="true" data-type="nerdio" data-icon="👁️" data-name="Unified Dashboard" data-detail="Single pane across everything" data-badges="visibility" data-pillar="cost">
+      <div class="vp-dot cost"></div><div class="vp-text"><strong>Unified Dashboard</strong><span>Single pane across everything</span></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- DRAG GHOST -->
+<div class="drag-ghost" id="dragGhost"></div>
+
+<!-- SUMMARY OVERLAY -->
+<div class="summary-overlay" id="summaryOverlay">
+  <button class="summary-close" onclick="hideSummary()">✕</button>
+  <div class="summary-card" id="summaryCard"></div>
+</div>
+
+<!-- VALUE OVERLAY -->
+<div class="val-overlay" id="valOverlay">
+  <button class="val-close" onclick="hideValue()">✕</button>
+  <div class="val-card" id="valCard"></div>
+</div>
+
+<script>
+let items=[], idCounter=0, dragData=null, panX=0, panY=0, isPanning=false, panStartX, panStartY;
+
+const ZONES = {
+  users:{el:'zoneUsers',counter:'usersCount',color:'teal',label:'Users & Personas'},
+  devices:{el:'zoneDevices',counter:'devicesCount',color:'purple',label:'Devices & Endpoints'},
+  locations:{el:'zoneLocations',counter:'locationsCount',color:'blue',label:'Locations'},
+  apps:{el:'zoneApps',counter:'appsCount',color:'green',label:'Apps, Data & Services'},
+  connectivity:{el:'zoneConnectivity',counter:'connectivityCount',color:'orange',label:'Connectivity & Networks'},
+  security:{el:'zoneSecurity',counter:'securityCount',color:'red',label:'Security / Availability / Performance'},
+  management:{el:'zoneManagement',counter:'managementCount',color:'gray',label:'Management, Support & Optimisation'},
+  nerdio:{el:'zoneNerdio',counter:'nerdioCount',color:'teal',label:'Nerdio Opportunity'}
+};
+
+// Collapsible palette sections
+function toggleSection(id){document.getElementById(id).classList.toggle('collapsed')}
+
+// Drag from palette
+document.querySelectorAll('.pal-item[draggable],.vp-item[draggable]').forEach(el=>{
+  el.addEventListener('dragstart',e=>{
+    dragData={type:el.dataset.type,icon:el.dataset.icon||'📌',name:el.dataset.name,detail:el.dataset.detail||'',badges:el.dataset.badges||'',pillar:el.dataset.pillar||'',hasqty:el.dataset.hasqty==='true'};
+    const ghost=document.getElementById('dragGhost');
+    ghost.textContent=dragData.icon+' '+dragData.name;
+    ghost.style.display='block';
+    e.dataTransfer.setDragImage(ghost,0,0);
+    e.dataTransfer.effectAllowed='copy';
+  });
+  el.addEventListener('dragend',()=>{document.getElementById('dragGhost').style.display='none';dragData=null});
+});
+
+const canvas=document.getElementById('canvas');
+canvas.addEventListener('dragover',e=>{e.preventDefault();e.dataTransfer.dropEffect='copy'});
+canvas.addEventListener('drop',e=>{
+  e.preventDefault();
+  if(!dragData)return;
+  const r=canvas.getBoundingClientRect();
+  createItem(dragData,e.clientX-r.left,e.clientY-r.top);
+  dragData=null;
+});
+
+function createItem(data,x,y){
+  const id=++idCounter;
+  const zone=detectZone(x,y)||data.type;
+  const item={id,...data,x,y,zone,note:'',qty:''};
+  items.push(item);
+  renderItem(item);
+  updateCounts();
+}
+
+function renderItem(item){
+  const el=document.createElement('div');
+  el.className='dropped-item'+(item.zone==='nerdio'?' nerdio-item':'');
+  el.id='item-'+item.id;
+  el.style.left=item.x+'px';el.style.top=item.y+'px';
+
+  let badges='';
+  if(item.badges)badges='<div class="di-badges">'+item.badges.split(',').map(b=>{
+    const c=b==='managed'||b==='microsoft'||b==='azure'?'teal':b==='saas'||b==='cloud'?'green':b==='security'||b==='compliance'?'red':b==='remote'||b==='vpn'?'orange':b==='vdi'||b==='specialist'||b==='gpu'?'purple':b==='network'||b==='local'?'blue':'gray';
+    return`<span class="di-badge ${c}">${b}</span>`;
+  }).join('')+'</div>';
+
+  let qtyHtml='';
+  if(item.hasqty)qtyHtml=`<div class="di-qty"><label>Count:</label><input type="text" value="${item.qty}" placeholder="e.g. 500" oninput="updateQty(${item.id},this.value)"></div>`;
+
+  el.innerHTML=`
+    <div class="di-header"><span class="di-icon">${item.icon}</span><span class="di-name">${item.name}</span><button class="di-delete" onclick="deleteItem(${item.id})">✕</button></div>
+    <div class="di-detail">${item.detail}</div>
+    ${badges}${qtyHtml}
+    <textarea class="di-note" placeholder="Notes…" oninput="updateNote(${item.id},this.value)">${item.note}</textarea>`;
+
+  let isDragging=false,startX,startY,origX,origY;
+  el.addEventListener('mousedown',e=>{
+    if(['TEXTAREA','INPUT','SELECT','BUTTON'].includes(e.target.tagName))return;
+    isDragging=true;el.classList.add('dragging');startX=e.clientX;startY=e.clientY;
+    origX=parseInt(el.style.left);origY=parseInt(el.style.top);e.preventDefault();
+  });
+  document.addEventListener('mousemove',e=>{if(!isDragging)return;el.style.left=(origX+e.clientX-startX)+'px';el.style.top=(origY+e.clientY-startY)+'px'});
+  document.addEventListener('mouseup',()=>{
+    if(!isDragging)return;isDragging=false;el.classList.remove('dragging');
+    const it=items.find(i=>i.id===item.id);
+    if(it){it.x=parseInt(el.style.left);it.y=parseInt(el.style.top);
+      const nz=detectZone(it.x+60,it.y+20);
+      if(nz&&nz!==it.zone){it.zone=nz;el.className='dropped-item'+(nz==='nerdio'?' nerdio-item':'');}
+      updateCounts();
+    }
+  });
+  canvas.appendChild(el);
+}
+
+function detectZone(x,y){
+  const zz=[
+    {id:'users',l:40,t:40,r:490,b:400},{id:'devices',l:520,t:40,r:970,b:400},{id:'locations',l:1000,t:40,r:1400,b:400},
+    {id:'apps',l:40,t:440,r:490,b:800},{id:'connectivity',l:520,t:440,r:970,b:800},{id:'security',l:1000,t:440,r:1400,b:800},
+    {id:'management',l:40,t:840,r:660,b:1160},{id:'nerdio',l:690,t:840,r:1400,b:1160}
+  ];
+  for(const z of zz)if(x>=z.l&&x<=z.r&&y>=z.t&&y<=z.b)return z.id;
+  return null;
+}
+
+function updateCounts(){for(const[z,c]of Object.entries(ZONES))document.getElementById(c.counter).textContent=items.filter(i=>i.zone===z).length}
+function deleteItem(id){items=items.filter(i=>i.id!==id);const el=document.getElementById('item-'+id);if(el)el.remove();updateCounts()}
+function updateNote(id,v){const i=items.find(x=>x.id===id);if(i)i.note=v}
+function updateQty(id,v){const i=items.find(x=>x.id===id);if(i)i.qty=v}
+
+function setMode(mode){
+  document.body.classList.toggle('customer-mode',mode==='customer');
+  document.querySelectorAll('.mode-toggle button').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase()===mode));
+}
+function toggleValuePanel(){document.getElementById('valuePanel').classList.toggle('visible')}
+
+function addCustom(){
+  const name=document.getElementById('customName').value.trim();
+  const type=document.getElementById('customType').value;
+  if(!name)return;
+  const icons={users:'👤',devices:'💻',locations:'📍',apps:'📦',connectivity:'🔌',security:'🔐',management:'⚙️'};
+  const zone=document.getElementById(ZONES[type].el);
+  const r=zone.getBoundingClientRect(),cr=canvas.getBoundingClientRect();
+  createItem({type,icon:icons[type]||'📌',name,detail:'Custom',badges:'custom',hasqty:type==='users'||type==='devices'||type==='locations'},r.left-cr.left+40,r.top-cr.top+50);
+  document.getElementById('customName').value='';
+}
+
+function saveSession(){
+  localStorage.setItem('nerdio_wb_users_v1',JSON.stringify({customer:document.getElementById('custName').value,items,savedAt:new Date().toISOString()}));
+  const btn=event.target;btn.textContent='✓ Saved';setTimeout(()=>btn.textContent='Save',1500);
+}
+function loadSession(){
+  const raw=localStorage.getItem('nerdio_wb_users_v1');if(!raw)return;
+  try{const d=JSON.parse(raw);document.getElementById('custName').value=d.customer||'';
+    d.items.forEach(i=>{idCounter=Math.max(idCounter,i.id);items.push(i);renderItem(i)});updateCounts();
+  }catch(e){}
+}
+function clearAll(){if(!confirm('Clear all items?'))return;items.forEach(i=>{const el=document.getElementById('item-'+i.id);if(el)el.remove()});items=[];idCounter=0;updateCounts()}
+
+function showSummary(){
+  const cust=document.getElementById('custName').value||'Customer';
+  const card=document.getElementById('summaryCard');
+  const byZ=z=>items.filter(i=>i.zone===z);
+  const renderItems=(list,cls)=>{
+    if(!list.length)return'<div style="font-size:11px;color:var(--gray-500);font-style:italic">No items captured</div>';
+    return'<div class="sum-items">'+list.map(i=>`<div class="sum-item" style="border-color:var(--${cls})">
+      <div class="si-name">${i.icon} ${i.name}</div><div class="si-detail">${i.detail}</div>
+      ${i.qty?`<div class="si-qty">Count: ${i.qty}</div>`:''}
+      ${i.note?`<div class="si-note">"${i.note}"</div>`:''}
+    </div>`).join('')+'</div>';
+  };
+
+  // Count totals
+  const totalUsers=byZ('users').reduce((s,i)=>{const n=parseInt(i.qty);return s+(isNaN(n)?0:n)},0);
+  const totalDevices=byZ('devices').reduce((s,i)=>{const n=parseInt(i.qty);return s+(isNaN(n)?0:n)},0);
+  const totalLocs=byZ('locations').reduce((s,i)=>{const n=parseInt(i.qty);return s+(isNaN(n)?0:n)},0);
+
+  // Nerdio items
+  const nItems=byZ('nerdio');
+  const pillars={ux:[],endpoint:[],security:[],cost:[]};
+  nItems.forEach(i=>{if(i.pillar&&pillars[i.pillar])pillars[i.pillar].push(i)});
+  let nHtml='';
+  if(nItems.length){
+    nHtml=`<div class="sum-section"><div class="sum-section-title" style="color:var(--teal);border-color:var(--teal)">Nerdio Opportunity</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      ${Object.entries(pillars).filter(([,v])=>v.length).map(([k,v])=>`
+        <div style="background:var(--gray-50);border-radius:10px;padding:12px;border-top:3px solid var(--teal)">
+          <h4 style="font-size:11px;font-weight:700;margin-bottom:5px">${k==='ux'?'🚀 User Experience':k==='endpoint'?'📱 Device & Endpoint':k==='security'?'🛡️ Security & Compliance':'💰 Cost & Operations'}</h4>
+          <ul style="padding-left:14px;font-size:10px;color:var(--gray-500);line-height:1.5">${v.map(i=>`<li><strong>${i.name}</strong> — ${i.detail}${i.note?' <em>('+i.note+')</em>':''}</li>`).join('')}</ul>
+        </div>`).join('')}
+      </div></div>`;
+  }
+
+  const colors={users:'teal',devices:'purple',locations:'blue',apps:'green',connectivity:'orange',security:'red',management:'gray-500'};
+  const labels={users:'Users & Personas',devices:'Devices & Endpoints',locations:'Locations',apps:'Apps, Data & Services',connectivity:'Connectivity & Networks',security:'Security / Availability / Performance',management:'Management, Support & Optimisation'};
+
+  card.innerHTML=`
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px">
+      <svg width="36" height="36" viewBox="0 0 80 50" fill="none"><circle cx="22" cy="25" r="12" stroke="#1E9DB8" stroke-width="3.5" fill="none"/><circle cx="58" cy="25" r="12" stroke="#1E9DB8" stroke-width="3.5" fill="none"/><path d="M34 25 Q40 18 46 25" fill="none" stroke="#1E9DB8" stroke-width="3" stroke-linecap="round"/></svg>
+      <div><div class="sum-title">${cust} — User &amp; Operations Discovery</div><div class="sum-sub">Generated ${new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}</div></div>
+    </div>
+    ${totalUsers||totalDevices||totalLocs?`<div style="display:flex;gap:24px;margin-bottom:16px;padding:12px 16px;background:var(--gray-50);border-radius:10px">
+      ${totalUsers?`<div><div style="font-size:20px;font-weight:800;color:var(--teal)">${totalUsers.toLocaleString()}</div><div style="font-size:9px;text-transform:uppercase;color:var(--gray-500);letter-spacing:1px">Total Users</div></div>`:''}
+      ${totalDevices?`<div><div style="font-size:20px;font-weight:800;color:var(--purple)">${totalDevices.toLocaleString()}</div><div style="font-size:9px;text-transform:uppercase;color:var(--gray-500);letter-spacing:1px">Devices</div></div>`:''}
+      ${totalLocs?`<div><div style="font-size:20px;font-weight:800;color:var(--blue)">${totalLocs.toLocaleString()}</div><div style="font-size:9px;text-transform:uppercase;color:var(--gray-500);letter-spacing:1px">Locations</div></div>`:''}
+    </div>`:''}
+    ${Object.entries(labels).map(([z,l])=>`<div class="sum-section"><div class="sum-section-title" style="color:var(--${colors[z]});border-color:var(--${colors[z]})">${l} (${byZ(z).length})</div>${renderItems(byZ(z),colors[z])}</div>`).join('')}
+    ${nHtml}
+    <div style="margin-top:20px;padding-top:12px;border-top:1px solid var(--gray-200);font-size:10px;color:var(--gray-500);text-align:center">Nerdio Sales Command Centre — User &amp; Operations Discovery</div>`;
+  document.getElementById('summaryOverlay').classList.add('visible');
+}
+function hideSummary(){document.getElementById('summaryOverlay').classList.remove('visible')}
+
+// ── SHOW ME VALUE ENGINE ──
+const VALUE_RULES = [
+  {
+    id:'remote-hybrid-workforce', trigger: i => /remote|hybrid|work.from.home|wfh|distributed|anywhere/i.test(i.name+i.detail+i.note+i.badges),
+    zones:['users','locations','connectivity'],
+    title:'Remote & Hybrid Workforce Enablement', impact:'high', pillar:'Automation',
+    why:'Your organisation has remote or hybrid workers. Nerdio enables seamless access to virtual desktops from any location via Azure Virtual Desktop or Windows 365 — with auto-scaling that matches capacity to demand across time zones, and consistent security policies regardless of where users connect from.',
+    benefits:['Deliver a consistent desktop experience from any location','Auto-scale capacity across time zones and work patterns','Eliminate VPN dependency with native Azure AD authentication','Rapid onboarding — new users productive in minutes, not days'],
+    outcomes:['User satisfaction scores typically increase from 35 to 90+','VPN support tickets reduced by 60-80%','Onboarding time reduced from days to under 1 hour','Consistent experience across office, home, and mobile'],
+    next:['Map remote user personas and their application requirements','Model AVD vs Windows 365 for each user group using TCO Analysis','Plan a pilot with one remote user group on Nerdio-managed AVD','Demo the Nerdio provisioning wizard for rapid user deployment']
+  },
+  {
+    id:'vdi-virtual-desktops', trigger: i => /vdi|thin.client|virtual.desktop|cloud.pc|citrix|vmware|horizon/i.test(i.name+i.detail+i.note+i.badges),
+    zones:['devices','users','apps'],
+    title:'Virtual Desktop Modernisation', impact:'high', pillar:'Automation',
+    why:'Virtual desktop infrastructure is part of your environment. Nerdio provides the most comprehensive management layer for Azure Virtual Desktop and Windows 365 — adding 100+ capabilities that Microsoft doesn\'t provide natively, including auto-scaling, auto-heal, golden image lifecycle, and unified monitoring.',
+    benefits:['Single management pane for AVD, W365, and Intune','Patented auto-scaling saves up to 80% on Azure compute','Auto-heal automatically repairs broken session hosts','Golden image lifecycle management with automated updates'],
+    outcomes:['55% average Azure compute savings across customer base','Deployment time reduced from weeks to hours','75% reduction in VDI-related support tickets','Quub.it tripled revenue managing AVD environments with Nerdio'],
+    next:['Assess current VDI workloads for Azure migration readiness','Use the ROI Calculator to model savings vs current infrastructure','Plan a proof-of-concept with one host pool on Nerdio','Engage Nerdio SE for an architecture design session']
+  },
+  {
+    id:'byod-unmanaged', trigger: i => /byod|unmanaged|personal.device|bring.your.own/i.test(i.name+i.detail+i.note+i.badges),
+    zones:['devices','security'],
+    title:'BYOD & Unmanaged Device Security', impact:'high', pillar:'Security',
+    why:'BYOD or unmanaged devices are in your environment. This creates security risks around data leakage and compliance. Nerdio-managed virtual desktops provide a secure workspace that keeps corporate data in Azure — users access applications through AVD or W365 without sensitive data ever reaching the personal device.',
+    benefits:['Corporate data stays in Azure — never on the personal device','Consistent security policies regardless of device type','No agent or MDM enrollment required on personal devices','Full audit trail of session activity and data access'],
+    outcomes:['Elimination of data leakage risk from unmanaged endpoints','Compliance maintained across all access scenarios','Reduced endpoint management overhead for BYOD users','Simplified contractor and third-party access provisioning'],
+    next:['Identify BYOD user groups and their application requirements','Assess data classification requirements for virtual desktop delivery','Plan a pilot delivering AVD to unmanaged devices via web browser','Demo Nerdio\'s Conditional Access integration for BYOD policies']
+  },
+  {
+    id:'legacy-apps-lob', trigger: i => /legacy|line.of.business|lob|on.prem.*app|internal.*app|file.share|dfs|network.drive/i.test(i.name+i.detail+i.note+i.badges),
+    zones:['apps','management'],
+    title:'Legacy Application Delivery', impact:'medium', pillar:'Automation',
+    why:'Legacy or line-of-business applications have been identified. These often block cloud migration due to compatibility concerns. Nerdio simplifies app delivery through AVD — running legacy apps in Azure-hosted sessions while users access them from modern endpoints. MSIX app attach and golden image management automate the packaging and deployment lifecycle.',
+    benefits:['Deliver legacy apps via AVD without rewriting or re-platforming','MSIX app attach for clean application layering','Golden image management automates app packaging and deployment','Users access legacy apps seamlessly alongside modern SaaS'],
+    outcomes:['Extend legacy application lifespan without hardware investment','Application deployment time reduced from weeks to hours','Consistent app delivery across office, remote, and mobile','Eliminate dependency on ageing on-prem application servers'],
+    next:['Inventory legacy applications and their infrastructure dependencies','Assess app compatibility for AVD delivery using Nerdio assessment','Plan a phased migration starting with least complex LOB apps','Demo golden image management with MSIX app attach']
+  },
+  {
+    id:'vpn-connectivity', trigger: i => /vpn|remote.access|always.on|split.tunnel/i.test(i.name+i.detail+i.note+i.badges),
+    zones:['connectivity','security'],
+    title:'VPN Elimination with Cloud Desktops', impact:'medium', pillar:'Security',
+    why:'VPN connectivity is in your architecture. VPNs create bottlenecks, increase attack surface, and degrade user experience. Nerdio-managed Azure Virtual Desktop eliminates VPN dependency entirely — users connect directly to their cloud desktop via Entra ID with Conditional Access, providing faster access with stronger security.',
+    benefits:['Eliminate VPN infrastructure and licensing costs','Direct-to-cloud connectivity with Entra ID authentication','Conditional Access policies enforce Zero Trust without VPN','Better performance — no hairpinning through corporate network'],
+    outcomes:['VPN support tickets typically drop by 60-80%','Improved user experience with faster application access','Reduced network infrastructure costs and complexity','Stronger security posture with identity-based access'],
+    next:['Map current VPN user groups and their access patterns','Assess Azure networking requirements for AVD connectivity','Plan a pilot replacing VPN with AVD for one user group','Model cost savings from VPN infrastructure decommission']
+  },
+  {
+    id:'security-compliance-gaps', trigger: i => /mfa|conditional.access|compliance|cis|iso|pci|gdpr|edr|defender|zero.trust|ztna|dlp|data.loss/i.test(i.name+i.detail+i.note+i.badges),
+    zones:['security','management'],
+    title:'Security & Compliance Hardening', impact:'medium', pillar:'Security',
+    why:'Security and compliance requirements are present in your environment. Nerdio provides CIS Benchmark-aligned Intune baselines, automated configuration drift detection, and deep integration with Microsoft Defender and Entra ID Conditional Access — all managed from a single pane alongside AVD and Windows 365.',
+    benefits:['Pre-built CIS Benchmark Intune policy baselines','Automated configuration drift detection and remediation','Deep Entra ID and Conditional Access integration','All data stays within the customer\'s own Azure subscription'],
+    outcomes:['Continuous compliance monitoring without additional tools','Audit preparation time reduced by 50%+','Consistent security posture across virtual and physical endpoints','Elimination of policy gaps between different management consoles'],
+    next:['Review current compliance requirements against Nerdio CIS baselines','Assess Conditional Access policy gaps across all endpoint types','Plan a security posture assessment using Nerdio\'s Assessment Tool','Engage Nerdio SE for a compliance-focused demonstration']
+  },
+  {
+    id:'manual-patching-mgmt', trigger: i => /sccm|wsus|mecm|config.manager|patch|manual.*manage|image.manage|gold.image|soe/i.test(i.name+i.detail+i.note+i.badges),
+    zones:['management','devices'],
+    title:'Automated Patch & Image Management', impact:'high', pillar:'Automation',
+    why:'Manual patching or image management tools are in your operations. Nerdio automates the golden image lifecycle — from build to test to deploy — across AVD and physical endpoints. Combined with Intune Insights for patching visibility, this eliminates the manual overhead of WSUS/SCCM and reduces the risk of unpatched systems.',
+    benefits:['Automated golden image build, test, and deployment','Replace SCCM/WSUS with Intune-native management via Nerdio','Scripted Actions automate repetitive management tasks','Schedule-based or on-demand image updates across all hosts'],
+    outcomes:['Image update cycle reduced from weeks to hours','Ceeva: tasks that took weeks of billable hours now done rapidly','Patching compliance visibility without manual reporting','70% reduction in image management operational overhead'],
+    next:['Map current image management workflow and pain points','Demo Nerdio\'s golden image lifecycle management','Plan a pilot automating image updates for one host pool','Assess SCCM-to-Intune migration path via Nerdio']
+  },
+  {
+    id:'cost-optimisation', trigger: i => /cost|finops|spend|budget|expensive|saving|azure cost|right.siz/i.test(i.name+i.detail+i.note+i.badges),
+    zones:['management','devices','apps'],
+    title:'Azure Cost Optimisation', impact:'high', pillar:'Cost Optimisation',
+    why:'Cost management concerns have been identified. Nerdio\'s patented auto-scaling engine is the single most impactful cost lever — automatically right-sizing Azure compute based on real-time user demand so you never pay for idle capacity. Combined with Reserved Instance management and TCO modelling, it delivers measurable savings from day one.',
+    benefits:['Patented auto-scaling adjusts compute to actual demand','Reserved Instance and Savings Plan optimisation','TCO Analysis compares AVD vs W365 per workload','DaaS Modeler recommends optimal Cloud PC sizing'],
+    outcomes:['55% average Azure compute savings (up to 80%)','Sage achieved $1M+ annual savings with Nerdio','Typical payback period under 30 days','3Cloud reports all customers end up saving money'],
+    next:['Run the ROI Calculator with current Azure spend figures','Request a Nerdio auto-scaling assessment for existing workloads','Model Reserved Instance vs Pay-As-You-Go scenarios','Set up a 30-day free trial to measure actual savings']
+  },
+  {
+    id:'multi-location-complexity', trigger: i => /branch|international|global|retail|store|multiple.*site|multi.site|distributed/i.test(i.name+i.detail+i.note+i.badges),
+    zones:['locations','connectivity','management'],
+    title:'Multi-Location Desktop Delivery', impact:'medium', pillar:'Automation',
+    why:'Multiple locations are part of your environment. Managing desktops across geographies introduces complexity around image consistency, network performance, and operational overhead. Nerdio centralises management while enabling region-specific AVD host pools — ensuring consistent user experience regardless of location.',
+    benefits:['Centralised management with region-specific host pools','Consistent golden image deployment across all locations','Auto-scaling adjusts per-region based on local demand','Single pane visibility across all sites and endpoints'],
+    outcomes:['Eliminate per-site desktop management overhead','Consistent user experience across all locations','Simplified branch office IT with centralised cloud delivery','Reduced hardware refresh costs at remote sites'],
+    next:['Map locations and their user counts for Azure region planning','Model per-region AVD host pools with auto-scaling','Plan centralised image management across all sites','Demo Nerdio\'s multi-region management capabilities']
+  },
+  {
+    id:'monitoring-visibility', trigger: i => /monitor|alert|scom|datadog|dashboard|visib|reporting|log/i.test(i.name+i.detail+i.note+i.badges),
+    zones:['management','security'],
+    title:'Unified Monitoring & Visibility', impact:'medium', pillar:'Visibility',
+    why:'Monitoring and alerting are part of your operations. Nerdio provides agentless, real-time monitoring across AVD, Windows 365, and Intune — all from a single dashboard with no additional tools to deploy. Intune Insights adds device health, patching status, and warranty tracking without KQL queries.',
+    benefits:['Agentless monitoring — nothing to install or maintain','Unified dashboard across AVD, W365, and Intune','Intune Insights: device health, patch status, warranty expiry','Real-time performance and compliance visibility'],
+    outcomes:['Eliminate manual log aggregation and KQL work','Proactive issue detection before users report problems','Single source of truth for all endpoint health','Reduced MTTR through faster root cause identification'],
+    next:['Map current monitoring gaps and tool overlap','Demo Nerdio\'s unified dashboard and Intune Insights','Plan integration alongside existing ITSM/monitoring tools','Start a trial to see real visibility across your estate']
+  },
+  {
+    id:'shared-kiosk-devices', trigger: i => /shared|kiosk|multi.user|shift.worker|task.worker|frontline/i.test(i.name+i.detail+i.note+i.badges),
+    zones:['users','devices'],
+    title:'Shared & Kiosk Device Management', impact:'medium', pillar:'Automation',
+    why:'Shared or kiosk devices are in your environment. These create unique challenges around session management, security isolation, and user experience. Nerdio manages multi-session AVD host pools that provide personalised desktops on shared hardware — with automatic session cleanup, profile management, and per-user Conditional Access.',
+    benefits:['Multi-session host pools for shared device scenarios','Automatic session cleanup and profile management','Per-user Conditional Access on shared hardware','Auto-scaling adjusts session host count to shift patterns'],
+    outcomes:['Consistent user experience on shared devices','Secure session isolation between users','Reduced device procurement costs with multi-session','Automated capacity management for shift changes'],
+    next:['Map shared device locations and user patterns','Assess multi-session AVD requirements for shift workers','Plan a pilot with one shared device location','Demo Nerdio\'s session management capabilities']
+  },
+  {
+    id:'contractor-external', trigger: i => /contractor|3rd.party|third.party|external|temp|partner.access|vendor/i.test(i.name+i.detail+i.note+i.badges),
+    zones:['users','security'],
+    title:'Secure Contractor & External Access', impact:'medium', pillar:'Security',
+    why:'Contractors or external users need access to your environment. Nerdio simplifies secure external access through time-limited AVD sessions with Entra ID B2B — providing contractors a managed desktop without touching your corporate network or requiring device enrollment.',
+    benefits:['Time-limited AVD sessions for external users','Entra ID B2B integration for identity management','No device enrollment or agent installation required','Data never leaves Azure — contractors access, not download'],
+    outcomes:['Contractor onboarding reduced from days to minutes','Complete audit trail of external user activity','Zero data leakage risk from contractor devices','Simplified offboarding — disable account, sessions end instantly'],
+    next:['Map contractor user groups and their access requirements','Assess Entra ID B2B configuration for external identities','Plan a pilot providing AVD access to one contractor group','Demo Nerdio\'s rapid provisioning for external users']
+  },
+  {
+    id:'gpu-specialist-workloads', trigger: i => /gpu|cad|graphic|specialist|engineer|developer|high.perf|power.user/i.test(i.name+i.detail+i.note+i.badges),
+    zones:['users','devices','apps'],
+    title:'GPU & Specialist Workload Delivery', impact:'medium', pillar:'Cost Optimisation',
+    why:'GPU or specialist workloads are in your environment. These high-performance requirements traditionally require expensive physical workstations. Nerdio enables GPU-accelerated Azure Virtual Desktop sessions — delivering CAD, engineering, and graphics workloads from the cloud with auto-scaling that right-sizes expensive GPU compute.',
+    benefits:['GPU-accelerated AVD sessions for specialist users','Auto-scaling right-sizes expensive GPU compute to demand','Eliminate physical workstation procurement and refresh','Users access GPU workloads from any device, any location'],
+    outcomes:['GPU workstation costs reduced by 40-60% with auto-scaling','Engineers productive from home on any device','Hardware refresh cycles eliminated for specialist users','Faster project onboarding — spin up GPU sessions on demand'],
+    next:['Profile GPU workload requirements and user counts','Model Azure GPU VM costs with Nerdio auto-scaling','Plan a pilot with one engineering team on GPU AVD','Demo Nerdio\'s auto-scaling with GPU-enabled host pools']
+  },
+  {
+    id:'msp-outsourced', trigger: i => /msp|outsourc|managed.service|provider/i.test(i.name+i.detail+i.note+i.badges),
+    zones:['management'],
+    title:'MSP & Multi-Tenant Management', impact:'low', pillar:'Visibility',
+    why:'Managed service providers are part of your operational model. Nerdio Manager for MSP (NMM) is purpose-built for multi-tenant management — enabling your MSP to manage your AVD, W365, and Intune environment more efficiently with RBAC, automation, and unified visibility across all tenants.',
+    benefits:['Multi-tenant management from a single dashboard','RBAC ensures appropriate access controls for MSP staff','Automation reduces MSP operational overhead','Unified reporting across all managed tenants'],
+    outcomes:['MSP delivery efficiency improved by 60-70%','Consistent management standards across all tenants','Faster incident resolution with unified visibility','Scalable operations without linear headcount growth'],
+    next:['Assess MSP\'s current management toolset and gaps','Introduce Nerdio NMM to your managed service provider','Plan RBAC structure for MSP vs internal IT access','Demo multi-tenant management capabilities']
+  },
+  {
+    id:'intune-endpoint', trigger: i => /intune|endpoint.manage|mem|device.manage/i.test(i.name+i.detail+i.note+i.badges),
+    zones:['management','devices','security'],
+    title:'Intune Management Enhancement', impact:'low', pillar:'Visibility',
+    why:'Intune is part of your endpoint management. Nerdio extends native Intune with powerful Insights — device compliance, patching status, application inventory, and warranty expiration — all without additional agents. Plus CIS Benchmark-aligned policy baselines ready to deploy.',
+    benefits:['Intune Insights dashboard with zero agent deployment','Device compliance and patching status at a glance','Warranty expiration tracking across all endpoints','CIS Benchmark-aligned policy baselines ready to deploy'],
+    outcomes:['Eliminate manual Intune log aggregation','Proactive patching and compliance enforcement','Unified view alongside AVD and W365 management','Reduced time-to-resolution for endpoint issues'],
+    next:['Demo Nerdio Intune Insights with your current device fleet','Review CIS baseline policies against current Intune config','Plan unified management strategy across all endpoint types','Assess policy drift across the current Intune environment']
+  },
+  {
+    id:'user-experience-poor', trigger: i => /slow|poor.*experience|complaint|latency|performance|login.*time|hang|crash|freeze|unreliable/i.test(i.name+i.detail+i.note+i.badges),
+    zones:['users','devices','connectivity','security'],
+    title:'User Experience Transformation', impact:'high', pillar:'Automation',
+    why:'User experience issues have been flagged. Poor desktop performance drives shadow IT adoption, productivity loss, and helpdesk burden. Nerdio\'s auto-scaling ensures resources match demand in real-time, auto-heal repairs broken sessions before users notice, and real-time monitoring provides proactive visibility into session quality.',
+    benefits:['Auto-scale compute to eliminate resource contention and slow logins','Auto-heal repairs broken session hosts without user intervention','Real-time session performance monitoring and alerting','Right-size VMs to match actual workload requirements'],
+    outcomes:['User satisfaction scores typically increase from 35 to 90+','Login times reduced from minutes to seconds','75% decrease in desktop-related support tickets','Proactive issue detection before users report problems'],
+    next:['Baseline current user experience metrics (login times, session quality)','Demo Nerdio auto-heal and auto-scaling in a live environment','Plan a pilot measuring before/after user satisfaction','Use the Discovery Engine to quantify productivity loss from poor UX']
+  },
+  {
+    id:'m365-microsoft-investment', trigger: i => /microsoft 365|m365|exchange|teams|sharepoint|office|entra|azure.ad/i.test(i.name+i.detail+i.note+i.badges),
+    zones:['apps','security','management'],
+    title:'Maximise Microsoft Investment with Nerdio', impact:'medium', pillar:'Cost Optimisation',
+    why:'Microsoft 365 and related services are in your environment. Many organisations only use a fraction of their licensing value. Nerdio unlocks the full potential of your M365, Azure, and Entra ID investment — adding enterprise-grade desktop management, automation, and cost governance on top of what Microsoft provides natively.',
+    benefits:['Deploy AVD/W365 using licenses you likely already own','Deep integration with Entra ID, Defender, and Intune','Unlock hidden value in existing Microsoft EA/CSP agreements','No third-party infrastructure — runs in your own Azure tenant'],
+    outcomes:['Better ROI on existing Microsoft licensing investment','Reduced need for third-party management add-ons','Unified experience across the entire Microsoft EUC stack','Accelerated time-to-value for new Microsoft services'],
+    next:['Review current Microsoft licensing for AVD/W365 entitlements','Assess which Microsoft services could be better leveraged','Demo how Nerdio extends native M365 and Azure capabilities','Engage Microsoft co-sell team for joint planning']
+  },
+  {
+    id:'disaster-recovery', trigger: i => /disaster|dr\b|business.continu|failover|resilien|backup|outage|downtime|uptime/i.test(i.name+i.detail+i.note+i.badges),
+    zones:['security','management','connectivity'],
+    title:'Desktop DR & Business Continuity', impact:'medium', pillar:'Automation',
+    why:'Disaster recovery or availability targets are in your requirements. Traditional desktop DR requires expensive standby infrastructure. Nerdio enables on-demand DR for virtual desktops — spin up AVD host pools in secondary Azure regions within minutes, with auto-scaling ensuring you only pay for capacity during an actual DR event.',
+    benefits:['On-demand DR host pools in secondary Azure regions','Pay only for DR capacity when activated — not on standby','Automated failover and failback procedures','Consistent user experience during DR activation'],
+    outcomes:['DR desktop costs reduced by 80%+ vs traditional standby','RTO reduced from hours/days to minutes','Elimination of physical DR site dependency for desktops','Regular DR testing without infrastructure costs'],
+    next:['Map current DR requirements for desktop workloads','Model DR costs with on-demand AVD vs standby infrastructure','Plan a DR test using Nerdio\'s secondary region deployment','Review Azure region pairs for optimal DR architecture']
+  },
+  {
+    id:'saas-cloud-apps', trigger: i => /saas|salesforce|servicenow|cloud.*app|web.*app/i.test(i.name+i.detail+i.note+i.badges),
+    zones:['apps','connectivity'],
+    title:'Optimise SaaS & Cloud App Delivery', impact:'low', pillar:'Cost Optimisation',
+    why:'SaaS applications are part of your environment. When users access SaaS apps through AVD, traffic routes directly to Azure — bypassing corporate WAN bottlenecks. Nerdio\'s proximity-based host pool placement ensures users connect to the nearest Azure region, minimising latency for cloud-first application delivery.',
+    benefits:['Direct Azure-to-SaaS connectivity bypasses WAN bottlenecks','Proximity-based host pool placement minimises latency','Consistent SaaS app performance regardless of user location','Reduce WAN bandwidth costs for cloud-first workloads'],
+    outcomes:['SaaS application response times improved by 30-50%','Reduced WAN bandwidth consumption and cost','Consistent application performance across all locations','Elimination of VPN-related SaaS performance issues'],
+    next:['Map SaaS application usage patterns by user group','Assess Azure region placement for optimal SaaS proximity','Plan AVD host pool placement aligned to SaaS provider regions','Demo SaaS performance through Azure-hosted AVD sessions']
+  },
+  {
+    id:'data-centre-on-prem', trigger: i => /data.cent|on.prem|rds|windows.server|server.room|rack/i.test(i.name+i.detail+i.note+i.badges),
+    zones:['locations','apps','management'],
+    title:'Data Centre Modernisation & Cloud Migration', impact:'medium', pillar:'Automation',
+    why:'On-premises data centre infrastructure is in your environment. Nerdio provides a clear migration path from on-prem RDS and legacy server workloads to cloud-native AVD and Intune management — reducing hardware dependency, eliminating refresh cycles, and modernising operational practices.',
+    benefits:['Migrate RDS workloads to AVD with guided deployment wizards','Replace on-prem SCCM with cloud-native Intune management','Eliminate hardware refresh cycles and capital expenditure','Cloud-native architecture in your own Azure subscription'],
+    outcomes:['Reduction in on-prem server footprint and maintenance','Lower infrastructure costs with OpEx cloud model','Improved DR posture through Azure-native architecture','Ceeva: tasks that took weeks now completed in hours'],
+    next:['Inventory on-prem workloads suitable for cloud migration','Assess RDS-to-AVD migration candidates and timeline','Plan hardware decommission schedule alongside cloud adoption','Use the Journey Models to map the modernisation path']
+  },
+  {
+    id:'executive-vip-users', trigger: i => /executive|vip|c.suite|board|senior|premium/i.test(i.name+i.detail+i.note+i.badges),
+    zones:['users'],
+    title:'Premium Executive Desktop Experience', impact:'low', pillar:'Automation',
+    why:'Executive or VIP users require a premium experience. Nerdio can provision dedicated personal host pools for VIP users — with guaranteed resources, priority auto-scaling, and enhanced monitoring. This ensures executives never experience resource contention or performance issues, with white-glove session management.',
+    benefits:['Dedicated personal host pools for VIP users','Guaranteed resources with priority auto-scaling','Enhanced monitoring and proactive alerting for executive sessions','Rapid provisioning of premium desktops for new executives'],
+    outcomes:['Zero resource contention for executive users','Premium performance with dedicated GPU/high-spec VMs','Reduced executive IT complaints and escalations','Consistent premium experience across all locations and devices'],
+    next:['Define VIP user groups and their performance requirements','Plan dedicated host pools with appropriate VM sizing','Configure priority auto-scaling for executive workloads','Demo premium desktop experience for executive stakeholders']
+  },
+  {
+    id:'app-packaging-complexity', trigger: i => /app.*packag|msix|deployment|software.*distribut|app.*delivery/i.test(i.name+i.detail+i.note+i.badges),
+    zones:['management','apps'],
+    title:'Automated App Packaging & Delivery', impact:'medium', pillar:'Automation',
+    why:'Application packaging and deployment is part of your operations. Nerdio simplifies this with golden image lifecycle management and MSIX app attach — automating the build, test, and deploy cycle across AVD environments. This eliminates manual packaging overhead and ensures consistent application delivery at scale.',
+    benefits:['Automated golden image build, test, and deploy cycle','MSIX app attach for clean application layering','Schedule-based or on-demand image updates across all hosts','Scripted Actions automate repetitive deployment tasks'],
+    outcomes:['Application update cycle reduced from weeks to hours','Consistent app delivery across all host pools','Elimination of manual image management overhead','Reduced application compatibility issues with testing automation'],
+    next:['Map current application packaging workflow and pain points','Demo Nerdio\'s golden image lifecycle and MSIX app attach','Plan a pilot automating app updates for one host pool','Assess MSIX readiness for key applications']
+  }
+];
+
+function showValue(){
+  const cust = document.getElementById('custName').value || 'Customer';
+  const allItems = items.filter(i => i.zone !== 'nerdio');
+  if(!allItems.length){
+    document.getElementById('valCard').innerHTML = `<div class="val-hero"><h2>No items to analyse</h2><p>Add components to the whiteboard zones first, then click Show Me Value to generate intelligent recommendations.</p></div>`;
+    document.getElementById('valOverlay').classList.add('visible');
+    return;
+  }
+
+  // Run rules engine
+  const matches = [];
+  VALUE_RULES.forEach(rule => {
+    const triggered = allItems.filter(i => rule.zones.includes(i.zone) && rule.trigger(i));
+    if(triggered.length > 0){
+      matches.push({...rule, triggeredBy: triggered, score: triggered.length * (rule.impact==='high'?3:rule.impact==='medium'?2:1)});
+    }
+  });
+  matches.sort((a,b) => b.score - a.score);
+
+  // Count per zone
+  const userCount = items.filter(i=>i.zone==='users').length;
+  const deviceCount = items.filter(i=>i.zone==='devices').length;
+  const locationCount = items.filter(i=>i.zone==='locations').length;
+  const appCount = items.filter(i=>i.zone==='apps').length;
+  const connectCount = items.filter(i=>i.zone==='connectivity').length;
+  const secCount = items.filter(i=>i.zone==='security').length;
+  const mgmtCount = items.filter(i=>i.zone==='management').length;
+
+  // Total quantity counts
+  const totalUsers = items.filter(i=>i.zone==='users').reduce((s,i)=>{const n=parseInt(i.qty);return s+(isNaN(n)?0:n)},0);
+  const totalDevices = items.filter(i=>i.zone==='devices').reduce((s,i)=>{const n=parseInt(i.qty);return s+(isNaN(n)?0:n)},0);
+  const totalLocs = items.filter(i=>i.zone==='locations').reduce((s,i)=>{const n=parseInt(i.qty);return s+(isNaN(n)?0:n)},0);
+
+  // Aggregate notes
+  const allNotes = allItems.filter(i=>i.note.trim()).map(i=>`${i.icon} ${i.name}: "${i.note}"`);
+
+  // Build recommendation cards
+  const buildRecCard = m => {
+    // Build "Your Environment" section showing exactly what triggered this
+    const zoneLabels = {users:'Users',devices:'Devices',locations:'Location',apps:'Apps/Data',connectivity:'Network',security:'Security',management:'Management',nerdio:'Nerdio'};
+    const envItems = m.triggeredBy.map(t => {
+      let detail = `<strong>${t.icon} ${t.name}</strong>`;
+      if(t.detail) detail += ` <span style="color:var(--gray-500)">— ${t.detail}</span>`;
+      if(t.qty) detail += ` <span style="color:var(--teal);font-weight:600">(${t.qty} users/devices)</span>`;
+      if(t.note) detail += `<div style="font-style:italic;color:var(--teal);margin-top:2px">"${t.note}"</div>`;
+      return `<div style="display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--gray-100)">
+        <span style="font-size:8px;font-weight:700;text-transform:uppercase;padding:2px 6px;border-radius:4px;background:rgba(30,157,184,0.08);color:var(--teal);white-space:nowrap;margin-top:2px">${zoneLabels[t.zone]||t.zone}</span>
+        <div style="font-size:11px;line-height:1.4">${detail}</div>
+      </div>`;
+    }).join('');
+
+    return `
+    <div class="val-rec ${m.impact}">
+      <div class="val-rec-head">
+        <div>
+          <div class="val-rec-title">${m.title}</div>
+          <div style="font-size:10px;color:var(--gray-500);margin-top:2px">Pillar: ${m.pillar} · Matched ${m.triggeredBy.length} item${m.triggeredBy.length>1?'s':''} in your environment</div>
+        </div>
+        <span class="val-rec-impact ${m.impact}">${m.impact} impact</span>
+      </div>
+      <div style="background:rgba(30,157,184,0.03);border:1px solid rgba(30,157,184,0.12);border-radius:8px;padding:10px 14px;margin-bottom:12px">
+        <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:6px">🔗 Linked to your environment</div>
+        ${envItems}
+      </div>
+      <div class="val-rec-why">${m.why}</div>
+      <div class="val-rec-grid">
+        <div class="val-rec-box"><h5 class="benefits">✦ Benefits</h5><ul>${m.benefits.map(b=>`<li>${b}</li>`).join('')}</ul></div>
+        <div class="val-rec-box"><h5 class="outcomes">📊 Expected Outcomes</h5><ul>${m.outcomes.map(o=>`<li>${o}</li>`).join('')}</ul></div>
+        <div class="val-rec-box"><h5 class="next">▶ What To Do Next</h5><ul>${m.next.map(n=>`<li>${n}</li>`).join('')}</ul></div>
+      </div>
+    </div>`;
+  };
+
+  const highRecs = matches.filter(m=>m.impact==='high');
+  const medRecs = matches.filter(m=>m.impact==='medium');
+  const lowRecs = matches.filter(m=>m.impact==='low');
+
+  let recsHtml = '';
+  if(matches.length){
+    if(highRecs.length) recsHtml += `<div class="val-section-title" style="color:var(--red);border-color:var(--red)">🔴 High Impact Opportunities</div>` + highRecs.map(buildRecCard).join('');
+    if(medRecs.length) recsHtml += `<div class="val-section-title" style="color:var(--orange);border-color:var(--orange)">🟠 Medium Impact Opportunities</div>` + medRecs.map(buildRecCard).join('');
+    if(lowRecs.length) recsHtml += `<div class="val-section-title" style="color:var(--teal);border-color:var(--teal)">🔵 Additional Opportunities</div>` + lowRecs.map(buildRecCard).join('');
+  } else {
+    recsHtml = '<div class="val-empty">No specific Nerdio recommendations matched your current board items. Try adding more detail — including notes on items — to generate targeted recommendations.</div>';
+  }
+
+  document.getElementById('valCard').innerHTML = `
+    <div class="val-hero">
+      <div class="val-hero-top">
+        <svg width="40" height="40" viewBox="0 0 80 50" fill="none"><circle cx="22" cy="25" r="12" stroke="#CDFF4E" stroke-width="3.5" fill="none"/><circle cx="58" cy="25" r="12" stroke="#CDFF4E" stroke-width="3.5" fill="none"/><path d="M34 25 Q40 18 46 25" fill="none" stroke="#CDFF4E" stroke-width="3" stroke-linecap="round"/></svg>
+        <div>
+          <h2>${cust} — User &amp; Ops Value Analysis</h2>
+          <p>Based on ${allItems.length} items across your whiteboard, we've identified ${matches.length} area${matches.length!==1?'s':''} where Nerdio can deliver measurable value to your user experience, operations, and cost posture.</p>
+        </div>
+      </div>
+      <div class="val-stats">
+        ${totalUsers?`<div class="val-stat"><span class="val-stat-num teal">${totalUsers.toLocaleString()}</span><div class="val-stat-label">Users</div></div>`:''}
+        ${totalDevices?`<div class="val-stat"><span class="val-stat-num purple">${totalDevices.toLocaleString()}</span><div class="val-stat-label">Devices</div></div>`:''}
+        ${totalLocs?`<div class="val-stat"><span class="val-stat-num blue">${totalLocs.toLocaleString()}</span><div class="val-stat-label">Locations</div></div>`:''}
+        <div class="val-stat"><span class="val-stat-num orange">${appCount+connectCount+secCount}</span><div class="val-stat-label">Services &amp; Policies</div></div>
+        <div class="val-stat"><span class="val-stat-num green">${matches.length}</span><div class="val-stat-label">Recommendations</div></div>
+      </div>
+    </div>
+    <div class="val-body">
+      ${recsHtml}
+      ${allNotes.length ? `<div class="val-section-title" style="color:var(--navy);border-color:var(--navy)">📝 Captured Notes</div><div style="background:var(--gray-50);border-radius:10px;padding:16px;font-size:12px;color:var(--navy);line-height:1.7">${allNotes.map(n=>`<div style="margin-bottom:6px">• ${n}</div>`).join('')}</div>` : ''}
+      <div style="text-align:center;margin-top:28px;padding-top:20px;border-top:1px solid var(--gray-200)">
+        <p style="font-size:12px;color:var(--gray-500);margin-bottom:12px">Ready to explore further? Continue the conversation with these tools.</p>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+          <a class="val-btn-cta" href="nerdio-whiteboard.html">🏢 Estate Whiteboard</a>
+          <a class="val-btn-cta" href="nerdio-roi-calculator.html">🧮 ROI Calculator</a>
+          <a class="val-btn-cta" href="nerdio-journeys.html">🗺️ Journey Models</a>
+          <a class="val-btn-cta" href="nerdio-discovery-engine.html">💬 Discovery Engine</a>
+          <a class="val-btn-cta" href="nerdio-battlecards.html">🎯 Battlecards</a>
+        </div>
+      </div>
+    </div>`;
+
+  document.getElementById('valOverlay').classList.add('visible');
+}
+function hideValue(){ document.getElementById('valOverlay').classList.remove('visible'); }
+
+// Canvas panning
+const canvasWrap=document.getElementById('canvasWrap');
+canvasWrap.addEventListener('mousedown',e=>{
+  if(e.button===1||(e.shiftKey&&e.button===0)){isPanning=true;panStartX=e.clientX-panX;panStartY=e.clientY-panY;canvasWrap.style.cursor='grabbing';e.preventDefault()}
+});
+document.addEventListener('mousemove',e=>{if(!isPanning)return;panX=e.clientX-panStartX;panY=e.clientY-panStartY;canvas.style.transform=`translate(${panX}px,${panY}px)`});
+document.addEventListener('mouseup',()=>{if(isPanning){isPanning=false;canvasWrap.style.cursor='default'}});
+
+loadSession();
+</script>
+</body>
+</html>

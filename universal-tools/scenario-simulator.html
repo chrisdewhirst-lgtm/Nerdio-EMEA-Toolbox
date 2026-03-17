@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Competitive Scenario Simulator | Nerdio Sales Command Centre</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #042838;
+            color: #FFFFFF;
+            line-height: 1.6;
+        }
+
+        .top-bar {
+            background-color: #042838;
+            border-bottom: 2px solid #1E9DB8;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nerdio-logo {
+            font-weight: 700;
+            font-size: 20px;
+            color: #1E9DB8;
+            letter-spacing: 1px;
+        }
+
+        .top-bar-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+
+        .home-btn {
+            background-color: #1E9DB8;
+            color: #FFFFFF;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .home-btn:hover {
+            background-color: #16708a;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 32px;
+            gap: 16px;
+        }
+
+        .step {
+            flex: 1;
+            padding: 16px;
+            background-color: #0a3a52;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #1E9DB8;
+            opacity: 0.5;
+            transition: all 0.3s;
+        }
+
+        .step.active {
+            opacity: 1;
+            background-color: #1E9DB8;
+            color: #042838;
+        }
+
+        .step-number {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .step-name {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .content-area {
+            background-color: #0a3a52;
+            border-radius: 12px;
+            padding: 32px;
+            min-height: 500px;
+        }
+
+        .competitor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .competitor-card {
+            background-color: #0f4a64;
+            border: 2px solid #1E9DB8;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .competitor-card:hover {
+            background-color: #1E9DB8;
+            color: #042838;
+            transform: translateY(-4px);
+        }
+
+        .competitor-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .competitor-name {
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+        }
+
+        .category-btn {
+            background-color: #0f4a64;
+            border: 2px solid #1E9DB8;
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: #FFFFFF;
+            text-align: center;
+        }
+
+        .category-btn:hover {
+            background-color: #1E9DB8;
+            color: #042838;
+        }
+
+        .scenario-detail {
+            display: none;
+        }
+
+        .scenario-detail.active {
+            display: block;
+        }
+
+        .objection-box {
+            background-color: #1E9DB8;
+            border-left: 4px solid #CDFF4E;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            color: #042838;
+        }
+
+        .objection-label {
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            opacity: 0.8;
+        }
+
+        .objection-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #042838;
+        }
+
+        .section {
+            margin-bottom: 28px;
+        }
+
+        .section-title {
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            color: #CDFF4E;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .section-content {
+            background-color: #0f4a64;
+            padding: 16px;
+            border-radius: 8px;
+            border-left: 3px solid #A795C7;
+        }
+
+        .rebuttal-structure {
+            display: grid;
+            gap: 16px;
+        }
+
+        .rebuttal-point {
+            background-color: #0a3a52;
+            padding: 12px;
+            border-radius: 6px;
+            border-left: 3px solid #1E9DB8;
+        }
+
+        .rebuttal-point-label {
+            font-weight: 700;
+            font-size: 12px;
+            color: #CDFF4E;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .rebuttal-point-text {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .killer-question {
+            background-color: #2d1b4e;
+            border: 2px dashed #A795C7;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .killer-q-label {
+            font-weight: 700;
+            font-size: 12px;
+            color: #A795C7;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .killer-q-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #CDFF4E;
+            line-height: 1.5;
+        }
+
+        .practice-area {
+            background-color: #0f4a64;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 24px;
+        }
+
+        .practice-textarea {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #1E9DB8;
+            border-radius: 6px;
+            background-color: #0a3a52;
+            color: #FFFFFF;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            min-height: 120px;
+            margin-bottom: 16px;
+            resize: vertical;
+        }
+
+        .practice-textarea::placeholder {
+            color: #6b8fa3;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background-color: #1E9DB8;
+            color: #FFFFFF;
+        }
+
+        .btn-primary:hover {
+            background-color: #16708a;
+        }
+
+        .btn-secondary {
+            background-color: #A795C7;
+            color: #FFFFFF;
+        }
+
+        .btn-secondary:hover {
+            background-color: #8d7ba8;
+        }
+
+        .btn-success {
+            background-color: #CDFF4E;
+            color: #042838;
+        }
+
+        .btn-success:hover {
+            background-color: #b8e633;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 12px;
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .star {
+            font-size: 24px;
+            cursor: pointer;
+            color: #6b8fa3;
+            transition: color 0.3s;
+        }
+
+        .star:hover,
+        .star.selected {
+            color: #CDFF4E;
+        }
+
+        .progress-counter {
+            background-color: #1E9DB8;
+            color: #042838;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .bookmark-btn {
+            background-color: transparent;
+            border: 2px solid #CDFF4E;
+            color: #CDFF4E;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .bookmark-btn:hover {
+            background-color: #CDFF4E;
+            color: #042838;
+        }
+
+        .bookmark-btn.bookmarked {
+            background-color: #CDFF4E;
+            color: #042838;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .back-btn,
+        .next-btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .back-btn {
+            background-color: #0f4a64;
+            color: #FFFFFF;
+            border: 2px solid #1E9DB8;
+        }
+
+        .back-btn:hover {
+            background-color: #1E9DB8;
+            color: #042838;
+        }
+
+        .next-btn {
+            background-color: #1E9DB8;
+            color: #FFFFFF;
+        }
+
+        .next-btn:hover {
+            background-color: #16708a;
+        }
+
+        .back-btn:disabled,
+        .next-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .evidence-item {
+            background-color: #0a3a52;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border-left: 3px solid #CDFF4E;
+        }
+
+        .evidence-stat {
+            font-weight: 700;
+            color: #CDFF4E;
+            font-size: 14px;
+        }
+
+        .evidence-desc {
+            font-size: 13px;
+            color: #d0d8e0;
+            margin-top: 4px;
+        }
+
+        .response-revealed {
+            background-color: #0f4a64;
+            border: 2px solid #CDFF4E;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .step-indicator {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .competitor-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+
+            .content-area {
+                padding: 20px;
+            }
+        }
+    </style>
+<style>
+/* === NERDIO BRAND BAR === */
+.nerdio-brand-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+  height: 48px;
+  background: linear-gradient(135deg, #0B1B3D 0%, #142952 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+.nerdio-brand-bar * { box-sizing: border-box; margin: 0; padding: 0; }
+.nerdio-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+.nerdio-brand-logo img {
+  height: 22px;
+  width: auto;
+}
+.nerdio-brand-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255,255,255,0.2);
+}
+.nerdio-brand-tool-name {
+  color: rgba(255,255,255,0.85);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+.nerdio-brand-home {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #00B4D8;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: rgba(0,180,216,0.1);
+  border: 1px solid rgba(0,180,216,0.2);
+  transition: all 0.2s;
+}
+.nerdio-brand-home:hover {
+  background: rgba(0,180,216,0.2);
+  border-color: rgba(0,180,216,0.4);
+  color: #FFFFFF;
+}
+.nerdio-brand-home svg {
+  width: 14px;
+  height: 14px;
+}
+.nerdio-brand-spacer {
+  height: 48px;
+  width: 100%;
+  flex-shrink: 0;
+}
+/* === END NERDIO BRAND BAR === */
+</style>
+</head>
+<body>
+
+<!-- NERDIO BRAND BAR -->
+<div class="nerdio-brand-bar">
+  <div class="nerdio-brand-logo">
+    <img src="data:image/png;base64,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" alt="Nerdio">
+    <div class="nerdio-brand-divider"></div>
+    <span class="nerdio-brand-tool-name">Scenario Simulator</span>
+  </div>
+  <a href="../EMEA-Nerdio-Toolbox.html" class="nerdio-brand-home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+    Toolbox Home
+  </a>
+</div>
+<div class="nerdio-brand-spacer"></div>
+<!-- END NERDIO BRAND BAR -->
+
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <div class="nerdio-logo">N</div>
+            <div class="top-bar-title">Competitive Scenario Simulator</div>
+        </div>
+        
+    </div>
+
+    <div class="container">
+        <div class="step-indicator">
+            <div class="step active" id="step-1">
+                <div class="step-number">1</div>
+                <div class="step-name">Select Competitor</div>
+            </div>
+            <div class="step" id="step-2">
+                <div class="step-number">2</div>
+                <div class="step-name">Select Category</div>
+            </div>
+            <div class="step" id="step-3">
+                <div class="step-number">3</div>
+                <div class="step-name">View Scenario</div>
+            </div>
+            <div class="step" id="step-4">
+                <div class="step-number">4</div>
+                <div class="step-name">Practice Mode</div>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <!-- Step 1: Select Competitor -->
+            <div id="step-1-content" class="content-block">
+                <h2 style="font-size: 24px; margin-bottom: 24px;">Choose Your Competitor</h2>
+                <div class="competitor-grid" id="competitorGrid"></div>
+            </div>
+
+            <!-- Step 2: Select Category -->
+            <div id="step-2-content" class="content-block hidden">
+                <h2 style="font-size: 24px; margin-bottom: 24px;">Select Objection Category</h2>
+                <div class="category-grid" id="categoryGrid"></div>
+            </div>
+
+            <!-- Step 3: Scenario Detail -->
+            <div id="step-3-content" class="content-block hidden">
+                <div class="progress-counter" id="progressCounter"></div>
+                <div class="action-buttons">
+                    <button class="bookmark-btn" id="bookmarkBtn" onclick="toggleBookmark()">☆ Bookmark This</button>
+                    <button class="btn btn-secondary btn-small" onclick="printScenario()">📄 Print</button>
+                    <button class="btn btn-secondary btn-small" onclick="randomScenario()">🎲 Surprise Me</button>
+                </div>
+
+                <div id="scenarioContent"></div>
+
+                <div class="nav-buttons">
+                    <button class="back-btn" onclick="goBack()">← Back</button>
+                    <button class="next-btn" onclick="goToPractice()">Practice Mode →</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Practice Mode -->
+            <div id="step-4-content" class="content-block hidden">
+                <h2 style="font-size: 20px; margin-bottom: 24px;">Practice Your Response</h2>
+
+                <div class="objection-box" id="practiceObjection">
+                    <div class="objection-label">Competitor Says:</div>
+                    <div class="objection-text"></div>
+                </div>
+
+                <div class="practice-area">
+                    <label style="font-weight: 600; display: block; margin-bottom: 12px;">How would you respond?</label>
+                    <textarea class="practice-textarea" id="practiceInput" placeholder="Type your response here..."></textarea>
+
+                    <button class="btn btn-primary" onclick="revealBestResponse()">Reveal Best Response</button>
+                </div>
+
+                <div id="bestResponseArea" class="hidden">
+                    <div class="response-revealed" id="bestResponseContent"></div>
+
+                    <div style="margin-top: 24px;">
+                        <label style="font-weight: 600; display: block; margin-bottom: 12px;">How well did you handle it?</label>
+                        <div class="star-rating" id="starRating"></div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="back-btn" onclick="goBack()">← Back</button>
+                    <button class="next-btn" onclick="nextScenario()">Next Scenario →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ES5 JavaScript - No arrow functions, const/let, template literals, or destructuring
+
+        var currentStep = 1;
+        var selectedCompetitor = null;
+        var selectedCategory = null;
+        var currentScenarioIndex = null;
+        var currentBookmarks = [];
+
+        var scenarioData = {
+            citrix: {
+                name: 'Citrix',
+                icon: '🖥️',
+                categories: {
+                    'Cost Objections': [
+                        {
+                            id: 'citrix-cost-1',
+                            objection: 'Citrix is already paid for, why switch?',
+                            whatTheySay: 'We\'ve been running Citrix for years. Our licenses are paid up, and switching would be expensive. Why would we move to Nerdio?',
+                            whyTheySay: 'They have sunk costs in Citrix and fear disruption to existing infrastructure. They don\'t want to retrain staff or deal with migration complexity.',
+                            acknowledge: 'You\'re absolutely right that Citrix has been a reliable platform for many years, and you\'ve made significant investments in your infrastructure.',
+                            reframe: 'But the real question isn\'t whether Citrix worked in the past—it\'s about your future costs and your path to the cloud. What are your annual Citrix renewal and support costs?',
+                            dataPoints: [
+                                'Customers typically save 40-60% on annual costs by moving from Citrix to Nerdio + AVD',
+                                'Average Citrix maintenance and licensing costs: £40-80K annually for mid-size organizations',
+                                'Nerdio + AVD costs: typically £25-40K annually for comparable capacity'
+                            ],
+                            nextStep: 'Let\'s run a quick TCO comparison. If you share your current Citrix contract details, I can show you real savings numbers for your environment.',
+                            killerQuestion: 'When was the last time Citrix added a feature that actually reduced your team\'s workload instead of just adding complexity?',
+                            evidence: [
+                                { stat: '40-60%', desc: 'Average cost savings moving from Citrix to Nerdio + AVD' },
+                                { stat: '90 days', desc: 'Typical migration timeline without disruption' },
+                                { stat: '200+ hours', desc: 'Average annual savings in management overhead' }
+                            ]
+                        },
+                        {
+                            id: 'citrix-cost-2',
+                            objection: 'VMware/Omnissa has us locked in with perpetual licenses',
+                            whatTheySay: 'We bought perpetual licenses from VMware years ago. Even though they\'re expensive to maintain, we\'re locked in. We can\'t justify buying new licenses for Nerdio when we still have these.',
+                            whyTheySay: 'They feel trapped by legacy licensing models. They don\'t understand that Omnissa subscriptions and ongoing support costs continue to grow.',
+                            acknowledge: 'Perpetual licenses feel like a good deal because you "own" them, but let\'s look at the total picture.',
+                            reframe: 'With Omnissa, you\'re paying annual support costs (typically 20-25% of license value), plus infrastructure costs. Those costs never stop. With Azure, you pay for what you use.',
+                            dataPoints: [
+                                'Perpetual licenses still require annual support: typically 20-25% of original license cost',
+                                'Infrastructure costs for on-prem Omnissa continue indefinitely',
+                                'Azure + Nerdio is 100% cloud-based, scaling down when you don\'t need capacity'
+                            ],
+                            nextStep: 'Let\'s do an apples-to-apples cost comparison: your current Omnissa total cost of ownership vs. cloud with Nerdio.',
+                            killerQuestion: 'What are you actually paying each year in Omnissa support costs, infrastructure, and administration? That\'s your real baseline.',
+                            evidence: [
+                                { stat: '20-25%', desc: 'Annual support cost as percentage of perpetual license value' },
+                                { stat: '3-5 years', desc: 'Payback period for cloud migration vs. on-prem maintenance' },
+                                { stat: '50%+', desc: 'Reduction in infrastructure capital expenditure' }
+                            ]
+                        }
+                    ],
+                    'Technical Objections': [
+                        {
+                            id: 'citrix-tech-1',
+                            objection: 'We need Citrix for app delivery, Nerdio can\'t do that',
+                            whatTheySay: 'Our team relies on Citrix app streaming and app delivery features. If we move to Nerdio + AVD, we lose that capability. Our users need to be able to access specific apps remotely.',
+                            whyTheySay: 'They\'ve built their architecture around Citrix\'s app delivery model and don\'t realize that AVD supports modern alternatives.',
+                            acknowledge: 'App delivery is critical, and Citrix has been good at that historically.',
+                            reframe: 'But Azure now has native solutions that are actually better: RemoteApp and managed application delivery through Microsoft app packaging and MSIX App Attach.',
+                            dataPoints: [
+                                'Microsoft RemoteApp integrates with Azure AD and modern security models',
+                                'MSIX App Attach provides faster performance than Citrix streaming for cloud environments',
+                                'Modern app delivery doesn\'t require the complexity Citrix adds'
+                            ],
+                            nextStep: 'Let me show you a side-by-side demo of how MSIX and RemoteApp work with Nerdio-managed AVD.',
+                            killerQuestion: 'Are your applications cloud-optimized, or are you trying to force legacy apps through a cloud infrastructure? That\'s the real problem Citrix can\'t solve either.',
+                            evidence: [
+                                { stat: '40%', desc: 'Faster app launch times with MSIX vs. traditional delivery' },
+                                { stat: '100%', desc: 'Compatibility with Azure AD and modern SSO' },
+                                { stat: '10 mins', desc: 'Average app publish time with MSIX vs. 30+ mins traditionally' }
+                            ]
+                        },
+                        {
+                            id: 'citrix-tech-2',
+                            objection: 'We need multi-session RDSH, personal desktops won\'t work for us',
+                            whatTheySay: 'We use Citrix for multi-session remote desktop hosting to serve many users from shared sessions. Personal desktops are too expensive and we can\'t support that model.',
+                            whyTheySay: 'They\'ve been sold on the cost efficiency of multi-session and don\'t understand that AVD has evolved to support both, or that personal desktops are now more cost-effective with pooling.',
+                            acknowledge: 'Multi-session hosting has been the most cost-efficient approach for years.',
+                            reframe: 'But multi-session comes with hidden costs: licensing complexity, support overhead, and reduced user experience. AVD with pooling gives you efficiency without the headaches.',
+                            dataPoints: [
+                                'Nerdio Autoscaling reduces desktop costs by 40-60% vs. always-on multi-session',
+                                'Pool-based personal desktops offer better performance than shared sessions',
+                                'User satisfaction with personal desktops is 35% higher than shared sessions'
+                            ],
+                            nextStep: 'We can design a hybrid model or pooled personal desktops that\'s actually cheaper than your current multi-session approach.',
+                            killerQuestion: 'When\'s the last time one of your users complained about too much performance or responsiveness with their remote session?',
+                            evidence: [
+                                { stat: '40-60%', desc: 'Cost reduction with Nerdio autoscaling vs. static capacity' },
+                                { stat: '35% higher', desc: 'User satisfaction with personal vs. multi-session desktops' },
+                                { stat: '2x', desc: 'Performance improvement with pooled personal desktops' }
+                            ]
+                        }
+                    ],
+                    'Organizational Objections': [
+                        {
+                            id: 'citrix-org-1',
+                            objection: 'Our team knows Citrix, why retrain?',
+                            whatTheySay: 'Our IT team has 10+ years of Citrix experience. We\'d have to retrain everyone on Nerdio and Azure, which takes time and money.',
+                            whyTheySay: 'They want to minimize disruption and rely on their existing expertise. They fear their hard-earned knowledge becomes obsolete.',
+                            acknowledge: 'Your team\'s Citrix expertise is valuable and has kept things running smoothly.',
+                            reframe: 'But Azure skills are becoming table stakes. Your team will need to learn these anyway. Nerdio makes that transition smooth and faster. Plus, Nerdio handles the complexity while your team focuses on management.',
+                            dataPoints: [
+                                'Average retraining time: 4-6 weeks, not months',
+                                'Nerdio reduces the learning curve by 50% compared to native Azure management',
+                                'Skills transfer: Citrix admin → Nerdio/Azure is straightforward'
+                            ],
+                            nextStep: 'We can provide hands-on training and Nerdio University certification for your team.',
+                            killerQuestion: 'In five years, which skill will matter more in the job market: Citrix administration or Azure cloud management?',
+                            evidence: [
+                                { stat: '4-6 weeks', desc: 'Average time to upskill team on Nerdio/Azure' },
+                                { stat: '50%', desc: 'Faster learning curve vs. native Azure' },
+                                { stat: '200%', desc: 'Increase in Azure job market demand vs. Citrix (2019-2024)' }
+                            ]
+                        }
+                    ]
+                }
+            },
+            omnissa: {
+                name: 'VMware/Omnissa Horizon',
+                icon: '☁️',
+                categories: {
+                    'Cost Objections': [
+                        {
+                            id: 'omnissa-cost-1',
+                            objection: 'VMware/Omnissa licensing is already committed',
+                            whatTheySay: 'We have multi-year VMware Omnissa licenses with maintenance agreements. We can\'t just walk away from that investment.',
+                            whyTheySay: 'They have budget already allocated and feel locked in. They don\'t see the total cost picture including infrastructure and management overhead.',
+                            acknowledge: 'Your existing commitments are real and we need to respect them.',
+                            reframe: 'But what\'s the total cost when you add infrastructure, licensing, and the management overhead? And what\'s your cloud strategy going forward?',
+                            dataPoints: [
+                                'On-premise Omnissa requires continued infrastructure investment: servers, storage, networking, power',
+                                'Average total cost of ownership for on-prem Omnissa: £60-100K annually',
+                                'Nerdio + AVD fully managed: £30-50K annually for equivalent capacity'
+                            ],
+                            nextStep: 'Let\'s map out when your current licenses expire and what your total cost would be if you renewed vs. moving to Nerdio.',
+                            killerQuestion: 'What\'s your actual infrastructure cost per user per month when you add servers, storage, cooling, and admin time to your licensing?',
+                            evidence: [
+                                { stat: '40-50%', desc: 'Cost reduction when on-prem Omnissa licenses expire' },
+                                { stat: '3 years', desc: 'Typical payback period for migration' },
+                                { stat: '£30-70K', desc: 'Average annual infrastructure costs eliminated' }
+                            ]
+                        }
+                    ],
+                    'Technical Objections': [
+                        {
+                            id: 'omnissa-tech-1',
+                            objection: 'Omnissa has better integration with our on-prem infrastructure',
+                            whatTheySay: 'We have deep Omnissa integration with vSphere, storage arrays, and networking. Moving to cloud-based Nerdio means losing that tight integration.',
+                            whyTheySay: 'They\'ve optimized their infrastructure for on-prem systems and fear cloud solutions can\'t match that tight coupling.',
+                            acknowledge: 'On-prem integration is tight when everything is in your data center.',
+                            reframe: 'But cloud-first integration is even tighter. Nerdio + AVD integrates directly with Azure resources, auto-scaling, and modern storage without the latency and complexity of on-prem architectures.',
+                            dataPoints: [
+                                'Cloud-native integration with Azure Scale Sets and auto-scaling',
+                                'Modern storage with Azure Files integration for user profiles and app data',
+                                'Simplified networking with Azure Virtual Networks'
+                            ],
+                            nextStep: 'Let me show you how a Nerdio-managed AVD environment connects to your existing on-prem systems for a hybrid approach.',
+                            killerQuestion: 'How much time does your team spend managing vSphere clusters, storage replication, and networking just to support your desktop environment?',
+                            evidence: [
+                                { stat: '30%', desc: 'Reduction in infrastructure management time' },
+                                { stat: '99.99%', desc: 'SLA with cloud-managed Nerdio infrastructure' },
+                                { stat: '10x', desc: 'Faster auto-scaling with cloud native vs. on-prem' }
+                            ]
+                        }
+                    ],
+                    'Organizational Objections': [
+                        {
+                            id: 'omnissa-org-1',
+                            objection: 'We\'re in the middle of a Horizon deployment',
+                            whatTheySay: 'We just invested in a Horizon refresh or are mid-way through a deployment. We can\'t abandon that now.',
+                            whyTheySay: 'They\'ve committed budget and resources to a Horizon initiative and changing course feels like admitting a mistake.',
+                            acknowledge: 'Your Horizon deployment is real work, and stopping now feels wasteful.',
+                            reframe: 'But you can run Horizon and Nerdio + AVD in parallel. Many customers do a gradual migration while existing Horizon investments continue to work.',
+                            dataPoints: [
+                                'Hybrid Horizon + AVD deployments are possible',
+                                'Gradual migration allows you to sunset Horizon at natural points',
+                                'No need to stop Horizon investments immediately—let them run while building AVD'
+                            ],
+                            nextStep: 'We can help you create a migration roadmap that gets value from your Horizon investment while moving toward a modern cloud platform.',
+                            killerQuestion: 'What would the value be if you could reduce your desktop infrastructure footprint by 50% while keeping Horizon running for critical workloads?',
+                            evidence: [
+                                { stat: '18-24 months', desc: 'Typical timeline for parallel running and migration' },
+                                { stat: '60%', desc: 'Reduction in overall desktop infrastructure costs' },
+                                { stat: '0', desc: 'Risk to existing Horizon workloads during migration' }
+                            ]
+                        }
+                    ]
+                }
+            },
+            azure_native: {
+                name: 'Native Azure (AVD)',
+                icon: '⚙️',
+                categories: {
+                    'Cost Objections': [
+                        {
+                            id: 'azure-cost-1',
+                            objection: 'Native Azure is free, why pay for Nerdio?',
+                            whatTheySay: 'AVD is included with our Microsoft licenses. Why do we need to pay for Nerdio management when Azure has native tools?',
+                            whyTheySay: 'They see AVD licenses as "free" without understanding the hidden management costs and operational complexity.',
+                            acknowledge: 'You\'re right that AVD is included with eligible Microsoft licenses. It\'s an excellent platform.',
+                            reframe: 'The real cost isn\'t the license—it\'s the management. Studies show 40+ hours per month of engineering time to manage AVD without tooling. That\'s £50-80K annually.',
+                            dataPoints: [
+                                'Average: 40-50 hours per month managing native AVD manually',
+                                'Cost per hour for Azure infrastructure engineer: £60-100',
+                                'Monthly management cost: £2,400-5,000 without Nerdio'
+                            ],
+                            nextStep: 'Let me show you a side-by-side of what native management looks like vs. Nerdio automation.',
+                            killerQuestion: 'How many hours per month does your team spend on AVD host pool management, image updates, auto-scaling scripts, and troubleshooting?',
+                            evidence: [
+                                { stat: '70%', desc: 'Reduction in management time with Nerdio' },
+                                { stat: '£50-80K', desc: 'Annual savings in admin labor costs' },
+                                { stat: '40+ hours', desc: 'Monthly management overhead for native AVD' }
+                            ]
+                        },
+                        {
+                            id: 'azure-cost-2',
+                            objection: 'We can build our own scripts and automation instead of paying for Nerdio',
+                            whatTheySay: 'Our developers can write PowerShell scripts to automate the management tasks. Why pay a vendor when we can build it ourselves?',
+                            whyTheySay: 'They want to save costs and believe internal development is cheaper. They underestimate the complexity and ongoing maintenance.',
+                            acknowledge: 'Internal development is appealing and you\'ve built tools before.',
+                            reframe: 'But building and maintaining AVD automation takes 6-12 months of continuous development. The complexity increases with every new feature. Nerdio costs less than the salary of one engineer.',
+                            dataPoints: [
+                                '6-12 months: time to build comparable automation capability',
+                                '1 full-time engineer: cost to maintain (£50-70K/year)',
+                                'Nerdio: £200-500/month includes updates, support, new features'
+                            ],
+                            nextStep: 'Let\'s calculate the real cost of internal development vs. Nerdio\'s subscription model.',
+                            killerQuestion: 'What\'s the opportunity cost of your developers spending 6+ months building automation instead of working on your strategic initiatives?',
+                            evidence: [
+                                { stat: '6-12 months', desc: 'Development time to reach feature parity' },
+                                { stat: '1 FTE', desc: 'Required for ongoing maintenance and updates' },
+                                { stat: '70%', desc: 'Cheaper than internal development over 3 years' }
+                            ]
+                        }
+                    ],
+                    'Technical Objections': [
+                        {
+                            id: 'azure-tech-1',
+                            objection: 'Azure is too complex, we need simpler tools',
+                            whatTheySay: 'Azure has too many moving parts. We don\'t want to train our team on Azure complexity. We need something simpler.',
+                            whyTheySay: 'They\'ve attempted native Azure management and found it overwhelming. They\'re discouraged by the learning curve.',
+                            acknowledge: 'Azure can feel overwhelming, and native Azure management is complex.',
+                            reframe: 'That\'s exactly why Nerdio exists. We simplify Azure complexity with an intuitive interface designed for desktop management, not cloud architecture.',
+                            dataPoints: [
+                                'Nerdio interface is 50% fewer clicks than native Azure Portal',
+                                'Pre-built templates and wizards reduce configuration time by 70%',
+                                'One-click deployment vs. multi-step Azure processes'
+                            ],
+                            nextStep: 'Let me show you the Nerdio interface. I think you\'ll be surprised how much simpler desktop management becomes.',
+                            killerQuestion: 'Do you want your team spending time learning Azure infrastructure, or managing desktops?',
+                            evidence: [
+                                { stat: '50% fewer', desc: 'Clicks to complete tasks vs. native Azure' },
+                                { stat: '70% faster', desc: 'Desktop configuration and deployment' },
+                                { stat: '80%', desc: 'Reduction in support tickets with simpler interface' }
+                            ]
+                        }
+                    ],
+                    'Organizational Objections': [
+                        {
+                            id: 'azure-org-1',
+                            objection: 'We don\'t have Azure skills in-house',
+                            whatTheySay: 'Our team doesn\'t know Azure. We\'d need to hire specialists or spend months training. That\'s expensive and risky.',
+                            whyTheySay: 'They fear the learning curve will delay projects and require hiring expensive cloud specialists.',
+                            acknowledge: 'Building Azure expertise is important and takes time.',
+                            reframe: 'Nerdio removes the need for deep Azure expertise. Your existing Windows admin skills transfer directly to Nerdio management.',
+                            dataPoints: [
+                                'Windows admin → Nerdio: 2-3 weeks to proficiency',
+                                'No Azure architecture knowledge needed',
+                                'Nerdio support team backs up your team'
+                            ],
+                            nextStep: 'We offer training and certification. Your team will be productive in Nerdio in weeks, not months.',
+                            killerQuestion: 'Would you prefer to invest in expensive Azure specialists, or move to a platform designed for your existing Windows expertise?',
+                            evidence: [
+                                { stat: '2-3 weeks', desc: 'Time to proficiency for Windows admins' },
+                                { stat: '£0', desc: 'Cost of expensive Azure specialists avoided' },
+                                { stat: '100%', desc: 'Transferability of existing Windows skills' }
+                            ]
+                        }
+                    ]
+                }
+            },
+            w365: {
+                name: 'Windows 365',
+                icon: '💻',
+                categories: {
+                    'Cost Objections': [
+                        {
+                            id: 'w365-cost-1',
+                            objection: 'Windows 365 is simpler and we don\'t need management tooling',
+                            whatTheySay: 'Windows 365 is a fully managed cloud PC service. We don\'t need Nerdio because Microsoft handles everything for us.',
+                            whyTheySay: 'They believe W365 is "set it and forget it" and don\'t realize the ongoing management and optimization needs.',
+                            acknowledge: 'Windows 365 abstracts away infrastructure, which is nice.',
+                            reframe: 'But W365 is per-user pricing with fixed SKUs. You can\'t optimize, auto-scale, or reduce costs based on usage patterns. Nerdio + AVD gives you flexibility AND simplicity.',
+                            dataPoints: [
+                                'W365: £20-40 per user monthly, regardless of usage',
+                                'AVD + Nerdio: £5-15 per user monthly with auto-scaling',
+                                'W365 has no cost optimization tools—you pay the same for minimal users'
+                            ],
+                            nextStep: 'Let\'s compare your total cost with W365 fixed pricing vs. Nerdio + AVD with dynamic scaling.',
+                            killerQuestion: 'Are you paying for cloud PCs that sit idle 12 hours a day, or do you want to scale costs to actual usage?',
+                            evidence: [
+                                { stat: '60-80%', desc: 'Cost savings with AVD + Nerdio vs. W365' },
+                                { stat: '4x', desc: 'Cost flexibility with AVD vs. fixed W365 pricing' },
+                                { stat: '0', desc: 'Optimization tools available in W365 for cost reduction' }
+                            ]
+                        },
+                        {
+                            id: 'w365-cost-2',
+                            objection: 'W365 includes Microsoft support, we don\'t need extra support from Nerdio',
+                            whatTheySay: 'Windows 365 comes with Microsoft support. We don\'t want to pay for dual support from Nerdio when Microsoft is already backing us.',
+                            whyTheySay: 'They value simplicity and single-vendor support. They don\'t understand the difference in support scope.',
+                            acknowledge: 'Microsoft support for W365 is valuable for infrastructure issues.',
+                            reframe: 'But Microsoft support covers the W365 platform. They don\'t support your organization\'s optimization, cost management, or custom configurations. That\'s where Nerdio\'s support adds real value.',
+                            dataPoints: [
+                                'W365 support: Platform issues only',
+                                'Nerdio support: Cost optimization, performance tuning, custom configurations',
+                                'Customers with Nerdio see 35% faster issue resolution'
+                            ],
+                            nextStep: 'Let\'s discuss your support needs. You probably need both platform support AND management expertise.',
+                            killerQuestion: 'When you have a performance problem or need to reduce costs, who will help you optimize—Microsoft or someone who specializes in this?',
+                            evidence: [
+                                { stat: '35% faster', desc: 'Issue resolution with specialized Nerdio support' },
+                                { stat: '24/7', desc: 'Nerdio specialized support availability' },
+                                { stat: '1 support partner', desc: 'Better than juggling Microsoft + vendor support' }
+                            ]
+                        }
+                    ],
+                    'Technical Objections': [
+                        {
+                            id: 'w365-tech-1',
+                            objection: 'W365 is Microsoft\'s official cloud PC, shouldn\'t we use that?',
+                            whatTheySay: 'Windows 365 is the official Microsoft cloud PC solution. Shouldn\'t we use the platform Microsoft recommends?',
+                            whyTheySay: 'They have trust in Microsoft\'s official offerings and see third-party solutions as secondary.',
+                            acknowledge: 'Microsoft W365 is an excellent platform from a reputable company.',
+                            reframe: 'But Microsoft also recommends AVD as the flexibility option. W365 and AVD are both Microsoft solutions. Nerdio IS the premium management layer for AVD—it\'s the recommended way to maximize AVD value.',
+                            dataPoints: [
+                                'Microsoft publicly recommends AVD for flexibility + Nerdio for management',
+                                'Nerdio is Microsoft verified and certified',
+                                'AVD + Nerdio is more flexible and cost-effective than W365'
+                            ],
+                            nextStep: 'Let me share Microsoft\'s own positioning of AVD vs. W365 and how Nerdio fits in.',
+                            killerQuestion: 'Do you want to be locked into fixed W365 pricing and single-user SKUs, or do you want Microsoft\'s more flexible solution with professional management?',
+                            evidence: [
+                                { stat: 'Microsoft verified', desc: 'Nerdio certification' },
+                                { stat: '70% more flexible', desc: 'AVD + Nerdio vs. W365 constraints' },
+                                { stat: '4x lower cost', desc: 'Typical pricing with AVD + Nerdio' }
+                            ]
+                        }
+                    ],
+                    'Organizational Objections': [
+                        {
+                            id: 'w365-org-1',
+                            objection: 'We already use W365, migration is too complex',
+                            whatTheySay: 'We\'ve already deployed Windows 365 across the company. Migrating everyone to AVD would be too disruptive.',
+                            whyTheySay: 'They\'ve invested in W365 and see migration as risky and expensive.',
+                            acknowledge: 'You\'ve made a commitment to W365 and moving feels disruptive.',
+                            reframe: 'But you don\'t have to move everyone at once. Hybrid W365 + Nerdio + AVD deployments work well. New users can go to AVD while existing W365 users continue.',
+                            dataPoints: [
+                                'Parallel W365 + AVD deployments are supported',
+                                'Gradual migration allows users to move when natural transition points occur',
+                                'No disruption to existing W365 users during migration'
+                            ],
+                            nextStep: 'Let\'s create a phased migration plan where you reduce costs with new AVD deployments while W365 users continue uninterrupted.',
+                            killerQuestion: 'What if you could deploy new cloud desktops at 70% lower cost while existing W365 users stay put?',
+                            evidence: [
+                                { stat: '0', desc: 'Disruption risk to existing W365 users' },
+                                { stat: '6-12 months', desc: 'Typical timeline for full migration' },
+                                { stat: '60-70%', desc: 'Cost savings on new deployments with AVD vs. W365' }
+                            ]
+                        }
+                    ]
+                }
+            }
+        };
+
+        function initializeApp() {
+            loadData();
+            renderCompetitors();
+        }
+
+        function loadData() {
+            var stored = localStorage.getItem('nerdio_v4_scenario_progress');
+            if (stored) {
+                try {
+                    currentBookmarks = JSON.parse(stored);
+                } catch (e) {
+                    currentBookmarks = [];
+                }
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('nerdio_v4_scenario_progress', JSON.stringify(currentBookmarks));
+        }
+
+        function renderCompetitors() {
+            var html = '';
+            var competitors = ['citrix', 'omnissa', 'azure_native', 'w365'];
+
+            for (var i = 0; i < competitors.length; i++) {
+                var key = competitors[i];
+                var comp = scenarioData[key];
+                html += '<div class="competitor-card" onclick="selectCompetitor(\'' + key + '\')">' +
+                    '<div class="competitor-icon">' + comp.icon + '</div>' +
+                    '<div class="competitor-name">' + comp.name + '</div>' +
+                    '</div>';
+            }
+
+            document.getElementById('competitorGrid').innerHTML = html;
+        }
+
+        function selectCompetitor(competitorKey) {
+            selectedCompetitor = competitorKey;
+            renderCategories();
+            goToStep(2);
+        }
+
+        function renderCategories() {
+            var competitor = scenarioData[selectedCompetitor];
+            var html = '';
+
+            for (var category in competitor.categories) {
+                html += '<button class="category-btn" onclick="selectCategory(\'' + category + '\')">' +
+                    category + '</button>';
+            }
+
+            document.getElementById('categoryGrid').innerHTML = html;
+        }
+
+        function selectCategory(categoryName) {
+            selectedCategory = categoryName;
+            var scenarios = scenarioData[selectedCompetitor].categories[selectedCategory];
+            currentScenarioIndex = 0;
+            renderScenario(scenarios[0]);
+            goToStep(3);
+        }
+
+        function renderScenario(scenario) {
+            var html = '<div class="objection-box">' +
+                '<div class="objection-label">The Objection:</div>' +
+                '<div class="objection-text">' + scenario.objection + '</div>' +
+                '</div>';
+
+            html += '<div class="section">' +
+                '<div class="section-title">What They Might Say</div>' +
+                '<div class="section-content">' + scenario.whatTheySay + '</div>' +
+                '</div>';
+
+            html += '<div class="section">' +
+                '<div class="section-title">Why They Say It</div>' +
+                '<div class="section-content">' + scenario.whyTheySay + '</div>' +
+                '</div>';
+
+            html += '<div class="section">' +
+                '<div class="section-title">Nerdio Response</div>' +
+                '<div class="section-content">' +
+                '<div class="rebuttal-structure">' +
+                '<div class="rebuttal-point">' +
+                '<div class="rebuttal-point-label">Acknowledge</div>' +
+                '<div class="rebuttal-point-text">' + scenario.acknowledge + '</div>' +
+                '</div>' +
+                '<div class="rebuttal-point">' +
+                '<div class="rebuttal-point-label">Reframe</div>' +
+                '<div class="rebuttal-point-text">' + scenario.reframe + '</div>' +
+                '</div>' +
+                '<div class="rebuttal-point">' +
+                '<div class="rebuttal-point-label">Key Data Points</div>' +
+                '<div class="rebuttal-point-text">' + scenario.dataPoints.join('<br>• ') + '</div>' +
+                '</div>' +
+                '<div class="rebuttal-point">' +
+                '<div class="rebuttal-point-label">Recommended Next Step</div>' +
+                '<div class="rebuttal-point-text">' + scenario.nextStep + '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+
+            html += '<div class="killer-question">' +
+                '<div class="killer-q-label">Killer Question</div>' +
+                '<div class="killer-q-text">' + scenario.killerQuestion + '</div>' +
+                '</div>';
+
+            html += '<div class="section">' +
+                '<div class="section-title">Supporting Evidence</div>' +
+                '<div class="section-content">';
+
+            for (var i = 0; i < scenario.evidence.length; i++) {
+                html += '<div class="evidence-item">' +
+                    '<div class="evidence-stat">' + scenario.evidence[i].stat + '</div>' +
+                    '<div class="evidence-desc">' + scenario.evidence[i].desc + '</div>' +
+                    '</div>';
+            }
+
+            html += '</div></div>';
+
+            document.getElementById('scenarioContent').innerHTML = html;
+            updateProgressCounter();
+            updateBookmarkButton();
+        }
+
+        function updateProgressCounter() {
+            var scenarios = scenarioData[selectedCompetitor].categories[selectedCategory];
+            var total = getAllScenariosCount();
+            var current = currentScenarioIndex + 1;
+            document.getElementById('progressCounter').innerHTML = 'Practiced ' + current + ' of ' + total + ' scenarios';
+        }
+
+        function getAllScenariosCount() {
+            var count = 0;
+            var competitor = scenarioData[selectedCompetitor];
+            for (var category in competitor.categories) {
+                count += competitor.categories[category].length;
+            }
+            return count;
+        }
+
+        function goToPractice() {
+            var scenarios = scenarioData[selectedCompetitor].categories[selectedCategory];
+            var scenario = scenarios[currentScenarioIndex];
+
+            document.querySelector('#practiceObjection .objection-text').innerHTML = scenario.objection;
+            document.getElementById('practiceInput').value = '';
+            document.getElementById('bestResponseArea').classList.add('hidden');
+
+            goToStep(4);
+        }
+
+        function revealBestResponse() {
+            var scenarios = scenarioData[selectedCompetitor].categories[selectedCategory];
+            var scenario = scenarios[currentScenarioIndex];
+
+            var html = '<div class="section-title" style="margin-bottom: 12px;">Best Response Structure</div>';
+            html += '<div class="rebuttal-structure">' +
+                '<div class="rebuttal-point">' +
+                '<div class="rebuttal-point-label">Acknowledge</div>' +
+                '<div class="rebuttal-point-text">' + scenario.acknowledge + '</div>' +
+                '</div>' +
+                '<div class="rebuttal-point">' +
+                '<div class="rebuttal-point-label">Reframe</div>' +
+                '<div class="rebuttal-point-text">' + scenario.reframe + '</div>' +
+                '</div>' +
+                '<div class="rebuttal-point">' +
+                '<div class="rebuttal-point-label">Killer Question</div>' +
+                '<div class="rebuttal-point-text">' + scenario.killerQuestion + '</div>' +
+                '</div>' +
+                '</div>';
+
+            document.getElementById('bestResponseContent').innerHTML = html;
+            document.getElementById('bestResponseArea').classList.remove('hidden');
+
+            renderStarRating();
+        }
+
+        function renderStarRating() {
+            var html = '';
+            for (var i = 1; i <= 5; i++) {
+                html += '<span class="star" onclick="ratePractice(' + i + ')">★</span>';
+            }
+            document.getElementById('starRating').innerHTML = html;
+        }
+
+        function ratePractice(rating) {
+            var stars = document.querySelectorAll('.star');
+            for (var i = 0; i < stars.length; i++) {
+                if (i < rating) {
+                    stars[i].classList.add('selected');
+                } else {
+                    stars[i].classList.remove('selected');
+                }
+            }
+        }
+
+        function nextScenario() {
+            var allScenarios = getAllScenarios();
+            currentScenarioIndex = currentScenarioIndex + 1;
+
+            if (currentScenarioIndex >= allScenarios.length) {
+                currentScenarioIndex = 0;
+            }
+
+            var scenarioKey = allScenarios[currentScenarioIndex];
+            var scenario = getScenarioById(scenarioKey);
+
+            renderScenario(scenario);
+            goToStep(3);
+        }
+
+        function randomScenario() {
+            var allScenarios = getAllScenarios();
+            currentScenarioIndex = Math.floor(Math.random() * allScenarios.length);
+            var scenarioKey = allScenarios[currentScenarioIndex];
+            var scenario = getScenarioById(scenarioKey);
+
+            renderScenario(scenario);
+        }
+
+        function getAllScenarios() {
+            var scenarios = [];
+            var competitor = scenarioData[selectedCompetitor];
+            for (var category in competitor.categories) {
+                var cats = competitor.categories[category];
+                for (var i = 0; i < cats.length; i++) {
+                    scenarios.push(cats[i].id);
+                }
+            }
+            return scenarios;
+        }
+
+        function getScenarioById(id) {
+            var competitor = scenarioData[selectedCompetitor];
+            for (var category in competitor.categories) {
+                var cats = competitor.categories[category];
+                for (var i = 0; i < cats.length; i++) {
+                    if (cats[i].id === id) {
+                        return cats[i];
+                    }
+                }
+            }
+            return null;
+        }
+
+        function toggleBookmark() {
+            var scenarios = scenarioData[selectedCompetitor].categories[selectedCategory];
+            var scenario = scenarios[currentScenarioIndex];
+            var index = currentBookmarks.indexOf(scenario.id);
+
+            if (index > -1) {
+                currentBookmarks.splice(index, 1);
+            } else {
+                currentBookmarks.push(scenario.id);
+            }
+
+            saveData();
+            updateBookmarkButton();
+        }
+
+        function updateBookmarkButton() {
+            var scenarios = scenarioData[selectedCompetitor].categories[selectedCategory];
+            var scenario = scenarios[currentScenarioIndex];
+            var btn = document.getElementById('bookmarkBtn');
+
+            if (currentBookmarks.indexOf(scenario.id) > -1) {
+                btn.classList.add('bookmarked');
+                btn.innerHTML = '★ Bookmarked';
+            } else {
+                btn.classList.remove('bookmarked');
+                btn.innerHTML = '☆ Bookmark This';
+            }
+        }
+
+        function printScenario() {
+            var scenarios = scenarioData[selectedCompetitor].categories[selectedCategory];
+            var scenario = scenarios[currentScenarioIndex];
+            var text = 'SCENARIO: ' + scenario.objection + '\n\n' +
+                'WHAT THEY SAY:\n' + scenario.whatTheySay + '\n\n' +
+                'WHY THEY SAY IT:\n' + scenario.whyTheySay + '\n\n' +
+                'ACKNOWLEDGE:\n' + scenario.acknowledge + '\n\n' +
+                'REFRAME:\n' + scenario.reframe + '\n\n' +
+                'KILLER QUESTION:\n' + scenario.killerQuestion;
+
+            var element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('download', 'scenario.txt');
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+
+        function goToStep(step) {
+            currentStep = step;
+            updateStepIndicators();
+            updateContentArea();
+        }
+
+        function goBack() {
+            if (currentStep > 1) {
+                currentStep = currentStep - 1;
+                updateStepIndicators();
+                updateContentArea();
+            }
+        }
+
+        function updateStepIndicators() {
+            var steps = document.querySelectorAll('.step');
+            for (var i = 0; i < steps.length; i++) {
+                steps[i].classList.remove('active');
+            }
+            document.getElementById('step-' + currentStep).classList.add('active');
+        }
+
+        function updateContentArea() {
+            var blocks = document.querySelectorAll('.content-block');
+            for (var i = 0; i < blocks.length; i++) {
+                blocks[i].classList.add('hidden');
+            }
+            document.getElementById('step-' + currentStep + '-content').classList.remove('hidden');
+        }
+
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+
+        // Initialize on page load
+        window.onload = function() {
+            initializeApp();
+        };
+    </script>
+</body>
+</html>

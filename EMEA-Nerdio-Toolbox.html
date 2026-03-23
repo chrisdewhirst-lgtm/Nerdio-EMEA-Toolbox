@@ -225,6 +225,39 @@
     background: rgba(0,196,140,0.12);
     color: #059669;
   }
+  .badge-essential {
+    background: rgba(0,196,140,0.2);
+    color: #047857;
+    font-size: 0.7rem;
+  }
+  .section-safety {
+    border: 2px solid var(--green);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, rgba(0,196,140,0.04) 0%, rgba(0,180,216,0.04) 100%);
+    position: relative;
+  }
+  .section-safety::before {
+    content: 'START HERE';
+    position: absolute;
+    top: -11px;
+    left: 24px;
+    background: var(--green);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    padding: 3px 12px;
+    border-radius: 4px;
+  }
+  .section-safety .card {
+    border-color: var(--green);
+    border-width: 2px;
+  }
+  .section-safety .card:hover {
+    box-shadow: 0 4px 16px rgba(0,196,140,0.2);
+  }
   .badge-template {
     background: rgba(255,140,66,0.12);
     color: #D97706;
@@ -477,7 +510,7 @@
     <p>Ready-to-use tools, templates, and frameworks for the EMEA sales team. Open HTML files directly in your browser. Use MD templates with Claude to build personalised versions.</p>
     <div class="hero-stats">
       <div class="stat">
-        <div class="stat-number">22</div>
+        <div class="stat-number">23</div>
         <div class="stat-label">Ready-to-Use Tools</div>
       </div>
       <div class="stat">
@@ -532,6 +565,26 @@
       <div class="step">
         <div class="step-num">4</div>
         <div class="step-text"><strong>Purple ".skill" files</strong> install into Claude Desktop/Cowork to give you an always-on Nerdio AI assistant.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: DATA SAFETY & PROCESS -->
+  <div class="section section-safety visible" data-section="ready" data-also="all">
+    <div class="section-header">
+      <div class="section-icon" style="background:var(--green);">&#128274;</div>
+      <div class="section-title">Data Safety & Process</div>
+      <span class="section-count">Must-use before AI workflows</span>
+    </div>
+    <div class="cards">
+      <div class="card" data-tags="pseudonym anonymise data safety gdpr privacy ai compliance">
+        <span class="card-badge badge-essential">&#9733; Essential Tool</span>
+        <div class="card-title">Pseudonym Manager</div>
+        <div class="card-desc">Protect customer data when using AI tools. Auto-generates pseudonyms for companies, contacts, phone numbers, and deal values. Includes a one-click text pseudonymiser, reverse de-pseudonymiser, deal-specific workspaces, and a built-in methodology guide covering the full 7-step workflow. Pre-loaded with a worked example so you can see exactly how it works.</div>
+        <div class="card-tags"><span class="tag">Data Safety</span><span class="tag">Pseudonyms</span><span class="tag">AI Compliance</span><span class="tag">GDPR</span></div>
+        <div class="card-actions">
+          <a class="card-action" href="universal-tools/pseudonym-manager.html">Open Tool &#8594;</a>
+        </div>
       </div>
     </div>
   </div>

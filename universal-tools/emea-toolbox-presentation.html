@@ -4,49 +4,49 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EMEA Nerdio Toolbox — What We Built & How to Use It</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --navy: #0B1B3D;
-  --navy-deep: #060e1f;
-  --teal: #00B4D8;
-  --green: #00C48C;
+  --navy: #042838;
+  --navy-deep: #021820;
+  --teal: #1E9DB8;
+  --green: #CDFF4E;
   --lime: #CDFF4E;
   --purple: #A795C7;
   --white: #fff;
   --amber: #FFB347;
   --red: #FF6B6B;
-  --dim: rgba(255,255,255,0.45);
+  --dim: rgba(255,255,255,0.50);
   --card-bg: rgba(255,255,255,0.04);
   --card-border: rgba(255,255,255,0.09);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-  background: #010810; font-family: 'DM Sans', sans-serif;
+  background: var(--navy-deep); font-family: 'Poppins', sans-serif;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   min-height: 100vh; overflow: hidden;
 }
 
 /* ── PROGRESS BAR ── */
-.progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: linear-gradient(90deg, var(--teal), var(--green)); transition: width 0.6s cubic-bezier(0.4,0,0.2,1); z-index: 300; box-shadow: 0 0 10px rgba(0,196,140,0.6); }
+.progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: linear-gradient(90deg, var(--teal), var(--green)); transition: width 0.6s cubic-bezier(0.4,0,0.2,1); z-index: 300; box-shadow: 0 0 10px rgba(30,157,184,0.6); }
 #bgCanvas { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
 .scanlines { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px); pointer-events: none; z-index: 1; border-radius: 16px; }
 
 /* ── NAV ── */
-.nav { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 14px; background: rgba(11,27,61,0.95); border: 1px solid rgba(0,180,216,0.25); border-radius: 100px; padding: 10px 22px; z-index: 500; backdrop-filter: blur(16px); box-shadow: 0 8px 32px rgba(0,0,0,0.5); animation: navIn 0.6s 0.3s cubic-bezier(0.22,1,0.36,1) both; }
+.nav { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 14px; background: rgba(4,40,56,0.95); border: 1px solid rgba(30,157,184,0.25); border-radius: 100px; padding: 10px 22px; z-index: 500; backdrop-filter: blur(16px); box-shadow: 0 8px 32px rgba(0,0,0,0.5); animation: navIn 0.6s 0.3s cubic-bezier(0.22,1,0.36,1) both; }
 @keyframes navIn { from{opacity:0;transform:translateX(-50%) translateY(20px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
 .nav button { background: none; border: none; color: var(--teal); font-size: 18px; cursor: pointer; padding: 4px 10px; border-radius: 8px; transition: background 0.2s, transform 0.15s; font-family: 'Space Mono', monospace; }
-.nav button:hover { background: rgba(0,180,216,0.12); transform: scale(1.15); }
+.nav button:hover { background: rgba(30,157,184,0.12); transform: scale(1.15); }
 .nav .counter { color: var(--white); font-size: 11px; font-family: 'Space Mono', monospace; min-width: 48px; text-align: center; letter-spacing: 0.08em; }
 .dot-row { display: flex; gap: 7px; align-items: center; }
 .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.2); cursor: pointer; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); }
-.dot.active { background: var(--green); transform: scale(1.5); box-shadow: 0 0 8px rgba(0,196,140,0.7); }
+.dot.active { background: var(--teal); transform: scale(1.5); box-shadow: 0 0 8px rgba(30,157,184,0.7); }
 .key-hint { position: fixed; top: 18px; right: 22px; font-family: 'Space Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.18); letter-spacing: 0.06em; z-index: 100; animation: fadeInHint 1s 2.5s both; }
 @keyframes fadeInHint { from{opacity:0} to{opacity:1} }
 
 /* ── DECK & SLIDE ── */
-.deck { width: 960px; max-width: 98vw; position: relative; z-index: 10; perspective: 1200px; }
+.deck { width: 960px; max-width: 98vw; position: relative; z-index: 10; perspective: 1200px; height: 540px; }
 .slide { width: 960px; height: 540px; max-width: 100%; position: absolute; top: 0; left: 0; overflow: visible; border-radius: 16px; box-shadow: 0 40px 100px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.06); opacity: 0; pointer-events: none; will-change: transform, opacity; }
 .slide-inner { position: absolute; inset: 0; border-radius: 16px; overflow: hidden; display: flex; }
 .slide.active { opacity: 1; pointer-events: auto; }
@@ -65,14 +65,14 @@ body {
 [data-anim-right]{opacity:0;transform:translateX(24px);transition:opacity 0.55s cubic-bezier(0.22,1,0.36,1),transform 0.55s cubic-bezier(0.22,1,0.36,1)}
 [data-anim-scale]{opacity:0;transform:scale(0.88);transition:opacity 0.5s cubic-bezier(0.22,1,0.36,1),transform 0.5s cubic-bezier(0.34,1.56,0.64,1)}
 .anim-in{opacity:1!important;transform:none!important}
-.slide-badge{position:absolute;top:22px;left:28px;font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.28);letter-spacing:0.12em;z-index:50}
-.slide-num{position:absolute;bottom:22px;right:28px;font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.28);letter-spacing:0.1em;z-index:50}
-.prompt{font-family:'Space Mono',monospace;font-size:11px;color:var(--green);letter-spacing:0.05em;margin-bottom:10px;opacity:0.8}
+.slide-badge{position:absolute;bottom:22px;left:28px;font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.22);letter-spacing:0.12em;z-index:50}
+.slide-num{position:absolute;bottom:22px;right:28px;font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.22);letter-spacing:0.1em;z-index:50}
+.prompt{font-family:'Space Mono',monospace;font-size:11px;color:var(--teal);letter-spacing:0.05em;margin-bottom:10px;opacity:0.8}
 
-/* ── TOOLTIP SYSTEM ── */
+/* ── NERDIO LOGO WATERMARK on non-title slides ── */
 .has-tip{position:relative;cursor:default}
-.tip-box{position:absolute;width:220px;background:rgba(8,20,40,0.97);border:1px solid rgba(0,180,216,0.4);border-radius:10px;padding:14px 16px;font-family:'DM Sans',sans-serif;font-size:11.5px;color:rgba(255,255,255,0.8);line-height:1.55;z-index:1000;pointer-events:none;box-shadow:0 16px 40px rgba(0,0,0,0.6),0 0 20px rgba(0,180,216,0.08);backdrop-filter:blur(12px);opacity:0;transform:translateY(6px) scale(0.97);transition:opacity 0.22s cubic-bezier(0.22,1,0.36,1),transform 0.22s cubic-bezier(0.22,1,0.36,1)}
-.tip-box::before{content:'';position:absolute;width:8px;height:8px;background:rgba(8,20,40,0.97);border-left:1px solid rgba(0,180,216,0.4);border-top:1px solid rgba(0,180,216,0.4);transform:rotate(45deg)}
+.tip-box{position:absolute;width:220px;background:rgba(4,20,36,0.97);border:1px solid rgba(30,157,184,0.4);border-radius:10px;padding:14px 16px;font-family:'Poppins',sans-serif;font-size:11.5px;color:rgba(255,255,255,0.8);line-height:1.55;z-index:1000;pointer-events:none;box-shadow:0 16px 40px rgba(0,0,0,0.6),0 0 20px rgba(30,157,184,0.08);backdrop-filter:blur(12px);opacity:0;transform:translateY(6px) scale(0.97);transition:opacity 0.22s cubic-bezier(0.22,1,0.36,1),transform 0.22s cubic-bezier(0.22,1,0.36,1)}
+.tip-box::before{content:'';position:absolute;width:8px;height:8px;background:rgba(4,20,36,0.97);border-left:1px solid rgba(30,157,184,0.4);border-top:1px solid rgba(30,157,184,0.4);transform:rotate(45deg)}
 .tip-box.tip-above{bottom:calc(100% + 12px);left:50%;transform:translateX(-50%) translateY(-4px) scale(0.97)}
 .tip-box.tip-above::before{bottom:-5px;left:50%;margin-left:-4px;transform:rotate(225deg)}
 .tip-box.tip-below{top:calc(100% + 12px);left:50%;transform:translateX(-50%) translateY(4px) scale(0.97)}
@@ -80,7 +80,7 @@ body {
 .tip-box.tip-left{right:calc(100% + 12px);top:50%;transform:translateY(-50%) translateX(-4px) scale(0.97)}
 .tip-box.tip-left::before{right:-5px;top:50%;margin-top:-4px;transform:rotate(135deg)}
 .tip-box.tip-right{left:calc(100% + 12px);top:50%;transform:translateY(-50%) translateX(4px) scale(0.97)}
-.tip-box.tip-right::before{left:-5px;top:50%;margin-top:-4px;transform:rotate(315deg)}
+.tip-box.tip-right::before{left:-5px;top:50%;margin-top:-4px;transform:rotate(325deg)}
 .has-tip:hover .tip-box.tip-above{transform:translateX(-50%) translateY(0) scale(1);opacity:1}
 .has-tip:hover .tip-box.tip-below{transform:translateX(-50%) translateY(0) scale(1);opacity:1}
 .has-tip:hover .tip-box.tip-left{transform:translateY(-50%) translateX(0) scale(1);opacity:1}
@@ -88,30 +88,29 @@ body {
 .tip-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px;display:block}
 .tip-box strong{color:var(--green);font-weight:600}
 .tip-box em{color:var(--amber);font-style:normal}
-
 /* ── SHARED ── */
 .tag-pill{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.08em;padding:6px 14px;border-radius:100px;text-transform:uppercase;display:inline-block;transition:transform 0.2s,box-shadow 0.2s}
 .tag-pill:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,0.35)}
-.tag-pill.green{background:rgba(0,196,140,0.12);color:var(--green);border:1px solid rgba(0,196,140,0.3)}
-.tag-pill.teal{background:rgba(0,180,216,0.1);color:var(--teal);border:1px solid rgba(0,180,216,0.25)}
+.tag-pill.green{background:rgba(205,255,78,0.1);color:var(--green);border:1px solid rgba(205,255,78,0.3)}
+.tag-pill.teal{background:rgba(30,157,184,0.1);color:var(--teal);border:1px solid rgba(30,157,184,0.25)}
 .tag-pill.dim{background:rgba(255,255,255,0.05);color:var(--dim);border:1px solid rgba(255,255,255,0.1)}
 .tag-pill.amber{background:rgba(255,179,71,0.1);color:var(--amber);border:1px solid rgba(255,179,71,0.25)}
 .tag-pill.purple{background:rgba(167,149,199,0.1);color:var(--purple);border:1px solid rgba(167,149,199,0.25)}
 
 /* ═══ S1 — TITLE ═══ */
-.s1 .slide-inner{background:var(--navy);flex-direction:column;justify-content:center;align-items:flex-start;padding:64px 72px}
-.s1 .bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,180,216,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,180,216,0.06) 1px,transparent 1px);background-size:40px 40px;z-index:0;animation:gridPan 20s linear infinite}
+.s1 .slide-inner{background:var(--navy);flex-direction:column;justify-content:center;align-items:flex-start;padding:44px 60px}
+.s1 .bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(30,157,184,0.07) 1px,transparent 1px),linear-gradient(90deg,rgba(30,157,184,0.07) 1px,transparent 1px);background-size:40px 40px;z-index:0;animation:gridPan 20s linear infinite}
 @keyframes gridPan{from{background-position:0 0}to{background-position:40px 40px}}
-.s1 .glow{position:absolute;right:60px;top:50%;transform:translateY(-50%);width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(0,196,140,0.09) 0%,transparent 70%);z-index:0;animation:glowPulse 4s ease-in-out infinite}
+.s1 .glow{position:absolute;right:60px;top:50%;transform:translateY(-50%);width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(205,255,78,0.07) 0%,transparent 70%);z-index:0;animation:glowPulse 4s ease-in-out infinite}
 @keyframes glowPulse{0%,100%{transform:translateY(-50%) scale(1);opacity:0.8}50%{transform:translateY(-50%) scale(1.08);opacity:1}}
 .s1 .slide-inner>*:not(.slide-badge):not(.slide-num):not(.scanlines):not(.bg-grid):not(.glow):not(.terminal){position:relative;z-index:5}
-.s1 .kicker{font-family:'Space Mono',monospace;font-size:10px;color:var(--teal);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:22px;display:flex;align-items:center;gap:10px}
+.s1 .kicker{font-family:'Space Mono',monospace;font-size:9.5px;color:var(--teal);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px}
 .s1 .kicker::before{content:'> ';color:var(--green)}
-.s1 h1{font-size:48px;font-weight:700;color:var(--white);line-height:1.05;margin-bottom:22px;max-width:560px}
+.s1 h1{font-size:40px;font-weight:700;color:var(--white);line-height:1.05;margin-bottom:16px;max-width:520px}
 .s1 h1 em{font-style:normal;color:var(--green)}
-.s1 .sub{font-size:14.5px;color:var(--dim);max-width:460px;line-height:1.65;margin-bottom:32px}
+.s1 .sub{font-size:13px;color:var(--dim);max-width:440px;line-height:1.6;margin-bottom:24px}
 .s1 .tags{display:flex;gap:10px;flex-wrap:wrap}
-.s1 .terminal{position:absolute;right:56px;top:50%;transform:translateY(-50%);width:280px;background:rgba(0,0,0,0.55);border:1px solid rgba(0,180,216,0.25);border-radius:10px;padding:18px 20px;font-family:'Space Mono',monospace;font-size:10.5px;line-height:1.9;z-index:10;box-shadow:0 0 30px rgba(0,180,216,0.1)}
+.s1 .terminal{position:absolute;right:48px;top:50%;transform:translateY(-50%);width:260px;background:rgba(0,0,0,0.55);border:1px solid rgba(30,157,184,0.25);border-radius:10px;padding:16px 18px;font-family:'Space Mono',monospace;font-size:10px;line-height:1.85;z-index:10;box-shadow:0 0 30px rgba(30,157,184,0.1)}
 .s1 .terminal .t-bar{display:flex;gap:6px;margin-bottom:14px}
 .t-dot{width:10px;height:10px;border-radius:50%}
 .t-dot.r{background:var(--red)}.t-dot.a{background:var(--amber)}.t-dot.g{background:var(--green)}
@@ -122,264 +121,137 @@ body {
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
 /* ═══ S2 — THE FOG ═══ */
-.s2 .slide-inner{background:#050f18;flex-direction:column;justify-content:center;padding:52px 68px}
-.s2 .bg-dots{position:absolute;inset:0;background-image:radial-gradient(rgba(0,180,216,0.12) 1px,transparent 1px);background-size:28px 28px;z-index:0;opacity:0.4}
+.s2 .slide-inner{background:var(--navy);flex-direction:column;justify-content:center;padding:40px 60px}
+.s2 .bg-dots{position:absolute;inset:0;background-image:radial-gradient(rgba(30,157,184,0.14) 1px,transparent 1px);background-size:28px 28px;z-index:0;opacity:0.4}
 .s2 .slide-inner>*:not(.slide-badge):not(.slide-num):not(.scanlines):not(.bg-dots){position:relative;z-index:5}
-.s2 h2{font-size:34px;font-weight:700;color:var(--white);line-height:1.15;margin-bottom:24px;max-width:700px}
+.s2 h2{font-size:30px;font-weight:700;color:var(--white);line-height:1.15;margin-bottom:20px;max-width:700px}
 .s2 h2 em{font-style:normal;color:var(--amber)}
 .chaos-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 .chaos-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;padding:18px 16px;position:relative;overflow:visible;transition:border-color 0.3s,transform 0.3s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.3s}
-.chaos-card:hover{border-color:rgba(0,180,216,0.4);transform:translateY(-5px) scale(1.02);box-shadow:0 14px 36px rgba(0,0,0,0.45)}
+.chaos-card:hover{border-color:rgba(30,157,184,0.4);transform:translateY(-5px) scale(1.02);box-shadow:0 14px 36px rgba(0,0,0,0.45)}
 .chaos-card .cc-icon{font-size:22px;margin-bottom:10px}
 .chaos-card .cc-num{font-family:'Space Mono',monospace;font-size:26px;font-weight:700;color:rgba(255,255,255,0.06);position:absolute;bottom:8px;right:12px;line-height:1}
 .chaos-card h4{font-size:12.5px;font-weight:700;color:var(--white);margin-bottom:5px}
 .chaos-card p{font-size:10.5px;color:var(--dim);line-height:1.5}
 
 /* ═══ S3 — WHAT WE BUILT ═══ */
-.s3 .slide-inner{background:var(--navy);flex-direction:column;justify-content:center;align-items:center;padding:48px 64px}
-.s3 .bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,196,140,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,196,140,0.04) 1px,transparent 1px);background-size:48px 48px;z-index:0}
+.s3 .slide-inner{background:var(--navy);flex-direction:column;justify-content:center;align-items:center;padding:36px 56px}
+.s3 .bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(205,255,78,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(205,255,78,0.04) 1px,transparent 1px);background-size:48px 48px;z-index:0}
 .s3 .slide-inner>*:not(.slide-badge):not(.slide-num):not(.scanlines):not(.bg-grid){position:relative;z-index:5}
-.s3 h2{font-size:34px;font-weight:700;color:var(--white);text-align:center;margin-bottom:10px}
+.s3 h2{font-size:30px;font-weight:700;color:var(--white);text-align:center;margin-bottom:8px}
 .s3 h2 span{color:var(--green)}
-.s3 .sub{font-size:13px;color:var(--dim);text-align:center;margin-bottom:28px}
-.stats-row{display:flex;gap:40px;margin-bottom:28px}
+.s3 .sub{font-size:12px;color:var(--dim);text-align:center;margin-bottom:22px}
+.stats-row{display:flex;gap:40px;margin-bottom:22px}
 .stat-block{text-align:center}
-.stat-block .num{font-family:'Space Mono',monospace;font-size:36px;font-weight:700;line-height:1}
+.stat-block .num{font-family:'Space Mono',monospace;font-size:34px;font-weight:700;line-height:1}
 .stat-block .label{font-size:11px;color:var(--dim);margin-top:4px;letter-spacing:0.05em}
 .stat-block .num.teal{color:var(--teal)}.stat-block .num.green{color:var(--green)}.stat-block .num.amber{color:var(--amber)}.stat-block .num.purple{color:var(--purple)}
 .cat-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 .cat-chip{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:0.1em;padding:5px 12px;border-radius:6px;text-transform:uppercase;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.55);transition:all 0.3s;position:relative;overflow:visible}
-.cat-chip:hover{border-color:var(--teal);color:var(--teal);background:rgba(0,180,216,0.06)}
-.cat-chip.highlight{border-color:var(--green);color:var(--green);background:rgba(0,196,140,0.08)}
+.cat-chip:hover{border-color:var(--teal);color:var(--teal);background:rgba(30,157,184,0.06)}
+.cat-chip.highlight{border-color:var(--green);color:var(--green);background:rgba(205,255,78,0.08)}
 
 /* ═══ S4 — DATA SAFETY ═══ */
-.s4 .slide-inner{background:linear-gradient(135deg,#0a1628 0%,#0d1f12 100%);flex-direction:column;justify-content:center;padding:48px 64px}
+.s4 .slide-inner{background:var(--navy);flex-direction:column;justify-content:center;padding:36px 56px}
 .s4 .slide-inner>*:not(.slide-badge):not(.slide-num):not(.scanlines){position:relative;z-index:5}
-.s4 .safety-badge{display:inline-flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.15em;color:var(--green);text-transform:uppercase;padding:5px 14px;border-radius:6px;background:rgba(0,196,140,0.1);border:1px solid rgba(0,196,140,0.3);margin-bottom:18px}
-.s4 h2{font-size:32px;font-weight:700;color:var(--white);line-height:1.15;margin-bottom:8px;max-width:680px}
+.s4 .safety-badge{display:inline-flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.15em;color:var(--green);text-transform:uppercase;padding:5px 14px;border-radius:6px;background:rgba(205,255,78,0.08);border:1px solid rgba(205,255,78,0.3);margin-bottom:14px}
+.s4 h2{font-size:28px;font-weight:700;color:var(--white);line-height:1.15;margin-bottom:6px;max-width:680px}
 .s4 h2 span{color:var(--green)}
-.s4 .sub{font-size:13px;color:var(--dim);margin-bottom:22px;max-width:700px;line-height:1.6}
-.safety-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.safety-card{background:rgba(0,196,140,0.04);border:1px solid rgba(0,196,140,0.15);border-radius:12px;padding:18px 20px;position:relative;overflow:visible;transition:border-color 0.3s,transform 0.3s}
-.safety-card:hover{border-color:rgba(0,196,140,0.4);transform:translateY(-3px)}
+.s4 .sub{font-size:12px;color:var(--dim);margin-bottom:18px;max-width:700px;line-height:1.6}
+.safety-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.safety-card{background:rgba(205,255,78,0.03);border:1px solid rgba(205,255,78,0.12);border-radius:12px;padding:16px 18px;position:relative;overflow:visible;transition:border-color 0.3s,transform 0.3s}
+.safety-card:hover{border-color:rgba(205,255,78,0.35);transform:translateY(-3px)}
 .safety-card .step-num{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;color:var(--green);letter-spacing:0.15em;margin-bottom:6px;opacity:0.7}
-.safety-card .title{font-size:13px;font-weight:700;color:var(--white);margin-bottom:4px}
+.safety-card .title{font-size:13px;font-weight:600;color:var(--white);margin-bottom:4px}
 .safety-card .desc{font-size:10.5px;color:var(--dim);line-height:1.5}
-.workflow-strip{margin-top:16px;display:flex;align-items:center;gap:0;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.05em}
-.wf-step{padding:6px 12px;background:rgba(0,196,140,0.06);border:1px solid rgba(0,196,140,0.15);color:rgba(255,255,255,0.6);white-space:nowrap}
+.workflow-strip{margin-top:14px;display:flex;align-items:center;gap:0;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.05em}
+.wf-step{padding:6px 12px;background:rgba(205,255,78,0.05);border:1px solid rgba(205,255,78,0.12);color:rgba(255,255,255,0.6);white-space:nowrap}
 .wf-step:first-child{border-radius:6px 0 0 6px}.wf-step:last-child{border-radius:0 6px 6px 0}
 .wf-arrow{color:var(--green);padding:0 2px;font-size:12px}
 
 /* ═══ S5 — CATEGORIES ═══ */
-.s5 .slide-inner{background:var(--navy);flex-direction:row;overflow:hidden}
-.s5 .left-panel{width:38%;padding:48px 36px 48px 48px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid rgba(255,255,255,0.06)}
+.s5 .slide-inner{background:var(--navy);flex-direction:row;overflow:visible}
+.s5 .left-panel{width:38%;padding:40px 30px 40px 42px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid rgba(255,255,255,0.06);position:relative;z-index:5;overflow:hidden}
 .s5 .left-panel>*:not(.scanlines){position:relative;z-index:5}
-.s5 h2{font-size:30px;font-weight:700;color:var(--white);line-height:1.15;margin-bottom:12px}
+.s5 h2{font-size:27px;font-weight:700;color:var(--white);line-height:1.15;margin-bottom:10px}
 .s5 h2 span{color:var(--teal)}
-.s5 .left-sub{font-size:12px;color:var(--dim);line-height:1.6;margin-bottom:20px}
-.s5 .right-panel{width:62%;padding:28px 36px;display:flex;flex-direction:column;justify-content:center;gap:8px;position:relative;z-index:5;overflow-y:auto}
-.cat-card{display:flex;gap:14px;align-items:flex-start;background:var(--card-bg);border:1px solid var(--card-border);border-radius:10px;padding:12px 14px;transition:border-color 0.3s,transform 0.2s;position:relative;overflow:visible}
-.cat-card:hover{border-color:rgba(0,180,216,0.35);transform:translateX(4px)}
+.s5 .left-sub{font-size:11.5px;color:var(--dim);line-height:1.6;margin-bottom:18px}
+.s5 .right-panel{width:62%;padding:24px 32px;display:flex;flex-direction:column;justify-content:center;gap:7px;position:relative;z-index:10;overflow:visible}
+.cat-card{display:flex;gap:14px;align-items:flex-start;background:var(--card-bg);border:1px solid var(--card-border);border-radius:10px;padding:11px 14px;transition:border-color 0.3s,transform 0.2s;position:relative;overflow:visible;z-index:10}
+.cat-card:hover{border-color:rgba(30,157,184,0.35);transform:translateX(4px);z-index:20}
 .cat-card .cat-icon{font-size:20px;min-width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border-radius:8px}
 .cat-card .cat-info{flex:1}
-.cat-card .cat-name{font-size:12px;font-weight:700;color:var(--white);margin-bottom:1px}
+.cat-card .cat-name{font-size:12px;font-weight:600;color:var(--white);margin-bottom:1px}
 .cat-card .cat-count{font-family:'Space Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:0.1em}
 .cat-card .cat-desc{font-size:10px;color:var(--dim);line-height:1.4;margin-top:2px}
+/* ensure tip-left on cat-cards renders above left panel */
+.cat-card .tip-box.tip-left{z-index:2000}
 
 /* ═══ S6 — CLAUDE CHAMPIONS ═══ */
-.s6 .slide-inner{background:linear-gradient(135deg,var(--navy) 0%,#1a1535 100%);flex-direction:column;justify-content:center;padding:48px 64px}
+.s6 .slide-inner{background:var(--navy);flex-direction:column;justify-content:center;padding:36px 56px}
 .s6 .slide-inner>*:not(.slide-badge):not(.slide-num):not(.scanlines){position:relative;z-index:5}
-.s6 h2{font-size:32px;font-weight:700;color:var(--white);line-height:1.15;margin-bottom:6px}
+.s6 h2{font-size:28px;font-weight:700;color:var(--white);line-height:1.15;margin-bottom:5px}
 .s6 h2 span{color:var(--purple)}
-.s6 .sub{font-size:12.5px;color:var(--dim);margin-bottom:20px;line-height:1.5;max-width:700px}
-.champ-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.champ-card{background:rgba(167,149,199,0.04);border:1px solid rgba(167,149,199,0.15);border-radius:12px;padding:18px 20px;position:relative;overflow:visible;transition:border-color 0.3s,transform 0.3s}
+.s6 .sub{font-size:11.5px;color:var(--dim);margin-bottom:16px;line-height:1.5;max-width:700px}
+.champ-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.champ-card{background:rgba(167,149,199,0.04);border:1px solid rgba(167,149,199,0.15);border-radius:10px;padding:12px 14px;position:relative;overflow:visible;transition:border-color 0.3s,transform 0.3s}
 .champ-card:hover{border-color:rgba(167,149,199,0.4);transform:translateY(-3px)}
 .champ-card .champ-who{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;color:var(--purple);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px}
-.champ-card .champ-title{font-size:13px;font-weight:700;color:var(--white);margin-bottom:4px}
-.champ-card .champ-desc{font-size:10.5px;color:var(--dim);line-height:1.5}
-.champ-card .champ-link{display:inline-block;margin-top:8px;font-family:'Space Mono',monospace;font-size:9px;color:var(--teal);text-decoration:none;letter-spacing:0.05em;border-bottom:1px solid rgba(0,180,216,0.3);transition:border-color 0.2s}
+.champ-card .champ-title{font-size:12px;font-weight:600;color:var(--white);margin-bottom:3px}
+.champ-card .champ-desc{font-size:10px;color:var(--dim);line-height:1.45}
+.champ-card .champ-link{display:inline-block;margin-top:8px;font-family:'Space Mono',monospace;font-size:9px;color:var(--teal);text-decoration:none;letter-spacing:0.05em;border-bottom:1px solid rgba(30,157,184,0.3);transition:border-color 0.2s}
 .champ-card .champ-link:hover{border-color:var(--teal)}
-.ent-banner{margin-top:18px;background:rgba(255,179,71,0.06);border:1px solid rgba(255,179,71,0.2);border-radius:10px;padding:16px 20px;display:flex;align-items:flex-start;gap:14px}
-.ent-banner .ent-icon{font-size:24px;flex-shrink:0}
-.ent-banner .ent-title{font-size:12px;font-weight:700;color:var(--amber);margin-bottom:3px}
+.ent-banner{margin-top:10px;background:rgba(255,179,71,0.05);border:1px solid rgba(255,179,71,0.18);border-radius:8px;padding:10px 16px;display:flex;align-items:center;gap:12px}
+.ent-banner .ent-icon{font-size:22px;flex-shrink:0}
+.ent-banner .ent-title{font-size:12px;font-weight:600;color:var(--amber);margin-bottom:3px}
 .ent-banner .ent-desc{font-size:10.5px;color:var(--dim);line-height:1.5}
 
 /* ═══ S7 — HOW IT WORKS ═══ */
-.s7 .slide-inner{background:#050f18;flex-direction:column;justify-content:center;padding:48px 64px}
-.s7 .bg-dots{position:absolute;inset:0;background-image:radial-gradient(rgba(0,196,140,0.08) 1px,transparent 1px);background-size:32px 32px;z-index:0;opacity:0.3}
+.s7 .slide-inner{background:var(--navy);flex-direction:column;justify-content:center;padding:40px 56px}
+.s7 .bg-dots{position:absolute;inset:0;background-image:radial-gradient(rgba(205,255,78,0.06) 1px,transparent 1px);background-size:32px 32px;z-index:0;opacity:0.3}
 .s7 .slide-inner>*:not(.slide-badge):not(.slide-num):not(.scanlines):not(.bg-dots){position:relative;z-index:5}
-.s7 h2{font-size:32px;font-weight:700;color:var(--white);line-height:1.15;margin-bottom:6px}
+.s7 h2{font-size:28px;font-weight:700;color:var(--white);line-height:1.15;margin-bottom:5px}
 .s7 h2 span{color:var(--teal)}
-.s7 .sub{font-size:12.5px;color:var(--dim);margin-bottom:24px;line-height:1.5}
+.s7 .sub{font-size:12px;color:var(--dim);margin-bottom:20px;line-height:1.5}
 .flow-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .flow-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;padding:20px 18px;text-align:center;position:relative;overflow:visible;transition:border-color 0.3s,transform 0.3s}
-.flow-card:hover{border-color:rgba(0,180,216,0.4);transform:translateY(-4px)}
+.flow-card:hover{border-color:rgba(30,157,184,0.4);transform:translateY(-4px)}
 .flow-card .flow-icon{font-size:28px;margin-bottom:10px}
-.flow-card .flow-title{font-size:13px;font-weight:700;color:var(--white);margin-bottom:4px}
+.flow-card .flow-title{font-size:13px;font-weight:600;color:var(--white);margin-bottom:4px}
 .flow-card .flow-desc{font-size:10.5px;color:var(--dim);line-height:1.5}
 .flow-card .flow-tag{display:inline-block;margin-top:8px;font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px}
-.flow-card .flow-tag.ready{background:rgba(0,196,140,0.1);color:var(--green);border:1px solid rgba(0,196,140,0.2)}
+.flow-card .flow-tag.ready{background:rgba(205,255,78,0.08);color:var(--green);border:1px solid rgba(205,255,78,0.2)}
 .flow-card .flow-tag.template{background:rgba(255,179,71,0.1);color:var(--amber);border:1px solid rgba(255,179,71,0.2)}
 
 /* ═══ S8 — WHAT'S NEXT ═══ */
-.s8 .slide-inner{background:var(--navy);flex-direction:column;justify-content:center;padding:48px 64px}
-.s8 .bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,180,216,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,180,216,0.04) 1px,transparent 1px);background-size:48px 48px;z-index:0}
+.s8 .slide-inner{background:var(--navy);flex-direction:column;justify-content:center;padding:40px 56px}
+.s8 .bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(30,157,184,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(30,157,184,0.04) 1px,transparent 1px);background-size:48px 48px;z-index:0}
 .s8 .slide-inner>*:not(.slide-badge):not(.slide-num):not(.scanlines):not(.bg-grid){position:relative;z-index:5}
-.s8 h2{font-size:32px;font-weight:700;color:var(--white);line-height:1.15;margin-bottom:6px}
+.s8 h2{font-size:28px;font-weight:700;color:var(--white);line-height:1.15;margin-bottom:5px}
 .s8 h2 span{color:var(--teal)}
-.s8 .sub{font-size:12.5px;color:var(--dim);margin-bottom:24px;line-height:1.5;max-width:600px}
+.s8 .sub{font-size:12px;color:var(--dim);margin-bottom:20px;line-height:1.5;max-width:600px}
 .next-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .next-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;padding:20px 18px;position:relative;overflow:visible;transition:border-color 0.3s,transform 0.3s}
-.next-card:hover{border-color:rgba(0,180,216,0.4);transform:translateY(-4px)}
+.next-card:hover{border-color:rgba(30,157,184,0.4);transform:translateY(-4px)}
 .next-card .next-icon{font-size:24px;margin-bottom:10px}
-.next-card .next-title{font-size:13px;font-weight:700;color:var(--white);margin-bottom:4px}
+.next-card .next-title{font-size:13px;font-weight:600;color:var(--white);margin-bottom:4px}
 .next-card .next-desc{font-size:10.5px;color:var(--dim);line-height:1.5}
 
 /* ═══ S9 — CTA ═══ */
-.s9 .slide-inner{background:linear-gradient(135deg,var(--navy) 0%,#0d2847 50%,var(--navy) 100%);flex-direction:column;justify-content:center;align-items:center;padding:64px;text-align:center}
-.s9 .glow-orb{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(0,180,216,0.08) 0%,transparent 70%);animation:glowPulse 4s ease-in-out infinite;z-index:0}
-.s9 .glow-orb.g1{top:-100px;left:-80px}.s9 .glow-orb.g2{bottom:-100px;right:-80px;background:radial-gradient(circle,rgba(0,196,140,0.08) 0%,transparent 70%);animation-delay:2s}
+.s9 .slide-inner{background:var(--navy);flex-direction:column;justify-content:center;align-items:center;padding:48px;text-align:center}
+.s9 .glow-orb{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(30,157,184,0.08) 0%,transparent 70%);animation:glowPulse 4s ease-in-out infinite;z-index:0}
+.s9 .glow-orb.g1{top:-100px;left:-80px}.s9 .glow-orb.g2{bottom:-100px;right:-80px;background:radial-gradient(circle,rgba(205,255,78,0.08) 0%,transparent 70%);animation-delay:2s}
 .s9 .slide-inner>*:not(.slide-badge):not(.slide-num):not(.scanlines):not(.glow-orb){position:relative;z-index:5}
-.s9 h2{font-size:42px;font-weight:700;color:var(--white);line-height:1.1;margin-bottom:16px}
+.s9 h2{font-size:38px;font-weight:700;color:var(--white);line-height:1.1;margin-bottom:14px}
 .s9 h2 em{font-style:normal;color:var(--green)}
-.s9 .sub{font-size:14px;color:var(--dim);margin-bottom:32px;max-width:500px;line-height:1.65}
-.cta-btn{display:inline-flex;align-items:center;gap:10px;font-family:'Space Mono',monospace;font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:16px 36px;border-radius:100px;text-decoration:none;background:linear-gradient(135deg,var(--teal),var(--green));color:var(--navy);border:none;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 20px rgba(0,180,216,0.3)}
-.cta-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 8px 30px rgba(0,180,216,0.4)}
+.s9 .sub{font-size:13px;color:var(--dim);margin-bottom:28px;max-width:500px;line-height:1.65}
+.cta-btn{display:inline-flex;align-items:center;gap:10px;font-family:'Space Mono',monospace;font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:16px 36px;border-radius:100px;text-decoration:none;background:linear-gradient(135deg,var(--teal),var(--green));color:var(--navy);border:none;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 20px rgba(30,157,184,0.3)}
+.cta-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 8px 30px rgba(30,157,184,0.4)}
 .s9 .pwd-hint{margin-top:20px;font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:0.08em}
 .s9 .pwd-hint span{color:var(--green)}
 </style>
-<style>.nerdio-brand-bar{position:fixed;top:0;left:0;right:0;height:48px;background:#0B1B3D;display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:99999;font-family:"Segoe UI",system-ui,-apple-system,sans-serif;}.nerdio-brand-bar img{height:28px;}.nerdio-brand-bar .brand-title{color:#fff;font-size:14px;font-weight:500;margin-left:16px;opacity:0.85;}.nerdio-brand-bar .home-link{color:#00B4D8;text-decoration:none;font-size:13px;font-weight:500;padding:6px 14px;border:1px solid rgba(0,180,216,0.3);border-radius:6px;transition:all 0.2s;}.nerdio-brand-bar .home-link:hover{background:rgba(0,180,216,0.1);border-color:#00B4D8;}</style></head>
-<body><!-- NERDIO BRAND BAR --><div class="nerdio-brand-bar"><div style="display:flex;align-items:center;"><img src="data:image/png;base64,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" alt="Nerdio"><span class="brand-title">EMEA Nerdio Toolbox Presentation</span></div><a href="../EMEA-Nerdio-Toolbox.html" class="home-link">&#8962; Toolbox Home</a></div><!-- END BRAND BAR -->
-<!-- PASSWORD PROTECTION START -->
-<style>
-#nerdio-auth-overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(135deg, #0B1B3D 0%, #122a5c 50%, #0B1B3D 100%);
-    z-index: 999999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-}
-#nerdio-auth-overlay.hidden { display: none; }
-.nerdio-auth-box {
-    background: rgba(255,255,255,0.07);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 16px;
-    padding: 48px 40px;
-    max-width: 400px;
-    width: 90%;
-    text-align: center;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-}
-.nerdio-auth-box .auth-icon {
-    width: 64px; height: 64px;
-    margin: 0 auto 24px;
-    background: linear-gradient(135deg, #00B4D8, #00C48C);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-}
-.nerdio-auth-box .auth-icon svg { width: 32px; height: 32px; }
-.nerdio-auth-box h2 {
-    color: #fff;
-    font-size: 22px;
-    font-weight: 600;
-    margin: 0 0 8px;
-}
-.nerdio-auth-box p {
-    color: rgba(255,255,255,0.6);
-    font-size: 14px;
-    margin: 0 0 28px;
-}
-.nerdio-auth-box input[type="password"] {
-    width: 100%;
-    padding: 14px 16px;
-    border: 2px solid rgba(255,255,255,0.15);
-    border-radius: 10px;
-    background: rgba(255,255,255,0.08);
-    color: #fff;
-    font-size: 16px;
-    outline: none;
-    transition: border-color 0.2s;
-    box-sizing: border-box;
-}
-.nerdio-auth-box input[type="password"]::placeholder { color: rgba(255,255,255,0.35); }
-.nerdio-auth-box input[type="password"]:focus { border-color: #00B4D8; }
-.nerdio-auth-box .auth-btn {
-    width: 100%;
-    padding: 14px;
-    margin-top: 16px;
-    background: linear-gradient(135deg, #00B4D8, #00C48C);
-    color: #fff;
-    font-size: 16px;
-    font-weight: 600;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: opacity 0.2s, transform 0.1s;
-}
-.nerdio-auth-box .auth-btn:hover { opacity: 0.9; }
-.nerdio-auth-box .auth-btn:active { transform: scale(0.98); }
-.nerdio-auth-box .auth-error {
-    color: #ff6b6b;
-    font-size: 13px;
-    margin-top: 12px;
-    display: none;
-}
-.nerdio-auth-box .auth-footer {
-    color: rgba(255,255,255,0.3);
-    font-size: 12px;
-    margin-top: 24px;
-}
-</style>
-<div id="nerdio-auth-overlay">
-    <div class="nerdio-auth-box">
-        <div class="auth-icon">
-            <svg fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
-            </svg>
-        </div>
-        <h2>EMEA Nerdio Toolbox</h2>
-        <p>Enter the team password to continue</p>
-        <form id="nerdio-auth-form" onsubmit="return nerdioAuth()">
-            <input type="password" id="nerdio-auth-pwd" placeholder="Team password" autofocus>
-            <button type="submit" class="auth-btn">Unlock Toolbox</button>
-            <div class="auth-error" id="nerdio-auth-error">Incorrect password. Please try again.</div>
-        </form>
-        <div class="auth-footer">Nerdio EMEA &mdash; Internal Use Only</div>
-    </div>
-</div>
-<script>
-(function(){
-    var AUTH_KEY = 'nerdio-emea-auth';
-    var HASH = '8d4fc32913788be20e3ed56e0e9598b490bc0a8023036548b73715eca41d80d0';
-    async function sha256(str) {
-        var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-        return Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0')}).join('');
-    }
-    if (sessionStorage.getItem(AUTH_KEY) === 'true') {
-        document.getElementById('nerdio-auth-overlay').classList.add('hidden');
-    }
-    window.nerdioAuth = async function() {
-        var pwd = document.getElementById('nerdio-auth-pwd').value;
-        var hash = await sha256(pwd);
-        if (hash === HASH) {
-            sessionStorage.setItem(AUTH_KEY, 'true');
-            document.getElementById('nerdio-auth-overlay').classList.add('hidden');
-        } else {
-            document.getElementById('nerdio-auth-error').style.display = 'block';
-            document.getElementById('nerdio-auth-pwd').value = '';
-            document.getElementById('nerdio-auth-pwd').focus();
-        }
-        return false;
-    };
-})();
-</script>
-<!-- PASSWORD PROTECTION END -->
-
+</head>
+<body>
 
 <canvas id="bgCanvas"></canvas>
 <div class="progress-bar" id="progressBar"></div>
@@ -393,6 +265,7 @@ body {
     <div class="bg-grid"></div><div class="glow"></div><div class="scanlines"></div>
     <div class="slide-badge">// emea_toolbox.deck</div>
     <div class="slide-num">01 / 09</div>
+    
     <div class="kicker" data-anim data-delay="100">On building tools that compound — not collecting dust</div>
     <h1 data-anim data-delay="220">Playing catchup<br>at <em>warp speed</em></h1>
     <div class="sub" data-anim data-delay="360">I joined Nerdio without the history, context, or shorthand everyone else had. So I used AI to compress months of ramp into weeks — and built tools along the way. This is what came out of it.</div>
@@ -408,7 +281,7 @@ body {
       <div class="t-line cmd vis">$ ls ./context</div>
       <div class="t-line warn vis">ls: context: No such file</div>
       <div class="t-line cmd vis">$ ai --build-toolkit</div>
-      <div class="t-line out vis">30 tools loaded &#10003;</div>
+      <div class="t-line out vis">32 tools loaded &#10003;</div>
       <div class="t-line cmd vis">$ share --team emea</div>
       <div class="t-line out vis">toolbox deployed &#10003;</div>
       <div class="t-line cmd vis">$ <span class="cursor"></span></div>
@@ -420,6 +293,7 @@ body {
 <div class="slide s2" id="slide-1">
   <div class="slide-inner">
     <div class="bg-dots"></div><div class="scanlines"></div>
+    
     <div class="slide-badge">// the_problem.log</div>
     <div class="slide-num">02 / 09</div>
     <div class="prompt" data-anim data-delay="80">> diagnosing_the_fog.exe</div>
@@ -441,8 +315,8 @@ body {
       </div>
       <div class="chaos-card has-tip" data-anim-scale data-delay="500">
         <div class="cc-icon">&#128269;</div>
-        <h4>Buried in Slack</h4>
-        <p>Great tools and techniques shared once in a thread, then lost forever. No central place to find them.</p>
+        <h4>Buried in Teams / SharePoint</h4>
+        <p>Great tools and techniques shared once in a Teams thread or buried in a SharePoint folder, then lost forever. No central place to find them.</p>
         <div class="cc-num">03</div>
         <div class="tip-box tip-above" style="width:200px"><span class="tip-label">the fix</span>One URL. One password. Everything searchable, categorised, and <em>always available</em>. No digging through threads.</div>
       </div>
@@ -461,12 +335,13 @@ body {
 <div class="slide s3" id="slide-2">
   <div class="slide-inner">
     <div class="bg-grid"></div><div class="scanlines"></div>
+    
     <div class="slide-badge">// inventory.json</div>
     <div class="slide-num">03 / 09</div>
     <h2 data-anim data-delay="120">What's in the <span>Toolbox</span></h2>
     <div class="sub" data-anim data-delay="220">Everything in one place. Open a browser, enter the team password, start selling.</div>
     <div class="stats-row" data-anim data-delay="340">
-      <div class="stat-block has-tip"><div class="num teal">30</div><div class="label">Ready-to-Use Tools</div><div class="tip-box tip-above" style="width:210px"><span class="tip-label">what's included</span>Discovery engines, battlecards, ROI calculators, objection handlers, PoV builders, TCO comparisons, MS briefing generators, and more. <strong>All interactive HTML — no installs.</strong></div></div>
+      <div class="stat-block has-tip"><div class="num teal">32</div><div class="label">Ready-to-Use Tools</div><div class="tip-box tip-above" style="width:210px"><span class="tip-label">what's included</span>Discovery engines, battlecards, ROI calculators, objection handlers, PoV builders, TCO comparisons, MS briefing generators, and more. <strong>All interactive HTML — no installs.</strong></div></div>
       <div class="stat-block has-tip"><div class="num green">17</div><div class="label">Build Templates</div><div class="tip-box tip-above" style="width:210px"><span class="tip-label">how they work</span>Download the MD file, upload to Claude with your territory/account data, and Claude builds a <em>personalised version</em> for you. Account intel, territory heatmaps, CRM trackers, and more.</div></div>
       <div class="stat-block has-tip"><div class="num amber">8</div><div class="label">EUC References</div><div class="tip-box tip-above" style="width:210px"><span class="tip-label">euc universe</span>Interactive maps of the entire End User Computing landscape — vendor histories, architecture patterns, platform evolution, and partner narratives. <strong>Great for customer conversations.</strong></div></div>
       <div class="stat-block has-tip"><div class="num purple">2</div><div class="label">AI Skills</div><div class="tip-box tip-above" style="width:210px"><span class="tip-label">supercharge claude</span>Nerdio Nucleus and Super Agent skill files — install in Claude Desktop/Cowork and every conversation has <em>deep Nerdio product knowledge</em> built in.</div></div>
@@ -477,7 +352,7 @@ body {
       <div class="cat-chip has-tip">&#128640; PIPELINE<div class="tip-box tip-below" style="width:180px"><span class="tip-label">6 tools</span>SDR engine, outreach, journeys, renewal tracker, MS briefings, partner co-sell.</div></div>
       <div class="cat-chip has-tip">&#9876;&#65039; COMPETITIVE<div class="tip-box tip-below" style="width:190px"><span class="tip-label">9 tools</span>Battlecards, objection handler, CUA positioning, scenario simulator, VDI comparison, licensing nav.</div></div>
       <div class="cat-chip has-tip">&#128176; COMMERCIAL<div class="tip-box tip-below" style="width:170px"><span class="tip-label">3 tools</span>ROI calculator, TCO comparison builder, PoV builder.</div></div>
-      <div class="cat-chip has-tip">&#128218; ENABLEMENT<div class="tip-box tip-below" style="width:180px"><span class="tip-label">4 tools + 17 templates</span>Getting started, win/loss library, enablement hub, this presentation, plus all build templates.</div></div>
+      <div class="cat-chip has-tip">&#128218; ENABLEMENT<div class="tip-box tip-below" style="width:180px"><span class="tip-label">5 tools + 17 templates</span>Getting started, win/loss library, NerdioTravel guide, enablement hub, this presentation, plus all build templates.</div></div>
     </div>
   </div>
 </div>
@@ -486,6 +361,7 @@ body {
 <div class="slide s4" id="slide-3">
   <div class="slide-inner">
     <div class="scanlines"></div>
+    
     <div class="slide-badge">// data_safety.sh</div>
     <div class="slide-num">04 / 09</div>
     <div class="safety-badge" data-anim data-delay="80">&#128274; MUST READ</div>
@@ -532,6 +408,7 @@ body {
 <div class="slide s5" id="slide-4">
   <div class="slide-inner">
     <div class="scanlines"></div>
+    
     <div class="slide-badge">// categories.ls</div>
     <div class="slide-num">05 / 09</div>
     <div class="left-panel">
@@ -566,7 +443,7 @@ body {
       </div>
       <div class="cat-card has-tip" data-anim-right data-delay="480">
         <div class="cat-icon">&#128218;</div>
-        <div class="cat-info"><div class="cat-name">Enablement & Reference</div><div class="cat-count">4 TOOLS + 17 TEMPLATES</div><div class="cat-desc">Getting started, win/loss library, plus build-your-own templates</div></div>
+        <div class="cat-info"><div class="cat-name">Enablement & Reference</div><div class="cat-count">5 TOOLS + 17 TEMPLATES</div><div class="cat-desc">Getting started, win/loss library, NerdioTravel guide, plus build-your-own templates</div></div>
         <div class="tip-box tip-left" style="width:210px"><span class="tip-label">templates include</span>Account intel, territory heatmaps, CRM trackers, deal dashboards, qualification scorecards, Microsoft account intelligence, and more. <strong>Upload MD to Claude + your data.</strong></div>
       </div>
       <div class="cat-card has-tip" data-anim-right data-delay="550">
@@ -582,46 +459,59 @@ body {
 <div class="slide s6" id="slide-5">
   <div class="slide-inner">
     <div class="scanlines"></div>
+    
     <div class="slide-badge">// community.log</div>
     <div class="slide-num">06 / 09</div>
     <div class="prompt" data-anim data-delay="80">> team_contributions.log</div>
-    <h2 data-anim data-delay="180">You don't have to figure<br>this out <span>alone.</span></h2>
-    <div class="sub" data-anim data-delay="280">Ouriel started the Claude Champions group. Others across the team have been sharing tools and techniques. Here's what's out there &mdash; and what's changing.</div>
+    <h2 data-anim data-delay="180">The team is already<br><span>building.</span></h2>
+    <div class="sub" data-anim data-delay="280">Ouriel launched the <strong style="color:var(--purple)">Claude Champions</strong> group in Teams &mdash; a shared space for AI workflows, tools, and tips. Here's who's contributed so far.</div>
     <div class="champ-grid">
-      <div class="champ-card has-tip" data-anim-scale data-delay="360">
-        <div class="champ-who">CLAUDE CHAMPIONS</div>
-        <div class="champ-title">Claude Champions Group</div>
-        <div class="champ-desc">Started by Ouriel &mdash; the central hub for sharing AI workflows, tips, and tools across the team. Join the conversation.</div>
+      <div class="champ-card has-tip" data-anim-scale data-delay="340">
+        <div class="champ-who">OURIEL &bull; FOUNDED</div>
+        <div class="champ-title">Claude Champions &amp; Wispr Flow</div>
+        <div class="champ-desc">Created the Claude Champions Teams group as the central hub for AI workflows. Also shared Wispr Flow &mdash; voice-to-text dictation for faster prompting.</div>
         <a href="https://teams.microsoft.com/l/team/19%3AV05LX7_JVN8ysGT7SXFg3oBOMUZxDOXcFqJPmu-NLBA1%40thread.tacv2/conversations?groupId=3dfe9c48-45f7-4e17-842b-4d7e01d47b71&tenantId=7337e647-047e-4e70-92cf-3cd288e5b418" target="_blank" class="champ-link">Open in Teams &#8594;</a>
-        <div class="tip-box tip-above" style="width:220px"><span class="tip-label">why join</span>This is where the team shares what's working. Prompts, tools, workflows, and lessons learned. <strong>If you build something useful, share it here.</strong></div>
+        <div class="tip-box tip-above" style="width:220px"><span class="tip-label">join the group</span>This is the place to share what's working &mdash; prompts, tools, workflows, lessons learned. <strong>If you build something useful, post it here.</strong></div>
       </div>
-      <div class="champ-card has-tip" data-anim-scale data-delay="440">
-        <div class="champ-who">BETTER PROMPTING</div>
+      <div class="champ-card has-tip" data-anim-scale data-delay="400">
+        <div class="champ-who">CHRIS &bull; SHARED</div>
+        <div class="champ-title">EMEA Toolbox &amp; NME Guide</div>
+        <div class="champ-desc">Built and shared the 32-tool EMEA Toolbox and the interactive NME Capabilities Guide for discovery calls and demos.</div>
+        <div class="tip-box tip-above" style="width:220px"><span class="tip-label">what's included</span>Discovery engines, battlecards, ROI tools, pseudonym manager, competitive intel, build templates &mdash; <strong>all in one place</strong>.</div>
+      </div>
+      <div class="champ-card has-tip" data-anim-scale data-delay="460">
+        <div class="champ-who">MATT EVERTON &bull; SHARED</div>
         <div class="champ-title">Prompt Cowboy</div>
-        <div class="champ-desc">Free tool that turns lazy prompts into detailed, action-oriented ones. Templates included. Better prompt = better AI output.</div>
+        <div class="champ-desc">Free tool that turns rough prompts into detailed, structured ones. Better prompt = better AI output. Worth bookmarking.</div>
         <a href="https://www.promptcowboy.ai" target="_blank" class="champ-link">promptcowboy.ai &#8594;</a>
-        <div class="tip-box tip-above" style="width:220px"><span class="tip-label">how it helps</span>Paste your rough prompt, Prompt Cowboy restructures it with <em>specificity, context, and format instructions</em>. Free. Worth bookmarking.</div>
+        <div class="tip-box tip-above" style="width:220px"><span class="tip-label">how it helps</span>Paste your rough prompt, Prompt Cowboy restructures it with <em>specificity, context, and format instructions</em>. Free and fast.</div>
       </div>
       <div class="champ-card has-tip" data-anim-scale data-delay="520">
-        <div class="champ-who">CUSTOMER SUCCESS</div>
+        <div class="champ-who">WAYNE BELLOWS &bull; BUILT</div>
         <div class="champ-title">CS Toolbox</div>
-        <div class="champ-desc">A parallel toolbox for the Customer Success side &mdash; similar concept, CS-focused workflows and tools.</div>
+        <div class="champ-desc">A parallel toolbox for Customer Success &mdash; same concept, CS-focused workflows. The pattern is spreading across functions.</div>
         <a href="https://nerdio-cs-hub.cloudflareaccess.com" target="_blank" class="champ-link">Nerdio CS Hub &#8594;</a>
-        <div class="tip-box tip-above" style="width:220px"><span class="tip-label">cross-team</span>Great to see this pattern spreading beyond sales. The more teams build shared toolkits, the <strong>more everyone benefits</strong>.</div>
+        <div class="tip-box tip-above" style="width:220px"><span class="tip-label">cross-team</span>Great to see this spreading beyond sales. The more teams build shared toolkits, <strong>the more everyone benefits</strong>.</div>
       </div>
-      <div class="champ-card has-tip" data-anim-scale data-delay="600">
-        <div class="champ-who">PRODUCTIVITY</div>
-        <div class="champ-title">Wispr Flow &amp; Sales Assembly</div>
-        <div class="champ-desc">Voice-to-text dictation for prompts and emails. Plus account multi-threading prompts from Sales Assembly classes.</div>
-        <a href="https://wisprflow.ai" target="_blank" class="champ-link">wisprflow.ai &#8594;</a>
-        <div class="tip-box tip-above" style="width:220px"><span class="tip-label">the tip</span>Speak your prompt instead of typing it. <em>Wispr Flow</em> captures and cleans it. Combine with Prompt Cowboy for a <strong>speak &rarr; refine &rarr; execute</strong> workflow.</div>
+      <div class="champ-card has-tip" data-anim-scale data-delay="580">
+        <div class="champ-who">OURIEL &bull; APPLIED</div>
+        <div class="champ-title">Claude for Prospecting</div>
+        <div class="champ-desc">Used Claude to research Middle East prospects and draft disaster recovery outreach emails &mdash; real pipeline work, AI-accelerated.</div>
+        <div class="tip-box tip-above" style="width:220px"><span class="tip-label">the takeaway</span>This is Claude in action on <em>actual deals</em>. Research, personalisation, and outreach &mdash; <strong>done in minutes instead of hours</strong>.</div>
+      </div>
+      <div class="champ-card has-tip" data-anim-scale data-delay="640">
+        <div class="champ-who">MATT EVERTON &bull; SHARED</div>
+        <div class="champ-title">Account Multi-Threading</div>
+        <div class="champ-desc">Shared multi-threading prompts from Sales Assembly &mdash; AI-powered strategies for building wider contact maps within accounts.</div>
+        <a href="https://wisprflow.ai" target="_blank" class="champ-link">+ wispr flow &#8594;</a>
+        <div class="tip-box tip-above" style="width:220px"><span class="tip-label">sales assembly</span>Structured prompts for <em>multi-threading into accounts</em> &mdash; identify stakeholders, map org structures, and plan outreach. <strong>Combine with Wispr Flow for speed.</strong></div>
       </div>
     </div>
     <div class="ent-banner" data-anim data-delay="700">
       <div class="ent-icon">&#9888;&#65039;</div>
       <div>
         <div class="ent-title">Claude for Enterprise — Rolling Out</div>
-        <div class="ent-desc">Claude for Enterprise is being deployed across Nerdio. As IT establishes the safest way to balance usage with policy, we may see some temporary limitations &mdash; particularly around importing custom skills files, MCP integrations, and advanced features. This is expected and healthy. Work within the guardrails, share feedback with IT, and the capabilities will expand as policies are finalised.</div>
+        <div class="ent-desc">Enterprise Claude is deploying across Nerdio. Some features (custom skills, MCPs) may be temporarily limited as IT finalises policies. Work within the guardrails &mdash; capabilities will expand.</div>
       </div>
     </div>
   </div>
@@ -631,6 +521,7 @@ body {
 <div class="slide s7" id="slide-6">
   <div class="slide-inner">
     <div class="bg-dots"></div><div class="scanlines"></div>
+    
     <div class="slide-badge">// workflow.sh</div>
     <div class="slide-num">07 / 09</div>
     <div class="prompt" data-anim data-delay="80">> getting_started.sh</div>
@@ -642,7 +533,7 @@ body {
         <div class="flow-title">Ready-to-Use Tools</div>
         <div class="flow-desc">Open in browser and go. Discovery engines, battlecards, ROI calculators, objection handlers &mdash; all pre-loaded with Nerdio content.</div>
         <span class="flow-tag ready">CLICK &amp; USE</span>
-        <div class="tip-box tip-above" style="width:210px"><span class="tip-label">examples</span>Discovery Engine, Competitive Battlecards, ROI Calculator, Objection Handler, MS Seller Briefing Generator, PoV Builder, EUC TCO Calculator. <strong>30 tools and growing.</strong></div>
+        <div class="tip-box tip-above" style="width:210px"><span class="tip-label">examples</span>Discovery Engine, Competitive Battlecards, ROI Calculator, Objection Handler, MS Seller Briefing Generator, PoV Builder, EUC TCO Calculator. <strong>32 tools and growing.</strong></div>
       </div>
       <div class="flow-card has-tip" data-anim-scale data-delay="460">
         <div class="flow-icon">&#128295;</div>
@@ -666,6 +557,7 @@ body {
 <div class="slide s8" id="slide-7">
   <div class="slide-inner">
     <div class="bg-grid"></div><div class="scanlines"></div>
+    
     <div class="slide-badge">// roadmap.md</div>
     <div class="slide-num">08 / 09</div>
     <div class="prompt" data-anim data-delay="80">> whats_next.md</div>
@@ -700,8 +592,9 @@ body {
     <div class="glow-orb g1"></div><div class="glow-orb g2"></div><div class="scanlines"></div>
     <div class="slide-badge">// go_build</div>
     <div class="slide-num">09 / 09</div>
+    
     <h2 data-anim data-delay="160">Open the toolbox.<br><em>Go faster.</em></h2>
-    <div class="sub" data-anim data-delay="300">30 tools. One link. No installs. Password protected for the EMEA team.</div>
+    <div class="sub" data-anim data-delay="300">32 tools. One link. No installs. Password protected for the EMEA team.</div>
     <a href="https://chrisdewhirst-lgtm.github.io/Nerdio-EMEA-Toolbox/" target="_blank" class="cta-btn" data-anim-scale data-delay="440">Open EMEA Toolbox &#8594;</a>
     <div class="pwd-hint" data-anim data-delay="560">Password: <span>NerdioEMEA2026</span></div>
   </div>
@@ -721,7 +614,7 @@ const bgCanvas=document.getElementById('bgCanvas'),bgCtx=bgCanvas.getContext('2d
 function resizeBg(){bgCanvas.width=window.innerWidth;bgCanvas.height=window.innerHeight}
 resizeBg();window.addEventListener('resize',resizeBg);
 const particles=Array.from({length:60},()=>({x:Math.random()*2000,y:Math.random()*1200,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3,r:Math.random()*1.5+0.5,a:Math.random()*0.3+0.05}));
-function animBg(){bgCtx.clearRect(0,0,bgCanvas.width,bgCanvas.height);particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=bgCanvas.width;if(p.x>bgCanvas.width)p.x=0;if(p.y<0)p.y=bgCanvas.height;if(p.y>bgCanvas.height)p.y=0;bgCtx.beginPath();bgCtx.arc(p.x,p.y,p.r,0,Math.PI*2);bgCtx.fillStyle=`rgba(0,180,216,${p.a})`;bgCtx.fill()});requestAnimationFrame(animBg)}
+function animBg(){bgCtx.clearRect(0,0,bgCanvas.width,bgCanvas.height);particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=bgCanvas.width;if(p.x>bgCanvas.width)p.x=0;if(p.y<0)p.y=bgCanvas.height;if(p.y>bgCanvas.height)p.y=0;bgCtx.beginPath();bgCtx.arc(p.x,p.y,p.r,0,Math.PI*2);bgCtx.fillStyle=`rgba(30,157,184,${p.a})`;bgCtx.fill()});requestAnimationFrame(animBg)}
 animBg();
 
 const TOTAL=9;let current=0,animating=false;

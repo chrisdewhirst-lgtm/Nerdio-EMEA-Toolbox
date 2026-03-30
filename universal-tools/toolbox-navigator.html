@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toolbox Navigator — EMEA Nerdio Toolbox</title>
+<style>
+:root{--navy:#0B1B3D;--navy-light:#142952;--teal:#00B4D8;--green:#00C48C;--white:#FFFFFF;--grey-50:#F8FAFC;--grey-100:#F1F5F9;--grey-200:#E2E8F0;--grey-300:#CBD5E1;--grey-600:#475569;--grey-700:#334155;--orange:#FF8C42;--purple:#7C3AED;--red:#E11D48;--amber:#F59E0B}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--grey-50);color:var(--navy);line-height:1.6;padding-top:48px}
+
+/* ── NERDIO BRAND BAR ── */
+.nerdio-brand-bar{position:fixed;top:0;left:0;right:0;z-index:99999;height:48px;background:linear-gradient(135deg,#0B1B3D 0%,#142952 100%);display:flex;align-items:center;justify-content:space-between;padding:0 20px;box-shadow:0 2px 8px rgba(0,0,0,0.15);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+.nerdio-brand-bar *{box-sizing:border-box;margin:0;padding:0}
+.nerdio-brand-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nerdio-brand-logo img{height:22px;width:auto}
+.nerdio-brand-divider{width:1px;height:20px;background:rgba(255,255,255,0.2)}
+.nerdio-brand-tool-name{color:rgba(255,255,255,0.85);font-size:13px;font-weight:500;letter-spacing:0.3px}
+.nerdio-brand-home{display:flex;align-items:center;gap:6px;color:#00B4D8;text-decoration:none;font-size:13px;font-weight:600;padding:6px 14px;border-radius:6px;background:rgba(0,180,216,0.1);border:1px solid rgba(0,180,216,0.2);transition:all 0.2s}
+.nerdio-brand-home:hover{background:rgba(0,180,216,0.2);border-color:rgba(0,180,216,0.4);color:#FFF}
+.nerdio-brand-home svg{width:14px;height:14px}
+
+/* ── PASSWORD GATE ── */
+#nerdio-auth-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,#0B1B3D 0%,#122a5c 50%,#0B1B3D 100%);z-index:999999;display:flex;align-items:center;justify-content:center;font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
+#nerdio-auth-overlay.hidden{display:none}
+.nerdio-auth-box{background:rgba(255,255,255,0.07);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.15);border-radius:16px;padding:48px 40px;max-width:400px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.4)}
+.nerdio-auth-box .auth-icon{width:64px;height:64px;margin:0 auto 24px;background:linear-gradient(135deg,#00B4D8,#00C48C);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.nerdio-auth-box .auth-icon svg{width:32px;height:32px}
+.nerdio-auth-box h2{color:#fff;font-size:22px;font-weight:600;margin:0 0 8px}
+.nerdio-auth-box p{color:rgba(255,255,255,0.6);font-size:14px;margin:0 0 28px}
+.nerdio-auth-box input[type="password"]{width:100%;padding:14px 16px;border:2px solid rgba(255,255,255,0.15);border-radius:10px;background:rgba(255,255,255,0.08);color:#fff;font-size:16px;outline:none;transition:border-color 0.2s;box-sizing:border-box}
+.nerdio-auth-box input[type="password"]::placeholder{color:rgba(255,255,255,0.35)}
+.nerdio-auth-box input[type="password"]:focus{border-color:#00B4D8}
+.nerdio-auth-box .auth-btn{width:100%;padding:14px;margin-top:16px;background:linear-gradient(135deg,#00B4D8,#00C48C);color:#fff;font-size:16px;font-weight:600;border:none;border-radius:10px;cursor:pointer;transition:opacity 0.2s,transform 0.1s}
+.nerdio-auth-box .auth-btn:hover{opacity:0.9}
+.nerdio-auth-box .auth-btn:active{transform:scale(0.98)}
+.nerdio-auth-box .auth-error{color:#ff6b6b;font-size:13px;margin-top:12px;display:none}
+.nerdio-auth-box .auth-footer{color:rgba(255,255,255,0.3);font-size:12px;margin-top:24px}
+
+/* ── HEADER ── */
+.header{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-light) 50%,#1a3a6a 100%);color:var(--white);padding:36px 32px 28px;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:-50%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(0,180,216,0.15) 0%,transparent 70%);border-radius:50%}
+.header::after{content:'';position:absolute;bottom:-30%;left:20%;width:400px;height:400px;background:radial-gradient(circle,rgba(0,196,140,0.1) 0%,transparent 70%);border-radius:50%}
+.header-inner{max-width:1100px;margin:0 auto;position:relative;z-index:1}
+.header h1{font-size:1.8rem;font-weight:700;margin-bottom:6px;letter-spacing:-0.5px}
+.header h1 span{color:var(--teal)}
+.header p{font-size:0.95rem;opacity:0.85;max-width:600px}
+.header .header-stats{display:flex;gap:28px;margin-top:18px}
+.header .hs-item{text-align:center}
+.header .hs-num{font-size:1.5rem;font-weight:700;color:var(--teal)}
+.header .hs-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;opacity:0.6}
+
+/* ── MODE TABS ── */
+.mode-bar{background:var(--white);border-bottom:1px solid var(--grey-200);padding:0 32px;position:sticky;top:48px;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+.mode-inner{max-width:1100px;margin:0 auto;display:flex;gap:0}
+.mode-tab{padding:14px 22px;font-size:0.85rem;font-weight:600;color:var(--grey-600);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:all 0.2s;display:flex;align-items:center;gap:8px}
+.mode-tab:hover{color:var(--navy);background:var(--grey-50)}
+.mode-tab.active{color:var(--teal);border-bottom-color:var(--teal)}
+.mode-tab .tab-icon{font-size:1.1rem}
+
+/* ── MAIN CONTENT ── */
+.main{max-width:1100px;margin:0 auto;padding:28px 32px 60px}
+.view{display:none}
+.view.active{display:block}
+
+/* ── SCENARIO VIEW ── */
+.scenario-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:24px}
+.scenario-card{background:var(--white);border:2px solid var(--grey-200);border-radius:12px;padding:22px;cursor:pointer;transition:all 0.25s;position:relative;overflow:hidden}
+.scenario-card:hover{border-color:var(--teal);transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.08)}
+.scenario-card.selected{border-color:var(--teal);background:linear-gradient(135deg,rgba(0,180,216,0.04),rgba(0,196,140,0.03))}
+.scenario-card .sc-icon{font-size:1.8rem;margin-bottom:10px}
+.scenario-card h3{font-size:1rem;font-weight:700;margin-bottom:4px;color:var(--navy)}
+.scenario-card p{font-size:0.82rem;color:var(--grey-600);line-height:1.5}
+.scenario-card .sc-count{position:absolute;top:16px;right:16px;font-size:0.7rem;font-weight:700;color:var(--teal);background:rgba(0,180,216,0.08);padding:3px 10px;border-radius:100px}
+
+/* ── WORKFLOW PATH ── */
+.workflow-path{background:var(--white);border:1px solid var(--grey-200);border-radius:14px;padding:28px;margin-top:20px;display:none}
+.workflow-path.visible{display:block;animation:fadeSlide 0.4s ease}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.wp-title{font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:4px;display:flex;align-items:center;gap:10px}
+.wp-desc{font-size:0.85rem;color:var(--grey-600);margin-bottom:20px}
+.wp-steps{display:flex;flex-direction:column;gap:0}
+.wp-step{display:flex;align-items:flex-start;gap:16px;padding:14px 0;position:relative}
+.wp-step:not(:last-child){border-bottom:1px solid var(--grey-100)}
+.wp-step-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:var(--white);flex-shrink:0}
+.wp-step-num.essential{background:var(--green)}
+.wp-step-num.discovery{background:var(--teal)}
+.wp-step-num.competitive{background:var(--red)}
+.wp-step-num.commercial{background:var(--purple)}
+.wp-step-num.pipeline{background:var(--green)}
+.wp-step-num.enablement{background:#0284C7}
+.wp-step-num.cosell{background:var(--orange)}
+.wp-step-info{flex:1}
+.wp-step-name{font-size:0.9rem;font-weight:700;color:var(--navy)}
+.wp-step-why{font-size:0.8rem;color:var(--grey-600);line-height:1.5;margin-top:2px}
+.wp-step-link{display:inline-block;margin-top:6px;font-size:0.78rem;font-weight:600;color:var(--teal);text-decoration:none;border-bottom:1px solid transparent;transition:border-color 0.2s}
+.wp-step-link:hover{border-bottom-color:var(--teal)}
+.wp-step-badge{font-size:0.65rem;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:0.05em;margin-left:8px}
+.wp-step-badge.ready{background:rgba(0,196,140,0.1);color:var(--green)}
+.wp-step-badge.template{background:rgba(255,140,66,0.1);color:var(--orange)}
+
+/* ── STAGE VIEW ── */
+.stage-pipeline{display:flex;gap:0;margin-bottom:24px;overflow-x:auto;padding-bottom:8px}
+.stage-pill{padding:10px 18px;font-size:0.78rem;font-weight:600;color:var(--grey-600);cursor:pointer;border:2px solid var(--grey-200);background:var(--white);white-space:nowrap;transition:all 0.2s;position:relative}
+.stage-pill:first-child{border-radius:8px 0 0 8px}
+.stage-pill:last-child{border-radius:0 8px 8px 0}
+.stage-pill:not(:first-child){border-left:none}
+.stage-pill:hover{color:var(--navy);background:var(--grey-50)}
+.stage-pill.active{background:var(--teal);color:var(--white);border-color:var(--teal);z-index:1}
+.stage-pill.active+.stage-pill{border-left-color:var(--teal)}
+.stage-pill .pill-count{font-size:0.65rem;font-weight:700;background:rgba(0,0,0,0.08);padding:1px 6px;border-radius:10px;margin-left:6px}
+.stage-pill.active .pill-count{background:rgba(255,255,255,0.25)}
+
+.stage-tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.stage-tool-card{background:var(--white);border:1px solid var(--grey-200);border-radius:10px;padding:18px;transition:all 0.2s;cursor:pointer}
+.stage-tool-card:hover{border-color:var(--teal);box-shadow:0 4px 16px rgba(0,0,0,0.06);transform:translateY(-2px)}
+.stage-tool-card h4{font-size:0.88rem;font-weight:700;color:var(--navy);margin-bottom:3px;display:flex;align-items:center;gap:6px}
+.stage-tool-card .stc-cat{font-size:0.65rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px}
+.stage-tool-card p{font-size:0.78rem;color:var(--grey-600);line-height:1.5}
+.stage-tool-card .stc-pairs{margin-top:10px;padding-top:10px;border-top:1px solid var(--grey-100);font-size:0.72rem;color:var(--grey-600)}
+.stage-tool-card .stc-pairs strong{color:var(--navy);font-weight:600}
+.stage-tool-card .stc-link{display:inline-block;margin-top:8px;font-size:0.75rem;font-weight:600;color:var(--teal);text-decoration:none}
+
+/* ── TOOL EXPLORER VIEW ── */
+.tool-search-wrap{margin-bottom:20px}
+.tool-search{width:100%;padding:12px 18px 12px 44px;border:2px solid var(--grey-200);border-radius:10px;font-size:0.9rem;background:var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") 14px center no-repeat;transition:border-color 0.2s}
+.tool-search:focus{outline:none;border-color:var(--teal)}
+.tool-explorer-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.te-card{background:var(--white);border:1px solid var(--grey-200);border-radius:10px;padding:18px;transition:all 0.2s}
+.te-card:hover{border-color:var(--teal);box-shadow:0 4px 16px rgba(0,0,0,0.06)}
+.te-card .te-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.te-card h4{font-size:0.88rem;font-weight:700;color:var(--navy)}
+.te-card .te-type{font-size:0.6rem;font-weight:700;padding:3px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:0.06em}
+.te-type.ready{background:rgba(0,196,140,0.1);color:var(--green)}
+.te-type.template{background:rgba(255,140,66,0.1);color:var(--orange)}
+.te-type.reference{background:rgba(124,58,237,0.1);color:var(--purple)}
+.te-card .te-cat{font-size:0.68rem;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px}
+.te-card .te-value{font-size:0.8rem;color:var(--grey-700);line-height:1.5;margin-bottom:10px;font-style:italic}
+.te-card .te-desc{font-size:0.78rem;color:var(--grey-600);line-height:1.5;margin-bottom:10px}
+.te-card .te-pairs{padding-top:10px;border-top:1px solid var(--grey-100);font-size:0.72rem;color:var(--grey-600)}
+.te-card .te-pairs span{display:inline-block;background:var(--grey-100);padding:2px 8px;border-radius:4px;margin:2px 3px 2px 0;font-weight:500;color:var(--grey-700)}
+.te-card .te-link{display:inline-block;margin-top:10px;font-size:0.78rem;font-weight:600;color:var(--teal);text-decoration:none}
+
+/* ── QUICK FIND VIEW ── */
+.qf-question{background:var(--white);border:1px solid var(--grey-200);border-radius:14px;padding:28px;margin-bottom:20px}
+.qf-question h3{font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.qf-options{display:flex;flex-wrap:wrap;gap:10px}
+.qf-opt{padding:10px 18px;border:2px solid var(--grey-200);border-radius:8px;font-size:0.82rem;font-weight:500;color:var(--grey-700);cursor:pointer;transition:all 0.2s;background:var(--white)}
+.qf-opt:hover{border-color:var(--teal);color:var(--navy)}
+.qf-opt.selected{border-color:var(--teal);background:rgba(0,180,216,0.06);color:var(--teal);font-weight:600}
+.qf-results{background:var(--white);border:2px solid var(--teal);border-radius:14px;padding:28px;display:none}
+.qf-results.visible{display:block;animation:fadeSlide 0.4s ease}
+.qf-results h3{font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:16px}
+.qf-result-card{display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--grey-100)}
+.qf-result-card:last-child{border-bottom:none}
+.qf-result-rank{width:28px;height:28px;border-radius:50%;background:var(--teal);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;flex-shrink:0}
+.qf-result-info h4{font-size:0.88rem;font-weight:700;color:var(--navy);margin-bottom:2px}
+.qf-result-info p{font-size:0.78rem;color:var(--grey-600);line-height:1.4}
+.qf-result-info a{font-size:0.75rem;font-weight:600;color:var(--teal);text-decoration:none}
+
+/* ── UTILITY ── */
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:0.82rem;font-weight:600;color:var(--teal);cursor:pointer;margin-bottom:16px;text-decoration:none}
+.back-link:hover{color:var(--navy)}
+.empty-state{text-align:center;padding:40px;color:var(--grey-600);font-size:0.9rem}
+</style>
+</head>
+<body>
+
+<!-- PASSWORD GATE -->
+<div id="nerdio-auth-overlay">
+<div class="nerdio-auth-box">
+<div class="auth-icon"><svg fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+<h2>EMEA Nerdio Toolbox</h2>
+<p>Enter the team password to continue</p>
+<form id="nerdio-auth-form" onsubmit="return nerdioAuth()">
+<input type="password" id="nerdio-auth-pwd" placeholder="Team password" autofocus>
+<button type="submit" class="auth-btn">Unlock Toolbox</button>
+<div class="auth-error" id="nerdio-auth-error">Incorrect password. Please try again.</div>
+</form>
+<div class="auth-footer">Nerdio EMEA &mdash; Internal Use Only</div>
+</div>
+</div>
+
+<!-- NERDIO BRAND BAR -->
+<div class="nerdio-brand-bar">
+<a class="nerdio-brand-logo" href="https://getnerdio.com" target="_blank">
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNDAgNjAiIGZpbGw9Im5vbmUiPjx0ZXh0IHg9IjAiIHk9IjQ1IiBmb250LWZhbWlseT0iJ1NlZ29lIFVJJywgc2Fucy1zZXJpZiIgZm9udC1zaXplPSI0MiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0id2hpdGUiIGxldHRlci1zcGFjaW5nPSItMSI+bmVyZGlvPC90ZXh0Pjwvc3ZnPg==" alt="Nerdio">
+<div class="nerdio-brand-divider"></div>
+<span class="nerdio-brand-tool-name">Toolbox Navigator</span>
+</a>
+<a class="nerdio-brand-home" href="../EMEA-Nerdio-Toolbox.html">
+<svg viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>
+Toolbox Home
+</a>
+</div>
+
+<!-- HEADER -->
+<div class="header" id="mainApp" style="display:none">
+  <div class="header-inner">
+    <h1>Toolbox <span>Navigator</span></h1>
+    <p>Find the right tools, in the right order, for whatever you're working on. Four ways in — pick whichever fits.</p>
+    <div class="header-stats">
+      <div class="hs-item"><div class="hs-num">32</div><div class="hs-label">Tools</div></div>
+      <div class="hs-item"><div class="hs-num">8</div><div class="hs-label">Scenarios</div></div>
+      <div class="hs-item"><div class="hs-num">7</div><div class="hs-label">Sales Stages</div></div>
+      <div class="hs-item"><div class="hs-num">17</div><div class="hs-label">Templates</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODE TABS -->
+<div class="mode-bar" id="modeBar" style="display:none">
+  <div class="mode-inner">
+    <div class="mode-tab active" data-mode="scenarios"><span class="tab-icon">&#127919;</span> By Scenario</div>
+    <div class="mode-tab" data-mode="stages"><span class="tab-icon">&#128200;</span> By Sales Stage</div>
+    <div class="mode-tab" data-mode="explorer"><span class="tab-icon">&#128270;</span> Tool Explorer</div>
+    <div class="mode-tab" data-mode="quickfind"><span class="tab-icon">&#9889;</span> Quick Find</div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main" id="mainContent" style="display:none">
+
+<!-- ════════ VIEW 1: SCENARIOS ════════ -->
+<div class="view active" id="view-scenarios">
+  <p style="font-size:0.88rem;color:var(--grey-600);margin-bottom:18px">Pick a scenario and see the recommended tool workflow — what to use, in what order, and why.</p>
+  <div class="scenario-grid" id="scenarioGrid"></div>
+  <div class="workflow-path" id="workflowPath">
+    <div class="back-link" onclick="closeWorkflow()">&larr; Back to scenarios</div>
+    <div class="wp-title" id="wpTitle"></div>
+    <div class="wp-desc" id="wpDesc"></div>
+    <div class="wp-steps" id="wpSteps"></div>
+  </div>
+</div>
+
+<!-- ════════ VIEW 2: SALES STAGES ════════ -->
+<div class="view" id="view-stages">
+  <p style="font-size:0.88rem;color:var(--grey-600);margin-bottom:18px">Tools mapped to each stage of the sales cycle. Click a stage to see what's available and what pairs well together.</p>
+  <div class="stage-pipeline" id="stagePipeline"></div>
+  <div class="stage-tools" id="stageTools"></div>
+</div>
+
+<!-- ════════ VIEW 3: TOOL EXPLORER ════════ -->
+<div class="view" id="view-explorer">
+  <p style="font-size:0.88rem;color:var(--grey-600);margin-bottom:18px">Browse every tool with its value statement and connections. Search by name, category, or keyword.</p>
+  <div class="tool-search-wrap"><input type="text" class="tool-search" id="toolSearch" placeholder="Search tools by name, category, or keyword..."></div>
+  <div class="tool-explorer-grid" id="explorerGrid"></div>
+</div>
+
+<!-- ════════ VIEW 4: QUICK FIND ════════ -->
+<div class="view" id="view-quickfind">
+  <p style="font-size:0.88rem;color:var(--grey-600);margin-bottom:18px">Answer a couple of questions and get personalised tool recommendations.</p>
+  <div class="qf-question">
+    <h3>&#129300; What are you trying to do?</h3>
+    <div class="qf-options" id="qfGoal"></div>
+  </div>
+  <div class="qf-question" id="qfQ2" style="display:none">
+    <h3>&#127919; Any specific context?</h3>
+    <div class="qf-options" id="qfContext"></div>
+  </div>
+  <div class="qf-results" id="qfResults">
+    <h3>&#9989; Recommended tools for you</h3>
+    <div id="qfResultsList"></div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+// ══════ PASSWORD ══════
+var _AUTH_KEY='nerdio-emea-auth',_AUTH_HASH='8d4fc32913788be20e3ed56e0e9598b490bc0a8023036548b73715eca41d80d0';
+async function _authSha(t){var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,'0')}).join('')}
+function unlock(){document.getElementById('nerdio-auth-overlay').classList.add('hidden');document.getElementById('mainApp').style.display='';document.getElementById('modeBar').style.display='';document.getElementById('mainContent').style.display='';initApp()}
+window.nerdioAuth=async function(){var p=document.getElementById('nerdio-auth-pwd').value,h=await _authSha(p);if(h===_AUTH_HASH){sessionStorage.setItem(_AUTH_KEY,'true');unlock()}else{document.getElementById('nerdio-auth-error').style.display='block';document.getElementById('nerdio-auth-pwd').value='';document.getElementById('nerdio-auth-pwd').focus()}return false};
+
+// ══════ TOOL DATABASE ══════
+const TOOLS=[
+  // DATA SAFETY
+  {id:'pseudonym',name:'Pseudonym Manager',cat:'Data Safety',type:'ready',icon:'&#128274;',
+   value:'Protects customer data before it touches any AI tool — the one non-negotiable step.',
+   desc:'Auto-detect companies, people, emails, phones. Four modes: Text/File pseudonymise & reverse. Upload Excel/CSV/Word files.',
+   link:'universal-tools/pseudonym-manager.html',
+   pairs:['discovery-engine','account-intel','roi-calc','ms-briefing'],
+   tags:'pseudonym anonymise data safety gdpr privacy compliance'},
+  // DISCOVERY
+  {id:'discovery-engine',name:'Discovery Question Engine',cat:'Discovery',type:'ready',icon:'&#128270;',
+   value:'Turns generic discovery calls into signal-driven, structured conversations.',
+   desc:'Signal-driven discovery questions mapped to Nerdio use cases. Scenario-based chains with follow-ups.',
+   link:'universal-tools/discovery-engine.html',
+   pairs:['estate-wb','user-wb','nme-guide','fit-qualifier','pseudonym'],
+   tags:'discovery questions signals use-cases'},
+  {id:'estate-wb',name:'Estate Discovery Whiteboard',cat:'Discovery',type:'ready',icon:'&#128466;',
+   value:'Gives you a live, visual map of the customer estate during the call.',
+   desc:'Drag-and-drop components for VDI, RDS, cloud, endpoint, identity layers.',
+   link:'universal-tools/estate-whiteboard.html',
+   pairs:['discovery-engine','user-wb','euc-wb','citrix-avd'],
+   tags:'whiteboard infrastructure mapping estate visual'},
+  {id:'user-wb',name:'User & Ops Discovery',cat:'Discovery',type:'ready',icon:'&#128101;',
+   value:'Maps the people side — who uses virtual desktops, why, and what hurts.',
+   desc:'Drag-and-drop persona cards to build a picture of user types, pain points, workflows.',
+   link:'universal-tools/user-whiteboard.html',
+   pairs:['discovery-engine','estate-wb','fit-qualifier'],
+   tags:'whiteboard users personas workflows operations'},
+  {id:'nme-guide',name:'NME Interactive Guide',cat:'Discovery',type:'ready',icon:'&#128218;',
+   value:'Shows exactly which NME capabilities solve each customer problem — filterable by tier.',
+   desc:'Interactive capabilities guide. Filter by tier (Core, Premium, W365, Physical) with use case mapping.',
+   link:'universal-tools/nme-interactive-guide.html',
+   pairs:['discovery-engine','fit-qualifier','pov-builder','licensing-nav'],
+   tags:'nme capabilities interactive guide product tiers'},
+  {id:'fit-qualifier',name:'Nerdio Fit Qualifier',cat:'Discovery',type:'ready',icon:'&#9989;',
+   value:'Quick go/no-go signal on whether an account is worth pursuing.',
+   desc:'Scoring across organisational, technical, and business dimensions with clear qualification signals.',
+   link:'universal-tools/nerdio-fit-qualifier.html',
+   pairs:['discovery-engine','nme-guide','sdr-pipeline','account-intel'],
+   tags:'qualification assessment scoring fit'},
+  {id:'euc-wb',name:'EUC Workspace Whiteboard',cat:'Discovery',type:'ready',icon:'&#127912;',
+   value:'Design and visualise EUC architectures collaboratively with the customer.',
+   desc:'Drag-and-drop workspace architecture components to build environment diagrams.',
+   link:'universal-tools/euc-whiteboard.html',
+   pairs:['estate-wb','vdi-compare','citrix-avd'],
+   tags:'euc whiteboard workspace architecture design'},
+  {id:'ms-positioning',name:'Microsoft Positioning Guide',cat:'Discovery',type:'ready',icon:'&#127386;',
+   value:'Know exactly what motivates each MS role before the co-sell call.',
+   desc:'Role-by-role guide: AE, ATU, Cloud Specialist motivations, co-sell angles, alignment strategies.',
+   link:'universal-tools/ms-positioning.html',
+   pairs:['ms-briefing','w365-matrix','partner-cosell','licensing-nav'],
+   tags:'microsoft positioning co-sell AE ATU alignment'},
+  // PIPELINE
+  {id:'sdr-pipeline',name:'SDR Pipeline Engine',cat:'Pipeline',type:'ready',icon:'&#128640;',
+   value:'Structured prospecting playbooks so SDRs stop guessing and start qualifying.',
+   desc:'Heat scoring, prospecting playbooks, qualification checklists, AE handoff workflows.',
+   link:'universal-tools/sdr-pipeline.html',
+   pairs:['outreach','fit-qualifier','discovery-engine','customer-journeys'],
+   tags:'sdr prospecting pipeline qualification handoff'},
+  {id:'outreach',name:'Outreach Sequences',cat:'Pipeline',type:'ready',icon:'&#9993;',
+   value:'Multi-channel outreach templates that feel personal, not automated.',
+   desc:'Email, LinkedIn, and call scripts personalised by signal type, vertical, and buying stage.',
+   link:'universal-tools/outreach.html',
+   pairs:['sdr-pipeline','customer-journeys','pseudonym'],
+   tags:'outreach email sequences cadence multi-channel'},
+  {id:'customer-journeys',name:'Customer Journey Models',cat:'Pipeline',type:'ready',icon:'&#128739;',
+   value:'See the full customer lifecycle and know which stage triggers which motion.',
+   desc:'First touch through expansion. Maturity models, evolution timelines, stage triggers.',
+   link:'universal-tools/journeys.html',
+   pairs:['sdr-pipeline','outreach','renewal-tracker'],
+   tags:'journey customer lifecycle maturity model'},
+  {id:'renewal-tracker',name:'Renewal Tracker',cat:'Pipeline',type:'ready',icon:'&#128197;',
+   value:'Never miss a renewal date or let pipeline go dark.',
+   desc:'Track renewal dates, pipeline status, partner involvement, and PoV status.',
+   link:'universal-tools/renewal-tracker.html',
+   pairs:['customer-journeys','account-intel','roi-calc'],
+   tags:'renewal tracker pipeline management dates accounts'},
+  {id:'ms-briefing',name:'MS Seller Briefing Generator',cat:'Pipeline',type:'ready',icon:'&#128196;',
+   value:'Generate a polished MS seller briefing in 2 minutes instead of 30.',
+   desc:'Input MS seller name, account, co-sell ask — get a structured briefing document.',
+   link:'universal-tools/ms-seller-briefing.html',
+   pairs:['ms-positioning','w365-matrix','partner-cosell','pseudonym'],
+   tags:'microsoft seller briefing co-sell AE ATU PDM'},
+  {id:'partner-cosell',name:'Partner Co-sell Generator',cat:'Pipeline',type:'ready',icon:'&#129309;',
+   value:'Structured partner briefings so joint selling actually works.',
+   desc:'Partner-specific co-sell docs with contacts, deal context, and joint motion frameworks.',
+   link:'universal-tools/partner-cosell.html',
+   pairs:['ms-briefing','ms-positioning','pseudonym'],
+   tags:'partner co-sell briefing channel'},
+  // COMPETITIVE
+  {id:'battlecards',name:'Competitive Battlecards',cat:'Competitive',type:'ready',icon:'&#9876;',
+   value:'Kill shots, landmines, and trap questions for every major competitor.',
+   desc:'Side-by-side intelligence vs Citrix, VMware/Omnissa, Native Azure. Proof points included.',
+   link:'universal-tools/battlecards.html',
+   pairs:['scenario-sim','objection-handler','citrix-avd','vdi-compare'],
+   tags:'battlecards citrix vmware omnissa competitive'},
+  {id:'licensing-nav',name:'Licensing Navigator',cat:'Competitive',type:'ready',icon:'&#128273;',
+   value:'Decode Microsoft licensing so you can position Nerdio in the gaps.',
+   desc:'E3 vs E5, EMS, Intune, Azure Hybrid Benefit. Interactive calculator.',
+   link:'universal-tools/licensing-navigator.html',
+   pairs:['ms-positioning','w365-matrix','tco-compare','nme-guide'],
+   tags:'licensing microsoft E3 E5 intune azure'},
+  {id:'scenario-sim',name:'Scenario Simulator',cat:'Competitive',type:'ready',icon:'&#127918;',
+   value:'Practice handling competitive objections before the customer call.',
+   desc:'Pick a competitor and objection — get rebuttals, proof points, and trap questions.',
+   link:'universal-tools/scenario-simulator.html',
+   pairs:['battlecards','objection-handler','citrix-avd'],
+   tags:'scenario competitor objections rebuttals simulator'},
+  {id:'citrix-avd',name:'Citrix-to-AVD Assessment',cat:'Competitive',type:'ready',icon:'&#128203;',
+   value:'Turns "thinking about migrating from Citrix" into a structured, scoreable assessment.',
+   desc:'Technical readiness, cost analysis, ROI projection for Citrix migration conversations.',
+   link:'universal-tools/citrix-to-avd-assessment.html',
+   pairs:['battlecards','vdi-compare','tco-compare','roi-calc'],
+   tags:'citrix avd migration assessment roi readiness'},
+  {id:'vdi-compare',name:'VDI Platform Comparison',cat:'Competitive',type:'ready',icon:'&#128202;',
+   value:'Side-by-side platform facts — no spin, just clarity for customer decisions.',
+   desc:'Citrix vs AVD vs W365: architecture, features, cost, management side-by-side.',
+   link:'universal-tools/citrix-avd-w365-comparison.html',
+   pairs:['battlecards','citrix-avd','tco-compare','licensing-nav'],
+   tags:'citrix avd w365 comparison platform vdi'},
+  {id:'w365-matrix',name:'W365 Use Case Matrix',cat:'Competitive',type:'ready',icon:'&#9729;',
+   value:'25 use cases mapped to W365 value pillars — perfect for ATU co-sell hooks.',
+   desc:'Enterprise use cases with licensing fit, expansion plays, and MS co-sell discovery hooks.',
+   link:'universal-tools/w365-use-case-matrix.html',
+   pairs:['ms-positioning','ms-briefing','licensing-nav','nme-guide'],
+   tags:'w365 windows 365 use case matrix microsoft co-sell'},
+  {id:'holiday-pos',name:'Holiday Positioning',cat:'Competitive',type:'ready',icon:'&#127796;',
+   value:'Fresh, memorable angles for when standard positioning feels stale.',
+   desc:'Creative seasonal/metaphor approach to Nerdio value storytelling.',
+   link:'universal-tools/holiday-positioning.html',
+   pairs:['travel-guide','battlecards','outreach'],
+   tags:'holiday positioning creative storytelling'},
+  {id:'cua-pos',name:'AI Agent Positioning (CUA)',cat:'Competitive',type:'ready',icon:'&#129302;',
+   value:'Position Nerdio\'s AI agent capabilities before competitors own the narrative.',
+   desc:'CUA use cases, architecture, competitive differentiation, Microsoft alignment.',
+   link:'universal-tools/cua-positioning.html',
+   pairs:['nme-guide','battlecards','ms-positioning'],
+   tags:'cua ai agent copilot computer use positioning'},
+  {id:'objection-handler',name:'Objection Handler',cat:'Competitive',type:'ready',icon:'&#128172;',
+   value:'Searchable library so you never get stuck on an objection mid-call.',
+   desc:'Common objections with structured rebuttals, proof points, and conversation pivots.',
+   link:'universal-tools/objection-handler.html',
+   pairs:['battlecards','scenario-sim','discovery-engine'],
+   tags:'objection handler rebuttals talk tracks responses'},
+  // COMMERCIAL
+  {id:'roi-calc',name:'ROI Calculator',cat:'Commercial',type:'ready',icon:'&#128176;',
+   value:'Turns "Nerdio saves money" from a claim into a customer-specific projection.',
+   desc:'Compute, licensing, operational, and auto-scaling savings projections.',
+   link:'universal-tools/roi-calculator.html',
+   pairs:['tco-compare','pov-builder','citrix-avd','licensing-nav'],
+   tags:'roi calculator savings projection cost'},
+  {id:'tco-compare',name:'TCO Comparison Builder',cat:'Commercial',type:'ready',icon:'&#128178;',
+   value:'Multi-year cost comparison that makes the business case undeniable.',
+   desc:'Citrix vs Nerdio vs Native Azure over 1, 3, and 5 years. All cost dimensions.',
+   link:'universal-tools/tco-comparison.html',
+   pairs:['roi-calc','citrix-avd','vdi-compare','licensing-nav'],
+   tags:'tco comparison citrix vmware azure total cost'},
+  {id:'pov-builder',name:'PoV Builder',cat:'Commercial',type:'ready',icon:'&#127942;',
+   value:'Structured evaluation plans that guide PoVs toward a win, not just a test.',
+   desc:'Seat counts, timelines, platform focus, success criteria. Complete PoV framework.',
+   link:'universal-tools/pov-builder.html',
+   pairs:['roi-calc','nme-guide','fit-qualifier'],
+   tags:'pov proof of value builder evaluation trial success'},
+  // ENABLEMENT
+  {id:'enablement-hub',name:'Enablement Hub',cat:'Enablement',type:'ready',icon:'&#128218;',
+   value:'One page with every resource link — stop searching SharePoint.',
+   desc:'Centralised directory: sales materials, partner assets, training, documentation.',
+   link:'universal-tools/enablement-hub.html',
+   pairs:['getting-started','toolbox-pres'],
+   tags:'enablement resources links directory'},
+  {id:'getting-started',name:'Getting Started Guide',cat:'Enablement',type:'ready',icon:'&#128161;',
+   value:'New to the toolbox? Start here. You\'ll be using tools within 5 minutes.',
+   desc:'Onboarding walkthrough and how-to for every tool.',
+   link:'universal-tools/getting-started.html',
+   pairs:['enablement-hub','pseudonym','discovery-engine','toolbox-pres'],
+   tags:'getting started onboarding guide walkthrough'},
+  {id:'win-loss',name:'Win/Loss Library',cat:'Enablement',type:'ready',icon:'&#127942;',
+   value:'Real deal stories with lessons learned — proof that works in customer conversations.',
+   desc:'Filter by industry, competitor displaced, deal size. Quotes and story arcs.',
+   link:'universal-tools/win-loss-library.html',
+   pairs:['battlecards','objection-handler','outreach'],
+   tags:'win loss case study library stories evidence'},
+  {id:'travel-guide',name:'NerdioTravel Guide',cat:'Enablement',type:'ready',icon:'&#9992;',
+   value:'A fun, memorable way to walk prospects through VDI migration — they won\'t forget this one.',
+   desc:'Travel-themed interactive guide: destinations, departures, budgets, itineraries, boarding pass.',
+   link:'universal-tools/nerdio-travel-guide.html',
+   pairs:['holiday-pos','citrix-avd','vdi-compare','discovery-engine'],
+   tags:'travel guide migration journey positioning creative'},
+  {id:'toolbox-pres',name:'Toolbox Presentation',cat:'Enablement',type:'ready',icon:'&#127916;',
+   value:'9-slide deck to introduce the toolbox to the team — ready for your next team call.',
+   desc:'What\'s in the toolbox, how to use it, data safety, team contributions.',
+   link:'universal-tools/emea-toolbox-presentation.html',
+   pairs:['getting-started','enablement-hub'],
+   tags:'presentation slides overview toolbox intro'},
+  // TEMPLATES (key ones)
+  {id:'account-intel',name:'Account Intelligence',cat:'Templates',type:'template',icon:'&#128200;',
+   value:'Territory-wide ranking so you focus on the right accounts first.',
+   desc:'Fit scoring, signal tracking, 6-tab deep-dive. Upload your territory list.',
+   link:'template-tools/BUILD-Account-Intelligence.md',
+   pairs:['pseudonym','fit-qualifier','territory-heatmap','icp-profiler'],
+   tags:'account intelligence territory scoring ranking'},
+  {id:'icp-profiler',name:'ICP Profiler',cat:'Templates',type:'template',icon:'&#127919;',
+   value:'Define your ideal customer, then auto-rank your territory against it.',
+   desc:'Weighted criteria profiles. Needs your account list with firmographic data.',
+   link:'template-tools/BUILD-ICP-Profiler.md',
+   pairs:['account-intel','territory-heatmap','fit-qualifier'],
+   tags:'icp ideal customer profile weighted scoring'},
+  {id:'territory-heatmap',name:'Territory Heatmap',cat:'Templates',type:'template',icon:'&#128506;',
+   value:'Visual territory map showing where to hunt — colour-coded by opportunity score.',
+   desc:'Geographic and segment heatmap. Needs your territory data.',
+   link:'template-tools/BUILD-Territory-Heatmap.md',
+   pairs:['account-intel','icp-profiler','pseudonym'],
+   tags:'territory heatmap geographic segment visual'},
+  {id:'meeting-prep',name:'Meeting Prep Briefer',cat:'Templates',type:'template',icon:'&#128203;',
+   value:'Walk into every meeting with a one-page brief — no more last-minute scrambling.',
+   desc:'Account context, stakeholders, agenda, talk tracks. Upload account data.',
+   link:'template-tools/BUILD-Meeting-Prep-Briefer.md',
+   pairs:['pseudonym','discovery-engine','account-intel'],
+   tags:'meeting prep briefer stakeholders agenda'},
+  {id:'deal-dashboard',name:'Deal Dashboard',cat:'Templates',type:'template',icon:'&#128202;',
+   value:'Single view of every active deal — health, next steps, blockers.',
+   desc:'Pipeline dashboard with deal stages, health scoring, action items.',
+   link:'template-tools/BUILD-Deal-Dashboard.md',
+   pairs:['renewal-tracker','account-intel','pov-builder'],
+   tags:'deal dashboard pipeline tracking health'},
+  {id:'qual-scorecard',name:'Qualification Scorecard',cat:'Templates',type:'template',icon:'&#128221;',
+   value:'Consistent deal qualification so nothing falls through the cracks.',
+   desc:'MEDDPICC-aligned scoring framework. Upload your deal data.',
+   link:'template-tools/BUILD-Qualification-Scorecard.md',
+   pairs:['fit-qualifier','deal-dashboard','discovery-engine'],
+   tags:'qualification scorecard MEDDPICC scoring'}
+];
+
+// ══════ SCENARIOS ══════
+const SCENARIOS=[
+  {id:'new-account',icon:'&#127793;',title:'New Account Research',
+   desc:'Landed a new account? Here\'s the sequence from first look to first call.',
+   steps:[
+     {tool:'pseudonym',why:'Pseudonymise all account data before any AI work. Non-negotiable first step.'},
+     {tool:'account-intel',why:'Build a deep account profile — fit scoring, signals, competitive landscape.'},
+     {tool:'icp-profiler',why:'Check this account against your ICP. Is it worth the effort?'},
+     {tool:'discovery-engine',why:'Prepare signal-driven discovery questions tailored to their likely use cases.'},
+     {tool:'estate-wb',why:'Use during the discovery call to map their current estate live.'},
+     {tool:'fit-qualifier',why:'Score the call: is this a real opportunity or a time sink?'},
+     {tool:'nme-guide',why:'Match their problems to specific NME capabilities — build your pitch.'}
+   ]},
+  {id:'citrix-deal',icon:'&#9876;',title:'Competitive Displacement (Citrix)',
+   desc:'Going head-to-head with Citrix? This sequence arms you from research to ROI.',
+   steps:[
+     {tool:'pseudonym',why:'Clean the data before running any competitive analysis through AI.'},
+     {tool:'citrix-avd',why:'Run the Citrix-to-AVD migration assessment — get a structured readiness score.'},
+     {tool:'battlecards',why:'Review kill shots, landmines, and trap questions for Citrix.'},
+     {tool:'vdi-compare',why:'Prepare the side-by-side platform comparison for stakeholder conversations.'},
+     {tool:'scenario-sim',why:'Practice handling Citrix objections before the customer call.'},
+     {tool:'objection-handler',why:'Load your rebuttals for the most common Citrix-loyal pushback.'},
+     {tool:'tco-compare',why:'Build the multi-year cost comparison that makes the CFO case.'},
+     {tool:'roi-calc',why:'Quantify the savings to close the business case.'}
+   ]},
+  {id:'ms-cosell',icon:'&#127386;',title:'Microsoft Co-Sell Motion',
+   desc:'Working a deal with Microsoft? Get the co-sell assets right.',
+   steps:[
+     {tool:'ms-positioning',why:'Understand what motivates each MS role before the call.'},
+     {tool:'w365-matrix',why:'Map the customer\'s use cases to W365 value pillars and MS discovery hooks.'},
+     {tool:'ms-briefing',why:'Generate the MS seller briefing doc — tailored to the AE/ATU/CSA.'},
+     {tool:'licensing-nav',why:'Decode the customer\'s Microsoft licensing to position Nerdio in the gaps.'},
+     {tool:'partner-cosell',why:'If a partner is involved, build their co-sell briefing too.'},
+     {tool:'pov-builder',why:'Structure the PoV plan with MS alignment baked in.'}
+   ]},
+  {id:'build-pipe',icon:'&#128640;',title:'Building Pipeline',
+   desc:'Need to fill the funnel? Prospecting, outreach, and pipeline management.',
+   steps:[
+     {tool:'pseudonym',why:'Pseudonymise your territory list before any AI-powered research.'},
+     {tool:'territory-heatmap',why:'Visualise where the opportunities cluster in your territory.'},
+     {tool:'sdr-pipeline',why:'Use the heat scoring and prospecting playbooks to prioritise.'},
+     {tool:'outreach',why:'Build multi-channel outreach sequences tailored to each signal.'},
+     {tool:'customer-journeys',why:'Understand where each prospect sits in the buying journey.'},
+     {tool:'renewal-tracker',why:'Track everything — dates, partners, status — in one place.'}
+   ]},
+  {id:'deal-close',icon:'&#127942;',title:'Progressing a Deal to Close',
+   desc:'Deal is alive — now build the commercial case and drive the evaluation.',
+   steps:[
+     {tool:'discovery-engine',why:'Deepen discovery — make sure you haven\'t missed any use cases.'},
+     {tool:'nme-guide',why:'Map their requirements to specific NME capabilities and tiers.'},
+     {tool:'pov-builder',why:'Structure the PoV with success criteria that align to their priorities.'},
+     {tool:'roi-calc',why:'Build the customer-specific ROI projection.'},
+     {tool:'tco-compare',why:'Show the multi-year cost comparison against their current platform.'},
+     {tool:'win-loss',why:'Find case studies from similar deals to build confidence.'},
+     {tool:'objection-handler',why:'Prepare for last-minute objections from procurement or IT.'}
+   ]},
+  {id:'qbr-prep',icon:'&#128202;',title:'QBR / Account Review Prep',
+   desc:'Preparing for a quarterly review or account planning session.',
+   steps:[
+     {tool:'pseudonym',why:'Clean account data before feeding into AI for analysis.'},
+     {tool:'account-intel',why:'Refresh the account intelligence with latest signals and scoring.'},
+     {tool:'deal-dashboard',why:'Build a visual dashboard of all active deals and health status.'},
+     {tool:'renewal-tracker',why:'Check renewal dates and flag any at-risk accounts.'},
+     {tool:'territory-heatmap',why:'Show the territory view — where you\'re winning, where the gaps are.'},
+     {tool:'customer-journeys',why:'Map each key account\'s journey stage and next recommended motion.'}
+   ]},
+  {id:'partner-engage',icon:'&#129309;',title:'Partner Engagement',
+   desc:'Getting a partner aligned and equipped for joint selling.',
+   steps:[
+     {tool:'partner-cosell',why:'Generate a partner-specific co-sell briefing with deal context.'},
+     {tool:'ms-briefing',why:'Build the Microsoft seller briefing for the joint motion.'},
+     {tool:'ms-positioning',why:'Align on which MS roles to target and how to position.'},
+     {tool:'battlecards',why:'Share competitive intelligence the partner can use in their conversations.'},
+     {tool:'nme-guide',why:'Walk the partner through NME capabilities relevant to the deal.'}
+   ]},
+  {id:'onboarding',icon:'&#128161;',title:'New Starter Onboarding',
+   desc:'Just joined the team? Here\'s your fast-track through the toolbox.',
+   steps:[
+     {tool:'getting-started',why:'Start here — walkthrough of every tool and how to use them.'},
+     {tool:'toolbox-pres',why:'9-slide overview of what the toolbox is and why it exists.'},
+     {tool:'pseudonym',why:'Learn the data safety workflow — this is mandatory before using AI.'},
+     {tool:'nme-guide',why:'Get familiar with NME capabilities across all tiers.'},
+     {tool:'discovery-engine',why:'Practice building discovery question chains for different scenarios.'},
+     {tool:'enablement-hub',why:'Bookmark this — it links to every other resource you\'ll need.'},
+     {tool:'battlecards',why:'Review competitive positioning — you\'ll need this on every deal.'}
+   ]}
+];
+
+// ══════ SALES STAGES ══════
+const STAGES=[
+  {id:'research',name:'Research & Planning',tools:['pseudonym','account-intel','icp-profiler','territory-heatmap','meeting-prep']},
+  {id:'prospect',name:'Prospecting',tools:['sdr-pipeline','outreach','customer-journeys','fit-qualifier']},
+  {id:'discovery',name:'Discovery',tools:['discovery-engine','estate-wb','user-wb','euc-wb','nme-guide','fit-qualifier','ms-positioning']},
+  {id:'positioning',name:'Positioning',tools:['battlecards','scenario-sim','objection-handler','citrix-avd','vdi-compare','w365-matrix','holiday-pos','cua-pos','travel-guide']},
+  {id:'commercial',name:'Commercial',tools:['roi-calc','tco-compare','licensing-nav','pov-builder','qual-scorecard']},
+  {id:'cosell',name:'Co-Sell & Partners',tools:['ms-briefing','partner-cosell','ms-positioning','w365-matrix']},
+  {id:'close',name:'Close & Expand',tools:['win-loss','renewal-tracker','deal-dashboard','customer-journeys']}
+];
+
+// ══════ QUICK FIND ══════
+const QF_GOALS=[
+  {id:'research',label:'Research an account',context:['new-to-me','existing','competitive'],tools:{'new-to-me':['pseudonym','account-intel','icp-profiler','discovery-engine','nme-guide'],'existing':['pseudonym','account-intel','renewal-tracker','deal-dashboard'],'competitive':['pseudonym','battlecards','citrix-avd','vdi-compare','scenario-sim']}},
+  {id:'prospect',label:'Build pipeline / prospect',context:['cold-outbound','warm-signals','territory-planning'],tools:{'cold-outbound':['pseudonym','sdr-pipeline','outreach','customer-journeys'],'warm-signals':['sdr-pipeline','discovery-engine','outreach','fit-qualifier'],'territory-planning':['pseudonym','territory-heatmap','icp-profiler','account-intel']}},
+  {id:'compete',label:'Handle a competitive deal',context:['citrix','vmware','native-azure','general'],tools:{'citrix':['citrix-avd','battlecards','vdi-compare','tco-compare','scenario-sim'],'vmware':['battlecards','vdi-compare','tco-compare','objection-handler'],'native-azure':['battlecards','licensing-nav','nme-guide','roi-calc'],'general':['battlecards','objection-handler','scenario-sim','win-loss']}},
+  {id:'cosell',label:'Work with Microsoft / partners',context:['ms-ae','ms-atu','partner'],tools:{'ms-ae':['ms-positioning','ms-briefing','w365-matrix','licensing-nav'],'ms-atu':['ms-positioning','w365-matrix','ms-briefing','nme-guide'],'partner':['partner-cosell','ms-briefing','battlecards','nme-guide']}},
+  {id:'commercial',label:'Build the business case',context:['roi-savings','tco-comparison','pov-evaluation'],tools:{'roi-savings':['roi-calc','tco-compare','licensing-nav'],'tco-comparison':['tco-compare','roi-calc','citrix-avd','vdi-compare'],'pov-evaluation':['pov-builder','nme-guide','roi-calc','win-loss']}},
+  {id:'learn',label:'Learn / get started',context:['new-to-toolbox','new-to-nerdio','upskill-competitive'],tools:{'new-to-toolbox':['getting-started','toolbox-pres','enablement-hub','pseudonym'],'new-to-nerdio':['nme-guide','discovery-engine','battlecards','enablement-hub'],'upskill-competitive':['battlecards','scenario-sim','objection-handler','citrix-avd','vdi-compare']}}
+];
+const QF_CONTEXT_LABELS={'new-to-me':'New account (never touched)','existing':'Existing account / refresh','competitive':'Competitive situation','cold-outbound':'Cold outbound','warm-signals':'Warm signals / inbound','territory-planning':'Territory planning','citrix':'vs Citrix','vmware':'vs VMware / Omnissa','native-azure':'vs Native Azure','general':'General competitive','ms-ae':'Microsoft AE','ms-atu':'Microsoft ATU / CSA','partner':'Channel partner','roi-savings':'ROI & savings story','tco-comparison':'TCO comparison','pov-evaluation':'PoV / evaluation','new-to-toolbox':'New to the toolbox','new-to-nerdio':'New to Nerdio','upskill-competitive':'Upskill on competitive'};
+
+// ══════ HELPERS ══════
+function getTool(id){return TOOLS.find(t=>t.id===id)}
+function catColor(cat){const m={'Data Safety':'var(--green)','Discovery':'var(--teal)','Pipeline':'var(--green)','Competitive':'var(--red)','Commercial':'var(--purple)','Enablement':'#0284C7','Templates':'var(--orange)'};return m[cat]||'var(--teal)'}
+
+// ══════ INIT ══════
+function initApp(){renderScenarios();renderStages();renderExplorer();renderQuickFind();initModeTabs()}
+
+// ── MODE TABS ──
+function initModeTabs(){document.querySelectorAll('.mode-tab').forEach(tab=>{tab.addEventListener('click',()=>{document.querySelectorAll('.mode-tab').forEach(t=>t.classList.remove('active'));tab.classList.add('active');const mode=tab.getAttribute('data-mode');document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById('view-'+mode).classList.add('active')})})}
+
+// ── SCENARIOS ──
+function renderScenarios(){const grid=document.getElementById('scenarioGrid');grid.innerHTML=SCENARIOS.map(s=>`<div class="scenario-card" onclick="showWorkflow('${s.id}')" id="sc-${s.id}"><div class="sc-icon">${s.icon}</div><h3>${s.title}</h3><p>${s.desc}</p><span class="sc-count">${s.steps.length} steps</span></div>`).join('')}
+
+function showWorkflow(id){const s=SCENARIOS.find(x=>x.id===id);if(!s)return;
+document.getElementById('scenarioGrid').style.display='none';
+const wp=document.getElementById('workflowPath');wp.classList.add('visible');wp.style.display='block';
+document.getElementById('wpTitle').innerHTML=s.icon+' '+s.title;
+document.getElementById('wpDesc').textContent=s.desc;
+const stepsEl=document.getElementById('wpSteps');
+stepsEl.innerHTML=s.steps.map((st,i)=>{const t=getTool(st.tool);if(!t)return'';
+const badge=t.type==='ready'?'<span class="wp-step-badge ready">Ready</span>':'<span class="wp-step-badge template">Template</span>';
+const catCl=t.cat.toLowerCase().replace(/[^a-z]/g,'');
+return`<div class="wp-step"><div class="wp-step-num ${catCl==='datasafety'?'essential':catCl==='templates'?'enablement':catCl}">${i+1}</div><div class="wp-step-info"><div class="wp-step-name">${t.name}${badge}</div><div class="wp-step-why">${st.why}</div><a href="${t.link}" class="wp-step-link">Open tool &rarr;</a></div></div>`}).join('')}
+
+function closeWorkflow(){document.getElementById('scenarioGrid').style.display='';document.getElementById('workflowPath').classList.remove('visible');document.getElementById('workflowPath').style.display='none'}
+
+// ── STAGES ──
+let activeStage=0;
+function renderStages(){const pipe=document.getElementById('stagePipeline');pipe.innerHTML=STAGES.map((s,i)=>`<div class="stage-pill${i===0?' active':''}" onclick="selectStage(${i})">${s.name}<span class="pill-count">${s.tools.length}</span></div>`).join('');renderStageTools(0)}
+
+function selectStage(i){activeStage=i;document.querySelectorAll('.stage-pill').forEach((p,j)=>p.classList.toggle('active',j===i));renderStageTools(i)}
+
+function renderStageTools(i){const stage=STAGES[i];const el=document.getElementById('stageTools');el.innerHTML=stage.tools.map(tid=>{const t=getTool(tid);if(!t)return'';const pairs=t.pairs.filter(p=>stage.tools.includes(p)).map(p=>{const pt=getTool(p);return pt?pt.name:''}).filter(Boolean);
+return`<div class="stage-tool-card"><div class="stc-cat" style="color:${catColor(t.cat)}">${t.cat}</div><h4>${t.icon} ${t.name}</h4><p>${t.value}</p>${pairs.length?`<div class="stc-pairs"><strong>Pairs with in this stage:</strong> ${pairs.join(', ')}</div>`:''}<a href="${t.link}" class="stc-link">Open tool &rarr;</a></div>`}).join('');if(!el.innerHTML)el.innerHTML='<div class="empty-state">No tools mapped to this stage yet.</div>'}
+
+// ── EXPLORER ──
+function renderExplorer(filter=''){const el=document.getElementById('explorerGrid');const f=filter.toLowerCase();const filtered=f?TOOLS.filter(t=>(t.name+' '+t.cat+' '+t.tags+' '+t.desc+' '+t.value).toLowerCase().includes(f)):TOOLS;
+el.innerHTML=filtered.map(t=>{const typeCl=t.type==='ready'?'ready':t.type==='template'?'template':'reference';const pairNames=t.pairs.map(p=>{const pt=getTool(p);return pt?`<span>${pt.name}</span>`:''}).filter(Boolean).join('');
+return`<div class="te-card"><div class="te-top"><h4>${t.icon} ${t.name}</h4><span class="te-type ${typeCl}">${t.type}</span></div><div class="te-cat" style="color:${catColor(t.cat)}">${t.cat}</div><div class="te-value">${t.value}</div><div class="te-desc">${t.desc}</div>${pairNames?`<div class="te-pairs"><strong>Pairs well with:</strong><br>${pairNames}</div>`:''}<a href="${t.link}" class="te-link">Open tool &rarr;</a></div>`}).join('');
+if(!el.innerHTML)el.innerHTML='<div class="empty-state">No tools match your search.</div>'}
+document.getElementById('toolSearch').addEventListener('input',e=>renderExplorer(e.target.value));
+
+// ── QUICK FIND ──
+let qfGoalId=null;
+function renderQuickFind(){const el=document.getElementById('qfGoal');el.innerHTML=QF_GOALS.map(g=>`<div class="qf-opt" onclick="selectGoal('${g.id}')" id="qfg-${g.id}">${g.label}</div>`).join('')}
+
+function selectGoal(id){qfGoalId=id;document.querySelectorAll('#qfGoal .qf-opt').forEach(o=>o.classList.toggle('selected',o.id==='qfg-'+id));
+const goal=QF_GOALS.find(g=>g.id===id);const q2=document.getElementById('qfQ2');q2.style.display='block';
+const ctxEl=document.getElementById('qfContext');ctxEl.innerHTML=goal.context.map(c=>`<div class="qf-opt" onclick="selectContext('${c}')" id="qfc-${c}">${QF_CONTEXT_LABELS[c]||c}</div>`).join('');
+document.getElementById('qfResults').classList.remove('visible');document.getElementById('qfResults').style.display='none'}
+
+function selectContext(ctx){document.querySelectorAll('#qfContext .qf-opt').forEach(o=>o.classList.toggle('selected',o.id==='qfc-'+ctx));
+const goal=QF_GOALS.find(g=>g.id===qfGoalId);if(!goal)return;
+const toolIds=goal.tools[ctx]||[];const res=document.getElementById('qfResults');res.style.display='block';res.classList.add('visible');
+const list=document.getElementById('qfResultsList');list.innerHTML=toolIds.map((tid,i)=>{const t=getTool(tid);if(!t)return'';return`<div class="qf-result-card"><div class="qf-result-rank">${i+1}</div><div class="qf-result-info"><h4>${t.icon} ${t.name}</h4><p>${t.value}</p><a href="${t.link}">Open tool &rarr;</a></div></div>`}).join('')}
+
+// ══════ AUTO-UNLOCK IF SESSION VALID ══════
+if(sessionStorage.getItem(_AUTH_KEY)==='true'){unlock()}
+</script>
+</body>
+</html>

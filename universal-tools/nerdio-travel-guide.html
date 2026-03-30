@@ -1,0 +1,2026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NerdioTravel™ — The Holiday Your Legacy VDI Never Told You About</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #042838;
+    --blue: #1E9DB8;
+    --green: #CDFF4E;
+    --purple: #A795C7;
+    --white: #FFFFFF;
+    --cream: #F8F5EF;
+    --sand: #E8E0D0;
+    --gold: #F5C842;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--cream);
+    color: var(--navy);
+    overflow-x: hidden;
+    padding-top: 48px;
+  }
+
+  /* ========== HERO ========== */
+  .hero {
+    background: var(--navy);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg-pattern {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      radial-gradient(circle at 20% 80%, rgba(30,157,184,0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(205,255,78,0.08) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(167,149,199,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Animated sun */
+  .hero-sun {
+    position: absolute;
+    top: -60px;
+    right: 10%;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--gold) 40%, #F59342 100%);
+    box-shadow: 0 0 60px rgba(245,200,66,0.4), 0 0 120px rgba(245,200,66,0.2);
+    animation: sunPulse 4s ease-in-out infinite;
+  }
+
+  @keyframes sunPulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 60px rgba(245,200,66,0.4), 0 0 120px rgba(245,200,66,0.2); }
+    50% { transform: scale(1.05); box-shadow: 0 0 80px rgba(245,200,66,0.6), 0 0 160px rgba(245,200,66,0.3); }
+  }
+
+  /* Passport stamp decorations */
+  .stamp {
+    position: absolute;
+    border-radius: 50%;
+    border: 3px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    transform: rotate(-15deg);
+    opacity: 0.15;
+  }
+
+  .stamp-1 { 
+    width: 120px; height: 120px; left: 5%; top: 15%; 
+    border-color: var(--blue); color: var(--blue);
+    font-size: 9px; text-align: center; transform: rotate(-20deg);
+  }
+  .stamp-2 { 
+    width: 90px; height: 90px; left: 8%; bottom: 20%; 
+    border-color: var(--green); color: var(--green);
+    font-size: 8px; text-align: center; transform: rotate(10deg);
+  }
+  .stamp-3 { 
+    width: 100px; height: 100px; right: 5%; bottom: 25%; 
+    border-color: var(--purple); color: var(--purple);
+    font-size: 8px; text-align: center; transform: rotate(-8deg);
+  }
+
+  .airline-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(30,157,184,0.2);
+    border: 1px solid rgba(30,157,184,0.4);
+    border-radius: 100px;
+    padding: 8px 20px;
+    color: var(--blue);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    animation: fadeInDown 0.6s ease;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(42px, 7vw, 88px);
+    color: var(--white);
+    line-height: 1.05;
+    max-width: 900px;
+    animation: fadeInUp 0.8s ease 0.2s both;
+  }
+
+  .hero h1 span {
+    color: var(--green);
+    font-style: italic;
+  }
+
+  .hero-sub {
+    font-size: clamp(16px, 2vw, 20px);
+    color: rgba(255,255,255,0.65);
+    max-width: 620px;
+    margin: 24px auto 48px;
+    font-weight: 400;
+    line-height: 1.6;
+    animation: fadeInUp 0.8s ease 0.4s both;
+  }
+
+  .hero-cta-group {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeInUp 0.8s ease 0.6s both;
+  }
+
+  .btn-primary {
+    background: var(--green);
+    color: var(--navy);
+    border: none;
+    padding: 16px 36px;
+    border-radius: 100px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 0.5px;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(205,255,78,0.35); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--white);
+    border: 2px solid rgba(255,255,255,0.3);
+    padding: 16px 36px;
+    border-radius: 100px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-secondary:hover { border-color: var(--blue); color: var(--blue); }
+
+  /* Rating strip */
+  .hero-rating {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    animation: fadeInUp 0.8s ease 0.8s both;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .rating-item { text-align: center; }
+  .rating-num { font-size: 28px; font-weight: 800; color: var(--green); }
+  .rating-label { font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1.5px; }
+  .rating-divider { width: 1px; height: 40px; background: rgba(255,255,255,0.1); }
+
+  /* ========== PROGRESS NAV ========== */
+  .journey-nav {
+    background: var(--white);
+    border-bottom: 2px solid var(--sand);
+    position: sticky;
+    top: 48px;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(4,40,56,0.08);
+  }
+
+  .journey-nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .journey-nav-inner::-webkit-scrollbar { display: none; }
+
+  .nav-step {
+    flex: 1;
+    min-width: 140px;
+    padding: 16px 12px;
+    text-align: center;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  .nav-step:hover { background: rgba(30,157,184,0.05); }
+  .nav-step.active { border-bottom-color: var(--blue); }
+  .nav-step.active .nav-step-icon { background: var(--blue); color: white; }
+  .nav-step.active .nav-step-label { color: var(--navy); font-weight: 700; }
+
+  .nav-step-icon {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--sand);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    margin: 0 auto 6px;
+    transition: all 0.3s;
+  }
+
+  .nav-step-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.3;
+  }
+
+  /* ========== SECTIONS ========== */
+  .section {
+    display: none;
+    animation: fadeInUp 0.5s ease;
+  }
+  .section.active { display: block; }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 70px 20px;
+  }
+
+  .section-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5vw, 52px);
+    color: var(--navy);
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  .section-intro {
+    font-size: 18px;
+    color: #555;
+    max-width: 680px;
+    line-height: 1.7;
+    margin-bottom: 50px;
+  }
+
+  /* ========== DESTINATION CARDS ========== */
+  .destinations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  .dest-card {
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(4,40,56,0.08);
+  }
+
+  .dest-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(4,40,56,0.15); }
+  .dest-card.selected { outline: 3px solid var(--green); outline-offset: 2px; }
+
+  .dest-card-header {
+    padding: 32px 28px 24px;
+    position: relative;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .dest-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 100px;
+    backdrop-filter: blur(8px);
+  }
+
+  .dest-rating {
+    display: flex;
+    gap: 3px;
+    margin-bottom: 8px;
+  }
+  .star { color: var(--gold); font-size: 14px; }
+
+  .dest-card-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: white;
+    line-height: 1.2;
+  }
+
+  .dest-card-body {
+    padding: 20px 28px 24px;
+    background: white;
+  }
+
+  .dest-tagline {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+
+  .dest-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .feature-pill {
+    background: rgba(30,157,184,0.1);
+    color: var(--blue);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 100px;
+    border: 1px solid rgba(30,157,184,0.2);
+  }
+
+  .select-indicator {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    opacity: 0;
+    transition: all 0.3s;
+    transform: scale(0.5);
+  }
+  .dest-card.selected .select-indicator { opacity: 1; transform: scale(1); }
+
+  /* Destination color themes */
+  .dest-avd .dest-card-header { background: linear-gradient(135deg, #042838 0%, #1E9DB8 100%); }
+  .dest-w365 .dest-card-header { background: linear-gradient(135deg, #1E9DB8 0%, #A795C7 100%); }
+  .dest-hybrid .dest-card-header { background: linear-gradient(135deg, #042838 0%, #A795C7 100%); }
+  .dest-msp .dest-card-header { background: linear-gradient(135deg, #CDFF4E 0%, #1E9DB8 100%); }
+  .dest-msp .dest-card-title { color: var(--navy); }
+
+  /* ========== DEPARTURE LOUNGE (origin) ========== */
+  .departure-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .departure-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    cursor: pointer;
+    border: 2px solid var(--sand);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .departure-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: var(--sand);
+    transition: all 0.3s;
+  }
+
+  .departure-card:hover { border-color: var(--blue); transform: translateX(4px); }
+  .departure-card.selected { border-color: var(--green); }
+  .departure-card.selected::before { background: var(--green); }
+
+  .dep-icon { font-size: 32px; margin-bottom: 12px; }
+  .dep-title { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .dep-desc { font-size: 12px; color: #777; line-height: 1.5; }
+
+  .dep-pain {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--sand);
+    font-size: 11px;
+    color: #e53e3e;
+    font-weight: 600;
+  }
+
+  /* ========== BUDGET PASSPORT ========== */
+  .budget-section {
+    background: var(--navy);
+    border-radius: 24px;
+    padding: 50px;
+    color: white;
+    margin-bottom: 40px;
+  }
+
+  .budget-title { 
+    font-family: 'Playfair Display', serif;
+    font-size: 36px; color: white; margin-bottom: 8px;
+  }
+  .budget-subtitle { color: rgba(255,255,255,0.6); margin-bottom: 40px; font-size: 15px; }
+
+  .budget-sliders {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  @media (max-width: 600px) { .budget-sliders { grid-template-columns: 1fr; } }
+
+  .budget-slider-group { }
+  .budget-slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .budget-slider-label { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.8); }
+  .budget-slider-value {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--green);
+  }
+
+  .budget-slider-desc { font-size: 11px; color: rgba(255,255,255,0.4); margin-bottom: 10px; }
+
+  input[type="range"] {
+    width: 100%;
+    height: 6px;
+    appearance: none;
+    background: rgba(255,255,255,0.15);
+    border-radius: 100px;
+    outline: none;
+    cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 22px; height: 22px;
+    background: var(--green);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(205,255,78,0.4);
+  }
+
+  .budget-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 32px;
+  }
+
+  .budget-tag {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.7);
+    padding: 8px 16px;
+    border-radius: 100px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .budget-tag:hover, .budget-tag.active {
+    background: var(--green);
+    border-color: var(--green);
+    color: var(--navy);
+    font-weight: 700;
+  }
+
+  /* ========== ITINERARY ========== */
+  .itinerary-timeline {
+    position: relative;
+    padding-left: 50px;
+  }
+
+  .itinerary-timeline::before {
+    content: '';
+    position: absolute;
+    left: 18px; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--blue), var(--purple));
+  }
+
+  .itinerary-stop {
+    position: relative;
+    margin-bottom: 40px;
+    background: white;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 4px 20px rgba(4,40,56,0.06);
+    transition: all 0.3s;
+  }
+  .itinerary-stop:hover { transform: translateX(6px); box-shadow: 0 8px 30px rgba(4,40,56,0.1); }
+
+  .stop-dot {
+    position: absolute;
+    left: -41px;
+    top: 28px;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--navy);
+    border: 3px solid var(--blue);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+
+  .stop-phase {
+    font-size: 10px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--blue); margin-bottom: 6px;
+  }
+
+  .stop-title {
+    font-size: 20px; font-weight: 800; color: var(--navy); margin-bottom: 8px;
+  }
+
+  .stop-desc {
+    font-size: 14px; color: #666; line-height: 1.6; margin-bottom: 16px;
+  }
+
+  .stop-nerdio {
+    background: rgba(30,157,184,0.08);
+    border-left: 3px solid var(--blue);
+    border-radius: 0 12px 12px 0;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--navy);
+    font-weight: 500;
+  }
+
+  .stop-nerdio strong { color: var(--blue); }
+
+  /* ========== CONCIERGE ========== */
+  .concierge-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  .concierge-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(4,40,56,0.07);
+    transition: all 0.3s;
+  }
+  .concierge-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(4,40,56,0.12); }
+
+  .concierge-header {
+    padding: 28px;
+    background: var(--navy);
+    text-align: center;
+    position: relative;
+  }
+
+  .concierge-emoji { font-size: 48px; margin-bottom: 12px; }
+  .concierge-title { font-size: 18px; font-weight: 800; color: white; margin-bottom: 4px; }
+  .concierge-sub { font-size: 12px; color: rgba(255,255,255,0.5); }
+
+  .concierge-body { padding: 24px; }
+  .concierge-list { list-style: none; }
+  .concierge-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--sand);
+    font-size: 13px;
+    color: #555;
+    line-height: 1.5;
+  }
+  .concierge-list li:last-child { border-bottom: none; }
+  .concierge-list li::before { content: '✓'; color: var(--blue); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+  /* ========== REVIEWS ========== */
+  .reviews-section {
+    background: var(--navy);
+    border-radius: 24px;
+    padding: 50px;
+    margin-bottom: 40px;
+  }
+
+  .reviews-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .reviews-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 40px; color: white; margin-bottom: 8px;
+  }
+
+  .reviews-header p { color: rgba(255,255,255,0.5); }
+
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+  }
+
+  .review-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 28px;
+    transition: all 0.3s;
+  }
+  .review-card:hover { background: rgba(255,255,255,0.1); transform: translateY(-4px); }
+
+  .review-stars { display: flex; gap: 4px; margin-bottom: 16px; }
+  .review-stars span { color: var(--gold); font-size: 18px; }
+
+  .review-text {
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.7;
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+
+  .review-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .review-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--navy);
+    flex-shrink: 0;
+  }
+
+  .review-name { font-size: 14px; font-weight: 700; color: white; }
+  .review-role { font-size: 11px; color: rgba(255,255,255,0.4); }
+  .review-company { font-size: 11px; color: var(--blue); font-weight: 600; }
+
+  .review-verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(205,255,78,0.1);
+    border: 1px solid rgba(205,255,78,0.25);
+    color: var(--green);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 100px;
+    margin-top: 6px;
+  }
+
+  /* ========== BOARDING PASS SUMMARY ========== */
+  .boarding-pass {
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(4,40,56,0.15);
+    margin: 0 auto;
+    max-width: 700px;
+  }
+
+  .boarding-top {
+    background: var(--navy);
+    padding: 40px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .boarding-top::after {
+    content: '';
+    position: absolute;
+    right: -40px; top: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(30,157,184,0.1);
+  }
+
+  .boarding-airline {
+    font-size: 11px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--blue); margin-bottom: 24px;
+  }
+
+  .boarding-route {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+
+  .boarding-city { }
+  .boarding-city-code { font-size: 52px; font-weight: 900; line-height: 1; }
+  .boarding-city-name { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; }
+
+  .boarding-arrow {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .boarding-arrow-line {
+    width: 100%;
+    height: 2px;
+    background: rgba(255,255,255,0.2);
+    position: relative;
+  }
+  .boarding-arrow-line::after {
+    content: '✈';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    color: var(--green);
+    background: var(--navy);
+    padding: 0 6px;
+  }
+  .boarding-arrow-text { font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 1px; }
+
+  .boarding-details {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .boarding-detail-label { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 4px; }
+  .boarding-detail-value { font-size: 14px; font-weight: 700; color: white; }
+
+  .boarding-divider {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  .boarding-divider::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    width: 24px; height: 24px;
+    background: var(--cream);
+    border-radius: 50%;
+  }
+  .boarding-divider::after {
+    content: '';
+    position: absolute;
+    right: -24px;
+    width: 24px; height: 24px;
+    background: var(--cream);
+    border-radius: 50%;
+  }
+  .boarding-divider-line {
+    flex: 1;
+    border-top: 2px dashed var(--sand);
+    margin: 0 24px;
+  }
+
+  .boarding-bottom {
+    padding: 32px 40px;
+  }
+
+  .boarding-summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+
+  .boarding-sum-item { }
+  .boarding-sum-label { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: #aaa; margin-bottom: 4px; }
+  .boarding-sum-value { font-size: 15px; font-weight: 700; color: var(--navy); }
+
+  .boarding-cta {
+    background: var(--navy);
+    color: var(--green);
+    border: none;
+    width: 100%;
+    padding: 18px;
+    border-radius: 100px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 1px;
+  }
+  .boarding-cta:hover { background: var(--blue); color: white; transform: translateY(-2px); }
+
+  /* ========== UTILS ========== */
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .highlight-box {
+    background: linear-gradient(135deg, rgba(30,157,184,0.08), rgba(167,149,199,0.08));
+    border: 1px solid rgba(30,157,184,0.2);
+    border-radius: 16px;
+    padding: 28px;
+    margin: 30px 0;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+  @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+
+  .section-divider {
+    text-align: center;
+    padding: 20px 0 50px;
+  }
+  .section-divider span {
+    font-size: 24px;
+    opacity: 0.3;
+  }
+
+  /* Selector pills */
+  .selection-summary {
+    background: rgba(30,157,184,0.1);
+    border: 1px solid rgba(30,157,184,0.25);
+    border-radius: 16px;
+    padding: 16px 24px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .sel-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--blue); }
+  .sel-value { 
+    background: var(--navy); color: white;
+    font-size: 12px; font-weight: 600;
+    padding: 4px 12px; border-radius: 100px;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .budget-sliders { grid-template-columns: 1fr; }
+    .boarding-details { grid-template-columns: 1fr 1fr; }
+    .boarding-summary-grid { grid-template-columns: 1fr; }
+    .budget-section { padding: 30px 24px; }
+    .reviews-section { padding: 30px 20px; }
+    .section-container { padding: 50px 16px; }
+  }
+
+  /* ========== FOOTER STRIP ========== */
+  .footer-strip {
+    background: var(--navy);
+    padding: 40px 20px;
+    text-align: center;
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+  }
+  .footer-strip strong { color: var(--blue); }
+  .footer-strip .footer-logo { font-size: 22px; font-weight: 900; color: white; margin-bottom: 8px; }
+  .footer-strip .footer-logo span { color: var(--green); }
+
+  /* Animated plane */
+  @keyframes flyAcross {
+    0% { transform: translateX(-100px) translateY(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateX(calc(100vw + 100px)) translateY(-40px); opacity: 0; }
+  }
+
+  .flying-plane {
+    position: fixed;
+    bottom: 80px;
+    left: 0;
+    font-size: 28px;
+    pointer-events: none;
+    z-index: 999;
+    animation: flyAcross 8s ease-in-out 2s both;
+  }
+
+</style>
+<style>
+.nerdio-brand-bar{position:fixed;top:0;left:0;right:0;z-index:99999;height:48px;background:linear-gradient(135deg,#0B1B3D 0%,#142952 100%);display:flex;align-items:center;justify-content:space-between;padding:0 20px;box-shadow:0 2px 8px rgba(0,0,0,0.15);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+.nerdio-brand-bar *{box-sizing:border-box;margin:0;padding:0}
+.nerdio-brand-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nerdio-brand-logo img{height:22px;width:auto}
+.nerdio-brand-divider{width:1px;height:20px;background:rgba(255,255,255,0.2)}
+.nerdio-brand-tool-name{color:rgba(255,255,255,0.85);font-size:13px;font-weight:500;letter-spacing:0.3px}
+.nerdio-brand-home{display:flex;align-items:center;gap:6px;color:#00B4D8;text-decoration:none;font-size:13px;font-weight:600;padding:6px 14px;border-radius:6px;background:rgba(0,180,216,0.1);border:1px solid rgba(0,180,216,0.2);transition:all 0.2s}
+.nerdio-brand-home:hover{background:rgba(0,180,216,0.2);border-color:rgba(0,180,216,0.4);color:#FFF}
+.nerdio-brand-home svg{width:14px;height:14px}
+</style>
+</head>
+<body>
+<style>
+#nerdio-auth-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,#0B1B3D 0%,#122a5c 50%,#0B1B3D 100%);z-index:999999;display:flex;align-items:center;justify-content:center;font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
+#nerdio-auth-overlay.hidden{display:none}
+.nerdio-auth-box{background:rgba(255,255,255,0.07);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.15);border-radius:16px;padding:48px 40px;max-width:400px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.4)}
+.nerdio-auth-box .auth-icon{width:64px;height:64px;margin:0 auto 24px;background:linear-gradient(135deg,#00B4D8,#00C48C);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.nerdio-auth-box .auth-icon svg{width:32px;height:32px}
+.nerdio-auth-box h2{color:#fff;font-size:22px;font-weight:600;margin:0 0 8px}
+.nerdio-auth-box p{color:rgba(255,255,255,0.6);font-size:14px;margin:0 0 28px}
+.nerdio-auth-box input[type="password"]{width:100%;padding:14px 16px;border:2px solid rgba(255,255,255,0.15);border-radius:10px;background:rgba(255,255,255,0.08);color:#fff;font-size:16px;outline:none;transition:border-color 0.2s;box-sizing:border-box}
+.nerdio-auth-box input[type="password"]::placeholder{color:rgba(255,255,255,0.35)}
+.nerdio-auth-box input[type="password"]:focus{border-color:#00B4D8}
+.nerdio-auth-box .auth-btn{width:100%;padding:14px;margin-top:16px;background:linear-gradient(135deg,#00B4D8,#00C48C);color:#fff;font-size:16px;font-weight:600;border:none;border-radius:10px;cursor:pointer;transition:opacity 0.2s,transform 0.1s}
+.nerdio-auth-box .auth-btn:hover{opacity:0.9}
+.nerdio-auth-box .auth-btn:active{transform:scale(0.98)}
+.nerdio-auth-box .auth-error{color:#ff6b6b;font-size:13px;margin-top:12px;display:none}
+.nerdio-auth-box .auth-footer{color:rgba(255,255,255,0.3);font-size:12px;margin-top:24px}
+</style>
+<div id="nerdio-auth-overlay">
+<div class="nerdio-auth-box">
+<div class="auth-icon"><svg fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+<h2>EMEA Nerdio Toolbox</h2>
+<p>Enter the team password to continue</p>
+<form id="nerdio-auth-form" onsubmit="return nerdioAuth()">
+<input type="password" id="nerdio-auth-pwd" placeholder="Team password" autofocus>
+<button type="submit" class="auth-btn">Unlock Toolbox</button>
+<div class="auth-error" id="nerdio-auth-error">Incorrect password. Please try again.</div>
+</form>
+<div class="auth-footer">Nerdio EMEA &mdash; Internal Use Only</div>
+</div>
+</div>
+<script>
+(function(){var K='nerdio-emea-auth',H='8d4fc32913788be20e3ed56e0e9598b490bc0a8023036548b73715eca41d80d0';async function s(t){var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,'0')}).join('')}if(sessionStorage.getItem(K)==='true')document.getElementById('nerdio-auth-overlay').classList.add('hidden');window.nerdioAuth=async function(){var p=document.getElementById('nerdio-auth-pwd').value,h=await s(p);if(h===H){sessionStorage.setItem(K,'true');document.getElementById('nerdio-auth-overlay').classList.add('hidden')}else{document.getElementById('nerdio-auth-error').style.display='block';document.getElementById('nerdio-auth-pwd').value='';document.getElementById('nerdio-auth-pwd').focus()}return false}})();
+</script>
+<div class="nerdio-brand-bar">
+<a class="nerdio-brand-logo" href="https://getnerdio.com" target="_blank">
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNDAgNjAiIGZpbGw9Im5vbmUiPjx0ZXh0IHg9IjAiIHk9IjQ1IiBmb250LWZhbWlseT0iJ1NlZ29lIFVJJywgc2Fucy1zZXJpZiIgZm9udC1zaXplPSI0MiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0id2hpdGUiIGxldHRlci1zcGFjaW5nPSItMSI+bmVyZGlvPC90ZXh0Pjwvc3ZnPg==" alt="Nerdio">
+<div class="nerdio-brand-divider"></div>
+<span class="nerdio-brand-tool-name">EMEA Toolbox</span>
+</a>
+<a class="nerdio-brand-home" href="../EMEA-Nerdio-Toolbox.html">
+<svg viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>
+Toolbox Home
+</a>
+</div>
+
+<!-- Flying plane easter egg -->
+<div class="flying-plane">✈️</div>
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <div class="hero-bg-pattern"></div>
+  <div class="hero-sun"></div>
+  
+  <div class="stamp stamp-1">✦ AZURE ✦ VIRTUAL ✦ DESKTOP ✦ PREMIUM ✦</div>
+  <div class="stamp stamp-2">✦ WINDOWS 365 ✦ CLOUD PC ✦</div>
+  <div class="stamp stamp-3">✦ NERDIO ✦ CERTIFIED ✦ DESTINATION ✦</div>
+
+  <div class="airline-badge">
+    ✈ &nbsp; NerdioTravel™ &nbsp; · &nbsp; Est. 2020 &nbsp; · &nbsp; 15,000+ Happy Travellers
+  </div>
+  
+  <h1>The Holiday Your<br><span>Legacy VDI</span><br>Never Told You About</h1>
+  
+  <p class="hero-sub">
+    Pack light. Leave the complexity behind. We're taking you somewhere your end users will actually thank you for — and we'll handle every leg of the journey.
+  </p>
+  
+  <div class="hero-cta-group">
+    <button class="btn-primary" onclick="startJourney()">📍 Plan My Journey</button>
+    <button class="btn-secondary" onclick="scrollToNav()">🗺️ View Destinations</button>
+  </div>
+
+  <div class="hero-rating">
+    <div class="rating-item">
+      <div class="rating-num">15,000+</div>
+      <div class="rating-label">Happy Travellers</div>
+    </div>
+    <div class="rating-divider"></div>
+    <div class="rating-item">
+      <div class="rating-num">50+</div>
+      <div class="rating-label">Countries Visited</div>
+    </div>
+    <div class="rating-divider"></div>
+    <div class="rating-item">
+      <div class="rating-num">3M+</div>
+      <div class="rating-label">Cloud Desktops</div>
+    </div>
+    <div class="rating-divider"></div>
+    <div class="rating-item">
+      <div class="rating-num">★ 4.9</div>
+      <div class="rating-label">Traveller Rating</div>
+    </div>
+    <div class="rating-divider"></div>
+    <div class="rating-item">
+      <div class="rating-num">62</div>
+      <div class="rating-label">Published Reviews</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== STICKY NAV ========== -->
+<nav class="journey-nav" id="journeyNav">
+  <div class="journey-nav-inner">
+    <div class="nav-step active" onclick="showSection('destinations', this)">
+      <div class="nav-step-icon">🌴</div>
+      <div class="nav-step-label">Choose<br>Destination</div>
+    </div>
+    <div class="nav-step" onclick="showSection('departure', this)">
+      <div class="nav-step-icon">🛫</div>
+      <div class="nav-step-label">Departure<br>Lounge</div>
+    </div>
+    <div class="nav-step" onclick="showSection('budget', this)">
+      <div class="nav-step-icon">💳</div>
+      <div class="nav-step-label">Travel<br>Budget</div>
+    </div>
+    <div class="nav-step" onclick="showSection('itinerary', this)">
+      <div class="nav-step-icon">🗓️</div>
+      <div class="nav-step-label">Your<br>Itinerary</div>
+    </div>
+    <div class="nav-step" onclick="showSection('concierge', this)">
+      <div class="nav-step-icon">🛎️</div>
+      <div class="nav-step-label">Concierge<br>Services</div>
+    </div>
+    <div class="nav-step" onclick="showSection('reviews', this)">
+      <div class="nav-step-icon">⭐</div>
+      <div class="nav-step-label">Traveller<br>Reviews</div>
+    </div>
+    <div class="nav-step" onclick="showSection('boardingpass', this)">
+      <div class="nav-step-icon">🎫</div>
+      <div class="nav-step-label">Boarding<br>Pass</div>
+    </div>
+  </div>
+</nav>
+
+<!-- ========== SECTION: DESTINATIONS ========== -->
+<div id="sec-destinations" class="section active">
+<div class="section-container">
+  <div class="section-eyebrow">Step 1 — Choose Your Dream Destination</div>
+  <div class="section-title">Where do you want to <em style="font-style:italic">end up?</em></div>
+  <p class="section-intro">
+    Every great holiday starts with picking the right destination. Not all cloud desktops were created equal — so let's find the paradise that fits your organisation. Click to explore. Select all that apply.
+  </p>
+
+  <div class="destinations-grid">
+
+    <!-- Destination 1: AVD Full -->
+    <div class="dest-card dest-avd" onclick="toggleDest(this, 'avd')" id="dest-avd">
+      <div class="select-indicator">✓</div>
+      <div class="dest-card-header">
+        <div class="dest-badge">Most Popular</div>
+        <div class="dest-rating">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <div class="dest-card-title">Azure Virtual Desktop<br>— The Full Experience</div>
+      </div>
+      <div class="dest-card-body">
+        <p class="dest-tagline">The Maldives of cloud desktops. Maximum flexibility, persistent or pooled, multi-session bliss, and the power of Azure at your fingertips — all without the 5am airport dash.</p>
+        <div class="dest-features">
+          <span class="feature-pill">Flexible scaling</span>
+          <span class="feature-pill">Any workload</span>
+          <span class="feature-pill">GPU-ready</span>
+          <span class="feature-pill">Cost optimised</span>
+          <span class="feature-pill">Citrix replacement</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Destination 2: Windows 365 -->
+    <div class="dest-card dest-w365" onclick="toggleDest(this, 'w365')" id="dest-w365">
+      <div class="select-indicator">✓</div>
+      <div class="dest-card-header">
+        <div class="dest-badge">Predictable Cost</div>
+        <div class="dest-rating">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <div class="dest-card-title">Windows 365<br>— Your Permanent Villa</div>
+      </div>
+      <div class="dest-card-body">
+        <p class="dest-tagline">The Tuscan villa with the same view every time you arrive. Fixed-cost Cloud PCs with no surprise bills — your end users get a personal, always-available Windows experience.</p>
+        <div class="dest-features">
+          <span class="feature-pill">Fixed pricing</span>
+          <span class="feature-pill">Personal Cloud PC</span>
+          <span class="feature-pill">Always-on</span>
+          <span class="feature-pill">Microsoft 365 native</span>
+          <span class="feature-pill">Frontline workers</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Destination 3: Hybrid -->
+    <div class="dest-card dest-hybrid" onclick="toggleDest(this, 'hybrid')" id="dest-hybrid">
+      <div class="select-indicator">✓</div>
+      <div class="dest-card-header">
+        <div class="dest-badge">Best of Both</div>
+        <div class="dest-rating">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <div class="dest-card-title">Hybrid AVD + W365<br>— The World Tour</div>
+      </div>
+      <div class="dest-card-body">
+        <p class="dest-tagline">Why pick one destination? Manage AVD for power users and Windows 365 for the rest — all from a single Nerdio control tower. Multi-stop itinerary, one passport.</p>
+        <div class="dest-features">
+          <span class="feature-pill">Mixed fleet</span>
+          <span class="feature-pill">Single pane</span>
+          <span class="feature-pill">Role-based</span>
+          <span class="feature-pill">Cost flexible</span>
+          <span class="feature-pill">Enterprise scale</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Destination 4: MSP Managed -->
+    <div class="dest-card dest-msp" onclick="toggleDest(this, 'msp')" id="dest-msp">
+      <div class="select-indicator">✓</div>
+      <div class="dest-card-header">
+        <div class="dest-badge">Fully Managed</div>
+        <div class="dest-rating">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <div class="dest-card-title">Managed by a Partner<br>— The All-Inclusive Resort</div>
+      </div>
+      <div class="dest-card-body">
+        <p class="dest-tagline">Pool. Bar. No decisions. Let a Nerdio-powered MSP run your cloud desktop estate while you focus on what matters. Everything included. Breakfast through nightcap.</p>
+        <div class="dest-features">
+          <span class="feature-pill">Fully managed</span>
+          <span class="feature-pill">MSP delivered</span>
+          <span class="feature-pill">OpEx model</span>
+          <span class="feature-pill">24/7 support</span>
+          <span class="feature-pill">Instant scale</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Destination 5: Sovereign/Local -->
+    <div class="dest-card" onclick="toggleDest(this, 'sovereign')" id="dest-sovereign" style="">
+      <div class="select-indicator">✓</div>
+      <div class="dest-card-header" style="background: linear-gradient(135deg, #2D1B4E, #042838);">
+        <div class="dest-badge">Regulated Sectors</div>
+        <div class="dest-rating">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <div class="dest-card-title">AVD on Azure Local<br>— The Private Island</div>
+      </div>
+      <div class="dest-card-body">
+        <p class="dest-tagline">Your own island. No shared infrastructure. Sovereign, on-premises AVD with the Nerdio management layer — for FSI, healthcare, government and defence where data never leaves the shore.</p>
+        <div class="dest-features">
+          <span class="feature-pill">Sovereign data</span>
+          <span class="feature-pill">On-premises</span>
+          <span class="feature-pill">FSI/Gov ready</span>
+          <span class="feature-pill">Azure Arc managed</span>
+          <span class="feature-pill">CUA/AI ready</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Destination 6: Physical Refresh -->
+    <div class="dest-card" onclick="toggleDest(this, 'physical')" id="dest-physical" style="">
+      <div class="select-indicator">✓</div>
+      <div class="dest-card-header" style="background: linear-gradient(135deg, #1a6b3a, #1E9DB8);">
+        <div class="dest-badge">Extend Device Life</div>
+        <div class="dest-rating">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">☆</span>
+        </div>
+        <div class="dest-card-title">Win 10 to Win 11<br>— The Renovation Package</div>
+      </div>
+      <div class="dest-card-body">
+        <p class="dest-tagline">Not ready to leave home? Fair. Let us renovate the place first. Cloud PC can run Windows 11 on legacy hardware — squeezing extra life out of your estate before the big move abroad.</p>
+        <div class="dest-features">
+          <span class="feature-pill">Win 11 via cloud</span>
+          <span class="feature-pill">No hardware refresh</span>
+          <span class="feature-pill">Intune managed</span>
+          <span class="feature-pill">CapEx saver</span>
+          <span class="feature-pill">Bridge migration</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="highlight-box">
+    <strong style="color:var(--navy)">✈ Not sure which destination is right for you?</strong>
+    <p style="margin-top:8px; font-size:14px; color:#555; line-height:1.6">That's what the journey planning is for. Most organisations we work with don't land in one place immediately — they start with a pilot programme, expand incrementally, and manage everything from a single Nerdio control tower. Select all that you're curious about and we'll build you the perfect itinerary.</p>
+  </div>
+
+  <div style="text-align:right">
+    <button class="btn-primary" onclick="showSection('departure', document.querySelectorAll('.nav-step')[1])">Next: Departure Lounge →</button>
+  </div>
+</div>
+</div>
+
+<!-- ========== SECTION: DEPARTURE ========== -->
+<div id="sec-departure" class="section">
+<div class="section-container">
+  <div class="section-eyebrow">Step 2 — Departure Lounge</div>
+  <div class="section-title">Where are you <em style="font-style:italic">flying from?</em></div>
+  <p class="section-intro">
+    Every journey has a starting point. Tell us about your current environment — or select multiple if it's a bit of a mixed bag (most are). No judgement. We've seen some <em>interesting</em> set-ups.
+  </p>
+
+  <div class="departure-grid">
+
+    <div class="departure-card" onclick="toggleDep(this, 'citrix')">
+      <div class="dep-icon">🏛️</div>
+      <div class="dep-title">Citrix DaaS / Virtual Apps & Desktops</div>
+      <div class="dep-desc">On-premises or cloud-hosted Citrix estate — perhaps with a creaking renewal on the horizon and a CFO asking difficult questions.</div>
+      <div class="dep-pain">⚠ Pain points: Cost, complexity, renewal shock, vendor lock-in</div>
+    </div>
+
+    <div class="departure-card" onclick="toggleDep(this, 'vmware')">
+      <div class="dep-icon">🔧</div>
+      <div class="dep-title">VMware Horizon / Omnissa</div>
+      <div class="dep-desc">Legacy VMware Horizon environment — potentially disrupted by the Broadcom acquisition and looking for an exit with a clear timeline.</div>
+      <div class="dep-pain">⚠ Pain points: Broadcom pricing, support uncertainty, strategic pivot</div>
+    </div>
+
+    <div class="departure-card" onclick="toggleDep(this, 'nativeavd')">
+      <div class="dep-icon">☁️</div>
+      <div class="dep-title">Native AVD (Unmanaged)</div>
+      <div class="dep-desc">You've landed in Azure but you're doing everything by hand. ARM templates, PowerShell scripts, manual scaling — it's getting old.</div>
+      <div class="dep-pain">⚠ Pain points: Over-spend, operational overhead, no visibility, scale risk</div>
+    </div>
+
+    <div class="departure-card" onclick="toggleDep(this, 'nativew365')">
+      <div class="dep-icon">🖥️</div>
+      <div class="dep-title">Native Windows 365 (Unmanaged)</div>
+      <div class="dep-desc">Cloud PCs are live but you're missing licensing intelligence, cost controls, and the ability to flex between W365 and AVD based on workload.</div>
+      <div class="dep-pain">⚠ Pain points: Static licences, cost creep, no hybrid flexibility</div>
+    </div>
+
+    <div class="departure-card" onclick="toggleDep(this, 'physical')">
+      <div class="dep-icon">💻</div>
+      <div class="dep-title">Physical Devices (Fat Clients)</div>
+      <div class="dep-desc">Traditional endpoint management — laptops, desktops, potentially a hardware refresh cycle looming and Windows 10 EoS adding urgency.</div>
+      <div class="dep-pain">⚠ Pain points: Hardware lifecycle, Win 10 EoS Oct 2025, refresh CapEx</div>
+    </div>
+
+    <div class="departure-card" onclick="toggleDep(this, 'win10')">
+      <div class="dep-icon">🪟</div>
+      <div class="dep-title">Windows 10 Estate (EoS Countdown)</div>
+      <div class="dep-desc">October 2025 is gone — extended support is costing you. The clock is ticking and the board wants a Windows 11 plan that doesn't break the budget.</div>
+      <div class="dep-pain">⚠ Pain points: Security exposure, ESU costs, compliance risk, urgency</div>
+    </div>
+
+    <div class="departure-card" onclick="toggleDep(this, 'rdsh')">
+      <div class="dep-icon">🖧</div>
+      <div class="dep-title">Legacy RDSH / Terminal Server</div>
+      <div class="dep-desc">Old-school Remote Desktop — possibly on ageing server hardware, single points of failure, and a user experience that hasn't changed since 2012.</div>
+      <div class="dep-pain">⚠ Pain points: Resilience, UX, scalability, modern app compatibility</div>
+    </div>
+
+    <div class="departure-card" onclick="toggleDep(this, 'mixed')">
+      <div class="dep-icon">🗺️</div>
+      <div class="dep-title">Mixed / Complex Environment</div>
+      <div class="dep-desc">A bit of everything — some Citrix here, some native AVD there, physical endpoints, a dash of RDSH and possibly a mainframe someone's afraid to mention.</div>
+      <div class="dep-pain">⚠ Pain points: No unified view, inconsistent governance, hidden cost</div>
+    </div>
+
+    <div class="departure-card" onclick="toggleDep(this, 'greenfield')">
+      <div class="dep-icon">🌱</div>
+      <div class="dep-title">Greenfield — Starting Fresh</div>
+      <div class="dep-desc">No legacy baggage. You're building the right way from day one. Lucky you. Let's make sure you don't end up back at this screen in five years.</div>
+      <div class="dep-pain">✅ Opportunity: Design-right architecture from the outset</div>
+    </div>
+
+  </div>
+
+  <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-top:20px;">
+    <button class="btn-secondary" onclick="showSection('destinations', document.querySelectorAll('.nav-step')[0])">← Back</button>
+    <button class="btn-primary" onclick="showSection('budget', document.querySelectorAll('.nav-step')[2])">Next: Set Your Budget →</button>
+  </div>
+</div>
+</div>
+
+<!-- ========== SECTION: BUDGET ========== -->
+<div id="sec-budget" class="section">
+<div class="section-container">
+  <div class="section-eyebrow">Step 3 — Travel Budget</div>
+  <div class="section-title">What's in your <em style="font-style:italic">travel wallet?</em></div>
+  <p class="section-intro">
+    Budget isn't just money — it's time, risk appetite, urgency, and what you actually need versus what the board thinks they want. Set your dials and we'll tailor your package accordingly.
+  </p>
+
+  <div class="budget-section">
+    <div class="budget-title">Your Travel Budget Dials</div>
+    <div class="budget-subtitle">Drag to set your priorities. These shape your itinerary and migration approach.</div>
+
+    <div class="budget-sliders">
+
+      <div class="budget-slider-group">
+        <div class="budget-slider-header">
+          <div>
+            <div class="budget-slider-label">💰 Cost Sensitivity</div>
+            <div class="budget-slider-desc">How important is minimising cloud spend?</div>
+          </div>
+          <div class="budget-slider-value" id="val-cost">High</div>
+        </div>
+        <input type="range" min="1" max="5" value="4" oninput="updateSlider(this, 'cost')">
+      </div>
+
+      <div class="budget-slider-group">
+        <div class="budget-slider-header">
+          <div>
+            <div class="budget-slider-label">⏱️ Time to Value</div>
+            <div class="budget-slider-desc">How fast do you need to be there?</div>
+          </div>
+          <div class="budget-slider-value" id="val-time">Fast</div>
+        </div>
+        <input type="range" min="1" max="5" value="3" oninput="updateSlider(this, 'time')">
+      </div>
+
+      <div class="budget-slider-group">
+        <div class="budget-slider-header">
+          <div>
+            <div class="budget-slider-label">🛡️ Risk Tolerance</div>
+            <div class="budget-slider-desc">How much disruption can the business absorb?</div>
+          </div>
+          <div class="budget-slider-value" id="val-risk">Low</div>
+        </div>
+        <input type="range" min="1" max="5" value="2" oninput="updateSlider(this, 'risk')">
+      </div>
+
+      <div class="budget-slider-group">
+        <div class="budget-slider-header">
+          <div>
+            <div class="budget-slider-label">🔥 Business Urgency</div>
+            <div class="budget-slider-desc">Is there a burning platform driving this?</div>
+          </div>
+          <div class="budget-slider-value" id="val-urgency">Medium</div>
+        </div>
+        <input type="range" min="1" max="5" value="3" oninput="updateSlider(this, 'urgency')">
+      </div>
+
+    </div>
+
+    <div class="budget-tags">
+      <div class="budget-tag active" onclick="toggleTag(this)">💎 CapEx to OpEx shift</div>
+      <div class="budget-tag" onclick="toggleTag(this)">🔄 Licence consolidation</div>
+      <div class="budget-tag" onclick="toggleTag(this)">📉 Azure cost reduction</div>
+      <div class="budget-tag" onclick="toggleTag(this)">🚨 Citrix/VMware contract end</div>
+      <div class="budget-tag" onclick="toggleTag(this)">🔐 Compliance pressure</div>
+      <div class="budget-tag active" onclick="toggleTag(this)">📊 Board-level mandate</div>
+      <div class="budget-tag" onclick="toggleTag(this)">🏗️ Infrastructure refresh</div>
+      <div class="budget-tag" onclick="toggleTag(this)">🤖 AI agent readiness</div>
+      <div class="budget-tag" onclick="toggleTag(this)">🌍 EMEA expansion</div>
+      <div class="budget-tag" onclick="toggleTag(this)">👥 M&A integration</div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; text-align: center;">
+      <div>
+        <div style="font-size:36px; font-weight:900; color:var(--navy)">$1–3</div>
+        <div style="font-size:12px; color:#888; text-transform:uppercase; letter-spacing:1px;">Per user/month</div>
+        <div style="font-size:13px; color:#555; margin-top:6px;">Windows 365 management — predictable, fixed</div>
+      </div>
+      <div style="border-left:1px solid var(--sand); border-right:1px solid var(--sand);">
+        <div style="font-size:36px; font-weight:900; color:var(--navy)">Up to</div>
+        <div style="font-size:36px; font-weight:900; color:var(--blue); margin-top:-8px;">65%</div>
+        <div style="font-size:13px; color:#555; margin-top:6px;">Azure compute savings via auto-scaling</div>
+      </div>
+      <div>
+        <div style="font-size:36px; font-weight:900; color:var(--navy)">$0</div>
+        <div style="font-size:12px; color:#888; text-transform:uppercase; letter-spacing:1px;">UEM/Intune add-on</div>
+        <div style="font-size:13px; color:#555; margin-top:6px;">Included free with AVD Core & Premium</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-top:20px;">
+    <button class="btn-secondary" onclick="showSection('departure', document.querySelectorAll('.nav-step')[1])">← Back</button>
+    <button class="btn-primary" onclick="showSection('itinerary', document.querySelectorAll('.nav-step')[3])">Next: View Itinerary →</button>
+  </div>
+</div>
+</div>
+
+<!-- ========== SECTION: ITINERARY ========== -->
+<div id="sec-itinerary" class="section">
+<div class="section-container">
+  <div class="section-eyebrow">Step 4 — Your Journey Itinerary</div>
+  <div class="section-title">How we get you <em style="font-style:italic">there safely</em></div>
+  <p class="section-intro">
+    No surprise delays. No lost luggage. No 5am check-ins. Here's the typical journey from where you are to your destination — with Nerdio as your personal travel companion at every stop.
+  </p>
+
+  <div class="itinerary-timeline">
+
+    <div class="itinerary-stop">
+      <div class="stop-dot">🔍</div>
+      <div class="stop-phase">Pre-Departure — Discovery</div>
+      <div class="stop-title">The Route Survey: Understanding Your Environment</div>
+      <div class="stop-desc">Before any great journey, you need to know what you're working with. We map your existing estate — licences, workloads, user profiles, Azure consumption, and any hidden infrastructure skeletons in the data centre wardrobe.</div>
+      <div class="stop-nerdio">
+        <strong>Nerdio does this:</strong> Free environment assessment with our pre-sales team. We size your Azure deployment with the Nerdio Cost Estimator — pinpoint accuracy before you spend a penny.
+      </div>
+    </div>
+
+    <div class="itinerary-stop">
+      <div class="stop-dot">🎯</div>
+      <div class="stop-phase">Pre-Departure — Proof of Value</div>
+      <div class="stop-title">The Test Drive: Proof of Concept or Proof of Value</div>
+      <div class="stop-desc">You wouldn't book a two-week holiday at a hotel you've never seen a photo of. We run a structured PoV — typically 30 days — where you experience the Nerdio platform against your real workloads in your real Azure environment.</div>
+      <div class="stop-nerdio">
+        <strong>Nerdio does this:</strong> Structured PoV Charter — defined success criteria, technical win conditions, business outcomes. Delivered by a Nerdio SE. No risk, no commitment required.
+      </div>
+    </div>
+
+    <div class="itinerary-stop">
+      <div class="stop-dot">✈️</div>
+      <div class="stop-phase">Departure — Migration</div>
+      <div class="stop-title">Wheels Up: The Migration Flight</div>
+      <div class="stop-desc">This is where the journey truly begins. Phased migration from your legacy environment — Citrix, VMware, RDSH, or native Azure — into a Nerdio-managed modern cloud desktop estate. Workloads migrate in waves, users barely notice.</div>
+      <div class="stop-nerdio">
+        <strong>Nerdio does this:</strong> Nerdio Migration Services (NMS) — a dedicated professional services offer with migration tooling, runbooks, hypercare support, and change management guidance. Not outsourced. Nerdio-led.
+      </div>
+    </div>
+
+    <div class="itinerary-stop">
+      <div class="stop-dot">🏨</div>
+      <div class="stop-phase">Arrival — Go-Live</div>
+      <div class="stop-title">Checking In: First 90 Days</div>
+      <div class="stop-desc">You're here. The pool is open. But the first 90 days are critical — this is when cost optimisation kicks in, auto-scaling starts saving money, and your IT team discovers they have a Friday afternoon again.</div>
+      <div class="stop-nerdio">
+        <strong>Nerdio does this:</strong> Go-Live Engineering support. Your Customer Success Manager is assigned on day one. Auto-scaling activated. Rightsizing recommendations surfaced. Azure cost reporting baseline established.
+      </div>
+    </div>
+
+    <div class="itinerary-stop">
+      <div class="stop-dot">🌅</div>
+      <div class="stop-phase">In-Resort — Steady State</div>
+      <div class="stop-title">Living the Dream: Ongoing Operations</div>
+      <div class="stop-desc">This isn't a one-week break — it's where you live now. Nerdio keeps optimising your environment continuously: auto-scaling Azure compute up and down by the hour, flagging idle resources, enforcing governance policies, and keeping your security posture current.</div>
+      <div class="stop-nerdio">
+        <strong>Nerdio does this:</strong> Always-on automation. Patented auto-scaling. Scripted Actions library. Azure cost dashboards. Policy enforcement. Helpdesk delegation. Everything, always on.
+      </div>
+    </div>
+
+    <div class="itinerary-stop">
+      <div class="stop-dot">🚀</div>
+      <div class="stop-phase">Future-Proofing — What's Next</div>
+      <div class="stop-title">Extending the Holiday: AI Agents & Beyond</div>
+      <div class="stop-desc">The cloud desktop isn't the end destination — it's the base camp. From here, your organisation can run CUA/AI agents on AVD infrastructure, expand into AVD on Azure Local for sovereign workloads, and manage the AI era with the same Nerdio control plane.</div>
+      <div class="stop-nerdio">
+        <strong>Nerdio does this:</strong> AVD as the control plane for AI agent workloads. Azure Local + Azure Arc management. Nerdio Nucleus. The only platform spanning cloud, sovereign, and hybrid — from a single console.
+      </div>
+    </div>
+
+  </div>
+
+  <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-top:40px;">
+    <button class="btn-secondary" onclick="showSection('budget', document.querySelectorAll('.nav-step')[2])">← Back</button>
+    <button class="btn-primary" onclick="showSection('concierge', document.querySelectorAll('.nav-step')[4])">Next: Concierge Services →</button>
+  </div>
+</div>
+</div>
+
+<!-- ========== SECTION: CONCIERGE ========== -->
+<div id="sec-concierge" class="section">
+<div class="section-container">
+  <div class="section-eyebrow">Step 5 — Concierge Services</div>
+  <div class="section-title">We go further than the <em style="font-style:italic">brochure</em></div>
+  <p class="section-intro">
+    Any decent hotel has a concierge. Nerdio has an entire professional services, customer success, training, and partner ecosystem making sure your holiday is flawless — before, during, and long after check-in.
+  </p>
+
+  <div class="concierge-cards">
+
+    <div class="concierge-card">
+      <div class="concierge-header">
+        <div class="concierge-emoji">🛎️</div>
+        <div class="concierge-title">Customer Success</div>
+        <div class="concierge-sub">Your personal holiday rep — always reachable</div>
+      </div>
+      <div class="concierge-body">
+        <ul class="concierge-list">
+          <li>Dedicated Customer Success Manager from day one</li>
+          <li>Quarterly Business Reviews (QBRs) — not just email check-ins</li>
+          <li>Proactive optimisation recommendations — we review before you ask</li>
+          <li>Adoption tracking and usage reporting built in</li>
+          <li>Renewal and expansion planning with your roadmap in mind</li>
+          <li>Direct escalation path to Nerdio engineering</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="concierge-card">
+      <div class="concierge-header">
+        <div class="concierge-emoji">🏗️</div>
+        <div class="concierge-title">Migration Services</div>
+        <div class="concierge-sub">Professional luggage handling — nothing lost</div>
+      </div>
+      <div class="concierge-body">
+        <ul class="concierge-list">
+          <li>Nerdio Migration Services (NMS) — full-service migration delivery</li>
+          <li>Pre-migration assessment and workload profiling</li>
+          <li>Wave-based migration planning with zero surprise downtime</li>
+          <li>Citrix, VMware, RDSH — we've moved them all</li>
+          <li>Migration tooling, runbooks, and change management</li>
+          <li>Post-migration hypercare support period included</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="concierge-card">
+      <div class="concierge-header">
+        <div class="concierge-emoji">🎓</div>
+        <div class="concierge-title">Nerdio Training Academy</div>
+        <div class="concierge-sub">So you know how to use the sun lounger</div>
+      </div>
+      <div class="concierge-body">
+        <ul class="concierge-list">
+          <li>Nerdio Training Camps — live, instructor-led certification</li>
+          <li>On-demand learning library for self-paced teams</li>
+          <li>Partner certification pathways (Bronze through Platinum)</li>
+          <li>Admin onboarding and feature deep-dives</li>
+          <li>Regular product update sessions and early-access briefings</li>
+          <li>Technical certification for customer IT admins</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="concierge-card">
+      <div class="concierge-header">
+        <div class="concierge-emoji">🤝</div>
+        <div class="concierge-title">Partner Ecosystem</div>
+        <div class="concierge-sub">Local guides who know the terrain</div>
+      </div>
+      <div class="concierge-body">
+        <ul class="concierge-list">
+          <li>120%+ YoY partner ecosystem growth</li>
+          <li>Partnerd Programme — Bronze through Platinum tiers</li>
+          <li>Quoting and Architect Concierge for MSPs and VARs</li>
+          <li>White-labelled sales and marketing assets</li>
+          <li>Microsoft co-sell aligned — Azure Marketplace available</li>
+          <li>Event-in-a-Box and MDF funding for qualified partners</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="concierge-card">
+      <div class="concierge-header">
+        <div class="concierge-emoji">🔐</div>
+        <div class="concierge-title">Security & Compliance</div>
+        <div class="concierge-sub">The hotel safe — but for your entire estate</div>
+      </div>
+      <div class="concierge-body">
+        <ul class="concierge-list">
+          <li>Azure-native — your data never leaves your subscription</li>
+          <li>Conditional access and MFA policy enforcement</li>
+          <li>Intune integration for endpoint compliance</li>
+          <li>Session monitoring, audit logs, and governance controls</li>
+          <li>FSI, healthcare, and regulated industry configurations</li>
+          <li>Nerdio Sentinel (preview) — AI-assisted security posture</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="concierge-card">
+      <div class="concierge-header">
+        <div class="concierge-emoji">🌐</div>
+        <div class="concierge-title">Microsoft Alignment</div>
+        <div class="concierge-sub">VIP access — Microsoft's own people built this</div>
+      </div>
+      <div class="concierge-body">
+        <ul class="concierge-list">
+          <li>CPTO Scott Manchester led AVD and W365 at Microsoft for 25 years</li>
+          <li>Gavriella Schuster (Microsoft channel head) on Nerdio's board</li>
+          <li>Microsoft Partner of the Year finalist (2025)</li>
+          <li>Available on Azure Marketplace — bill through your Azure subscription</li>
+          <li>Co-sell aligned with Microsoft field sellers globally</li>
+          <li>NerdioCon features Microsoft executives as keynote speakers</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-top:40px;">
+    <button class="btn-secondary" onclick="showSection('itinerary', document.querySelectorAll('.nav-step')[3])">← Back</button>
+    <button class="btn-primary" onclick="showSection('reviews', document.querySelectorAll('.nav-step')[5])">Next: Traveller Reviews →</button>
+  </div>
+</div>
+</div>
+
+<!-- ========== SECTION: REVIEWS ========== -->
+<div id="sec-reviews" class="section">
+<div class="section-container">
+
+  <div class="reviews-section">
+    <div class="reviews-header">
+      <div class="section-eyebrow" style="color:var(--blue)">Step 6 — Traveller Reviews</div>
+      <h2>5★ Reviews from Fellow Travellers</h2>
+      <p>Don't just take our word for it. Here's what customers said after they arrived.</p>
+      <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-top:16px;">
+        <span style="color:var(--gold); font-size:24px;">★★★★★</span>
+        <span style="font-size:22px; font-weight:800; color:white;">4.9 / 5.0</span>
+        <span style="font-size:13px; color:rgba(255,255,255,0.5)">from 15,000+ customers</span>
+      </div>
+    </div>
+
+    <div class="reviews-grid">
+
+      <div class="review-card">
+        <div class="review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <p class="review-text">"We were spending a fortune on Citrix renewals. With Nerdio, we moved 3,000 users to AVD and cut our licensing bill in half. The migration was smoother than any technology project I've run in 20 years."</p>
+        <div class="review-author">
+          <div class="review-avatar" style="background:var(--green)">MR</div>
+          <div>
+            <div class="review-name">Head of EUC Infrastructure</div>
+            <div class="review-role">Global Financial Services</div>
+            <div class="review-company">Post-Citrix Migration</div>
+            <div class="review-verified">✓ Verified Traveller</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <p class="review-text">"Nerdio's auto-scaling alone is worth the price of admission. We were paying for Azure compute 24/7. Now the machines turn off when users aren't there. First month, we saved 58% on compute."</p>
+        <div class="review-author">
+          <div class="review-avatar" style="background:var(--blue)">JK</div>
+          <div>
+            <div class="review-name">CTO</div>
+            <div class="review-role">Mid-Market Retail</div>
+            <div class="review-company">AVD Auto-Scaling Customer</div>
+            <div class="review-verified">✓ Verified Traveller</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <p class="review-text">"All of our customers end up saving money with Nerdio. I've never had a deployment where the ROI wasn't obvious in the first quarter. It's become the cornerstone of our Azure practice."</p>
+        <div class="review-author">
+          <div class="review-avatar" style="background:var(--purple)">3C</div>
+          <div>
+            <div class="review-name">Practice Lead</div>
+            <div class="review-role">3Cloud</div>
+            <div class="review-company">Nerdio MSP Partner</div>
+            <div class="review-verified">✓ Verified Partner</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <p class="review-text">"The Windows 10 end-of-support deadline was our burning platform. Nerdio had us running Windows 11 Cloud PCs on hardware we would have scrapped — extending the estate life by three years. Finance loved it."</p>
+        <div class="review-author">
+          <div class="review-avatar" style="background:var(--gold)">SL</div>
+          <div>
+            <div class="review-name">IT Director</div>
+            <div class="review-role">Professional Services Firm</div>
+            <div class="review-company">W365 Win11 Migration</div>
+            <div class="review-verified">✓ Verified Traveller</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <p class="review-text">"Tasks that used to take our team weeks of billable hours are now completed in minutes with Nerdio's scripted actions. We've completely transformed our AVD managed service practice."</p>
+        <div class="review-author">
+          <div class="review-avatar" style="background:#1a6b3a; color:white;">CV</div>
+          <div>
+            <div class="review-name">MSP Director</div>
+            <div class="review-role">Ceeva</div>
+            <div class="review-company">Nerdio Platinum Partner</div>
+            <div class="review-verified">✓ Verified Partner</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <p class="review-text">"We came from a VMware Horizon estate after the Broadcom acquisition. Nerdio had us live on AVD in eight weeks. I genuinely didn't think it would be that clean. The PoV sold it — seeing real savings in our own tenant."</p>
+        <div class="review-author">
+          <div class="review-avatar" style="background:var(--blue)">PW</div>
+          <div>
+            <div class="review-name">VP of Technology</div>
+            <div class="review-role">Insurance Group</div>
+            <div class="review-company">VMware to AVD Migration</div>
+            <div class="review-verified">✓ Verified Traveller</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="text-align:center; margin-top:40px; padding-top:32px; border-top:1px solid rgba(255,255,255,0.1);">
+      <p style="color:rgba(255,255,255,0.5); font-size:13px; margin-bottom:12px;">Based on 62 published case studies and 15,000+ customer deployments across 50+ countries</p>
+      <div style="display:flex; justify-content:center; gap:32px; flex-wrap:wrap;">
+        <div style="text-align:center;">
+          <div style="font-size:28px; font-weight:900; color:var(--green)">Chevron</div>
+          <div style="font-size:11px; color:rgba(255,255,255,0.4);">Energy</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:28px; font-weight:900; color:rgba(255,255,255,0.7)">Kraft Heinz</div>
+          <div style="font-size:11px; color:rgba(255,255,255,0.4);">FMCG</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:28px; font-weight:900; color:rgba(255,255,255,0.7)">ASDA</div>
+          <div style="font-size:11px; color:rgba(255,255,255,0.4);">Retail</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:28px; font-weight:900; color:rgba(255,255,255,0.7)">Carnival</div>
+          <div style="font-size:11px; color:rgba(255,255,255,0.4);">Travel</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:28px; font-weight:900; color:rgba(255,255,255,0.7)">Willis Towers Watson</div>
+          <div style="font-size:11px; color:rgba(255,255,255,0.4);">FSI</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-top:20px;">
+    <button class="btn-secondary" onclick="showSection('concierge', document.querySelectorAll('.nav-step')[4])">← Back</button>
+    <button class="btn-primary" onclick="showSection('boardingpass', document.querySelectorAll('.nav-step')[6])">Next: Get My Boarding Pass →</button>
+  </div>
+</div>
+</div>
+
+<!-- ========== SECTION: BOARDING PASS ========== -->
+<div id="sec-boardingpass" class="section">
+<div class="section-container">
+  <div class="section-eyebrow">Step 7 — Your Boarding Pass</div>
+  <div class="section-title">Time to <em style="font-style:italic">check in</em></div>
+  <p class="section-intro" style="margin-bottom: 40px;">
+    Here's your personalised journey summary. Screenshot it, share it, or hand it to your Nerdio rep and say "this is what I want." The holiday of a lifetime starts here.
+  </p>
+
+  <div class="boarding-pass">
+    <div class="boarding-top">
+      <div class="boarding-airline">✈ NerdioTravel™ · CLOUD DESKTOP CLASS · BOARDING PASS</div>
+      
+      <div class="boarding-route">
+        <div class="boarding-city">
+          <div class="boarding-city-code" id="bp-from">LEG</div>
+          <div class="boarding-city-name" id="bp-from-name">Legacy Environment</div>
+        </div>
+        <div class="boarding-arrow">
+          <div class="boarding-arrow-line"></div>
+          <div class="boarding-arrow-text">NERDIO MANAGED</div>
+        </div>
+        <div class="boarding-city" style="text-align:right">
+          <div class="boarding-city-code" id="bp-to">AVD</div>
+          <div class="boarding-city-name" id="bp-to-name">Azure Virtual Desktop</div>
+        </div>
+      </div>
+
+      <div class="boarding-details">
+        <div>
+          <div class="boarding-detail-label">Passenger</div>
+          <div class="boarding-detail-value">Your Organisation</div>
+        </div>
+        <div>
+          <div class="boarding-detail-label">Flight</div>
+          <div class="boarding-detail-value">NE-2026-01</div>
+        </div>
+        <div>
+          <div class="boarding-detail-label">Class</div>
+          <div class="boarding-detail-value">Cloud Business</div>
+        </div>
+        <div>
+          <div class="boarding-detail-label">Gate</div>
+          <div class="boarding-detail-value">getnerdio.com</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="boarding-divider">
+      <div class="boarding-divider-line"></div>
+    </div>
+
+    <div class="boarding-bottom">
+      <div class="boarding-summary-grid">
+        <div class="boarding-sum-item">
+          <div class="boarding-sum-label">🌴 Destination(s)</div>
+          <div class="boarding-sum-value" id="bp-destinations">Select your destinations above</div>
+        </div>
+        <div class="boarding-sum-item">
+          <div class="boarding-sum-label">🛫 Departing From</div>
+          <div class="boarding-sum-value" id="bp-departures">Select your origins above</div>
+        </div>
+        <div class="boarding-sum-item">
+          <div class="boarding-sum-label">✈️ Journey Type</div>
+          <div class="boarding-sum-value">Phased Migration</div>
+        </div>
+        <div class="boarding-sum-item">
+          <div class="boarding-sum-label">🛎️ Concierge Level</div>
+          <div class="boarding-sum-value">Full Service</div>
+        </div>
+        <div class="boarding-sum-item">
+          <div class="boarding-sum-label">💰 Projected Saving</div>
+          <div class="boarding-sum-value" style="color:var(--blue)">Up to 65% Azure spend</div>
+        </div>
+        <div class="boarding-sum-item">
+          <div class="boarding-sum-label">⏱️ Time to Value</div>
+          <div class="boarding-sum-value">30-day PoV available</div>
+        </div>
+      </div>
+
+      <div style="background:var(--cream); border-radius:12px; padding:16px 20px; margin-bottom:24px; font-size:13px; color:#666; line-height:1.6;">
+        🎫 <strong style="color:var(--navy)">What happens next:</strong> A Nerdio Account Executive will review your journey preferences and reach out with a tailored assessment — including a cost estimate, architecture recommendation, and PoV proposal. No spam. No hard sell. Just a really good conversation about your future.
+      </div>
+
+      <button class="boarding-cta" onclick="window.open('https://getnerdio.com','_blank')">
+        🚀 &nbsp; Request My Journey Plan — getnerdio.com
+      </button>
+
+      <div style="text-align:center; margin-top:20px; font-size:12px; color:#aaa;">
+        Powered by NerdioTravel™ · The holiday your legacy VDI never told you about · <strong style="color:var(--blue)">getnerdio.com</strong>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin-top:50px;">
+    <button class="btn-secondary" onclick="showSection('reviews', document.querySelectorAll('.nav-step')[5])">← Back to Reviews</button>
+  </div>
+
+</div>
+</div>
+
+<!-- ========== FOOTER ========== -->
+<footer class="footer-strip">
+  <div class="footer-logo">nerdio<span>travel</span>™</div>
+  <p>The management layer for Azure Virtual Desktop, Windows 365, and Intune.</p>
+  <p style="margin-top:8px;"><strong>getnerdio.com</strong> · 15,000+ customers · 50+ countries · $1B+ valuation</p>
+  <p style="margin-top:16px; font-size:11px; opacity:0.4;">Built with ❤️ by the Nerdio EMEA team · Not responsible for post-migration euphoria or sudden IT team happiness</p>
+</footer>
+
+<script>
+  // ========== State ==========
+  const state = {
+    destinations: new Set(),
+    departures: new Set()
+  };
+
+  const destLabels = {
+    avd: 'Azure Virtual Desktop',
+    w365: 'Windows 365',
+    hybrid: 'Hybrid AVD + W365',
+    msp: 'Managed by Partner',
+    sovereign: 'AVD on Azure Local',
+    physical: 'Win 10 → Win 11'
+  };
+
+  const depLabels = {
+    citrix: 'Citrix',
+    vmware: 'VMware/Omnissa',
+    nativeavd: 'Native AVD',
+    nativew365: 'Native W365',
+    physical: 'Physical Devices',
+    win10: 'Windows 10 Estate',
+    rdsh: 'Legacy RDSH',
+    mixed: 'Mixed Environment',
+    greenfield: 'Greenfield'
+  };
+
+  const depCodes = {
+    citrix: 'CTX',
+    vmware: 'VMW',
+    nativeavd: 'AVD',
+    nativew365: 'W65',
+    physical: 'PHY',
+    win10: 'W10',
+    rdsh: 'RDS',
+    mixed: 'MIX',
+    greenfield: 'GRN'
+  };
+
+  const destCodes = {
+    avd: 'AVD',
+    w365: 'W65',
+    hybrid: 'HYB',
+    msp: 'MSP',
+    sovereign: 'SOV',
+    physical: 'W11'
+  };
+
+  // ========== Nav ==========
+  function showSection(id, el) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-step').forEach(s => s.classList.remove('active'));
+    document.getElementById('sec-' + id).classList.add('active');
+    if (el) el.classList.add('active');
+    
+    document.getElementById('journeyNav').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    
+    if (id === 'boardingpass') updateBoardingPass();
+  }
+
+  function startJourney() {
+    showSection('destinations', document.querySelectorAll('.nav-step')[0]);
+    document.getElementById('journeyNav').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function scrollToNav() {
+    document.getElementById('journeyNav').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ========== Destination toggles ==========
+  function toggleDest(card, key) {
+    card.classList.toggle('selected');
+    if (state.destinations.has(key)) {
+      state.destinations.delete(key);
+    } else {
+      state.destinations.add(key);
+    }
+  }
+
+  function toggleDep(card, key) {
+    card.classList.toggle('selected');
+    if (state.departures.has(key)) {
+      state.departures.delete(key);
+    } else {
+      state.departures.add(key);
+    }
+  }
+
+  function toggleTag(el) {
+    el.classList.toggle('active');
+  }
+
+  // ========== Sliders ==========
+  const sliderLabels = {
+    cost: ['Very Low', 'Low', 'Medium', 'High', 'Critical'],
+    time: ['Take Time', 'Relaxed', 'Medium', 'Fast', 'Urgent'],
+    risk: ['Very High', 'High', 'Medium', 'Low', 'Zero Risk'],
+    urgency: ['Low', 'Some', 'Medium', 'High', 'On Fire 🔥']
+  };
+
+  function updateSlider(el, key) {
+    const val = parseInt(el.value);
+    document.getElementById('val-' + key).textContent = sliderLabels[key][val - 1];
+  }
+
+  // ========== Boarding Pass ==========
+  function updateBoardingPass() {
+    const dests = [...state.destinations];
+    const deps = [...state.departures];
+
+    if (dests.length > 0) {
+      document.getElementById('bp-destinations').textContent = dests.map(d => destLabels[d]).join(', ');
+      const first = dests[0];
+      document.getElementById('bp-to').textContent = destCodes[first] || 'NME';
+      document.getElementById('bp-to-name').textContent = destLabels[first] || 'Nerdio Managed';
+    }
+
+    if (deps.length > 0) {
+      document.getElementById('bp-departures').textContent = deps.map(d => depLabels[d]).join(', ');
+      const first = deps[0];
+      document.getElementById('bp-from').textContent = depCodes[first] || 'LEG';
+      document.getElementById('bp-from-name').textContent = depLabels[first] || 'Legacy Environment';
+    }
+  }
+
+  // Init slider labels
+  document.addEventListener('DOMContentLoaded', () => {
+    updateSlider({ value: 4 }, 'cost');
+    updateSlider({ value: 3 }, 'time');
+    updateSlider({ value: 2 }, 'risk');
+    updateSlider({ value: 3 }, 'urgency');
+  });
+</script>
+</body>
+</html>

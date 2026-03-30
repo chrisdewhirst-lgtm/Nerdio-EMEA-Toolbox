@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nerdio AI Agent Positioning</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#042838;--navy-mid:#073246;--navy-light:#0d3d52;--blue:#1E9DB8;--green:#CDFF4E;--purple:#A795C7;--white:#FFFFFF;--text-dim:rgba(255,255,255,0.6);--text-dimmer:rgba(255,255,255,0.3);--border:rgba(30,157,184,0.2);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Poppins',sans-serif;background:var(--navy);color:var(--white);min-height:100vh;}
+
+header{background:linear-gradient(135deg,#021e2b 0%,var(--navy-mid) 100%);padding:20px 40px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:center;gap:12px;}
+.logo-icon{width:36px;height:36px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:var(--navy);}
+.logo-name{font-size:16px;font-weight:700;}.logo-name span{color:var(--blue);}
+.tool-badge{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:2.5px;color:var(--green);background:rgba(205,255,78,0.1);border:1px solid rgba(205,255,78,0.3);padding:4px 12px;border-radius:20px;}
+
+.hero{background:linear-gradient(135deg,#021e2b 0%,#073246 50%,#0a3d52 100%);padding:52px 40px;text-align:center;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%, rgba(30,157,184,0.08) 0%, transparent 60%), radial-gradient(ellipse at 70% 20%, rgba(205,255,78,0.04) 0%, transparent 50%);}
+.hero-eyebrow{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:4px;color:var(--green);margin-bottom:14px;}
+.hero-title{font-size:36px;font-weight:800;line-height:1.1;letter-spacing:-1px;margin-bottom:16px;}
+.hero-title em{color:var(--blue);font-style:normal;}
+.hero-sub{font-size:15px;color:var(--text-dim);max-width:600px;margin:0 auto 32px;}
+.hero-stats{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;}
+.hero-stat{text-align:center;}
+.hero-stat-num{font-size:28px;font-weight:800;color:var(--green);display:block;}
+.hero-stat-label{font-size:11px;color:var(--text-dim);}
+
+.container{max-width:1080px;margin:0 auto;padding:48px 24px;}
+.section-eyebrow{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:var(--blue);margin-bottom:10px;}
+.section-title{font-size:24px;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;}
+.section-sub{font-size:13px;color:var(--text-dim);margin-bottom:32px;}
+
+/* ARCHITECTURE DIAGRAM */
+.arch-diagram{background:var(--navy-mid);border:1px solid var(--border);border-radius:14px;padding:32px;margin-bottom:48px;}
+.arch-layers{display:flex;flex-direction:column;gap:12px;}
+.arch-layer{display:flex;align-items:center;gap:0;border-radius:10px;overflow:hidden;}
+.layer-label{background:rgba(255,255,255,0.04);padding:14px 20px;min-width:200px;border-right:1px solid var(--border);}
+.layer-name{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:2px;}
+.layer-desc{font-size:10px;color:var(--text-dim);}
+.layer-content{flex:1;padding:14px 20px;display:flex;gap:8px;flex-wrap:wrap;}
+.layer-chip{padding:6px 12px;border-radius:20px;font-size:11px;font-weight:600;}
+.chip-green{background:rgba(205,255,78,0.12);color:var(--green);border:1px solid rgba(205,255,78,0.25);}
+.chip-blue{background:rgba(30,157,184,0.12);color:var(--blue);border:1px solid rgba(30,157,184,0.25);}
+.chip-purple{background:rgba(167,149,199,0.15);color:var(--purple);border:1px solid rgba(167,149,199,0.25);}
+.chip-white{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.8);border:1px solid rgba(255,255,255,0.12);}
+.arch-arrow{text-align:center;color:var(--blue);font-size:18px;margin:-4px 0;}
+
+/* PERSONA SELECTOR */
+.persona-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
+.persona-tab{padding:10px 18px;border-radius:8px;border:1px solid var(--border);background:var(--navy-mid);color:var(--text-dim);font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:8px;}
+.persona-tab:hover{border-color:var(--blue);color:var(--white);}
+.persona-tab.active{background:rgba(30,157,184,0.15);border-color:var(--blue);color:var(--white);}
+
+.use-case-panel{display:none;}
+.use-case-panel.active{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+
+.use-case-card{background:var(--navy-mid);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color 0.2s;}
+.use-case-card:hover{border-color:rgba(30,157,184,0.4);}
+.uc-header{padding:18px 20px;border-bottom:1px solid rgba(255,255,255,0.06);}
+.uc-icon{font-size:24px;margin-bottom:8px;}
+.uc-name{font-size:14px;font-weight:700;margin-bottom:4px;}
+.uc-tag{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;padding:3px 8px;border-radius:10px;display:inline-block;}
+.tag-avd{background:rgba(30,157,184,0.15);color:var(--blue);}
+.tag-w365{background:rgba(205,255,78,0.1);color:var(--green);}
+.tag-both{background:rgba(167,149,199,0.15);color:var(--purple);}
+.uc-body{padding:16px 20px;}
+.uc-problem{font-size:12px;color:var(--text-dim);margin-bottom:10px;line-height:1.6;}
+.uc-how{font-size:12px;line-height:1.6;}
+.uc-how strong{color:var(--green);}
+.uc-metrics{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+.uc-metric{font-size:10px;font-weight:600;padding:4px 10px;background:rgba(205,255,78,0.06);border:1px solid rgba(205,255,78,0.15);color:var(--green);border-radius:12px;}
+
+/* WHY NERDIO */
+.why-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:48px;}
+.why-card{background:var(--navy-mid);border:1px solid var(--border);border-radius:12px;padding:24px;}
+.why-icon{font-size:28px;margin-bottom:12px;}
+.why-title{font-size:14px;font-weight:700;margin-bottom:8px;}
+.why-text{font-size:12px;color:var(--text-dim);line-height:1.6;}
+.why-card.highlight{border-color:rgba(205,255,78,0.3);background:rgba(205,255,78,0.04);}
+
+/* READINESS ASSESSMENT */
+.readiness{background:var(--navy-mid);border:1px solid var(--border);border-radius:14px;padding:32px;margin-bottom:48px;}
+.readiness-questions{display:flex;flex-direction:column;gap:16px;margin-bottom:24px;}
+.rq{display:flex;align-items:center;gap:14px;}
+.rq-text{font-size:13px;font-weight:500;flex:1;}
+.rq-options{display:flex;gap:6px;}
+.rq-btn{padding:7px 14px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text-dim);font-family:'Poppins',sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.rq-btn:hover{border-color:var(--blue);color:var(--white);}
+.rq-btn.active-yes{background:rgba(205,255,78,0.1);border-color:var(--green);color:var(--green);}
+.rq-btn.active-partial{background:rgba(30,157,184,0.1);border-color:var(--blue);color:var(--blue);}
+.rq-btn.active-no{background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.2);color:var(--text-dim);}
+.readiness-result{background:rgba(30,157,184,0.07);border:1px solid var(--border);border-radius:10px;padding:20px 24px;display:none;}
+.readiness-result.show{display:block;}
+.result-score{font-size:32px;font-weight:800;margin-bottom:4px;}
+.result-label{font-size:14px;font-weight:600;margin-bottom:12px;}
+.result-next{font-size:12px;color:var(--text-dim);line-height:1.6;}
+.btn-assess{background:var(--green);border:none;color:var(--navy);font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;padding:12px 28px;border-radius:8px;cursor:pointer;}
+
+/* TALK TRACKS */
+.talk-tracks{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.tt-card{background:var(--navy-mid);border:1px solid var(--border);border-radius:12px;padding:22px;}
+.tt-persona{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--blue);margin-bottom:8px;}
+.tt-opener{font-size:13px;font-style:italic;color:rgba(255,255,255,0.85);line-height:1.6;margin-bottom:12px;padding:12px 14px;background:rgba(255,255,255,0.03);border-radius:8px;border-left:3px solid var(--blue);}
+.tt-follow{font-size:11px;color:var(--text-dim);line-height:1.6;}
+.copy-btn{margin-top:10px;padding:6px 12px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text-dim);font-family:'Poppins',sans-serif;font-size:10px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.copy-btn:hover{border-color:var(--blue);color:var(--white);}
+</style>
+
+<style>
+.nerdio-brand-bar{position: fixed; top: 48px;left:0;right:0;height:48px;background:#0B1B3D;display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:99999;font-family:"Segoe UI",system-ui,-apple-system,sans-serif;}
+.nerdio-brand-bar img{height:28px;}
+.nerdio-brand-bar .brand-title{color:#fff;font-size:14px;font-weight:500;margin-left:16px;opacity:0.85;}
+.nerdio-brand-bar .home-link{color:#00B4D8;text-decoration:none;font-size:13px;font-weight:500;padding:6px 14px;border:1px solid rgba(0,180,216,0.3);border-radius:6px;transition:all 0.2s;}
+.nerdio-brand-bar .home-link:hover{background:rgba(0,180,216,0.1);border-color:#00B4D8;}
+</style>
+</head>
+<body>
+<!-- NERDIO BRAND BAR -->
+<div class="nerdio-brand-bar">
+  <div style="display:flex;align-items:center;">
+    <img src="data:image/png;base64,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" alt="Nerdio">
+    <span class="brand-title">Nerdio AI Agent Positioning</span>
+  </div>
+  <a href="../EMEA-Nerdio-Toolbox.html" class="home-link">&#8962; Toolbox Home</a>
+</div>
+<!-- END BRAND BAR -->
+
+<!-- PASSWORD PROTECTION START -->
+<style>
+#nerdio-auth-overlay {
+    position: fixed; top: 48px; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, #0B1B3D 0%, #122a5c 50%, #0B1B3D 100%);
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+#nerdio-auth-overlay.hidden { display: none; }
+.nerdio-auth-box {
+    background: rgba(255,255,255,0.07);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 16px;
+    padding: 48px 40px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+.nerdio-auth-box .auth-icon {
+    width: 64px; height: 64px;
+    margin: 0 auto 24px;
+    background: linear-gradient(135deg, #00B4D8, #00C48C);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+}
+.nerdio-auth-box .auth-icon svg { width: 32px; height: 32px; }
+.nerdio-auth-box h2 {
+    color: #fff;
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0 0 8px;
+}
+.nerdio-auth-box p {
+    color: rgba(255,255,255,0.6);
+    font-size: 14px;
+    margin: 0 0 28px;
+}
+.nerdio-auth-box input[type="password"] {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+.nerdio-auth-box input[type="password"]::placeholder { color: rgba(255,255,255,0.35); }
+.nerdio-auth-box input[type="password"]:focus { border-color: #00B4D8; }
+.nerdio-auth-box .auth-btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 16px;
+    background: linear-gradient(135deg, #00B4D8, #00C48C);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+}
+.nerdio-auth-box .auth-btn:hover { opacity: 0.9; }
+.nerdio-auth-box .auth-btn:active { transform: scale(0.98); }
+.nerdio-auth-box .auth-error {
+    color: #ff6b6b;
+    font-size: 13px;
+    margin-top: 12px;
+    display: none;
+}
+.nerdio-auth-box .auth-footer {
+    color: rgba(255,255,255,0.3);
+    font-size: 12px;
+    margin-top: 24px;
+}
+</style>
+<div id="nerdio-auth-overlay">
+    <div class="nerdio-auth-box">
+        <div class="auth-icon">
+            <svg fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+            </svg>
+        </div>
+        <h2>EMEA Nerdio Toolbox</h2>
+        <p>Enter the team password to continue</p>
+        <form id="nerdio-auth-form" onsubmit="return nerdioAuth()">
+            <input type="password" id="nerdio-auth-pwd" placeholder="Team password" autofocus>
+            <button type="submit" class="auth-btn">Unlock Toolbox</button>
+            <div class="auth-error" id="nerdio-auth-error">Incorrect password. Please try again.</div>
+        </form>
+        <div class="auth-footer">Nerdio EMEA &mdash; Internal Use Only</div>
+    </div>
+</div>
+<script>
+(function(){
+    var AUTH_KEY = 'nerdio-emea-auth';
+    var HASH = '8d4fc32913788be20e3ed56e0e9598b490bc0a8023036548b73715eca41d80d0';
+    async function sha256(str) {
+        var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+        return Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0')}).join('');
+    }
+    if (sessionStorage.getItem(AUTH_KEY) === 'true') {
+        document.getElementById('nerdio-auth-overlay').classList.add('hidden');
+    }
+    window.nerdioAuth = async function() {
+        var pwd = document.getElementById('nerdio-auth-pwd').value;
+        var hash = await sha256(pwd);
+        if (hash === HASH) {
+            sessionStorage.setItem(AUTH_KEY, 'true');
+            document.getElementById('nerdio-auth-overlay').classList.add('hidden');
+        } else {
+            document.getElementById('nerdio-auth-error').style.display = 'block';
+            document.getElementById('nerdio-auth-pwd').value = '';
+            document.getElementById('nerdio-auth-pwd').focus();
+        }
+        return false;
+    };
+})();
+</script>
+<!-- PASSWORD PROTECTION END -->
+
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">N</div>
+    <div class="logo-name"><span>nerdio</span> EMEA Toolbox</div>
+  </div>
+  <div class="tool-badge">AI Agent Positioning</div>
+</header>
+
+<div class="hero">
+  <div class="hero-eyebrow">The Next Frontier in EUC</div>
+  <div class="hero-title">Computer Use Agents<br>running on <em>your</em> cloud desktop</div>
+  <div class="hero-sub">AVD and Windows 365, managed by Nerdio, is becoming the operating system for AI agents — not just human workers. Here's how to position it.</div>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="hero-stat-num">3M+</span><span class="hero-stat-label">Virtual desktops under Nerdio management</span></div>
+    <div class="hero-stat"><span class="hero-stat-num">Only</span><span class="hero-stat-label">Platform spanning Azure cloud, Azure Local & Arc</span></div>
+    <div class="hero-stat"><span class="hero-stat-num">CUA</span><span class="hero-stat-label">Computer Use Agents — the new workload</span></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ARCHITECTURE -->
+  <div class="section-eyebrow">Platform Architecture</div>
+  <div class="section-title">How CUA runs on the Nerdio stack</div>
+  <div class="section-sub">Nerdio is the only management platform that spans all three Microsoft deployment models — giving AI agents a consistent, governed, scalable environment to run in.</div>
+
+  <div class="arch-diagram">
+    <div class="arch-layers">
+      <div class="arch-layer" style="background:rgba(205,255,78,0.04);">
+        <div class="layer-label"><div class="layer-name" style="color:var(--green);">AI Agent Layer</div><div class="layer-desc">The new workload</div></div>
+        <div class="layer-content">
+          <span class="layer-chip chip-green">Computer Use Agents (CUA)</span>
+          <span class="layer-chip chip-green">Microsoft Copilot</span>
+          <span class="layer-chip chip-green">Custom LLM Workflows</span>
+          <span class="layer-chip chip-green">RPA Automation</span>
+        </div>
+      </div>
+      <div class="arch-arrow">↓ runs inside ↓</div>
+      <div class="arch-layer" style="background:rgba(30,157,184,0.06);">
+        <div class="layer-label"><div class="layer-name" style="color:var(--blue);">Desktop Platform</div><div class="layer-desc">The agent's operating environment</div></div>
+        <div class="layer-content">
+          <span class="layer-chip chip-blue">Azure Virtual Desktop (AVD)</span>
+          <span class="layer-chip chip-blue">Windows 365 Cloud PC</span>
+          <span class="layer-chip chip-blue">Intune-managed endpoints</span>
+        </div>
+      </div>
+      <div class="arch-arrow">↓ managed by ↓</div>
+      <div class="arch-layer" style="background:rgba(167,149,199,0.06);border:2px solid rgba(205,255,78,0.2);">
+        <div class="layer-label"><div class="layer-name" style="color:var(--green);">Nerdio Manager</div><div class="layer-desc">The only unified control plane</div></div>
+        <div class="layer-content">
+          <span class="layer-chip chip-green">Auto-scaling (agents scale with demand)</span>
+          <span class="layer-chip chip-green">Image management (consistent agent environments)</span>
+          <span class="layer-chip chip-green">Cost governance (agent compute optimised)</span>
+          <span class="layer-chip chip-green">Policy & compliance (governed execution)</span>
+          <span class="layer-chip chip-green">Scripted actions (agent lifecycle automation)</span>
+        </div>
+      </div>
+      <div class="arch-arrow">↓ deployed across ↓</div>
+      <div class="arch-layer" style="background:rgba(255,255,255,0.03);">
+        <div class="layer-label"><div class="layer-name">Infrastructure</div><div class="layer-desc">The only platform spanning all three</div></div>
+        <div class="layer-content">
+          <span class="layer-chip chip-white">Azure Cloud</span>
+          <span class="layer-chip chip-white">Azure Local (on-prem)</span>
+          <span class="layer-chip chip-white">Azure Arc (hybrid)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- USE CASES BY PERSONA -->
+  <div class="section-eyebrow">Use Cases by Persona</div>
+  <div class="section-title">AI agent workflows by industry role</div>
+  <div class="section-sub">Select a persona to see relevant CUA use cases, the problem it solves, and how Nerdio makes it work at scale.</div>
+
+  <div class="persona-tabs">
+    <button class="persona-tab active" onclick="showPersona('trading',this)">📈 Trader</button>
+    <button class="persona-tab" onclick="showPersona('compliance',this)">⚖️ Compliance</button>
+    <button class="persona-tab" onclick="showPersona('ops',this)">⚙️ Back Office Ops</button>
+    <button class="persona-tab" onclick="showPersona('it',this)">🖥️ IT Admin</button>
+    <button class="persona-tab" onclick="showPersona('retail',this)">🛒 Retail Ops</button>
+    <button class="persona-tab" onclick="showPersona('hr',this)">👤 HR & Onboarding</button>
+  </div>
+
+  <div id="panel-trading" class="use-case-panel active">
+    <div class="use-case-card">
+      <div class="uc-header"><div class="uc-icon">📊</div><div class="uc-name">Market Data Aggregation Agent</div><span class="uc-tag tag-avd">AVD — Personal</span></div>
+      <div class="uc-body"><div class="uc-problem">Traders spend 60–90 minutes daily aggregating data from Bloomberg, Reuters, internal risk systems, and Excel models — before they can make a single informed trade decision.</div><div class="uc-how"><strong>CUA on AVD:</strong> An AI agent runs inside a dedicated AVD personal session — accessing Bloomberg, risk platforms, and spreadsheets exactly as a human would. It aggregates, summarises, and flags anomalies before the trader's first call of the day. Nerdio ensures the session is provisioned and scaled based on trading hours, and that the image includes all required financial applications.</div><div class="uc-metrics"><span class="uc-metric">90 min saved/day</span><span class="uc-metric">Zero extra licences</span><span class="uc-metric">PRA-compliant audit trail</span></div></div>
+    </div>
+    <div class="use-case-card">
+      <div class="uc-header"><div class="uc-icon">🔔</div><div class="uc-name">Post-Trade Reconciliation Agent</div><span class="uc-tag tag-avd">AVD — Pooled</span></div>
+      <div class="uc-body"><div class="uc-problem">Post-trade ops teams spend hours manually reconciling trade confirmations across custodians, counterparties, and internal systems — a process prone to errors and regulatory risk.</div><div class="uc-how"><strong>CUA on AVD:</strong> Agents run pooled sessions during off-hours to pull confirmations, match positions across systems, and flag breaks — all within the existing application stack, with no new integrations. Nerdio's auto-scaling starts agent sessions at market close and deallocates them when complete, eliminating idle compute cost.</div><div class="uc-metrics"><span class="uc-metric">80% error reduction</span><span class="uc-metric">Runs off-hours</span><span class="uc-metric">Auto-scales to zero</span></div></div>
+    </div>
+  </div>
+
+  <div id="panel-compliance" class="use-case-panel">
+    <div class="use-case-card">
+      <div class="uc-header"><div class="uc-icon">📋</div><div class="uc-name">Regulatory Reporting Agent</div><span class="uc-tag tag-both">AVD or W365</span></div>
+      <div class="uc-body"><div class="uc-problem">Compliance teams in FSI spend significant time manually extracting data from legacy systems to compile MiFID II, DORA, and PRA reports — often a multi-day process each quarter.</div><div class="uc-how"><strong>CUA on AVD/W365:</strong> Agents navigate legacy compliance portals, extract data, populate reporting templates, and flag exceptions — entirely within the managed desktop environment. Nerdio's policy visibility layer ensures all agent actions are logged for audit purposes, and the image is version-locked to the compliance team's approved application set.</div><div class="uc-metrics"><span class="uc-metric">Days → Hours</span><span class="uc-metric">Full audit trail</span><span class="uc-metric">DORA-ready</span></div></div>
+    </div>
+    <div class="use-case-card">
+      <div class="uc-header"><div class="uc-icon">🔍</div><div class="uc-name">KYC / AML Monitoring Agent</div><span class="uc-tag tag-avd">AVD — Personal</span></div>
+      <div class="uc-body"><div class="uc-problem">KYC analysts spend hours in repetitive desktop workflows — checking sanctions lists, cross-referencing customer data, and updating CRM systems — work that is rule-based and high-volume.</div><div class="uc-how"><strong>CUA on AVD:</strong> AI agents handle the routine lookup-and-log workflow within a secure, isolated AVD session per customer entity. Human analysts review only flagged exceptions. Nerdio manages the agent session fleet — scaling during peak onboarding periods and maintaining FSI-grade image security.</div><div class="uc-metrics"><span class="uc-metric">5x analyst throughput</span><span class="uc-metric">Isolated sessions</span><span class="uc-metric">FCA audit ready</span></div></div>
+    </div>
+  </div>
+
+  <div id="panel-ops" class="use-case-panel">
+    <div class="use-case-card">
+      <div class="uc-header"><div class="uc-icon">🔄</div><div class="uc-name">Invoice Processing Agent</div><span class="uc-tag tag-w365">Windows 365</span></div>
+      <div class="uc-body"><div class="uc-problem">Finance operations teams manually process thousands of supplier invoices monthly — copying data between ERP systems, email, and approval workflows — creating bottlenecks and errors.</div><div class="uc-how"><strong>CUA on W365:</strong> Agents run on fixed-SKU W365 Cloud PCs — ideal for consistent, predictable agent workloads. They open invoices in email, extract line items, match to POs in the ERP, and route for approval. Nerdio manages the W365 estate centrally, ensuring patching and compliance without per-device management overhead.</div><div class="uc-metrics"><span class="uc-metric">70% processing time saved</span><span class="uc-metric">Predictable cost</span><span class="uc-metric">Zero ERP integration</span></div></div>
+    </div>
+    <div class="use-case-card">
+      <div class="uc-header"><div class="uc-icon">📦</div><div class="uc-name">Order Management Agent</div><span class="uc-tag tag-avd">AVD — Pooled</span></div>
+      <div class="uc-body"><div class="uc-problem">Order management teams juggle multiple portals, email queues, and ERP systems to track, update, and chase orders — a high-volume, rule-based workflow that scales poorly.</div><div class="uc-how"><strong>CUA on AVD:</strong> Agents handle the portal navigation and status-update workflow during off-peak hours on pooled AVD sessions. Nerdio's auto-scaling ensures agent pools are available during peak order windows and deallocated overnight — directly reducing Azure compute spend.</div><div class="uc-metrics"><span class="uc-metric">Night shift automation</span><span class="uc-metric">30% Azure cost reduction</span><span class="uc-metric">Scales with volume</span></div></div>
+    </div>
+  </div>
+
+  <div id="panel-it" class="use-case-panel">
+    <div class="use-case-card">
+      <div class="uc-header"><div class="uc-icon">🤖</div><div class="uc-name">IT Helpdesk Triage Agent</div><span class="uc-tag tag-both">AVD or W365</span></div>
+      <div class="uc-body"><div class="uc-problem">Level 1 IT helpdesk handles hundreds of repetitive tickets weekly — password resets, access requests, software installations — consuming senior engineer time.</div><div class="uc-how"><strong>CUA on AVD/W365:</strong> Agents handle L1 triage within ServiceNow or ITSM portals — pulling ticket context, executing standard remediations (password resets, account unlocks via Entra ID), and closing resolved tickets. Nerdio's scripted actions layer directly enables the most common remediation patterns without custom development.</div><div class="uc-metrics"><span class="uc-metric">60% L1 deflection</span><span class="uc-metric">Zero custom code</span><span class="uc-metric">Nerdio scripted actions</span></div></div>
+    </div>
+    <div class="use-case-card">
+      <div class="uc-header"><div class="uc-icon">🔧</div><div class="uc-name">Desktop Compliance Monitoring Agent</div><span class="uc-tag tag-avd">AVD — Managed</span></div>
+      <div class="uc-body"><div class="uc-problem">IT teams struggle to maintain real-time visibility of endpoint compliance across large AVD estates — patch levels, policy drift, and application version sprawl are common blind spots.</div><div class="uc-how"><strong>CUA + Nerdio Insights:</strong> Nerdio's built-in policy compliance visibility layer provides the data foundation. CUA agents act on non-compliant sessions automatically — triggering remediation scripts, flagging for review, or escalating. This is a closed-loop governance workflow that runs continuously without human intervention.</div><div class="uc-metrics"><span class="uc-metric">Real-time compliance</span><span class="uc-metric">Auto-remediation</span><span class="uc-metric">Nerdio-native</span></div></div>
+    </div>
+  </div>
+
+  <div id="panel-retail" class="use-case-panel">
+    <div class="use-case-card">
+      <div class="uc-header"><div class="uc-icon">🏷️</div><div class="uc-name">Pricing & Promotion Update Agent</div><span class="uc-tag tag-avd">AVD — Pooled</span></div>
+      <div class="uc-body"><div class="uc-problem">Retail merchandising teams update thousands of SKU prices and promotional flags across multiple systems weekly — a manual, error-prone process that can't scale with seasonal peaks.</div><div class="uc-how"><strong>CUA on AVD:</strong> Agents navigate merchandising portals, apply pricing rules from approved spreadsheets, and confirm changes — running in parallel pooled sessions during off-hours. Nerdio scales agent sessions for Black Friday-scale demand and deallocates immediately after, keeping Azure costs controlled.</div><div class="uc-metrics"><span class="uc-metric">Seasonal burst scaling</span><span class="uc-metric">Runs overnight</span><span class="uc-metric">Zero API dependency</span></div></div>
+    </div>
+    <div class="use-case-card">
+      <div class="uc-header"><div class="uc-icon">🚚</div><div class="uc-name">Supplier Portal Management Agent</div><span class="uc-tag tag-w365">Windows 365</span></div>
+      <div class="uc-body"><div class="uc-problem">Buying teams manage supplier relationships across dozens of portals — chasing delivery confirmations, updating forecasts, and resolving discrepancies manually across fragmented systems.</div><div class="uc-how"><strong>CUA on W365:</strong> Agents run fixed W365 Cloud PC sessions assigned to supplier portfolio workflows — consistent environments with persistent state. Nerdio manages the W365 estate centrally, ensuring buying team agents always have access to the right applications and up-to-date security policies.</div><div class="uc-metrics"><span class="uc-metric">Persistent agent state</span><span class="uc-metric">Fixed predictable cost</span><span class="uc-metric">Centralised management</span></div></div>
+    </div>
+  </div>
+
+  <div id="panel-hr" class="use-case-panel">
+    <div class="use-case-card">
+      <div class="uc-header"><div class="uc-icon">👋</div><div class="uc-name">New Joiner Onboarding Agent</div><span class="uc-tag tag-w365">Windows 365</span></div>
+      <div class="uc-body"><div class="uc-problem">HR and IT teams spend significant time manually provisioning accounts, sending welcome comms, and guiding new joiners through onboarding portals — a process that varies by team and is difficult to scale.</div><div class="uc-how"><strong>CUA on W365:</strong> Agents handle the HR system data entry, Entra ID onboarding triggers, and welcome communication workflows from a managed W365 session. Nerdio's scripted actions automate the desktop provisioning step — the new joiner's Cloud PC is ready the moment the HR trigger fires, without manual IT intervention.</div><div class="uc-metrics"><span class="uc-metric">Day 1 ready</span><span class="uc-metric">Zero manual IT steps</span><span class="uc-metric">Scales with hiring</span></div></div>
+    </div>
+    <div class="use-case-card">
+      <div class="uc-header"><div class="uc-icon">📝</div><div class="uc-name">Contractor Lifecycle Management Agent</div><span class="uc-tag tag-w365">Windows 365</span></div>
+      <div class="uc-body"><div class="uc-problem">Managing contractor populations is operationally intensive — provisioning on arrival, licence reclamation on departure, and tracking active vs. inactive contractors across large estates.</div><div class="uc-how"><strong>CUA + Nerdio W365 Management:</strong> Agents monitor contractor status signals from HR systems and trigger Nerdio's automated W365 provisioning and deprovisioning workflows. Nerdio's licence advisory capability identifies unused Cloud PC licences for reclamation — directly reducing M365 spend for contractor-heavy organisations like M&G.</div><div class="uc-metrics"><span class="uc-metric">Instant provisioning</span><span class="uc-metric">Licence reclamation</span><span class="uc-metric">Relevant for M&G (3K seats)</span></div></div>
+    </div>
+  </div>
+
+  <!-- WHY NERDIO FOR CUA -->
+  <div style="margin-top:48px;">
+    <div class="section-eyebrow">The Nerdio Advantage</div>
+    <div class="section-title">Why Nerdio is the right platform for AI agents</div>
+    <div class="section-sub">Three reasons Nerdio-managed AVD/W365 is better than alternatives for CUA workloads.</div>
+    <div class="why-grid">
+      <div class="why-card highlight">
+        <div class="why-icon">🌐</div>
+        <div class="why-title">The only unified platform across all three deployment models</div>
+        <div class="why-text">Azure Cloud, Azure Local, and Azure Arc — Nerdio manages them all from a single control plane. No other vendor spans all three. AI agents can run wherever the data lives, with consistent governance.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">⚡</div>
+        <div class="why-title">Patented auto-scaling eliminates idle agent compute</div>
+        <div class="why-text">AI agents don't run 9-to-5. Nerdio's auto-scaling ensures agent sessions are provisioned on demand and deallocated immediately on completion — directly reducing Azure costs for agent workloads by 30–60% vs. always-on approaches.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🔒</div>
+        <div class="why-title">Governed, auditable agent execution</div>
+        <div class="why-text">Every agent action runs within a managed, policy-compliant desktop environment. Nerdio's compliance visibility layer ensures FSI regulators (PRA, FCA) can audit agent activity. Agents inherit the same governance as human workers.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🖼️</div>
+        <div class="why-title">Image management = consistent agent environments</div>
+        <div class="why-text">Agent reliability depends on consistent application stacks. Nerdio's image management ensures every agent session starts from a known-good, version-controlled image — eliminating the "works on my machine" problem at scale.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🔗</div>
+        <div class="why-title">No new integrations — agents use existing applications</div>
+        <div class="why-text">CUA agents interact with applications visually — exactly as humans do. No APIs, no custom connectors, no IT projects. Nerdio ensures the existing application estate is available, managed, and secure for agent access.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">📊</div>
+        <div class="why-title">Scripted actions accelerate agent deployment</div>
+        <div class="why-text">Nerdio's scripted actions library provides 282+ pre-built automation patterns that act as the infrastructure layer for AI agent workflows — from session provisioning to remediation triggers, without custom development.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- READINESS ASSESSMENT -->
+  <div class="section-eyebrow">Customer Assessment</div>
+  <div class="section-title">AI Agent Readiness Check</div>
+  <div class="section-sub">Use this quick assessment in discovery to gauge readiness and frame the Nerdio conversation.</div>
+  <div class="readiness">
+    <div class="readiness-questions">
+      <div class="rq"><div class="rq-text">Is the customer already using Azure Virtual Desktop or Windows 365?</div><div class="rq-options"><button class="rq-btn active-yes" onclick="setRq(this,'yes')">Yes</button><button class="rq-btn" onclick="setRq(this,'partial')">In progress</button><button class="rq-btn" onclick="setRq(this,'no')">No</button></div></div>
+      <div class="rq"><div class="rq-text">Has the customer discussed AI automation, Copilot, or agent-based workflows internally?</div><div class="rq-options"><button class="rq-btn" onclick="setRq(this,'yes')">Yes</button><button class="rq-btn" onclick="setRq(this,'partial')">Exploring</button><button class="rq-btn active-no" onclick="setRq(this,'no')">No</button></div></div>
+      <div class="rq"><div class="rq-text">Do they have high-volume, rule-based desktop workflows today (compliance, ops, reporting)?</div><div class="rq-options"><button class="rq-btn active-yes" onclick="setRq(this,'yes')">Yes</button><button class="rq-btn" onclick="setRq(this,'partial')">Some</button><button class="rq-btn" onclick="setRq(this,'no')">No</button></div></div>
+      <div class="rq"><div class="rq-text">Is there a clear executive sponsor for AI / automation initiatives?</div><div class="rq-options"><button class="rq-btn" onclick="setRq(this,'yes')">Yes</button><button class="rq-btn active-partial" onclick="setRq(this,'partial')">Emerging</button><button class="rq-btn" onclick="setRq(this,'no')">No</button></div></div>
+      <div class="rq"><div class="rq-text">Are they in a regulated industry (FSI, Healthcare, Public Sector)?</div><div class="rq-options"><button class="rq-btn active-yes" onclick="setRq(this,'yes')">Yes</button><button class="rq-btn" onclick="setRq(this,'partial')">Partial</button><button class="rq-btn" onclick="setRq(this,'no')">No</button></div></div>
+    </div>
+    <button class="btn-assess" onclick="assessReadiness()">Calculate Readiness →</button>
+    <div class="readiness-result" id="readiness-result" style="margin-top:20px;"></div>
+  </div>
+
+  <!-- TALK TRACKS -->
+  <div class="section-eyebrow">Conversation Starters</div>
+  <div class="section-title">Talk tracks by stakeholder</div>
+  <div class="section-sub">Open the AI agent conversation with these persona-specific openers.</div>
+  <div class="talk-tracks">
+    <div class="tt-card">
+      <div class="tt-persona">CIO / CTO</div>
+      <div class="tt-opener">"Most of your AI strategy is focused on what models to use. But where those models run — and how they're governed — is the part your board will ask about first. AVD with Nerdio gives you AI agents that operate within your existing security perimeter, with a full audit trail. That's a conversation your regulators will be much more comfortable with."</div>
+      <div class="tt-follow">Follow with: governance, DORA alignment, auditability of agent actions, security perimeter continuity.</div>
+      <button class="copy-btn" onclick="copyText(this, 'Most of your AI strategy is focused on what models to use. But where those models run — and how they\'re governed — is the part your board will ask about first. AVD with Nerdio gives you AI agents that operate within your existing security perimeter, with a full audit trail. That\'s a conversation your regulators will be much more comfortable with.')">Copy</button>
+    </div>
+    <div class="tt-card">
+      <div class="tt-persona">Head of EUC / IT Director</div>
+      <div class="tt-opener">"You're already managing AVD or Windows 365 — which means you're already 80% of the way to running AI agents. The application stack is there. The governance is there. What Nerdio adds is the auto-scaling and image management that makes agents economically viable. You don't need a new platform — you need to use the one you have, better."</div>
+      <div class="tt-follow">Follow with: provisioning automation, image consistency, auto-scaling economics, scripted actions library.</div>
+      <button class="copy-btn" onclick="copyText(this, 'You\'re already managing AVD or Windows 365 — which means you\'re already 80% of the way to running AI agents. The application stack is there. The governance is there. What Nerdio adds is the auto-scaling and image management that makes agents economically viable. You don\'t need a new platform — you need to use the one you have, better.')">Copy</button>
+    </div>
+    <div class="tt-card">
+      <div class="tt-persona">CFO / Finance Sponsor</div>
+      <div class="tt-opener">"AI agents running on AVD with Nerdio only consume compute when they're working. Nerdio's auto-scaling starts an agent session, runs the workflow, and deallocates the session immediately. You don't pay for idle AI. Compare that to dedicated on-premises infrastructure — the economics are fundamentally different."</div>
+      <div class="tt-follow">Follow with: cost per workflow, comparison to dedicated agent infrastructure, Azure Hybrid Benefit angles.</div>
+      <button class="copy-btn" onclick="copyText(this, 'AI agents running on AVD with Nerdio only consume compute when they\'re working. Nerdio\'s auto-scaling starts an agent session, runs the workflow, and deallocates the session immediately. You don\'t pay for idle AI. Compare that to dedicated on-premises infrastructure — the economics are fundamentally different.')">Copy</button>
+    </div>
+    <div class="tt-card">
+      <div class="tt-persona">Chief Risk Officer / Compliance Lead</div>
+      <div class="tt-opener">"When your regulators ask 'who did this?' — your AI agent needs a clear answer. Because CUA agents run inside managed AVD sessions on Nerdio, every action is logged against a governed, policy-compliant desktop. It's not a black box — it's a fully auditable workflow that your DORA and PRA obligations can be mapped to."</div>
+      <div class="tt-follow">Follow with: Nerdio compliance visibility, session-level logging, PRA alignment, DORA operational resilience.</div>
+      <button class="copy-btn" onclick="copyText(this, 'When your regulators ask \'who did this?\' — your AI agent needs a clear answer. Because CUA agents run inside managed AVD sessions on Nerdio, every action is logged against a governed, policy-compliant desktop. It\'s not a black box — it\'s a fully auditable workflow that your DORA and PRA obligations can be mapped to.')">Copy</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showPersona(id, btn) {
+  document.querySelectorAll('.use-case-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.persona-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function setRq(btn, type) {
+  const row = btn.closest('.rq-options');
+  row.querySelectorAll('.rq-btn').forEach(b => b.className = 'rq-btn');
+  btn.classList.add('active-'+type);
+}
+
+function assessReadiness() {
+  const scores = { yes: 2, partial: 1, no: 0 };
+  let total = 0;
+  document.querySelectorAll('.rq').forEach(rq => {
+    const active = rq.querySelector('.rq-btn.active-yes, .rq-btn.active-partial, .rq-btn.active-no');
+    if (active) {
+      if (active.classList.contains('active-yes')) total += 2;
+      else if (active.classList.contains('active-partial')) total += 1;
+    }
+  });
+  const pct = Math.round((total / 10) * 100);
+  let label, color, next;
+  if (pct >= 80) {
+    label = 'High Readiness — Priority Opportunity';
+    color = 'var(--green)';
+    next = 'This account is ready for a CUA positioning conversation now. Lead with a specific use case relevant to their industry and propose a focused PoV around one agent workflow.';
+  } else if (pct >= 50) {
+    label = 'Medium Readiness — Plant the Seed';
+    color = 'var(--blue)';
+    next = 'The foundation is there but not fully connected. Introduce CUA as part of the broader AVD/W365 roadmap conversation. Share the architecture diagram and one relevant use case. Revisit in 60–90 days.';
+  } else {
+    label = 'Early Stage — Focus on Platform First';
+    color = 'var(--amber)';
+    next = 'Don\'t lead with AI agents here — focus on AVD/W365 platform value first. Introduce CUA as a future capability that becomes available once the managed desktop foundation is in place.';
+  }
+  const result = document.getElementById('readiness-result');
+  result.innerHTML = `<div class="result-score" style="color:${color};">${pct}%</div><div class="result-label" style="color:${color};">${label}</div><div class="result-next">${next}</div>`;
+  result.classList.add('show');
+}
+
+function copyText(btn, text) {
+  navigator.clipboard.writeText(text).then(() => { btn.textContent = 'Copied!'; setTimeout(() => btn.textContent = 'Copy', 2000); });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nerdio PoV Builder</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #042838;
+  --navy-mid: #073246;
+  --navy-light: #0d3d52;
+  --blue: #1E9DB8;
+  --blue-light: #2ab5d4;
+  --green: #CDFF4E;
+  --purple: #A795C7;
+  --white: #FFFFFF;
+  --text-dim: rgba(255,255,255,0.6);
+  --text-dimmer: rgba(255,255,255,0.35);
+  --border: rgba(30,157,184,0.2);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Poppins',sans-serif;background:var(--navy);color:var(--white);min-height:100vh;}
+
+header{background:linear-gradient(135deg,#021e2b 0%,var(--navy-mid) 100%);padding:20px 40px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:center;gap:12px;}
+.logo-icon{width:36px;height:36px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:var(--navy);}
+.logo-name{font-size:16px;font-weight:700;letter-spacing:-0.3px;}
+.logo-name span{color:var(--blue);}
+.tool-badge{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:2.5px;color:var(--green);background:rgba(205,255,78,0.1);border:1px solid rgba(205,255,78,0.3);padding:4px 12px;border-radius:20px;}
+
+.container{max-width:900px;margin:0 auto;padding:40px 24px;}
+.page-title{font-size:28px;font-weight:700;margin-bottom:6px;letter-spacing:-0.5px;}
+.page-sub{font-size:14px;color:var(--text-dim);margin-bottom:36px;}
+
+.step-nav{display:flex;gap:0;margin-bottom:40px;border-radius:12px;overflow:hidden;border:1px solid var(--border);}
+.step-btn{flex:1;padding:14px 8px;background:var(--navy-mid);border:none;color:var(--text-dim);font-family:'Poppins',sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.2s;text-align:center;border-right:1px solid var(--border);}
+.step-btn:last-child{border-right:none;}
+.step-btn.active{background:var(--blue);color:var(--navy);font-weight:700;}
+.step-btn.done{background:rgba(205,255,78,0.08);color:var(--green);}
+.step-num{display:block;font-size:18px;font-weight:800;margin-bottom:2px;}
+
+.step-panel{display:none;}
+.step-panel.active{display:block;}
+
+.field-group{margin-bottom:24px;}
+.field-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--blue);margin-bottom:8px;display:block;}
+.field-sub{font-size:12px;color:var(--text-dim);margin-bottom:8px;}
+input[type=text],input[type=date],input[type=number],select,textarea{width:100%;background:var(--navy-mid);border:1px solid var(--border);border-radius:8px;padding:12px 16px;color:var(--white);font-family:'Poppins',sans-serif;font-size:13px;outline:none;transition:border-color 0.2s;}
+input:focus,select:focus,textarea:focus{border-color:var(--blue);}
+textarea{resize:vertical;min-height:80px;}
+select option{background:var(--navy-mid);}
+
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+
+.checklist{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.check-item{display:flex;align-items:center;gap:10px;background:var(--navy-mid);border:1px solid var(--border);border-radius:8px;padding:12px 14px;cursor:pointer;transition:all 0.2s;}
+.check-item:hover{border-color:var(--blue);}
+.check-item.selected{border-color:var(--green);background:rgba(205,255,78,0.05);}
+.check-item input[type=checkbox]{display:none;}
+.check-box{width:18px;height:18px;border:2px solid var(--border);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.check-item.selected .check-box{background:var(--green);border-color:var(--green);}
+.check-tick{color:var(--navy);font-size:11px;font-weight:900;display:none;}
+.check-item.selected .check-tick{display:block;}
+.check-label{font-size:12px;font-weight:500;}
+
+.metric-row{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:10px;align-items:center;}
+.metric-name{font-size:12px;font-weight:500;}
+.metric-status{display:flex;gap:6px;}
+.metric-status button{flex:1;padding:6px 8px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text-dim);font-family:'Poppins',sans-serif;font-size:10px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.metric-status button.active-p{background:rgba(30,157,184,0.15);border-color:var(--blue);color:var(--blue);}
+.metric-status button.active-q{background:rgba(205,255,78,0.1);border-color:var(--green);color:var(--green);}
+
+.nav-btns{display:flex;gap:12px;margin-top:32px;}
+.btn-primary{background:linear-gradient(135deg,var(--blue),#16768a);border:none;color:var(--white);font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;padding:13px 28px;border-radius:8px;cursor:pointer;transition:all 0.2s;}
+.btn-primary:hover{opacity:0.9;transform:translateY(-1px);}
+.btn-secondary{background:transparent;border:1px solid var(--border);color:var(--text-dim);font-family:'Poppins',sans-serif;font-size:13px;font-weight:500;padding:13px 24px;border-radius:8px;cursor:pointer;transition:all 0.2s;}
+.btn-secondary:hover{border-color:var(--blue);color:var(--white);}
+.btn-generate{background:var(--green);border:none;color:var(--navy);font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;padding:13px 32px;border-radius:8px;cursor:pointer;transition:all 0.2s;margin-left:auto;}
+.btn-generate:hover{opacity:0.9;transform:translateY(-1px);}
+
+/* OUTPUT */
+#output-panel{display:none;}
+.output-header{background:linear-gradient(135deg,var(--navy-mid),#0a3d52);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:24px;}
+.output-logo-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.output-badge{background:var(--blue);color:var(--navy);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;padding:4px 12px;border-radius:20px;}
+.output-title{font-size:22px;font-weight:700;margin-bottom:4px;}
+.output-sub{font-size:13px;color:var(--text-dim);}
+.output-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px;}
+.meta-card{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:12px 14px;}
+.meta-label{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--blue);margin-bottom:4px;}
+.meta-value{font-size:13px;font-weight:600;}
+
+.output-section{background:var(--navy-mid);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:16px;}
+.section-eyebrow{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:var(--blue);margin-bottom:10px;}
+.section-title{font-size:16px;font-weight:700;margin-bottom:16px;}
+
+.criteria-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.criterion{background:rgba(255,255,255,0.04);border-radius:8px;padding:12px 14px;border-left:3px solid var(--blue);}
+.criterion.entry{border-left-color:var(--purple);}
+.criterion.exit{border-left-color:var(--green);}
+.crit-type{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--text-dim);margin-bottom:4px;}
+.crit-text{font-size:12px;font-weight:500;}
+
+.timeline-row{display:flex;align-items:flex-start;gap:16px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);}
+.timeline-row:last-child{border-bottom:none;}
+.tl-week{background:var(--blue);color:var(--navy);font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
+.tl-content{flex:1;}
+.tl-title{font-size:13px;font-weight:600;margin-bottom:3px;}
+.tl-desc{font-size:12px;color:var(--text-dim);}
+
+.owner-table{width:100%;border-collapse:collapse;}
+.owner-table th{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--blue);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);}
+.owner-table td{padding:10px 12px;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.05);}
+.owner-table tr:last-child td{border-bottom:none;}
+
+.risk-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06);}
+.risk-item:last-child{border-bottom:none;}
+.risk-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.risk-dot.high{background:#ff4444;}
+.risk-dot.med{background:#ffaa00;}
+.risk-dot.low{background:var(--green);}
+.risk-text{font-size:12px;}
+.risk-mit{font-size:11px;color:var(--text-dim);margin-top:2px;}
+
+.success-metric{display:flex;align-items:center;gap:12px;padding:10px 14px;background:rgba(205,255,78,0.04);border:1px solid rgba(205,255,78,0.15);border-radius:8px;margin-bottom:8px;}
+.sm-icon{font-size:18px;}
+.sm-text{font-size:12px;font-weight:500;}
+
+.print-bar{background:var(--navy-mid);border:1px solid var(--border);border-radius:8px;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+.print-note{font-size:12px;color:var(--text-dim);}
+.btn-print{background:var(--green);border:none;color:var(--navy);font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;padding:9px 20px;border-radius:6px;cursor:pointer;}
+.btn-restart{background:transparent;border:1px solid var(--border);color:var(--text-dim);font-family:'Poppins',sans-serif;font-size:12px;padding:9px 16px;border-radius:6px;cursor:pointer;}
+.btn-restart:hover{color:var(--white);border-color:var(--blue);}
+
+@media print{header,.step-nav,.nav-btns,.print-bar{display:none!important;}#output-panel{display:block!important;}body{background:white;color:#042838;}}
+</style>
+
+<style>
+.nerdio-brand-bar{position: fixed; top: 48px;left:0;right:0;height:48px;background:#0B1B3D;display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:99999;font-family:"Segoe UI",system-ui,-apple-system,sans-serif;}
+.nerdio-brand-bar img{height:28px;}
+.nerdio-brand-bar .brand-title{color:#fff;font-size:14px;font-weight:500;margin-left:16px;opacity:0.85;}
+.nerdio-brand-bar .home-link{color:#00B4D8;text-decoration:none;font-size:13px;font-weight:500;padding:6px 14px;border:1px solid rgba(0,180,216,0.3);border-radius:6px;transition:all 0.2s;}
+.nerdio-brand-bar .home-link:hover{background:rgba(0,180,216,0.1);border-color:#00B4D8;}
+</style>
+</head>
+<body>
+<!-- NERDIO BRAND BAR -->
+<div class="nerdio-brand-bar">
+  <div style="display:flex;align-items:center;">
+    <img src="data:image/png;base64,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" alt="Nerdio">
+    <span class="brand-title">Nerdio PoV Builder</span>
+  </div>
+  <a href="../EMEA-Nerdio-Toolbox.html" class="home-link">&#8962; Toolbox Home</a>
+</div>
+<!-- END BRAND BAR -->
+
+<!-- PASSWORD PROTECTION START -->
+<style>
+#nerdio-auth-overlay {
+    position: fixed; top: 48px; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, #0B1B3D 0%, #122a5c 50%, #0B1B3D 100%);
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+#nerdio-auth-overlay.hidden { display: none; }
+.nerdio-auth-box {
+    background: rgba(255,255,255,0.07);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 16px;
+    padding: 48px 40px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+.nerdio-auth-box .auth-icon {
+    width: 64px; height: 64px;
+    margin: 0 auto 24px;
+    background: linear-gradient(135deg, #00B4D8, #00C48C);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+}
+.nerdio-auth-box .auth-icon svg { width: 32px; height: 32px; }
+.nerdio-auth-box h2 {
+    color: #fff;
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0 0 8px;
+}
+.nerdio-auth-box p {
+    color: rgba(255,255,255,0.6);
+    font-size: 14px;
+    margin: 0 0 28px;
+}
+.nerdio-auth-box input[type="password"] {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+.nerdio-auth-box input[type="password"]::placeholder { color: rgba(255,255,255,0.35); }
+.nerdio-auth-box input[type="password"]:focus { border-color: #00B4D8; }
+.nerdio-auth-box .auth-btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 16px;
+    background: linear-gradient(135deg, #00B4D8, #00C48C);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+}
+.nerdio-auth-box .auth-btn:hover { opacity: 0.9; }
+.nerdio-auth-box .auth-btn:active { transform: scale(0.98); }
+.nerdio-auth-box .auth-error {
+    color: #ff6b6b;
+    font-size: 13px;
+    margin-top: 12px;
+    display: none;
+}
+.nerdio-auth-box .auth-footer {
+    color: rgba(255,255,255,0.3);
+    font-size: 12px;
+    margin-top: 24px;
+}
+</style>
+<div id="nerdio-auth-overlay">
+    <div class="nerdio-auth-box">
+        <div class="auth-icon">
+            <svg fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+            </svg>
+        </div>
+        <h2>EMEA Nerdio Toolbox</h2>
+        <p>Enter the team password to continue</p>
+        <form id="nerdio-auth-form" onsubmit="return nerdioAuth()">
+            <input type="password" id="nerdio-auth-pwd" placeholder="Team password" autofocus>
+            <button type="submit" class="auth-btn">Unlock Toolbox</button>
+            <div class="auth-error" id="nerdio-auth-error">Incorrect password. Please try again.</div>
+        </form>
+        <div class="auth-footer">Nerdio EMEA &mdash; Internal Use Only</div>
+    </div>
+</div>
+<script>
+(function(){
+    var AUTH_KEY = 'nerdio-emea-auth';
+    var HASH = '8d4fc32913788be20e3ed56e0e9598b490bc0a8023036548b73715eca41d80d0';
+    async function sha256(str) {
+        var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+        return Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0')}).join('');
+    }
+    if (sessionStorage.getItem(AUTH_KEY) === 'true') {
+        document.getElementById('nerdio-auth-overlay').classList.add('hidden');
+    }
+    window.nerdioAuth = async function() {
+        var pwd = document.getElementById('nerdio-auth-pwd').value;
+        var hash = await sha256(pwd);
+        if (hash === HASH) {
+            sessionStorage.setItem(AUTH_KEY, 'true');
+            document.getElementById('nerdio-auth-overlay').classList.add('hidden');
+        } else {
+            document.getElementById('nerdio-auth-error').style.display = 'block';
+            document.getElementById('nerdio-auth-pwd').value = '';
+            document.getElementById('nerdio-auth-pwd').focus();
+        }
+        return false;
+    };
+})();
+</script>
+<!-- PASSWORD PROTECTION END -->
+
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">N</div>
+    <div class="logo-name"><span>nerdio</span> EMEA Toolbox</div>
+  </div>
+  <div class="tool-badge">PoV Builder</div>
+</header>
+
+<div class="container">
+  <div id="form-section">
+    <div class="page-title">Proof of Value Builder</div>
+    <div class="page-sub">Generate a structured PoV scope document — entry criteria, success metrics, timeline, owners, and exit criteria.</div>
+
+    <div class="step-nav">
+      <button class="step-btn active" onclick="goStep(1)" id="sb1"><span class="step-num">1</span>Account</button>
+      <button class="step-btn" onclick="goStep(2)" id="sb2"><span class="step-num">2</span>Scope</button>
+      <button class="step-btn" onclick="goStep(3)" id="sb3"><span class="step-num">3</span>Metrics</button>
+      <button class="step-btn" onclick="goStep(4)" id="sb4"><span class="step-num">4</span>Owners</button>
+      <button class="step-btn" onclick="goStep(5)" id="sb5"><span class="step-num">5</span>Risks</button>
+    </div>
+
+    <!-- STEP 1: ACCOUNT -->
+    <div class="step-panel active" id="step1">
+      <div class="grid-2">
+        <div class="field-group">
+          <label class="field-label">Account Name</label>
+          <input type="text" id="f-account" placeholder="e.g. Schroders plc">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Industry</label>
+          <select id="f-industry">
+            <option value="">Select industry</option>
+            <option>Banking</option>
+            <option>Insurance</option>
+            <option>Asset Management</option>
+            <option>Capital Markets</option>
+            <option>Retail</option>
+            <option>Consumer Goods</option>
+            <option>Public Sector</option>
+            <option>Legal & Professional Services</option>
+            <option>Energy & Utilities</option>
+            <option>Healthcare</option>
+            <option>Manufacturing</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field-group">
+          <label class="field-label">Seat Count (Total)</label>
+          <input type="number" id="f-seats" placeholder="e.g. 6500">
+        </div>
+        <div class="field-group">
+          <label class="field-label">PoV Seat Count</label>
+          <input type="number" id="f-pov-seats" placeholder="e.g. 250">
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field-group">
+          <label class="field-label">Nerdio AE</label>
+          <input type="text" id="f-ae" placeholder="e.g. Chris Dewhirst" value="Chris Dewhirst">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Nerdio SE</label>
+          <input type="text" id="f-se" placeholder="e.g. Sean Corrigan" value="Sean Corrigan">
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field-group">
+          <label class="field-label">Customer EUC Lead</label>
+          <input type="text" id="f-cust-lead" placeholder="Name & Title">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Customer Executive Sponsor</label>
+          <input type="text" id="f-exec-sponsor" placeholder="Name & Title">
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field-group">
+          <label class="field-label">PoV Start Date</label>
+          <input type="date" id="f-start-date">
+        </div>
+        <div class="field-group">
+          <label class="field-label">PoV Duration</label>
+          <select id="f-duration">
+            <option value="2">2 weeks</option>
+            <option value="4" selected>4 weeks</option>
+            <option value="6">6 weeks</option>
+            <option value="8">8 weeks</option>
+          </select>
+        </div>
+      </div>
+      <div class="nav-btns"><button class="btn-primary" onclick="goStep(2)">Next: Scope →</button></div>
+    </div>
+
+    <!-- STEP 2: SCOPE -->
+    <div class="step-panel" id="step2">
+      <div class="field-group">
+        <label class="field-label">Current Platform(s)</label>
+        <div class="checklist">
+          <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">Citrix Virtual Apps & Desktops</span></div>
+          <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">VMware Horizon / Omnissa</span></div>
+          <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">AVD (native / unmanaged)</span></div>
+          <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">Windows 365 (native)</span></div>
+          <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">RDS / Terminal Services</span></div>
+          <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">Physical desktops / laptops</span></div>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">PoV Platform Focus</label>
+        <div class="checklist">
+          <div class="check-item" onclick="toggleCheck(this)" id="scope-avd"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">Azure Virtual Desktop (AVD)</span></div>
+          <div class="check-item" onclick="toggleCheck(this)" id="scope-w365"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">Windows 365 (W365)</span></div>
+          <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">Intune Management</span></div>
+          <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">Hybrid (Azure Local / Arc)</span></div>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Primary PoV Objective</label>
+        <textarea id="f-objective" placeholder="e.g. Validate that Nerdio Manager can reduce AVD management overhead by 60% vs. native tools, demonstrate auto-scaling cost savings on pooled desktops, and prove Citrix feature parity for our trading floor persona."></textarea>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Key Nerdio Capabilities to Demonstrate</label>
+        <div class="checklist">
+          <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">Auto-scaling (patented)</span></div>
+          <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">Cost estimation & governance</span></div>
+          <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">Image management & deployment</span></div>
+          <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">Policy & compliance visibility</span></div>
+          <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">Session host lifecycle automation</span></div>
+          <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">Scripted actions & runbooks</span></div>
+          <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">Multi-tenant management</span></div>
+          <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">Licence reclamation advisory</span></div>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn-secondary" onclick="goStep(1)">← Back</button>
+        <button class="btn-primary" onclick="goStep(3)">Next: Metrics →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: SUCCESS METRICS -->
+    <div class="step-panel" id="step3">
+      <p class="field-sub" style="margin-bottom:20px;">Define what success looks like. Mark each metric as Primary (P) — must achieve — or Qualifying (Q) — nice to have.</p>
+      <div id="metrics-list">
+        <div class="metric-row">
+          <div class="metric-name">Azure compute cost reduction vs. baseline (target: 30–40%)</div>
+          <div class="metric-status">
+            <button onclick="setMetric(this,'P')" class="active-p">P — Primary</button>
+            <button onclick="setMetric(this,'Q')">Q — Qualifying</button>
+          </div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-name">Desktop provisioning time vs. native tools (target: 80% reduction)</div>
+          <div class="metric-status">
+            <button onclick="setMetric(this,'P')" class="active-p">P — Primary</button>
+            <button onclick="setMetric(this,'Q')">Q — Qualifying</button>
+          </div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-name">IT admin time saved per week (target: 5+ hours)</div>
+          <div class="metric-status">
+            <button onclick="setMetric(this,'P')">P — Primary</button>
+            <button onclick="setMetric(this,'Q')" class="active-q">Q — Qualifying</button>
+          </div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-name">End user login performance vs. current (target: ≤ baseline)</div>
+          <div class="metric-status">
+            <button onclick="setMetric(this,'P')" class="active-p">P — Primary</button>
+            <button onclick="setMetric(this,'Q')">Q — Qualifying</button>
+          </div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-name">Policy compliance visibility score (target: 95%+ visible)</div>
+          <div class="metric-status">
+            <button onclick="setMetric(this,'P')">P — Primary</button>
+            <button onclick="setMetric(this,'Q')" class="active-q">Q — Qualifying</button>
+          </div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-name">Image build and deployment cycle (target: < 30 minutes)</div>
+          <div class="metric-status">
+            <button onclick="setMetric(this,'P')">P — Primary</button>
+            <button onclick="setMetric(this,'Q')" class="active-q">Q — Qualifying</button>
+          </div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-name">IT team confidence score post-PoV (target: 8+/10)</div>
+          <div class="metric-status">
+            <button onclick="setMetric(this,'P')">P — Primary</button>
+            <button onclick="setMetric(this,'Q')" class="active-q">Q — Qualifying</button>
+          </div>
+        </div>
+      </div>
+      <div class="field-group" style="margin-top:20px;">
+        <label class="field-label">Custom Success Metric (optional)</label>
+        <input type="text" id="f-custom-metric" placeholder="e.g. Prove PRA-compliant audit trail for all admin actions">
+      </div>
+      <div class="nav-btns">
+        <button class="btn-secondary" onclick="goStep(2)">← Back</button>
+        <button class="btn-primary" onclick="goStep(4)">Next: Owners →</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: OWNERS -->
+    <div class="step-panel" id="step4">
+      <div class="field-group">
+        <label class="field-label">Nerdio PoV Lead (SE)</label>
+        <input type="text" id="f-nerdio-se" placeholder="Name running the technical PoV" value="Sean Corrigan">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Customer Technical Lead</label>
+        <input type="text" id="f-cust-tech" placeholder="Name & role">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Microsoft PDM / CSM (if involved)</label>
+        <input type="text" id="f-ms-contact" placeholder="e.g. James Moon, Territory PDM">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Partner / SI (if involved)</label>
+        <input type="text" id="f-partner" placeholder="e.g. Fujitsu, Telefónica Tech, CDW">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Cadence & Governance</label>
+        <select id="f-cadence">
+          <option>Weekly sync call (30 min) + shared Teams channel</option>
+          <option>Bi-weekly sync call (60 min) + shared Teams channel</option>
+          <option>Weekly written status update + ad hoc calls</option>
+          <option>Daily standup (15 min) during active build phase</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Decision Timeline After PoV</label>
+        <select id="f-decision">
+          <option>Within 2 weeks of PoV close</option>
+          <option>Within 4 weeks of PoV close</option>
+          <option>Board/budget cycle (specify in notes)</option>
+          <option>Pending further internal review</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Commercial Notes (ACV target, deal structure, etc.)</label>
+        <textarea id="f-commercial" placeholder="e.g. ~$15K MRR target at full deployment. Standard tier. Azure Marketplace billing preferred."></textarea>
+      </div>
+      <div class="nav-btns">
+        <button class="btn-secondary" onclick="goStep(3)">← Back</button>
+        <button class="btn-primary" onclick="goStep(5)">Next: Risks →</button>
+      </div>
+    </div>
+
+    <!-- STEP 5: RISKS -->
+    <div class="step-panel" id="step5">
+      <p class="field-sub" style="margin-bottom:20px;">Select known risks — the output will include mitigations for each.</p>
+      <div class="checklist" style="grid-template-columns:1fr;">
+        <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">Azure subscription not provisioned or rights not confirmed</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">IT team bandwidth constrained — competing projects</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">Executive sponsor not yet fully engaged</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">Citrix renewal pressure / competitor involvement</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">Security/InfoSec approval required for tooling</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">Budget not confirmed for post-PoV purchase</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">Network/firewall restrictions may delay deployment</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">Procurement / vendor approval process lengthy</span></div>
+      </div>
+      <div class="field-group" style="margin-top:20px;">
+        <label class="field-label">Additional Notes</label>
+        <textarea id="f-notes" placeholder="Any other context, constraints, or requirements..."></textarea>
+      </div>
+      <div class="nav-btns">
+        <button class="btn-secondary" onclick="goStep(4)">← Back</button>
+        <button class="btn-generate" onclick="generatePoV()">⚡ Generate PoV Document</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- OUTPUT -->
+  <div id="output-panel">
+    <div class="print-bar">
+      <span class="print-note">PoV document generated — review before sharing with the customer</span>
+      <div style="display:flex;gap:8px;">
+        <button class="btn-restart" onclick="restart()">← Build Another</button>
+        <button class="btn-print" onclick="window.print()">🖨 Print / Save PDF</button>
+      </div>
+    </div>
+
+    <div class="output-header">
+      <div class="output-logo-row">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="logo-icon">N</div>
+          <span style="font-size:14px;font-weight:600;color:var(--text-dim);">Nerdio Manager for Enterprise</span>
+        </div>
+        <div class="output-badge">Proof of Value</div>
+      </div>
+      <div class="output-title" id="out-title">—</div>
+      <div class="output-sub" id="out-sub">—</div>
+      <div class="output-meta">
+        <div class="meta-card"><div class="meta-label">Industry</div><div class="meta-value" id="out-industry">—</div></div>
+        <div class="meta-card"><div class="meta-label">PoV Seats</div><div class="meta-value" id="out-seats">—</div></div>
+        <div class="meta-card"><div class="meta-label">Duration</div><div class="meta-value" id="out-duration">—</div></div>
+        <div class="meta-card"><div class="meta-label">Start Date</div><div class="meta-value" id="out-date">—</div></div>
+      </div>
+    </div>
+
+    <!-- ENTRY CRITERIA -->
+    <div class="output-section">
+      <div class="section-eyebrow">Entry Criteria</div>
+      <div class="section-title">Before the PoV begins, the following must be confirmed</div>
+      <div class="criteria-grid" id="out-entry"></div>
+    </div>
+
+    <!-- SUCCESS METRICS -->
+    <div class="output-section">
+      <div class="section-eyebrow">Success Metrics</div>
+      <div class="section-title">How we measure a successful PoV</div>
+      <div id="out-metrics"></div>
+    </div>
+
+    <!-- TIMELINE -->
+    <div class="output-section">
+      <div class="section-eyebrow">Delivery Timeline</div>
+      <div class="section-title" id="out-timeline-title">—</div>
+      <div id="out-timeline"></div>
+    </div>
+
+    <!-- OWNERS -->
+    <div class="output-section">
+      <div class="section-eyebrow">Ownership & Governance</div>
+      <div class="section-title">Roles, responsibilities, and cadence</div>
+      <table class="owner-table">
+        <tr><th>Role</th><th>Owner</th><th>Responsibility</th></tr>
+        <tbody id="out-owners"></tbody>
+      </table>
+    </div>
+
+    <!-- RISKS -->
+    <div class="output-section">
+      <div class="section-eyebrow">Risk Register</div>
+      <div class="section-title">Known risks and mitigations</div>
+      <div id="out-risks"></div>
+    </div>
+
+    <!-- EXIT CRITERIA -->
+    <div class="output-section">
+      <div class="section-eyebrow">Exit Criteria</div>
+      <div class="section-title">The PoV is complete when all primary criteria are met</div>
+      <div class="criteria-grid" id="out-exit"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentStep = 1;
+
+function goStep(n) {
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.step-btn').forEach((b,i) => {
+    b.classList.remove('active');
+    if(i+1 < n) b.classList.add('done'); else b.classList.remove('done');
+  });
+  document.getElementById('step'+n).classList.add('active');
+  document.getElementById('sb'+n).classList.add('active');
+  currentStep = n;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function toggleCheck(el) {
+  el.classList.toggle('selected');
+}
+
+function setMetric(btn, type) {
+  const row = btn.closest('.metric-status');
+  row.querySelectorAll('button').forEach(b => { b.classList.remove('active-p','active-q'); });
+  btn.classList.add(type === 'P' ? 'active-p' : 'active-q');
+}
+
+function getChecked(container) {
+  return [...container.querySelectorAll('.check-item.selected .check-label')].map(el => el.textContent);
+}
+
+function getMetrics() {
+  return [...document.querySelectorAll('#metrics-list .metric-row')].map(row => ({
+    name: row.querySelector('.metric-name').textContent,
+    type: row.querySelector('.active-p') ? 'P' : 'Q'
+  }));
+}
+
+function formatDate(d) {
+  if(!d) return '—';
+  const dt = new Date(d);
+  return dt.toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'});
+}
+
+function addWeeks(dateStr, weeks) {
+  if(!dateStr) return '—';
+  const d = new Date(dateStr);
+  d.setDate(d.getDate() + weeks*7);
+  return d.toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'});
+}
+
+const riskMitigations = {
+  'Azure subscription not provisioned or rights not confirmed': 'Confirm Azure Contributor rights and subscription details as entry criterion. Nerdio SE to validate via portal access check in week 1.',
+  'IT team bandwidth constrained — competing projects': 'Agree a fixed weekly time commitment upfront. Identify a backup technical contact. Build a lean scope to minimise demand.',
+  'Executive sponsor not yet fully engaged': 'Schedule an executive kick-off call in week 1. AE to brief sponsor on strategic value and decision timeline before PoV starts.',
+  'Citrix renewal pressure / competitor involvement': 'Accelerate timeline where possible. Ensure PoV scope directly addresses Citrix feature parity concerns. AE to stay close to renewal date.',
+  'Security/InfoSec approval required for tooling': 'Initiate InfoSec review in parallel — share Nerdio SOC2 Type II documentation and Azure-native architecture evidence immediately.',
+  'Budget not confirmed for post-PoV purchase': 'AE to confirm budget owner and fiscal year timing early. Frame PoV output as the business case for budget approval.',
+  'Network/firewall restrictions may delay deployment': 'SE to issue pre-PoV technical requirements checklist. Network team to confirm Azure outbound rules at least 1 week before start.',
+  'Procurement / vendor approval process lengthy': 'Engage procurement contact in week 1. Confirm whether Azure Marketplace billing can bypass standard PO process.'
+};
+
+function generatePoV() {
+  const account = document.getElementById('f-account').value || 'Customer';
+  const industry = document.getElementById('f-industry').value || '—';
+  const seats = document.getElementById('f-seats').value;
+  const povSeats = document.getElementById('f-pov-seats').value;
+  const ae = document.getElementById('f-ae').value || 'Chris Dewhirst';
+  const se = document.getElementById('f-se').value || 'Sean Corrigan';
+  const custLead = document.getElementById('f-cust-lead').value || 'TBC';
+  const execSponsor = document.getElementById('f-exec-sponsor').value || 'TBC';
+  const startDate = document.getElementById('f-start-date').value;
+  const duration = parseInt(document.getElementById('f-duration').value);
+  const objective = document.getElementById('f-objective').value;
+  const msContact = document.getElementById('f-ms-contact').value;
+  const partner = document.getElementById('f-partner').value;
+  const cadence = document.getElementById('f-cadence').value;
+  const decision = document.getElementById('f-decision').value;
+  const commercial = document.getElementById('f-commercial').value;
+  const customMetric = document.getElementById('f-custom-metric').value;
+  const notes = document.getElementById('f-notes').value;
+
+  const platforms = getChecked(document.getElementById('step2').querySelectorAll('.field-group')[1]);
+  const capabilities = getChecked(document.getElementById('step2').querySelectorAll('.field-group')[3]);
+  const risks = getChecked(document.getElementById('step5'));
+  const metrics = getMetrics();
+
+  // Header
+  document.getElementById('out-title').textContent = `${account} — Proof of Value`;
+  document.getElementById('out-sub').textContent = objective || `Validate Nerdio Manager for Enterprise across ${platforms.join(', ')}`;
+  document.getElementById('out-industry').textContent = industry;
+  document.getElementById('out-seats').textContent = povSeats ? `${parseInt(povSeats).toLocaleString()} (of ${parseInt(seats||0).toLocaleString()})` : '—';
+  document.getElementById('out-duration').textContent = `${duration} weeks`;
+  document.getElementById('out-date').textContent = formatDate(startDate);
+
+  // Entry criteria
+  const entryItems = [
+    'Azure subscription provisioned with Contributor access confirmed',
+    'Nerdio Manager trial licence activated and portal access confirmed',
+    `PoV scope and success metrics agreed by ${custLead}`,
+    `Executive sponsor (${execSponsor}) briefed and aligned on decision timeline`,
+    'Network/firewall requirements reviewed and Azure outbound rules confirmed',
+    'Shared Teams channel or communication channel established',
+    'Weekly cadence call scheduled for PoV duration',
+    capabilities.includes('Security/InfoSec approval required for tooling') ? 'InfoSec approval for Nerdio tooling in progress or obtained' : 'Customer IT team allocated and availability confirmed'
+  ];
+
+  document.getElementById('out-entry').innerHTML = entryItems.map(e =>
+    `<div class="criterion entry"><div class="crit-type">Entry</div><div class="crit-text">${e}</div></div>`
+  ).join('');
+
+  // Success metrics
+  const allMetrics = metrics.filter(m => !m.name.includes('Custom'));
+  if (customMetric) allMetrics.push({ name: customMetric, type: 'P' });
+
+  document.getElementById('out-metrics').innerHTML = allMetrics.map(m =>
+    `<div class="success-metric">
+      <div class="sm-icon">${m.type === 'P' ? '🎯' : '✨'}</div>
+      <div class="sm-text"><strong>${m.type === 'P' ? 'PRIMARY' : 'QUALIFYING'}</strong> — ${m.name}</div>
+    </div>`
+  ).join('');
+
+  // Timeline
+  document.getElementById('out-timeline-title').textContent = `${duration}-week delivery plan — ${formatDate(startDate)} to ${addWeeks(startDate, duration)}`;
+
+  const timelineItems = [
+    { week: 'Week 1', title: 'Kick-off & Environment Setup', desc: `Joint kick-off call with ${custLead} and ${execSponsor}. Validate Azure access. Deploy Nerdio Manager. Configure initial host pools. Establish shared channel.` },
+    { week: 'Week 2', title: 'Core Feature Demonstration', desc: `Demo ${capabilities.slice(0,3).join(', ')}. Configure auto-scaling policies. Establish baseline cost and performance metrics.` },
+    { week: duration >= 4 ? 'Week 3' : 'Week 2–3', title: 'User Acceptance & Validation', desc: `${povSeats || 'Pilot'} users onboarded. Measure provisioning time vs. baseline. Collect IT admin feedback. Run scripted scenarios.` }
+  ];
+
+  if (duration >= 4) {
+    timelineItems.push({ week: 'Week 4', title: 'Results Review & Business Case', desc: `Compile metrics vs. success criteria. Produce PoV summary report. Present findings to ${execSponsor}. Agree next steps and commercial timeline.` });
+  }
+  if (duration >= 6) {
+    timelineItems.splice(3, 0, { week: 'Weeks 4–5', title: 'Extended Validation', desc: `Broaden scope to additional capabilities. Validate edge cases. Address any open technical questions from InfoSec or operations teams.` });
+    timelineItems[timelineItems.length-1].week = `Week ${duration}`;
+  }
+
+  document.getElementById('out-timeline').innerHTML = timelineItems.map(t =>
+    `<div class="timeline-row"><div class="tl-week">${t.week}</div><div class="tl-content"><div class="tl-title">${t.title}</div><div class="tl-desc">${t.desc}</div></div></div>`
+  ).join('');
+
+  // Owners
+  const ownerRows = [
+    [ae, 'Nerdio Account Executive', 'Commercial oversight, executive relationship, deal progression'],
+    [se || 'Nerdio SE', 'Nerdio Solutions Engineer', 'Technical delivery, PoV execution, metrics capture, customer enablement'],
+    [custLead, 'Customer EUC Technical Lead', 'Internal coordination, environment access, user comms, sign-off on metrics'],
+    [execSponsor, 'Customer Executive Sponsor', 'Business case owner, final go/no-go decision, budget authority'],
+  ];
+  if (msContact) ownerRows.push([msContact, 'Microsoft PDM / CSM', 'Co-sell alignment, licence validation, executive bridge']);
+  if (partner) ownerRows.push([partner, 'Partner / SI', 'Implementation support, commercial facilitation']);
+
+  document.getElementById('out-owners').innerHTML = ownerRows.map(r =>
+    `<tr><td style="font-weight:600;">${r[0]}</td><td style="color:var(--blue);">${r[1]}</td><td style="color:var(--text-dim);">${r[2]}</td></tr>`
+  ).join('');
+
+  // Risks
+  if (risks.length > 0) {
+    document.getElementById('out-risks').innerHTML = risks.map(r => {
+      const mit = riskMitigations[r] || 'Discuss with account team and agree mitigation plan.';
+      const level = r.includes('Citrix') || r.includes('Executive') ? 'high' : r.includes('budget') || r.includes('Security') ? 'med' : 'low';
+      return `<div class="risk-item"><div class="risk-dot ${level}"></div><div><div class="risk-text"><strong>${r}</strong></div><div class="risk-mit">Mitigation: ${mit}</div></div></div>`;
+    }).join('');
+  } else {
+    document.getElementById('out-risks').innerHTML = '<div style="font-size:13px;color:var(--text-dim);">No specific risks flagged. Standard PoV risks apply — maintain weekly cadence to surface issues early.</div>';
+  }
+
+  // Exit criteria
+  const primaryMetrics = metrics.filter(m => m.type === 'P');
+  const exitItems = [
+    ...primaryMetrics.map(m => m.name),
+    'PoV summary report delivered and reviewed with customer team',
+    `Commercial proposal presented to ${execSponsor}`,
+    `${decision}`,
+    notes ? notes : 'All open technical questions resolved'
+  ];
+
+  document.getElementById('out-exit').innerHTML = exitItems.slice(0,6).map(e =>
+    `<div class="criterion exit"><div class="crit-type">Exit</div><div class="crit-text">${e}</div></div>`
+  ).join('');
+
+  document.getElementById('form-section').style.display = 'none';
+  document.getElementById('output-panel').style.display = 'block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function restart() {
+  document.getElementById('form-section').style.display = 'block';
+  document.getElementById('output-panel').style.display = 'none';
+  goStep(1);
+}
+</script>
+</body>
+</html>
